@@ -1,7 +1,7 @@
 # T2
 3rd shot of a great PHP toolbox.
 
-Inspired by: Tethys-Beta (2014) and Tethys (2018).
+Inspired by: [Tethys-Beta](https://github.com/gitfabian/tethysbeta) (2014) and [Tethys](https://github.com/GitFabian/Tethys) (2018).
 
 ## Instructions
 
@@ -17,5 +17,4 @@ Create submodule in new project:
 Clone existing project:  
 `git clone --recurse-submodules REPO_URL .`
 
-## Useful links
-* [Markdown-Syntax](https://de.wikipedia.org/wiki/Markdown#Auszeichnungsbeispiele)
+[[Useful links]](https://github.com/experder/T2/blob/master/ref.md)
