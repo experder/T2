@@ -19,7 +19,13 @@ Create submodule in new project:
 Clone existing project:  
 `git clone --recurse-submodules REPO_URL .`
 
-### Apache configuration
+[[Source](http://gitfabian.github.io/Tethys/install.html)]
+
+### Apache
+
+    #Configure your own extension in T2 (here: .t2)
+    RewriteEngine on
+    RewriteRule ^/myproject/(.*)\.t2$ "C:/MyWorkspace/MyProject/$1.php"
 
 #### Windows
 
@@ -31,4 +37,4 @@ Clone existing project:
 
 ## More
 
-[[Useful links]](https://github.com/experder/T2/blob/master/ref.md)
+[[Useful links](https://github.com/experder/T2/blob/master/ref.md)]

@@ -23,6 +23,11 @@ class Page {
 	 */
 	private $messages = array();
 
+	/**
+	 * @var Message[] $compiler_messages pre-init messages
+	 */
+	public static $compiler_messages = array();
+
 	private $stylesheets = array();
 
 	private $javascripts = array();
@@ -54,6 +59,11 @@ class Page {
 		return self::$singleton;
 	}
 
+	/**
+	 * @param string $id
+	 * @param string $title
+	 * @return Page
+	 */
 	public static function init($id, $title) {
 
 		if(self::$singleton!==null){
@@ -117,9 +127,15 @@ class Page {
 
 	private function get_message_html(){
 		$html = "";
-		foreach ($this->messages as $message){
+		/**
+		 * @var Message[] $all_messages
+		 */
+		$all_messages = array_merge(self::$compiler_messages, $this->messages);
+		foreach ($all_messages as $message){
 			$css_class = $message->get_type_cssClass();
-			$html.="<div class='message $css_class'>".$message->get_message()."</div>";
+			$html.="<div class='message $css_class'"
+				#." style='border:1px solid black;border-radius:5px;'"
+				.">".$message->get_message()."</div>";
 		}
 		$html = "<div class='messages'>$html</div>";
 		return $html;
