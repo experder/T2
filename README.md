@@ -3,7 +3,9 @@
 
 Inspired by: [Tethys-Beta](https://github.com/gitfabian/tethysbeta) (2014) and [Tethys](https://github.com/GitFabian/Tethys) (2018).
 
-## Instructions
+## Installation
+
+### Repository
 
 Create new project:  
 `git init`  
@@ -16,5 +18,17 @@ Create submodule in new project:
 
 Clone existing project:  
 `git clone --recurse-submodules REPO_URL .`
+
+### Apache configuration
+
+#### Windows
+
+    Alias /myproject "C:/MyWorkspace/MyProject"
+    <Directory "C:/MyWorkspace/MyProject">
+        Require all granted
+        AllowOverride All
+    </Directory>
+
+## More
 
 [[Useful links]](https://github.com/experder/T2/blob/master/ref.md)
