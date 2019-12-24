@@ -1,8 +1,8 @@
 <?php
 /*
-require_once ROOT_DIR.'/install/Template.php';
+require_once ROOT_DIR.'/service/Templates.php';
  */
-namespace inst;
+namespace service;
 
 require_once ROOT_DIR.'/service/Strings.php';
 require_once ROOT_DIR.'/service/Files.php';
@@ -11,7 +11,7 @@ use core\Error;
 use service\Files;
 use service\Strings;
 
-class Template {
+class Templates {
 
 	/**
 	 * Loads a template file, fills in the values and returns the content as a string.

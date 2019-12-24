@@ -12,7 +12,7 @@ $page->send_and_quit();
 namespace tethys_root;
 
 
-use inst\Wizard;
+use service\Install_wizard;
 
 class Start {
 
@@ -35,8 +35,8 @@ class Start {
 	public static function init_config(){
 		$config_file = ROOT_DIR.'/config_exclude.php';
 		if (!file_exists($config_file)){
-			require_once ROOT_DIR.'/install/Wizard.php';
-			Wizard::prompt_dbParams();
+			require_once ROOT_DIR.'/service/Install_wizard.php';
+			Install_wizard::prompt_dbParams();
 		}
 		/** @noinspection PhpIncludeInspection */
 		require_once $config_file;

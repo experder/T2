@@ -1,13 +1,13 @@
 <?php
 
 /*
-require_once ROOT_DIR.'/install/Wizard.php';
+require_once ROOT_DIR.'/service/Install_wizard.php';
  */
 
-namespace inst;
+namespace service;
 
 require_once ROOT_DIR.'/core/form/Form.php';
-require_once ROOT_DIR.'/install/Template.php';
+require_once ROOT_DIR.'/service/Templates.php';
 
 use core\Form;
 use core\Formfield_password;
@@ -16,13 +16,14 @@ use core\Message;
 use core\Page;
 use service\Files;
 use service\Request;
+use service\Templates;
 
-class Wizard {
+class Install_wizard {
 
 	public static function prompt_dbParams() {
 		if(Request::cmd("submit_db_credentials")){
 			$target_file = ROOT_DIR.'/config_exclude.php';
-			Template::create_file($target_file, ROOT_DIR.'/config_template.php', array(
+			Templates::create_file($target_file, ROOT_DIR.'/config_template.php', array(
 				":server_addr"=>Request::value("server_addr", "(please specify)"),
 				":tethysdb"=>Request::value("tethysdb", "(please specify)"),
 				":username"=>Request::value("username", "(please specify)"),
