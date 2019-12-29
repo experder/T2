@@ -152,7 +152,7 @@ class Database {
 	 * @param int    $return_type Database::RETURN_...
 	 * @param bool   $report_error
 	 * @param int    $backtrace_depth
-	 * @return array|false|null|string|int
+	 * @return array|int|false|null
 	 */
 	private function iquery($query, $substitutions, $return_type, $report_error = true, $backtrace_depth = 0) {
 		self::$dev_global_count++;
