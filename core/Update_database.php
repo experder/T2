@@ -8,8 +8,8 @@ abstract class Update_database {
 
 	protected $module = null;
 
-	private $ver = 0;
-	private $ceil = 0;
+	private $ver_next = 0;
+	protected $start_ver = 1;
 
 	private $database;
 
@@ -22,28 +22,20 @@ abstract class Update_database {
 
 	protected function q($ver, $query) {
 
-		//Check version:
-		$new_version = ++$this->ver;
-
-		//Too new:
-		if ($ver > $new_version) {
+		if($ver!=$this->start_ver){
 			Error::quit("Order is violated!", 1);
 		}
+		$this->start_ver++;
 
-		//Too old:
-		if ($ver <= $this->ceil) {
-			Error::quit("Order is violated!", 1);
-		}
-		$this->ceil = $new_version;
-
-		//Next version:
-		if ($ver == $new_version) {
+		if ($ver == $this->ver_next) {
 			$statement = $this->database->get_pdo()->query($query);
 			if ($statement === false) {
-				Error::quit("Database update #$ver failed!\n".$this->database->get_pdo()->errorInfo()[2], 1);
+				$errorInfo = $this->database->get_pdo()->errorInfo();
+				Error::quit("Database update #$ver failed!\n".$errorInfo[2], 1);
 			}
 			//Update:
-			Config::set_value("DB_VERSION", $ver, $this->module, $this->database);
+			Config::set_value("DB_VERSION", $ver, $this->module, null, $this->database);
+			$this->ver_next++;
 		}
 
 	}
@@ -59,10 +51,10 @@ abstract class Update_database {
 	 * @return string|false
 	 */
 	public function update() {
-		$this->ver = Config::get_value("DB_VERSION", $this->module, 0, 0, false, $this->database);
-		$db_version1 = $this->ver;
+		$db_version1 = Config::get_value("DB_VERSION", $this->module, 0, 0, false, $this->database);
+		$this->ver_next = $db_version1+1;
 		$this->do_update();
-		$db_version2 = Config::get_value("DB_VERSION", $this->module, 0, 0, false, $this->database);
+		$db_version2 = Config::get_value("DB_VERSION", $this->module, 0, -1, false, $this->database);
 		if ($db_version1 == $db_version2) {
 			return false;
 		}

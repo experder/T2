@@ -54,6 +54,18 @@ class Config {
 		return $value;
 	}
 
+	public static function set_value($id, $value, $module = "core", $user = null, $database=null) {
+		if($database===null){
+			$database=Database::get_singleton();
+		}
+		$where = array(
+			"idstring" => $id,
+			"module" => $module,
+			"userid" => $user
+		);
+		$database->update_or_insert("core_config", $where, array("content" => $value));
+	}
+
 	/**
 	 * @param string[] $ids
 	 * @param string $module

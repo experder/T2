@@ -4,6 +4,7 @@ namespace core;
 
 use installer\Core_database;
 use service\Install_wizard;
+use service\Strings;
 
 class Database {
 
@@ -102,11 +103,19 @@ class Database {
 		return self::iquery($query, $substitutions, self::RETURN_ASSOC, true, $backtrace_depth+1);
 	}
 
-	public static function select_single_($query, $substitutions=array(), $backtrace_depth=0){
+	/**
+	 * @param string $query
+	 * @return int|false
+	 */
+	public function insert($query){
+		return self::iquery($query, null, self::RETURN_LASTINSERTID);
+	}
+
+	public static function select_single_($query, $substitutions=null, $backtrace_depth=0){
 		return self::get_singleton()->select_single($query, $substitutions, $backtrace_depth+1);
 	}
 
-	public function select_single($query, $substitutions=array(), $backtrace_depth=0){
+	public function select_single($query, $substitutions=null, $backtrace_depth=0){
 		$result = self::iquery($query, $substitutions, self::RETURN_ASSOC, true, $backtrace_depth+1);
 		if(!$result){
 			return false;
@@ -134,21 +143,21 @@ class Database {
 		/** @var \PDOStatement $statement */
 		$statement = $this->pdo->prepare($query);
 		$ok = @$statement->execute($substitutions);
-		if(!$ok){
-			$compiled_query="";
+		if (!$ok) {
+			$compiled_query = "";
 			$errorInfo = $statement->errorInfo();
 			$errorInfo = $errorInfo[2];
-			if(!$errorInfo && $statement->errorCode()==='HY093'){
-				$errorInfo="Invalid parameter number: parameter was not defined";
-			}else{
+			if (!$errorInfo && $statement->errorCode() === 'HY093') {
+				$errorInfo = "Invalid parameter number: parameter was not defined";
+			} else {
 				ob_flush();
 				ob_start();
 				$statement->debugDumpParams();
-				$compiled_query=ob_get_clean();
-				$compiled_query.=Error::HR;
+				$compiled_query = ob_get_clean();
+				$compiled_query .= Error::HR;
 			}
 
-			$this->error = new Error($compiled_query.$errorInfo, Error::TYPE_SQL, $report_error, $backtrace_depth+1);
+			$this->error = new Error($compiled_query . $errorInfo, Error::TYPE_SQL, $report_error, $backtrace_depth + 1);
 			return false;
 		}
 		switch ($return_type) {
@@ -164,6 +173,76 @@ class Database {
 			default:
 				return null;/*No return type specified*/
 				break;
+		}
+	}
+
+	public static function insert_assoc_($tabelle, $data_set) {
+		return self::get_singleton()->insert_assoc($tabelle, $data_set);
+	}
+
+	public function insert_assoc($tabelle, $data_set) {
+		$keys_sql = array();
+		$values_sql = array();
+		foreach ($data_set as $key => $value) {
+			$keys_sql[] = "`$key`";
+			$values_sql[] = ($value === null ? "NULL" : ("'" . Strings::escape_sql($value) . "'"));
+		}
+		$keys = implode(", ", $keys_sql);
+		$values = implode(", ", $values_sql);
+		$query2 = "INSERT INTO $tabelle ($keys) VALUES ($values);";
+		return self::insert($query2);
+	}
+
+	/**
+	 * @param string $query
+	 * @return int|false
+	 */
+	public function update($query) {
+		return $this->iquery($query, null, self::RETURN_ROWCOUNT);
+	}
+
+	public function update_assoc($tabelle, $where, $data_set) {
+		$set_sql = array();
+		foreach ($data_set as $key => $value) {
+			$val_sql = $value === null ? "NULL" : ("'" . Strings::escape_sql($value) . "'");
+			$set_sql[] = "`$key` = $val_sql";
+		}
+		$set = implode(", ", $set_sql);
+		$query2 = "UPDATE $tabelle SET $set WHERE $where;";
+		return $this->update($query2);
+	}
+
+	/**
+	 * Adds data ($data_set and $data_where) to table $tabelle if it doesn't yet exist ($data_where).
+	 * If $data_where exists the data from $data_set in $tabelle will be updated.
+	 * @param string $tabelle
+	 * @param array  $data_where
+	 * @param array  $data_set
+	 * @return int|false Number of modified rows or ID of the inserted data or false in case of any failure
+	 */
+	public function update_or_insert($tabelle, $data_where, $data_set, $backtrace_depth=0) {
+		if (empty($data_where) && empty($data_set)) return false;
+
+		//Build the WHERE statement:
+		$where_sql = array();
+		foreach ($data_where as $key => $value) {
+			$val_sql = $value === null ? "IS NULL" : ("= '" . Strings::escape_sql($value) . "'");
+			$where_sql[] = "`$key` $val_sql";
+		}
+		$where = implode(" AND ", $where_sql);
+
+		//Check, if data already exists:
+		$query1 = "SELECT count(*) as c FROM `$tabelle` WHERE $where;";
+		$data = $this->select_single($query1, null, $backtrace_depth+1);
+		$anzahl_treffer = $data["c"];
+
+		if ($anzahl_treffer) {
+			//Data already exists: UPDATE
+			return $this->update_assoc($tabelle, $where, $data_set);
+		} else {
+			//Data didn't exist: INSERT
+			$data_alltogehter = array_merge($data_where, $data_set);
+			return $this->insert_assoc($tabelle, $data_alltogehter);
 		}
 	}
 

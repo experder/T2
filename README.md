@@ -37,4 +37,6 @@ Clone existing project:
 
 ## More
 
-[[Useful links](https://github.com/experder/T2/blob/master/ref.md)]
+[[Useful links](https://github.com/experder/T2/blob/master/help/links.md)]
+[[Developers](https://github.com/experder/T2/blob/master/help/dev.md)]
+[[Release notes](https://github.com/experder/T2/blob/master/release_notes.md)]

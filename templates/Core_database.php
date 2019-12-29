@@ -1,7 +1,7 @@
 <?php
 
 /*
-require_once ROOT_DIR."/templates/Core_database.php";
+require_once ROOT_DIR . "/templates/Core_database.php";
  */
 
 namespace installer;
@@ -13,6 +13,7 @@ use core\Update_database;
 class Core_database extends Update_database {
 
 	protected $module = "core";
+	protected $start_ver = 1;
 
 	/**
 	 * @inheritdoc
@@ -24,7 +25,7 @@ class Core_database extends Update_database {
 		 * @see Install_wizard::init2_db()
 		 */
 
-		$this->q(1,"INSERT INTO `core_config` (`id`, `idstring`, `module`, `userid`, `content`) VALUES (NULL, 'EXTENSION', 'core', NULL, 't2');");
+		#$this->q(1,"INSERT INTO `core_config` (`id`, `idstring`, `module`, `userid`, `content`) VALUES (NULL, 'EXTENSION', 'core', NULL, 't2');");
 
 	}
 
