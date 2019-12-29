@@ -52,6 +52,7 @@ class Install_wizard {
 	}
 
 	/**
+	 * @param string $title
 	 * @return Page
 	 */
 	public static function get_pre_page($title) {

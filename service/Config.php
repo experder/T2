@@ -22,11 +22,12 @@ class Config {
 	/**
 	 * The default value is NOT cached (self::$core_config),
 	 * so the next call of this function can return a different value.
-	 * @param string      $id
+	 * @param string $id
 	 * @param string $module
-	 * @param int|0    $user
-	 * @param mixed       $default_value
-	 * @param bool        $use_cache
+	 * @param int    $user
+	 * @param mixed  $default_value
+	 * @param bool   $use_cache
+	 * @param Database|null   $database
 	 * @return string|mixed string|$default_value
 	 */
 	public static function get_value($id, $module = "core", $user = 0, $default_value = null, $use_cache = true, $database=null) {

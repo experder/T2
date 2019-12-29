@@ -1,16 +1,22 @@
 <?php
+/*GPL
+ * This file is part of the T2 toolbox;
+ * Copyright (C) 2014-2020 Fabian Perder (t2@qnote.de) and contributors
+ * T2 comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
+ * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
+ GPL*/
 
 /*
-require_once ROOT_DIR.'/core/form/Form.php';
+require_once ROOT_DIR . '/core/form/Form.php';
  */
 
 namespace core;
 
-require_once ROOT_DIR.'/core/Html.php';
-require_once ROOT_DIR.'/core/form/Formfield.php';
-require_once ROOT_DIR.'/core/form/Formfield_hidden.php';
-require_once ROOT_DIR.'/core/form/Formfield_text.php';
-require_once ROOT_DIR.'/core/form/Formfield_password.php';
+require_once ROOT_DIR . '/core/Html.php';
+require_once ROOT_DIR . '/core/form/Formfield.php';
+require_once ROOT_DIR . '/core/form/Formfield_hidden.php';
+require_once ROOT_DIR . '/core/form/Formfield_text.php';
+require_once ROOT_DIR . '/core/form/Formfield_password.php';
 
 
 class Form {
@@ -45,7 +51,7 @@ class Form {
 			$this->fields[] = new Formfield_hidden("cmd", $cmd);
 		}
 
-		if ($submit_text!==false) {
+		if ($submit_text !== false) {
 			$this->buttons[] = "<input type='submit' value='$submit_text'>";
 		}
 
@@ -60,8 +66,8 @@ class Form {
 	}
 
 	public function toHtml() {
-		$buttons = new Html("div",implode("\n", $this->buttons),array(
-			"class"=>"buttons"
+		$buttons = new Html("div", implode("\n", $this->buttons), array(
+			"class" => "buttons"
 		));
 		$fields_html = implode("\n", $this->fields);
 		return "<form action=\"$this->action\" method='$this->method'>\n$fields_html\n$buttons\n</form>";

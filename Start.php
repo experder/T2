@@ -13,8 +13,6 @@ namespace tethys_root;
 
 use core\Database;
 use core\Error;
-use core\Message;
-use core\Page;
 use service\Config;
 use service\Install_wizard;
 

@@ -7,6 +7,8 @@ namespace service;
 
 
 
+use core\Error;
+
 class Files {
 
 	/**
@@ -24,7 +26,7 @@ class Files {
 			fclose($file);
 		}
 		if ($success === false) {
-			\core\Error::quit("Failure on storing file \"$file\"!");
+			Error::quit("Failure on storing file \"$file\"!");
 		}
 	}
 

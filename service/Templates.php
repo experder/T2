@@ -7,6 +7,8 @@ namespace service;
 require_once ROOT_DIR.'/service/Strings.php';
 require_once ROOT_DIR.'/service/Files.php';
 
+use core\Error;
+
 
 class Templates {
 
@@ -20,14 +22,14 @@ class Templates {
 	 */
 	public static function load($file, $replacements) {
 		if (!file_exists($file)) {
-			\core\Error::quit("Template file \"$file\" not found!");
+			Error::quit("Template file \"$file\" not found!");
 		}
 
 		//Read template file:
 		$content = file_get_contents($file);
 
 		if ($content === false) {
-			\core\Error::quit("Template file \"$file\" could not be loaded.");
+			Error::quit("Template file \"$file\" could not be loaded.");
 		}
 
 		//Replacements:

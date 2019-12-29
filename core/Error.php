@@ -6,8 +6,6 @@ require_once ROOT_DIR.'/core/Error.php';
 
 namespace core;
 
-use service\Install_wizard;
-
 class Error {
 
 	const TYPE_UNKNOWN = 0;
@@ -34,9 +32,9 @@ class Error {
 		$message_plus_plus = self::HR  .self::meta_info_block()  .self::HR  .self::backtrace($backtrace_depth+1) .self::HR .$message.self::HR;
 		if($report){
 			Page::$compiler_messages[]=new Message(Message::TYPE_ERROR, "An Error occured. Please report/see log: #".$this->timestamp."."
-				.(DEVMODE?"<pre class='dev_error_info'"
+				.(DEVMODE?"<pre class='dev_error_info' "
 					.(POST_CSS?"":" style='color:gray;white-space:pre-wrap;'")
-					.">".htmlentities(
+					." >".htmlentities(
 						($this->type===self::TYPE_UNKNOWN?"":($this->type.self::HR)) .$message .self::HR .self::backtrace($backtrace_depth+1)
 						#$message_plus_plus
 					)."</pre>":"")

@@ -2,7 +2,6 @@
 
 namespace core;
 
-use installer\Core_database;
 use service\Install_wizard;
 use service\Strings;
 
@@ -97,6 +96,7 @@ class Database {
 	/**
 	 * @param string $query
 	 * @param array  $substitutions
+	 * @param int    $backtrace_depth
 	 * @return array|false
 	 */
 	public function select($query, $substitutions=array(), $backtrace_depth=0){
@@ -134,7 +134,10 @@ class Database {
 	/**
 	 * Handles different types of queries, specified by $return
 	 * @param string $query
+	 * @param array       $substitutions
 	 * @param int    $return_type Database::RETURN_...
+	 * @param bool   $report_error
+	 * @param int    $backtrace_depth
 	 * @return array|false|null|string|int
 	 */
 	private function iquery($query, $substitutions, $return_type, $report_error=true, $backtrace_depth=0) {
@@ -218,6 +221,7 @@ class Database {
 	 * @param string $tabelle
 	 * @param array  $data_where
 	 * @param array  $data_set
+	 * @param int    $backtrace_depth
 	 * @return int|false Number of modified rows or ID of the inserted data or false in case of any failure
 	 */
 	public function update_or_insert($tabelle, $data_where, $data_set, $backtrace_depth=0) {
@@ -232,7 +236,7 @@ class Database {
 		$where = implode(" AND ", $where_sql);
 
 		//Check, if data already exists:
-		$query1 = "SELECT count(*) as c FROM `$tabelle` WHERE $where;";
+		$query1 = "SELECT count(*) as c FROM $tabelle WHERE $where;";
 		$data = $this->select_single($query1, null, $backtrace_depth+1);
 		$anzahl_treffer = $data["c"];
 

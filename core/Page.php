@@ -147,9 +147,9 @@ class Page {
 		$all_messages = array_merge(self::$compiler_messages, $this->messages);
 		foreach ($all_messages as $message){
 			$css_class = $message->get_type_cssClass();
-			$html.="<div class='message $css_class'"
+			$html.="<div class='message $css_class' "
 				.(POST_CSS?"":" style='border:1px solid black;border-radius:5px;'")
-				.">".$message->get_message()."</div>";
+				." >".$message->get_message()."</div>";
 		}
 		$html = "<div class='messages'>$html</div>";
 		return $html;
