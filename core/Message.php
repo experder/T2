@@ -14,20 +14,20 @@ class Message {
 	private $message;
 
 	/**
-	 * @param int $type [Message::TYPE_ERROR|Message::TYPE_INFO|Message::TYPE_INFO]
+	 * @param int    $type [Message::TYPE_ERROR|Message::TYPE_INFO|Message::TYPE_INFO]
 	 * @param string $message
 	 */
 	public function __construct($type, $message) {
-		$this->type=$type;
-		$this->message=$message;
+		$this->type = $type;
+		$this->message = $message;
 	}
 
-	public function get_message(){
+	public function get_message() {
 		return $this->message;
 	}
 
-	public function get_type_cssClass(){
-		switch ($this->type){
+	public function get_type_cssClass() {
+		switch ($this->type) {
 			case self::TYPE_ERROR:
 				return "msg_type_error";
 				break;

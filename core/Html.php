@@ -1,12 +1,12 @@
 <?php
 
 /*
-require_once ROOT_DIR.'/core/Html.php';
+require_once ROOT_DIR . '/core/Html.php';
  */
 
 namespace core;
 
-require_once ROOT_DIR.'/service/Html.php';
+require_once ROOT_DIR . '/service/Html.php';
 
 
 class Html {
@@ -34,53 +34,53 @@ class Html {
 	/**
 	 * @param Html|string $child
 	 */
-	public function addChild($child){
+	public function addChild($child) {
 		$this->children[] = $child;
 	}
 
 	/**
 	 * @param array $childs
 	 */
-	public function addChildren($childs){
+	public function addChildren($childs) {
 		foreach ($childs as $child) {
 			$this->addChild($child);
 		}
 	}
 
-	public function addClass($class){
-		if($class===null){
+	public function addClass($class) {
+		if ($class === null) {
 			return;
 		}
-		if(isset($this->params["class"])) {
+		if (isset($this->params["class"])) {
 			$this->params["class"] .= $class;
 		} else {
 			$this->params["class"] = $class;
 		}
 	}
 
-	public function setParam($key, $value){
-		if($value===null){
+	public function setParam($key, $value) {
+		if ($value === null) {
 			unset($this->params[strtolower($key)]);
 		}
 		$this->params[strtolower($key)] = $value;
 	}
 
-	public function setId($value){
+	public function setId($value) {
 		$this->setParam("id", $value);
 	}
 
-	public function setParams($array){
-		if(!is_array($array)){
+	public function setParams($array) {
+		if (!is_array($array)) {
 			return;
 		}
-		foreach ($array as $key=>$value){
+		foreach ($array as $key => $value) {
 			$this->setParam($key, $value);
 		}
 	}
 
 	public function __toString() {
 		$params = \service\Html::tag_keyValues($this->params);
-		return "<$this->tag$params>$this->content".implode("",$this->children)."</$this->tag>";
+		return "<$this->tag$params>$this->content" . implode("", $this->children) . "</$this->tag>";
 	}
 
 }

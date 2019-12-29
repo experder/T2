@@ -2,7 +2,7 @@
 
 namespace core;
 
-require_once ROOT_DIR.'/core/form/Formfield.php';
+require_once ROOT_DIR . '/core/form/Formfield.php';
 
 
 class Formfield_hidden extends Formfield {

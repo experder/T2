@@ -1,7 +1,8 @@
 <?php
 /*
-require_once ROOT_DIR.'/service/Request.php';
+require_once ROOT_DIR . '/service/Request.php';
  */
+
 namespace service;
 
 
@@ -14,7 +15,7 @@ class Request {
 	 * @return string|null
 	 */
 	public static function value($key, $default = null) {
-		if (isset($_REQUEST[$key])){
+		if (isset($_REQUEST[$key])) {
 			return $_REQUEST[$key];
 		}
 		return $default;

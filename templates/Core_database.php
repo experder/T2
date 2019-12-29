@@ -6,7 +6,7 @@ require_once ROOT_DIR . "/templates/Core_database.php";
 
 namespace installer;
 
-require_once ROOT_DIR."/core/Update_database.php";
+require_once ROOT_DIR . "/core/Update_database.php";
 
 use core\Update_database;
 

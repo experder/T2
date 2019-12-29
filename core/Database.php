@@ -31,24 +31,24 @@ class Database {
 
 	private $pdo;
 
-	private $error=false;
+	private $error = false;
 
-	private static $dev_global_count=0;
+	private static $dev_global_count = 0;
 
-	public function __construct($host, $dbname, $user, $password, $stacktrace_depth=0, $quit_on_error=true) {
+	public function __construct($host, $dbname, $user, $password, $stacktrace_depth = 0, $quit_on_error = true) {
 		try {
 			$this->pdo = new \PDO("mysql:host=" . $host . ";dbname=" . $dbname, $user, $password);
 			$this->pdo->query('SET NAMES utf8');
 		} catch (\Exception $e) {
-			if($quit_on_error){
-				Error::quit("Fatal error on database initialization (#1). ".$e->getMessage(), $stacktrace_depth+1);
-			}else{
-				$this->error= Error::from_exception($e, false);
+			if ($quit_on_error) {
+				Error::quit("Fatal error on database initialization (#1). " . $e->getMessage(), $stacktrace_depth + 1);
+			} else {
+				$this->error = Error::from_exception($e, false);
 			}
 		}
 	}
 
-	public function getError(){
+	public function getError() {
 		return $this->error;
 	}
 
@@ -56,9 +56,9 @@ class Database {
 	 * @param bool $quit_on_error
 	 * @return Database|false
 	 */
-	public static function get_singleton($quit_on_error=true) {
+	public static function get_singleton($quit_on_error = true) {
 		if (self::$singleton === null) {
-			if($quit_on_error){
+			if ($quit_on_error) {
 				Error::quit("Please initialize Database singelton first: <code>\\core\\Database::init();</code>", 1);
 			}
 			return false;
@@ -66,30 +66,30 @@ class Database {
 		return self::$singleton;
 	}
 
-	public static function init($host, $dbname, $user, $password, $backtrace_depth=0) {
+	public static function init($host, $dbname, $user, $password, $backtrace_depth = 0) {
 
-		if(self::$singleton!==null){
+		if (self::$singleton !== null) {
 			Error::quit("Database is already initialized!", 1);
 		}
 
 		self::$singleton = new Database($host, $dbname, $user, $password, 1, false);
 
-		if(($error=self::$singleton->getError()) && $error instanceof Error){
-			if($error->get_type()== Error::TYPE_DB_NOT_FOUND){
+		if (($error = self::$singleton->getError()) && $error instanceof Error) {
+			if ($error->get_type() == Error::TYPE_DB_NOT_FOUND) {
 				//Database doesn't exist -> Call Installer to initialize Database:
-				require_once ROOT_DIR.'/service/Install_wizard.php';
-				self::$singleton = Install_wizard::init2_db($host, $dbname, $user, $password, $backtrace_depth+1);
+				require_once ROOT_DIR . '/service/Install_wizard.php';
+				self::$singleton = Install_wizard::init2_db($host, $dbname, $user, $password, $backtrace_depth + 1);
 			}
 		}
 
-		if(self::$singleton->getError()){
-			Error::quit("Fatal error on database initialization (#2). ".self::$singleton->getError()->get_message(), 1);
+		if (self::$singleton->getError()) {
+			Error::quit("Fatal error on database initialization (#2). " . self::$singleton->getError()->get_message(), 1);
 		}
 
 		return self::$singleton;
 	}
 
-	public static function select_($query, $substitutions=array()){
+	public static function select_($query, $substitutions = array()) {
 		return self::get_singleton()->select($query, $substitutions, 1);
 	}
 
@@ -99,48 +99,48 @@ class Database {
 	 * @param int    $backtrace_depth
 	 * @return array|false
 	 */
-	public function select($query, $substitutions=array(), $backtrace_depth=0){
-		return self::iquery($query, $substitutions, self::RETURN_ASSOC, true, $backtrace_depth+1);
+	public function select($query, $substitutions = array(), $backtrace_depth = 0) {
+		return self::iquery($query, $substitutions, self::RETURN_ASSOC, true, $backtrace_depth + 1);
 	}
 
 	/**
 	 * @param string $query
 	 * @return int|false
 	 */
-	public function insert($query){
+	public function insert($query) {
 		return self::iquery($query, null, self::RETURN_LASTINSERTID);
 	}
 
-	public static function select_single_($query, $substitutions=null, $backtrace_depth=0){
-		return self::get_singleton()->select_single($query, $substitutions, $backtrace_depth+1);
+	public static function select_single_($query, $substitutions = null, $backtrace_depth = 0) {
+		return self::get_singleton()->select_single($query, $substitutions, $backtrace_depth + 1);
 	}
 
-	public function select_single($query, $substitutions=null, $backtrace_depth=0){
-		$result = self::iquery($query, $substitutions, self::RETURN_ASSOC, true, $backtrace_depth+1);
-		if(!$result){
+	public function select_single($query, $substitutions = null, $backtrace_depth = 0) {
+		$result = self::iquery($query, $substitutions, self::RETURN_ASSOC, true, $backtrace_depth + 1);
+		if (!$result) {
 			return false;
 		}
 		return $result[0];
 	}
 
-	public function get_pdo(){
+	public function get_pdo() {
 		return $this->pdo;
 	}
 
-	public static function get_dev_stats(){
-		return self::$dev_global_count." Queries";
+	public static function get_dev_stats() {
+		return self::$dev_global_count . " Queries";
 	}
 
 	/**
 	 * Handles different types of queries, specified by $return
 	 * @param string $query
-	 * @param array       $substitutions
+	 * @param array  $substitutions
 	 * @param int    $return_type Database::RETURN_...
 	 * @param bool   $report_error
 	 * @param int    $backtrace_depth
 	 * @return array|false|null|string|int
 	 */
-	private function iquery($query, $substitutions, $return_type, $report_error=true, $backtrace_depth=0) {
+	private function iquery($query, $substitutions, $return_type, $report_error = true, $backtrace_depth = 0) {
 		self::$dev_global_count++;
 		$this->error = false;
 		/** @var \PDOStatement $statement */
@@ -224,7 +224,7 @@ class Database {
 	 * @param int    $backtrace_depth
 	 * @return int|false Number of modified rows or ID of the inserted data or false in case of any failure
 	 */
-	public function update_or_insert($tabelle, $data_where, $data_set, $backtrace_depth=0) {
+	public function update_or_insert($tabelle, $data_where, $data_set, $backtrace_depth = 0) {
 		if (empty($data_where) && empty($data_set)) return false;
 
 		//Build the WHERE statement:
@@ -237,7 +237,7 @@ class Database {
 
 		//Check, if data already exists:
 		$query1 = "SELECT count(*) as c FROM $tabelle WHERE $where;";
-		$data = $this->select_single($query1, null, $backtrace_depth+1);
+		$data = $this->select_single($query1, null, $backtrace_depth + 1);
 		$anzahl_treffer = $data["c"];
 
 		if ($anzahl_treffer) {

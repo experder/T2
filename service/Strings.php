@@ -1,7 +1,7 @@
 <?php
 
 /*
-require_once ROOT_DIR.'/service/Strings.php';
+require_once ROOT_DIR . '/service/Strings.php';
  */
 
 namespace service;
@@ -38,19 +38,19 @@ class Strings {
 	}
 
 	public static function escape_sql($string) {
-		$string=str_replace("\\","\\\\", $string);
-		$string=str_replace("'","\\'", $string);
-		$string=str_replace("`","\\`", $string);
-		$string=str_replace("\"","\\\"", $string);
+		$string = str_replace("\\", "\\\\", $string);
+		$string = str_replace("'", "\\'", $string);
+		$string = str_replace("`", "\\`", $string);
+		$string = str_replace("\"", "\\\"", $string);
 		return $string;
 	}
 
-	public static function build_sql_collection($values){
+	public static function build_sql_collection($values) {
 		$sql_prepare = array();
-		foreach ($values as $val){
-			$sql_prepare[]="'".Strings::escape_sql($val)."'";
+		foreach ($values as $val) {
+			$sql_prepare[] = "'" . Strings::escape_sql($val) . "'";
 		}
-		$sql = implode(",",$sql_prepare);
+		$sql = implode(",", $sql_prepare);
 		return $sql;
 	}
 

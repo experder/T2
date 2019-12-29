@@ -1,12 +1,12 @@
 <?php
 
 /*
-require_once ROOT_DIR.'/service/Config.php';
+require_once ROOT_DIR . '/service/Config.php';
  */
 
 namespace service;
 
-require_once ROOT_DIR.'/service/Strings.php';
+require_once ROOT_DIR . '/service/Strings.php';
 
 use core\Database;
 
@@ -22,17 +22,17 @@ class Config {
 	/**
 	 * The default value is NOT cached (self::$core_config),
 	 * so the next call of this function can return a different value.
-	 * @param string $id
-	 * @param string $module
-	 * @param int    $user
-	 * @param mixed  $default_value
-	 * @param bool   $use_cache
-	 * @param Database|null   $database
+	 * @param string        $id
+	 * @param string        $module
+	 * @param int           $user
+	 * @param mixed         $default_value
+	 * @param bool          $use_cache
+	 * @param Database|null $database
 	 * @return string|mixed string|$default_value
 	 */
-	public static function get_value($id, $module = "core", $user = 0, $default_value = null, $use_cache = true, $database=null) {
-		if($database===null){
-			$database=Database::get_singleton();
+	public static function get_value($id, $module = "core", $user = 0, $default_value = null, $use_cache = true, $database = null) {
+		if ($database === null) {
+			$database = Database::get_singleton();
 		}
 		if ($use_cache && isset(self::$config[$module][$user][$id])) {
 			return self::$config[$module][$user][$id];
@@ -42,22 +42,22 @@ class Config {
 			array(
 				"id" => $id,
 				"module" => $module,
-				"userid" => $user?:null,
+				"userid" => $user ?: null,
 			)
 		);
 		if (!$data) {
 			return $default_value;
 		}
 		$value = $data["content"];
-		if ($use_cache){
+		if ($use_cache) {
 			self::$config[$module][$user][$id] = $value;
 		}
 		return $value;
 	}
 
-	public static function set_value($id, $value, $module = "core", $user = null, $database=null) {
-		if($database===null){
-			$database=Database::get_singleton();
+	public static function set_value($id, $value, $module = "core", $user = null, $database = null) {
+		if ($database === null) {
+			$database = Database::get_singleton();
 		}
 		$where = array(
 			"idstring" => $id,
@@ -69,8 +69,8 @@ class Config {
 
 	/**
 	 * @param string[] $ids
-	 * @param string $module
-	 * @param int    $user
+	 * @param string   $module
+	 * @param int      $user
 	 */
 	public static function load_values($ids, $module = "core", $user = 0) {
 		$ids_sql = Strings::build_sql_collection($ids);
@@ -78,12 +78,12 @@ class Config {
 			"SELECT idstring,`content` FROM core_config WHERE `idstring` in ($ids_sql) AND module=:module AND userid <=> :userid;",
 			array(
 				"module" => $module,
-				"userid" => $user?:null,
+				"userid" => $user ?: null,
 			)
 		);
 		if ($data) {
-			foreach ($data as $val){
-				self::$config[$module][$user][$val['idstring']]=$val['content'];
+			foreach ($data as $val) {
+				self::$config[$module][$user][$val['idstring']] = $val['content'];
 			}
 		}
 	}

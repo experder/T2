@@ -1,16 +1,17 @@
 <?php
 /*
-require_once ROOT_DIR.'/core/form/Formfield.php';
+require_once ROOT_DIR . '/core/form/Formfield.php';
  */
+
 namespace core;
 
 use service\Request;
 use service\Strings;
 
-require_once ROOT_DIR.'/core/Html.php';
-require_once ROOT_DIR.'/service/Html.php';
-require_once ROOT_DIR.'/service/Strings.php';
-require_once ROOT_DIR.'/service/Request.php';
+require_once ROOT_DIR . '/core/Html.php';
+require_once ROOT_DIR . '/service/Html.php';
+require_once ROOT_DIR . '/service/Strings.php';
+require_once ROOT_DIR . '/service/Request.php';
 
 
 /**
@@ -97,13 +98,13 @@ abstract class Formfield {
 	protected function getParams_inner($value = true) {
 		$params = $this->more_params;
 
-		if ($this->name){
+		if ($this->name) {
 			$params["name"] = $this->name;
 		}
-		if ($value){
+		if ($value) {
 			if ($this->value) $params["value"] = $this->value;
 		}
-		if ($this->id){
+		if ($this->id) {
 			$params["id"] = $this->id;
 		}
 

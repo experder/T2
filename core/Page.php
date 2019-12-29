@@ -2,7 +2,7 @@
 
 namespace core;
 
-require_once ROOT_DIR.'/core/Html.php';
+require_once ROOT_DIR . '/core/Html.php';
 
 use tethys_root\Start;
 
@@ -55,11 +55,11 @@ class Page {
 	/**
 	 * @return Page|false
 	 */
-	public static function get_singleton($halt_on_error=true) {
+	public static function get_singleton($halt_on_error = true) {
 		if (self::$singleton === null) {
-			if($halt_on_error){
+			if ($halt_on_error) {
 				Error::quit_bare("Please initialize Page singelton first: <code>\$page = \\core\\Page::init(\"PAGE_ID_MYPAGE\", \"My page\");</code>", 1);
-			}else{
+			} else {
 				return false;
 			}
 		}
@@ -73,7 +73,7 @@ class Page {
 	 */
 	public static function init($id, $title) {
 
-		if(self::$singleton!==null){
+		if (self::$singleton !== null) {
 			Error::quit("Page is already initialized!", 1);
 		}
 
@@ -81,20 +81,20 @@ class Page {
 		return self::$singleton;
 	}
 
-	public function get_id(){
+	public function get_id() {
 		return $this->id;
 	}
 
-	public function add($node){
-		$this->html_nodes[]=$node;
+	public function add($node) {
+		$this->html_nodes[] = $node;
 	}
 
 	/**
 	 * @see Message
-	 * @param int $type [Message::TYPE_ERROR|Message::TYPE_INFO|Message::TYPE_INFO]
+	 * @param int    $type [Message::TYPE_ERROR|Message::TYPE_INFO|Message::TYPE_INFO]
 	 * @param string $message
 	 */
-	public function add_message($type, $message){
+	public function add_message($type, $message) {
 		$msg = new Message($type, $message);
 		$this->messages[] = $msg;
 	}
@@ -109,10 +109,10 @@ class Page {
 		$css_html = "";
 		$js_html = "";
 
-		$dev_stats="";
-		if(DEVMODE){
-			$dev_stats=new Html("div",Database::get_dev_stats()." / ".Start::get_dev_stats(),array("class"=>"dev_stats"
-				,"style"=>(POST_CSS?"":"color:blue;")
+		$dev_stats = "";
+		if (DEVMODE) {
+			$dev_stats = new Html("div", Database::get_dev_stats() . " / " . Start::get_dev_stats(), array("class" => "dev_stats"
+			, "style" => (POST_CSS ? "" : "color:blue;")
 			));
 		}
 
@@ -139,23 +139,23 @@ class Page {
 
 	}
 
-	private function get_message_html(){
+	private function get_message_html() {
 		$html = "";
 		/**
 		 * @var Message[] $all_messages
 		 */
 		$all_messages = array_merge(self::$compiler_messages, $this->messages);
-		foreach ($all_messages as $message){
+		foreach ($all_messages as $message) {
 			$css_class = $message->get_type_cssClass();
-			$html.="<div class='message $css_class' "
-				.(POST_CSS?"":" style='border:1px solid black;border-radius:5px;'")
-				." >".$message->get_message()."</div>";
+			$html .= "<div class='message $css_class' "
+				. (POST_CSS ? "" : " style='border:1px solid black;border-radius:5px;'")
+				. " >" . $message->get_message() . "</div>";
 		}
 		$html = "<div class='messages'>$html</div>";
 		return $html;
 	}
 
-	private function get_title(){
+	private function get_title() {
 		$title = $this->title;
 		return $title;
 	}
@@ -164,20 +164,20 @@ class Page {
 	 * @param bool $echo
 	 * @return true|string
 	 */
-	private function get_body($echo=false){
+	private function get_body($echo = false) {
 		$body = "";
-		foreach ($this->html_nodes as $node){
-			if(is_string($node)){
-				if($echo){
+		foreach ($this->html_nodes as $node) {
+			if (is_string($node)) {
+				if ($echo) {
 					echo $node;
-				}else{
-					$body.=$node;
+				} else {
+					$body .= $node;
 				}
 			}
 		}
-		if ($echo){
+		if ($echo) {
 			return true;
-		}else{
+		} else {
 			return $body;
 		}
 

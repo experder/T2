@@ -1,11 +1,12 @@
 <?php
 /*
-require_once ROOT_DIR.'/service/Templates.php';
+require_once ROOT_DIR . '/service/Templates.php';
  */
+
 namespace service;
 
-require_once ROOT_DIR.'/service/Strings.php';
-require_once ROOT_DIR.'/service/Files.php';
+require_once ROOT_DIR . '/service/Strings.php';
+require_once ROOT_DIR . '/service/Files.php';
 
 use core\Error;
 
@@ -42,7 +43,7 @@ class Templates {
 		return $content;
 	}
 
-	public static function create_file($target_file, $template_file, $keyVals){
+	public static function create_file($target_file, $template_file, $keyVals) {
 		$content = self::load($template_file, $keyVals);
 		Files::save($target_file, $content);
 	}

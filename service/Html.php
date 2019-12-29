@@ -1,12 +1,12 @@
 <?php
 
 /*
-require_once ROOT_DIR.'/service/Html.php';
+require_once ROOT_DIR . '/service/Html.php';
  */
 
 namespace service;
 
-require_once ROOT_DIR.'/service/Strings.php';
+require_once ROOT_DIR . '/service/Strings.php';
 
 
 class Html {
@@ -17,7 +17,7 @@ class Html {
 	 * @return string
 	 */
 	public static function tag_keyValues($params) {
-		if(!is_array($params)){
+		if (!is_array($params)) {
 			return "";
 		}
 		$html = "";
