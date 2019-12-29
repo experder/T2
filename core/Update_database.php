@@ -61,7 +61,7 @@ abstract class Update_database {
 		$db_version1 = Config::get_value("DB_VERSION", $this->module, 0, 0, false, $this->database);
 		$this->ver_next = $db_version1 + 1;
 		$this->do_update();
-		$db_version2 = Config::get_value("DB_VERSION", $this->module, 0, -1, false, $this->database);
+		$db_version2 = Config::get_value("DB_VERSION", $this->module, 0, 0, false, $this->database);
 		if ($db_version1 == $db_version2) {
 			return false;
 		}

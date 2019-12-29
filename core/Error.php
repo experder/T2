@@ -18,6 +18,7 @@ class Error {
 	const TYPE_UNKNOWN = 0;
 	const TYPE_DB_NOT_FOUND = "DB_NOT_FOUND";
 	#const TYPE_WRONG_CREDENTIALS = "WRONG_CREDENTIALS";
+	const TYPE_TABLE_NOT_FOUND = "SQL_TABLE_NOT_FOUND";
 	const TYPE_SQL = "SQL-Error";
 
 	const HR = "\n=========================\n";
@@ -38,14 +39,7 @@ class Error {
 		$this->timestamp = time();
 		$message_plus_plus = self::HR . self::meta_info_block() . self::HR . self::backtrace($backtrace_depth + 1) . self::HR . $message . self::HR;
 		if ($report) {
-			Page::$compiler_messages[] = new Message(Message::TYPE_ERROR, "An Error occured. Please report/see log: #" . $this->timestamp . "."
-				. (DEVMODE ? "<pre class='dev_error_info' "
-					. (POST_CSS ? "" : " style='color:gray;white-space:pre-wrap;'")
-					. " >" . htmlentities(
-						($this->type === self::TYPE_UNKNOWN ? "" : ($this->type . self::HR)) . $message . self::HR . self::backtrace($backtrace_depth + 1)
-						#$message_plus_plus
-					) . "</pre>" : "")
-			);
+			Page::$compiler_messages[] = $this->report($backtrace_depth+1);
 		}
 		if ($fatal) {
 			if ($page = Page::get_singleton(false)) {
@@ -57,6 +51,18 @@ class Error {
 			}
 		}
 		self::$recusion_protection = true;
+	}
+
+	public function report($backtrace_depth = 0){
+		$msg = new Message(Message::TYPE_ERROR, "An Error occured. Please report/see log: #" . $this->timestamp . "."
+			. (DEVMODE ? "<pre class='dev_error_info' "
+				. (POST_CSS ? "" : " style='color:gray;white-space:pre-wrap;'")
+				. " >" . htmlentities(
+					($this->type === self::TYPE_UNKNOWN ? "" : ($this->type . self::HR)) . $this->message . self::HR . self::backtrace($backtrace_depth + 1)
+				#$message_plus_plus
+				) . "</pre>" : "")
+		);
+		return $msg;
 	}
 
 	public function meta_info_block() {

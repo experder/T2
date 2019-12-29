@@ -16,6 +16,9 @@ namespace service;
 require_once ROOT_DIR . '/service/Strings.php';
 
 use core\Database;
+use core\Error;
+use core\Message;
+use core\Page;
 
 class Config {
 
@@ -87,7 +90,21 @@ class Config {
 				"module" => $module,
 				"userid" => $user ?: null,
 			)
+			,false
 		);
+		if($error=Database::get_singleton()->getError()){
+			if($error instanceof Error){
+				if($error->get_type()==Error::TYPE_TABLE_NOT_FOUND){
+					require_once ROOT_DIR . '/service/Install_wizard.php';
+					$msg = new Message(Message::TYPE_CONFIRM, "DB \"".Database::get_singleton()->get_dbname()."\" initialized. ".Install_wizard::init3_db_config());
+				}else{
+					$msg = $error->report();
+				}
+				Page::$compiler_messages[] = $msg;
+			}else{
+				new Error("Wrong Error Type");
+			}
+		}
 		if ($data) {
 			foreach ($data as $val) {
 				self::$config[$module][$user][$val['idstring']] = $val['content'];

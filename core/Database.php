@@ -42,7 +42,10 @@ class Database {
 
 	private static $dev_global_count = 0;
 
+	private $dbname;
+
 	public function __construct($host, $dbname, $user, $password, $stacktrace_depth = 0, $quit_on_error = true) {
+		$this->dbname=$dbname;
 		try {
 			$this->pdo = new \PDO("mysql:host=" . $host . ";dbname=" . $dbname, $user, $password);
 			$this->pdo->query('SET NAMES utf8');
@@ -57,6 +60,10 @@ class Database {
 
 	public function getError() {
 		return $this->error;
+	}
+
+	public function get_dbname() {
+		return $this->dbname;
 	}
 
 	/**
@@ -96,8 +103,8 @@ class Database {
 		return self::$singleton;
 	}
 
-	public static function select_($query, $substitutions = array()) {
-		return self::get_singleton()->select($query, $substitutions, 1);
+	public static function select_($query, $substitutions = array(), $report_error = true) {
+		return self::get_singleton()->select($query, $substitutions, 1, $report_error);
 	}
 
 	/**
@@ -106,8 +113,8 @@ class Database {
 	 * @param int    $backtrace_depth
 	 * @return array|false
 	 */
-	public function select($query, $substitutions = array(), $backtrace_depth = 0) {
-		return self::iquery($query, $substitutions, self::RETURN_ASSOC, true, $backtrace_depth + 1);
+	public function select($query, $substitutions = array(), $backtrace_depth = 0, $report_error = true) {
+		return self::iquery($query, $substitutions, self::RETURN_ASSOC, $report_error, $backtrace_depth + 1);
 	}
 
 	/**
@@ -166,8 +173,13 @@ class Database {
 				$compiled_query = ob_get_clean();
 				$compiled_query .= Error::HR;
 			}
+			$error_type = Error::TYPE_SQL;
+			if($statement->errorCode()=="42S02"/*Unknown table*/){
+				$error_type = Error::TYPE_TABLE_NOT_FOUND;
+				$errorInfo.=print_r($statement->errorInfo(),1);
+			}
 
-			$this->error = new Error($compiled_query . $errorInfo, Error::TYPE_SQL, $report_error, $backtrace_depth + 1);
+			$this->error = new Error($compiled_query . $errorInfo, $error_type, $report_error, $backtrace_depth + 1);
 			return false;
 		}
 		switch ($return_type) {

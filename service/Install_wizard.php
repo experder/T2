@@ -79,6 +79,14 @@ class Install_wizard {
 
 		$database = new Database($host, $dbname, $user, $password);
 
+		Page::$compiler_messages[] = new Message(Message::TYPE_CONFIRM, "Database \"$dbname\" created.");
+
+		return $database;
+	}
+
+	public static function init3_db_config() {
+		$database=Database::get_singleton();
+
 		$database->get_pdo()->exec("CREATE TABLE IF NOT EXISTS `core_config` (
 			  `id` INT(11) NOT NULL AUTO_INCREMENT,
 			  `idstring` VARCHAR(40) COLLATE utf8_bin NOT NULL,
@@ -91,10 +99,7 @@ class Install_wizard {
 		$updater = new Core_database($database);
 		$msg = $updater->update();
 
-		Page::$compiler_messages[] = new Message(Message::TYPE_CONFIRM, "Core databases \"$dbname\" created. $msg");
-
-		return $database;
-
+		return $msg;
 	}
 
 }

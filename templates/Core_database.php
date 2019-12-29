@@ -28,8 +28,8 @@ class Core_database extends Update_database {
 	protected function do_update() {
 
 		/**
-		 * The table "core_config" is initialized in Install_wizard::init2_db().
-		 * @see Install_wizard::init2_db()
+		 * The table "core_config" is initialized in Install_wizard::init3_db_config().
+		 * @see Install_wizard::init3_db_config()
 		 */
 
 		#$this->q(1,"INSERT INTO `core_config` (`id`, `idstring`, `module`, `userid`, `content`) VALUES (NULL, 'EXTENSION', 'core', NULL, 't2');");
