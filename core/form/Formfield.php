@@ -12,6 +12,7 @@ require_once ROOT_DIR . '/core/form/Formfield.php';
 
 namespace core;
 
+use service\Config;
 use service\Request;
 use service\Strings;
 
@@ -86,7 +87,7 @@ abstract class Formfield {
 		if ($tooltip) $label .= " (!)";
 
 		//Developers see the fieldname
-		if (DEVMODE) $tooltip .= " [" . $this->name . "]";
+		if (Config::$DEVMODE) $tooltip .= " [" . $this->name . "]";
 
 		$title = $tooltip ? "title='" . Strings::escape_value_html($tooltip) . "'" : "";
 

@@ -11,6 +11,7 @@ namespace core;
 
 require_once ROOT_DIR . '/core/Html.php';
 
+use service\Config;
 use tethys_root\Start;
 
 class Page {
@@ -117,9 +118,9 @@ class Page {
 		$js_html = "";
 
 		$dev_stats = "";
-		if (DEVMODE) {
+		if (Config::$DEVMODE) {
 			$dev_stats = new Html("div", Database::get_dev_stats() . " / " . Start::get_dev_stats(), array("class" => "dev_stats"
-			, "style" => (POST_CSS ? "" : "color:blue;")
+			, "style" => (Config::$PRE_CSS ? "color:blue;":"")
 			));
 		}
 
@@ -155,7 +156,7 @@ class Page {
 		foreach ($all_messages as $message) {
 			$css_class = $message->get_type_cssClass();
 			$html .= "<div class='message $css_class' "
-				. (POST_CSS ? "" : " style='border:1px solid black;border-radius:5px;'")
+				. (Config::$PRE_CSS ? " style='border:1px solid black;border-radius:5px;'":"")
 				. " >" . $message->get_message() . "</div>";
 		}
 		$html = "<div class='messages'>$html</div>";

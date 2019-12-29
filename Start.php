@@ -35,9 +35,6 @@ class Start {
 			$dir = str_replace("\\", "/", $dir);
 			define("ROOT_DIR", $dir);
 		}
-		if (!defined("DEVMODE")) {
-			define("DEVMODE", false);
-		}
 	}
 
 	public static function get_dev_stats() {

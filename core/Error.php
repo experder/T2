@@ -13,6 +13,8 @@ require_once ROOT_DIR . '/core/Error.php';
 
 namespace core;
 
+use service\Config;
+
 class Error {
 
 	const TYPE_UNKNOWN = 0;
@@ -55,8 +57,8 @@ class Error {
 
 	public function report($backtrace_depth = 0){
 		$msg = new Message(Message::TYPE_ERROR, "An Error occured. Please report/see log: #" . $this->timestamp . "."
-			. (DEVMODE ? "<pre class='dev_error_info' "
-				. (POST_CSS ? "" : " style='color:gray;white-space:pre-wrap;'")
+			. (Config::$DEVMODE ? "<pre class='dev_error_info' "
+				. (Config::$PRE_CSS ? " style='color:gray;white-space:pre-wrap;'":"")
 				. " >" . htmlentities(
 					($this->type === self::TYPE_UNKNOWN ? "" : ($this->type . self::HR)) . $this->message . self::HR . self::backtrace($backtrace_depth + 1)
 				#$message_plus_plus

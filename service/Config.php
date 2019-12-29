@@ -22,6 +22,12 @@ use core\Page;
 
 class Config {
 
+	// Set to false if in production environment:
+	public static $DEVMODE = true;
+
+	//As long as we don't have a first stylesheet:
+	public static $PRE_CSS = true;
+
 	/**
 	 * All config values that has been loaded from the database are stored here.
 	 * The structure of the 3-level associative array is: self::$config[module][user_id|0][key]
