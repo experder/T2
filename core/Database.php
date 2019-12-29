@@ -33,6 +33,8 @@ class Database {
 
 	private $error=false;
 
+	private static $dev_global_count=0;
+
 	public function __construct($host, $dbname, $user, $password, $stacktrace_depth=0, $quit_on_error=true) {
 		try {
 			$this->pdo = new \PDO("mysql:host=" . $host . ";dbname=" . $dbname, $user, $password);
@@ -64,7 +66,7 @@ class Database {
 		return self::$singleton;
 	}
 
-	public static function init($host, $dbname, $user, $password) {
+	public static function init($host, $dbname, $user, $password, $backtrace_depth=0) {
 
 		if(self::$singleton!==null){
 			Error::quit("Database is already initialized!", 1);
@@ -76,19 +78,9 @@ class Database {
 			if($error->get_type()== Error::TYPE_DB_NOT_FOUND){
 				//Database doesn't exist -> Call Installer to initialize Database:
 				require_once ROOT_DIR.'/service/Install_wizard.php';
-				self::$singleton = Install_wizard::initialize_database($host, $dbname, $user, $password);
-				$updater = new Core_database();
-				$msg = $updater->update();
-				Page::$compiler_messages[]=new Message(Message::TYPE_CONFIRM, "Core databases \"$dbname\" created. $msg");
-			}
-			if($error->get_type()== Error::TYPE_WRONG_CREDENTIALS){
-				Error::quit("Couldn't connect to database. Please check credentials:", 1);
+				self::$singleton = Install_wizard::init2_db($host, $dbname, $user, $password, $backtrace_depth+1);
 			}
 		}
-//		else{
-//			self::$singleton->iquery("DROP DATABASE $dbname",array(),Database::RETURN_ROWCOUNT);
-//			Error::quit("DROPPED!!");
-//		}
 
 		if(self::$singleton->getError()){
 			Error::quit("Fatal error on database initialization (#2). ".self::$singleton->getError()->get_message(), 1);
@@ -126,6 +118,10 @@ class Database {
 		return $this->pdo;
 	}
 
+	public static function get_dev_stats(){
+		return self::$dev_global_count." Queries";
+	}
+
 	/**
 	 * Handles different types of queries, specified by $return
 	 * @param string $query
@@ -133,6 +129,7 @@ class Database {
 	 * @return array|false|null|string|int
 	 */
 	private function iquery($query, $substitutions, $return_type, $report_error=true, $backtrace_depth=0) {
+		self::$dev_global_count++;
 		$this->error = false;
 		/** @var \PDOStatement $statement */
 		$statement = $this->pdo->prepare($query);

@@ -2,6 +2,9 @@
 
 namespace core;
 
+require_once ROOT_DIR.'/core/Html.php';
+
+use tethys_root\Start;
 
 class Page {
 
@@ -106,6 +109,13 @@ class Page {
 		$css_html = "";
 		$js_html = "";
 
+		$dev_stats="";
+		if(DEVMODE){
+			$dev_stats=new Html("div",Database::get_dev_stats()." / ".Start::get_dev_stats(),array("class"=>"dev_stats"
+				,"style"=>(POST_CSS?"":"color:blue;")
+			));
+		}
+
 		// @formatter:off
 		echo "<!DOCTYPE html>"
 			."<html>\n"
@@ -118,9 +128,9 @@ class Page {
 				."<body id='$this->id'>\n"
 					.$messages
 					."<div class='body_inner'>";
-		$this->get_body(true);
+						$this->get_body(true);
 		echo
-					"</div>"
+					"</div>$dev_stats"
 				."</body>"
 			."</html>";
 		// @formatter:on

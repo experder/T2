@@ -20,7 +20,10 @@ use service\Install_wizard;
 
 class Start {
 
+	private static $dev_start_time;
+
 	public static function init_constants(){
+		self::$dev_start_time=microtime(true);
 		if (!defined("ROOT_DIR")) {
 			$dir = __DIR__;
 			//Windwos:
@@ -30,6 +33,11 @@ class Start {
 		if (!defined("DEVMODE")) {
 			define("DEVMODE",false);
 		}
+	}
+
+	public static function get_dev_stats(){
+		$end_time = microtime(true);
+		return round($end_time-self::$dev_start_time,3)." Seconds";
 	}
 
 	public static function init_dependencies(){
@@ -56,8 +64,7 @@ class Start {
 
 	public static function init_database(){
 		Config::load_values(array(
-			"EXTENSIONss",
-			"EXTENSIONs",
+			"EXTENSION",
 		));
 		define("EXT", Config::get_value("EXTENSION", 'core', 0, "php"));
 	}

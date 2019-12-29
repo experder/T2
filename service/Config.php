@@ -29,11 +29,14 @@ class Config {
 	 * @param bool        $use_cache
 	 * @return string|mixed string|$default_value
 	 */
-	public static function get_value($id, $module = "core", $user = 0, $default_value = null, $use_cache = true) {
+	public static function get_value($id, $module = "core", $user = 0, $default_value = null, $use_cache = true, $database=null) {
+		if($database===null){
+			$database=Database::get_singleton();
+		}
 		if ($use_cache && isset(self::$config[$module][$user][$id])) {
 			return self::$config[$module][$user][$id];
 		}
-		$data = Database::select_single_(
+		$data = $database->select_single(
 			"SELECT `content` FROM core_config WHERE `idstring`=:id AND module=:module AND userid<=>:userid;",
 			array(
 				"id" => $id,

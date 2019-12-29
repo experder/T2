@@ -12,7 +12,7 @@ class Error {
 
 	const TYPE_UNKNOWN = 0;
 	const TYPE_DB_NOT_FOUND = "DB_NOT_FOUND";
-	const TYPE_WRONG_CREDENTIALS = "WRONG_CREDENTIALS";
+	#const TYPE_WRONG_CREDENTIALS = "WRONG_CREDENTIALS";
 	const TYPE_SQL = "SQL-Error";
 
 	const HR = "\n=========================\n";
@@ -71,11 +71,11 @@ class Error {
 			if($e->getCode()===1049/*Unknown database*/){
 				return new Error($e->getMessage(), self::TYPE_DB_NOT_FOUND, $report, 0, $quit_on_error);
 			}
-			if($e->getCode()===1045/*Access denied */){
-				return new Error($e->getMessage(), self::TYPE_WRONG_CREDENTIALS, $report, 0, $quit_on_error);
-			}
+//			if($e->getCode()===1045/*Access denied */){
+//				return new Error($e->getMessage(), self::TYPE_WRONG_CREDENTIALS, $report, 0, $quit_on_error);
+//			}
 		}
-		return new Error("[".$e->getCode()."] ".$e->getMessage(), self::TYPE_UNKNOWN);
+		return new Error("[".$e->getCode()."] ".$e->getMessage(), self::TYPE_UNKNOWN, $report, 0, $quit_on_error);
 	}
 
 	public function get_type(){
