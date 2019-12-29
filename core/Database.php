@@ -164,7 +164,7 @@ class Database {
 			$compiled_query = "";
 			$errorInfo = $statement->errorInfo();
 			$errorInfo = $errorInfo[2];
-			if (!$errorInfo && $statement->errorCode() === 'HY093') {
+			if (!$errorInfo && $statement->errorCode() === 'HY093'/*Invalid parameter number: parameter was not defined*/) {
 				$errorInfo = "Invalid parameter number: parameter was not defined";
 			} else {
 				ob_flush();
