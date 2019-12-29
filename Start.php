@@ -11,14 +11,21 @@ $page->send_and_quit();
 
 namespace tethys_root;
 
-
+use core\Database;
+use core\Error;
+use core\Message;
+use core\Page;
+use service\Config;
 use service\Install_wizard;
 
 class Start {
 
 	public static function init_constants(){
 		if (!defined("ROOT_DIR")) {
-			define("ROOT_DIR", __DIR__);
+			$dir = __DIR__;
+			//Windwos:
+			$dir = str_replace("\\","/",$dir);
+			define("ROOT_DIR", $dir);
 		}
 		if (!defined("DEVMODE")) {
 			define("DEVMODE",false);
@@ -30,6 +37,7 @@ class Start {
 		require_once ROOT_DIR.'/core/Error.php';
 		require_once ROOT_DIR.'/core/Database.php';
 		require_once ROOT_DIR.'/core/Message.php';
+		require_once ROOT_DIR.'/service/Config.php';
 	}
 
 	public static function init_config(){
@@ -40,10 +48,18 @@ class Start {
 		}
 		/** @noinspection PhpIncludeInspection */
 		require_once $config_file;
+		//Make the Test:
+		if (Database::get_singleton(false)===false){
+			Error::quit("Local config file (\"$config_file\") not found or corrupt. Please check.");
+		}
 	}
 
 	public static function init_database(){
-
+		Config::load_values(array(
+			"EXTENSIONss",
+			"EXTENSIONs",
+		));
+		define("EXT", Config::get_value("EXTENSION", 'core', 0, "php"));
 	}
 
 }

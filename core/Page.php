@@ -50,11 +50,15 @@ class Page {
 	}
 
 	/**
-	 * @return Page
+	 * @return Page|false
 	 */
-	public static function get_singleton() {
+	public static function get_singleton($halt_on_error=true) {
 		if (self::$singleton === null) {
-			Error::quit_bare("Please initialize Page singelton first: <code>\$page = \\core\\Page::init(\"PAGE_ID_MYPAGE\", \"My page\");</code>", 1);
+			if($halt_on_error){
+				Error::quit_bare("Please initialize Page singelton first: <code>\$page = \\core\\Page::init(\"PAGE_ID_MYPAGE\", \"My page\");</code>", 1);
+			}else{
+				return false;
+			}
 		}
 		return self::$singleton;
 	}
@@ -134,7 +138,7 @@ class Page {
 		foreach ($all_messages as $message){
 			$css_class = $message->get_type_cssClass();
 			$html.="<div class='message $css_class'"
-				#." style='border:1px solid black;border-radius:5px;'"
+				.(POST_CSS?"":" style='border:1px solid black;border-radius:5px;'")
 				.">".$message->get_message()."</div>";
 		}
 		$html = "<div class='messages'>$html</div>";

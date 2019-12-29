@@ -6,7 +6,6 @@ require_once ROOT_DIR.'/service/Files.php';
 namespace service;
 
 
-use core\Error;
 
 class Files {
 
@@ -25,7 +24,7 @@ class Files {
 			fclose($file);
 		}
 		if ($success === false) {
-			Error::quit("Failure on storing file \"$file\"!");
+			\core\Error::quit("Failure on storing file \"$file\"!");
 		}
 	}
 
