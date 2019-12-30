@@ -119,8 +119,8 @@ class Config {
 		if($error=Database::get_singleton()->getError()){
 			if($error instanceof Error){
 				if($error->get_type()==Error::TYPE_TABLE_NOT_FOUND){
-					require_once ROOT_DIR . '/service/Install_wizard.php';
-					$msg = new Message(Message::TYPE_CONFIRM, "DB \"".Database::get_singleton()->get_dbname()."\" initialized. ".Install_wizard::init3_db_config());
+					require_once ROOT_DIR . '/admin/Install_wizard.php';
+					$msg = new Message(Message::TYPE_CONFIRM, "DB \"".Database::get_singleton()->get_dbname()."\" initialized. ".\admin\Install_wizard::init3_db_config());
 				}else{
 					$msg = $error->report();
 				}

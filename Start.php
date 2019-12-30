@@ -21,7 +21,7 @@ namespace tethys_root;
 use core\Database;
 use core\Error;
 use service\Config;
-use service\Install_wizard;
+use admin\Install_wizard;
 
 class Start {
 
@@ -53,7 +53,7 @@ class Start {
 	public static function init_config() {
 		$config_file = ROOT_DIR . '/config_exclude.php';
 		if (!file_exists($config_file)) {
-			require_once ROOT_DIR . '/service/Install_wizard.php';
+			require_once ROOT_DIR . '/admin/Install_wizard.php';
 			Install_wizard::prompt_dbParams();
 		}
 		/** @noinspection PhpIncludeInspection */

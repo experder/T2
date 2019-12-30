@@ -47,7 +47,7 @@ class Error {
 			if ($page = Page::get_singleton(false)) {
 				$page->send_and_quit();
 			} else {
-				require_once ROOT_DIR . '/service/Install_wizard.php';
+				require_once ROOT_DIR . '/admin/Install_wizard.php';
 				$page = new Page("T2_INSTWIZARD", "T2 - Fatal Error");
 				$page->send_and_quit();
 			}

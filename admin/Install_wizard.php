@@ -8,10 +8,10 @@
 
 
 /*
-require_once ROOT_DIR . '/service/Install_wizard.php';
+require_once ROOT_DIR . '/admin/Install_wizard.php';
  */
 
-namespace service;
+namespace admin;
 
 require_once ROOT_DIR . '/core/form/Form.php';
 require_once ROOT_DIR . '/service/Templates.php';
@@ -25,6 +25,8 @@ use core\Formfield_text;
 use core\Message;
 use core\Page;
 use installer\Core_database;
+use service\Request;
+use service\Templates;
 
 class Install_wizard {
 

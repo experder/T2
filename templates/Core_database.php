@@ -29,7 +29,7 @@ class Core_database extends Update_database {
 
 		/**
 		 * The table "core_config" is initialized in Install_wizard::init3_db_config().
-		 * @see Install_wizard::init3_db_config()
+		 * @see \admin\Install_wizard::init3_db_config()
 		 */
 
 		$this->q(1, "ALTER TABLE `core_config` MODIFY COLUMN `module`  VARCHAR(40) CHARACTER SET utf8 COLLATE utf8_bin NULL AFTER `idstring`;");

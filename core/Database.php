@@ -9,7 +9,7 @@
 
 namespace core;
 
-use service\Install_wizard;
+use admin\Install_wizard;
 use service\Strings;
 
 class Database {
@@ -91,7 +91,7 @@ class Database {
 		if (($error = self::$singleton->getError()) && $error instanceof Error) {
 			if ($error->get_type() == Error::TYPE_DB_NOT_FOUND) {
 				//Database doesn't exist -> Call Installer to initialize Database:
-				require_once ROOT_DIR . '/service/Install_wizard.php';
+				require_once ROOT_DIR . '/admin/Install_wizard.php';
 				self::$singleton = Install_wizard::init2_db($host, $dbname, $user, $password, $backtrace_depth + 1);
 			}
 		}
