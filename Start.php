@@ -67,8 +67,10 @@ class Start {
 	public static function init_database() {
 		Config::load_values(array(
 			"EXTENSION",
+			"PROJEKT_TITLE",
 		));
-		define("EXT", Config::get_value("EXTENSION", 'core', 0, "php"));
+		define("EXT", Config::get_value_core("EXTENSION", "php"));
+		#Config::$PROJECT_TITLE = Config::get_value_core("PROJEKT_TITLE", 'T2');
 	}
 
 }

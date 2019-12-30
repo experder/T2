@@ -8,7 +8,7 @@
 
 
 require_once 'Start.php';
-$page = \core\Page::init("PAGE_ID_TETHYSINDEX", "T2");
+$page = \core\Page::init("PAGE_ID_TETHYSINDEX", "Start");
 
 $page->add("Welcome!");
 

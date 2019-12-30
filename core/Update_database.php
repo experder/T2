@@ -14,9 +14,9 @@ use service\Config;
 abstract class Update_database {
 
 	protected $module = null;
+	protected $start_ver = 1;
 
 	private $ver_next = 0;
-	protected $start_ver = 1;
 
 	private $database;
 
@@ -58,10 +58,10 @@ abstract class Update_database {
 	 * @return string|false
 	 */
 	public function update() {
-		$db_version1 = Config::get_value("DB_VERSION", $this->module, 0, 0, false, $this->database);
+		$db_version1 = Config::get_value("DB_VERSION", $this->module, null, "0", false, $this->database);
 		$this->ver_next = $db_version1 + 1;
 		$this->do_update();
-		$db_version2 = Config::get_value("DB_VERSION", $this->module, 0, 0, false, $this->database);
+		$db_version2 = Config::get_value("DB_VERSION", $this->module, null, "0", false, $this->database);
 		if ($db_version1 == $db_version2) {
 			return false;
 		}

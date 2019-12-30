@@ -24,6 +24,7 @@ Clone existing project:
 ### Apache
 
     #Configure your own extension in T2 (here: .t2)
+    LoadModule rewrite_module modules/mod_rewrite.so
     RewriteEngine on
     RewriteRule ^/myproject/(.*)\.t2$ "C:/MyWorkspace/MyProject/$1.php"
 

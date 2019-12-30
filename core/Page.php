@@ -164,7 +164,8 @@ class Page {
 	}
 
 	private function get_title() {
-		$title = $this->title;
+		$project = Config::get_value_core("PROJEKT_TITLE", 'T2');
+		$title = $this->title." - $project";
 		return $title;
 	}
 

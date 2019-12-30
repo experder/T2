@@ -29,6 +29,11 @@ class Config {
 	public static $PRE_CSS = true;
 
 	/**
+	 * @see \tethys_root\Start::init_database()
+	 */
+	#public static $PROJECT_TITLE;
+
+	/**
 	 * All config values that has been loaded from the database are stored here.
 	 * The structure of the 3-level associative array is: self::$config[module][user_id|0][key]
 	 * @var array $config
@@ -39,26 +44,29 @@ class Config {
 	 * The default value is NOT cached (self::$core_config),
 	 * so the next call of this function can return a different value.
 	 * @param string        $id
-	 * @param string        $module
-	 * @param int           $user
-	 * @param mixed         $default_value
+	 * @param string|null        $module
+	 * @param int|null           $user
+	 * @param string|null         $default_value
 	 * @param bool          $use_cache
 	 * @param Database|null $database
-	 * @return string|mixed string|$default_value
+	 * @return string|null
 	 */
-	public static function get_value($id, $module = "core", $user = 0, $default_value = null, $use_cache = true, $database = null) {
+	public static function get_value($id, $module = null, $user = null, $default_value = null, $use_cache = true, $database = null) {
 		if ($database === null) {
 			$database = Database::get_singleton();
 		}
-		if ($use_cache && isset(self::$config[$module][$user][$id])) {
-			return self::$config[$module][$user][$id];
+		if ($use_cache) {
+			$value = self::recall_val($module, $user, $id);
+			if($value!==false){
+				return $value;
+			}
 		}
 		$data = $database->select_single(
-			"SELECT `content` FROM core_config WHERE `idstring`=:id AND module=:module AND userid<=>:userid;",
+			"SELECT `content` FROM core_config WHERE `idstring`=:id AND module<=>:module AND userid<=>:userid;",
 			array(
 				"id" => $id,
 				"module" => $module,
-				"userid" => $user ?: null,
+				"userid" => $user,
 			)
 		);
 		if (!$data) {
@@ -66,12 +74,22 @@ class Config {
 		}
 		$value = $data["content"];
 		if ($use_cache) {
-			self::$config[$module][$user][$id] = $value;
+			self::store_val($module, $user, $id, $value);
 		}
 		return $value;
 	}
 
-	public static function set_value($id, $value, $module = "core", $user = null, $database = null) {
+	/**
+	 * @param string $id
+	 * @param string|null $default_value
+	 * @param int|null $user
+	 * @return string|null
+	 */
+	public static function get_value_core($id, $default_value = null, $user = null) {
+		return self::get_value($id, null, $user, $default_value);
+	}
+
+	public static function set_value($id, $value, $module = null, $user = null, $database = null) {
 		if ($database === null) {
 			$database = Database::get_singleton();
 		}
@@ -85,16 +103,16 @@ class Config {
 
 	/**
 	 * @param string[] $ids
-	 * @param string   $module
-	 * @param int      $user
+	 * @param string|null   $module
+	 * @param int|null      $user
 	 */
-	public static function load_values($ids, $module = "core", $user = 0) {
+	public static function load_values($ids, $module = null, $user = null) {
 		$ids_sql = Strings::build_sql_collection($ids);
 		$data = Database::select_(
-			"SELECT idstring,`content` FROM core_config WHERE `idstring` in ($ids_sql) AND module=:module AND userid <=> :userid;",
+			"SELECT idstring,`content` FROM core_config WHERE `idstring` in ($ids_sql) AND module<=>:module AND userid <=> :userid;",
 			array(
 				"module" => $module,
-				"userid" => $user ?: null,
+				"userid" => $user,
 			)
 			,false
 		);
@@ -113,9 +131,24 @@ class Config {
 		}
 		if ($data) {
 			foreach ($data as $val) {
-				self::$config[$module][$user][$val['idstring']] = $val['content'];
+				self::store_val($module, $user, $val['idstring'], $val['content']);
 			}
 		}
+	}
+
+	private static function store_val($module, $user, $key, $value){
+		$module_index = ($module === null?"core":$module);
+		$user_index = 'u'.$user;
+		self::$config[$module_index][$user_index][$key] = $value;
+	}
+
+	private static function recall_val($module, $user, $key){
+		$module_index = ($module === null?"core":$module);
+		$user_index = 'u'.$user;
+		if(!isset(self::$config[$module_index][$user_index][$key])){
+			return false;
+		}
+		return self::$config[$module_index][$user_index][$key];
 	}
 
 

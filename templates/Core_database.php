@@ -19,7 +19,7 @@ use core\Update_database;
 
 class Core_database extends Update_database {
 
-	protected $module = "core";
+	protected $module = null;
 	protected $start_ver = 1;
 
 	/**
@@ -32,7 +32,7 @@ class Core_database extends Update_database {
 		 * @see Install_wizard::init3_db_config()
 		 */
 
-		#$this->q(1,"INSERT INTO `core_config` (`id`, `idstring`, `module`, `userid`, `content`) VALUES (NULL, 'EXTENSION', 'core', NULL, 't2');");
+		$this->q(1, "ALTER TABLE `core_config` MODIFY COLUMN `module`  VARCHAR(40) CHARACTER SET utf8 COLLATE utf8_bin NULL AFTER `idstring`;");
 
 	}
 
