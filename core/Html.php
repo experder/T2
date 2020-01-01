@@ -33,10 +33,13 @@ class Html implements Echoable {
 	 * @param string     $content
 	 * @param array|null $params Key-Value pairs of HTML-Attributes
 	 */
-	public function __construct($tag, $content, $params = null) {
+	public function __construct($tag, $content, $params = null, $children=null) {
 		$this->tag = $tag;
 		$this->content = $content;
 		$this->addParams($params);
+		if($children!==null){
+			self::addChildren($children);
+		}
 	}
 
 	/**
@@ -50,6 +53,10 @@ class Html implements Echoable {
 	 * @param array $childs
 	 */
 	public function addChildren($childs) {
+		if(!is_array($childs)){
+			self::addChild($childs);
+			return;
+		}
 		foreach ($childs as $child) {
 			$this->addChild($child);
 		}
@@ -82,6 +89,13 @@ class Html implements Echoable {
 
 	public function set_id($value) {
 		$this->set_param("id", $value);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function get_tag() {
+		return $this->tag;
 	}
 
 	public function addParams($array) {

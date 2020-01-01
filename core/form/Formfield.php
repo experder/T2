@@ -31,20 +31,20 @@ abstract class Formfield {
 	//Formfield:
 	protected $name;
 	protected $value;
-	public $id = null;
+	protected $id = null;
 	/**
 	 * @var array All params except "name", "value" and "id".
 	 */
-	public $more_params;
+	protected $more_params;
 
 	//Label:
 	protected $title;
-	public $tooltip = "";
+	protected $tooltip = "";
 
 	//Surrounding div:
-	public $outer_id = null;
-	public $outer_class = null;
-	public $outer_more_params = array();
+	protected $outer_id = null;
+	protected $outer_class = null;
+	protected $outer_more_params = array();
 
 	/**
 	 * Formfield constructor.
@@ -120,13 +120,14 @@ abstract class Formfield {
 	}
 
 	/**
-	 * For documentation @see getParams_inner.
+	 * For documentation see getParams_inner.
+	 * @see getParams_inner
 	 */
 	protected function getParams_outer() {
 		$params = $this->outer_more_params;
 
 		if ($this->outer_id) $params["id"] = $this->outer_id;
-		$params["class"] = "form_field" . ($this->outer_class ? " " . $this->outer_class : "");
+		$params["class"] = "form_field ff_".$this->name. ($this->outer_class ? " " . $this->outer_class : "");
 
 		return \service\Html::tag_keyValues($params);
 	}

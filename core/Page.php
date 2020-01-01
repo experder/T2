@@ -71,7 +71,7 @@ class Page {
 	public static function get_singleton($halt_on_error = true) {
 		if (self::$singleton === null) {
 			if ($halt_on_error) {
-				Error::quit_bare("Please initialize Page singelton first: <code>\$page = \\core\\Page::init(\"PAGE_ID_MYPAGE\", \"My page\");</code>", 1);
+				Error::quit("Please initialize Page singelton first:\n\$page = \\core\\Page::init(\"PAGEID_MYMODULE_MYPAGE\", \"My page\");", 1);
 			} else {
 				return false;
 			}
@@ -115,6 +115,11 @@ class Page {
 		$this->messages[] = $msg;
 	}
 
+	public function get_dev_stats(){
+		$dev_stats = new Html("div", Database::get_dev_stats() . " / " . Start::get_dev_stats(), array("class" => "dev_stats noprint"));
+		return $dev_stats;
+	}
+
 	/**
 	 * Builds and sends the HTML page.
 	 */
@@ -127,7 +132,7 @@ class Page {
 
 		$dev_stats = "";
 		if (Config::$DEVMODE) {
-			$dev_stats = new Html("div", Database::get_dev_stats() . " / " . Start::get_dev_stats(), array("class" => "dev_stats"));
+			$dev_stats = $this->get_dev_stats();
 		}
 
 		// @formatter:off
@@ -176,7 +181,7 @@ class Page {
 			$css_class = $message->get_type_cssClass();
 			$html .= "<div class='message $css_class'>" . $message->get_message() . "</div>";
 		}
-		$html = "<div class='messages'>$html</div>";
+		$html = "<div class='messages noprint'>$html</div>";
 		return $html;
 	}
 

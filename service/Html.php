@@ -34,13 +34,55 @@ class Html {
 		return $html;
 	}
 
-	public static function A($content, $href=null, $class=null){
+	public static function A($content, $href, $class=null){
 		return new \core\Html("a",$content,array("href"=>$href,"class"=>$class));
 	}
 
-	public static function A_button($content, $href=null, $classes=array()){
-		$html = new \core\Html("a",$content,array("href"=>$href,"class"=>"abutton"));
+	public static function H1($content, $id=null){
+		return new \core\Html("h1",$content,array("id"=>$id));
+	}
+
+	public static function H2($content, $id=null){
+		return new \core\Html("h2",$content,array("id"=>$id));
+	}
+
+	public static function H3($content, $id=null){
+		return new \core\Html("h3",$content,array("id"=>$id));
+	}
+
+	public static function H4($content, $id=null){
+		return new \core\Html("h4",$content,array("id"=>$id));
+	}
+
+	public static function PRE($content){
+		return new \core\Html("pre",$content,array());
+	}
+
+	public static function UL($children=array(), $params=null){
+		return self::list_builder("ul", $children, $params);
+	}
+
+	private static function list_builder($elem, $children, $params){
+		$html = new \core\Html($elem,"",$params);
+		foreach ($children as $child){
+			if(!($child instanceof \core\Html) || strtolower($child->get_tag())!='li'){
+				$child = new \core\Html("li", null, null, $child);
+			}
+			$html->addChild($child);
+		}
+		return $html;
+	}
+
+	public static function A_button($content, $href, $classes=array()){
+		$html = self::A($content, $href, "abutton");
 		$html->addClasses($classes);
+		return $html;
+	}
+
+	public static function A_external($content, $href, $params=array()){
+		$params['href']=$href;
+		$params['target']='_blank';
+		$html = new \core\Html("a", $content, $params);
 		return $html;
 	}
 

@@ -24,7 +24,7 @@ class Formfield_hidden extends Formfield {
 
 	/** Not in use. */
 	protected function inner_html() {
-		Error::quit_bare("Should never be called");
+		new Error("Should never be called");
 		return "NOT IN USE";
 	}
 }

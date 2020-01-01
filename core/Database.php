@@ -177,7 +177,7 @@ class Database {
 			$error_type = Error::TYPE_SQL;
 			if($statement->errorCode()=="42S02"/*Unknown table*/){
 				$error_type = Error::TYPE_TABLE_NOT_FOUND;
-				$errorInfo.=print_r($statement->errorInfo(),1);
+				#$errorInfo.=print_r($statement->errorInfo(),1);
 			}
 
 			$this->error = new Error($compiled_query . $errorInfo, $error_type, $report_error, $backtrace_depth + 1);

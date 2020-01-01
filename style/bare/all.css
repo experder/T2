@@ -2,8 +2,22 @@
 ======================== Text ===========================
  */
 
-pre{
+pre {
 	white-space: pre-wrap;
+}
+h1{
+	font-size: 200%;
+}
+
+h2, div.messages div.message h1 {
+	font-size: 150%;
+}
+
+h3{
+	font-size:117%;
+}
+h4{
+	font-size:100%;
 }
 
 /*
@@ -19,6 +33,19 @@ a.abutton{
 }
 a.abutton:hover{
 	background:lightyellow;
+	transition: .5s;
+}
+a[target="_blank"]{
+	background-image: url('img/Icon_External_Link.svg');
+	background-repeat: no-repeat;
+	background-position-y: 4px;
+	background-size: 12px;
+	padding-left: 14px;
+	transition: .5s;
+}
+a[target="_blank"]:hover{
+	background-position-y: 3px;
+	background-size: 14px;
 	transition: .5s;
 }
 
@@ -55,4 +82,34 @@ div.messages div.message.msg_type_confirm {
 div.messages div.message.msg_type_unknown {
 	border-color:orange;
 	background-color: #ffe6d1;
+}
+
+/*
+======================== Forms ===========================
+ */
+
+form div.buttons{
+	border-top:1px solid black;
+}
+
+form div.form_field label{
+	display:inline-block;
+	width:120px;
+	overflow:hidden;
+	text-overflow: ellipsis;
+	vertical-align: top;
+	position:relative;
+	top:2px;
+}
+
+form div.form_field input[type="text"],
+form div.form_field input[type="password"],
+form div.form_field textarea
+{
+	vertical-align:bottom;
+	width:300px;
+}
+form div.form_field textarea
+{
+	height:50px;
 }

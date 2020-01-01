@@ -16,10 +16,12 @@ require_once ROOT_DIR . '/core/Html.php';
 require_once ROOT_DIR . '/core/form/Formfield.php';
 require_once ROOT_DIR . '/core/form/Formfield_hidden.php';
 require_once ROOT_DIR . '/core/form/Formfield_text.php';
+require_once ROOT_DIR . '/core/form/Formfield_textarea.php';
 require_once ROOT_DIR . '/core/form/Formfield_password.php';
+require_once ROOT_DIR . '/core/Echoable.php';
 
 
-class Form {
+class Form implements Echoable {
 
 	/**
 	 * $action is an URL that is called on form submission. Can be left empty (same page is called).
@@ -66,9 +68,9 @@ class Form {
 	}
 
 	public function toHtml() {
-		$buttons = new Html("div", implode("\n", $this->buttons), array(
+		$buttons = new Html("div", "", array(
 			"class" => "buttons"
-		));
+		), $this->buttons);
 		$fields_html = implode("\n", $this->fields);
 		return "<form action=\"$this->action\" method='$this->method'>\n$fields_html\n$buttons\n</form>";
 	}

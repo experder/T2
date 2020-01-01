@@ -10,7 +10,7 @@
 /*
  * <code>
 require_once '../../tethys/Start.php';
-$page = \core\Page::init("PAGE_ID_MYPAGE", "My page");
+$page = \core\Page::init("PAGEID_MYMODULE_MYPAGE", "My page");
 $page->add("Hello World!");
 $page->send_and_quit();
  * </code>
