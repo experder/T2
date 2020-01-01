@@ -25,9 +25,6 @@ class Config {
 	// Set to false if in production environment:
 	public static $DEVMODE = true;
 
-	//As long as we don't have a first stylesheet:
-	public static $PRE_CSS = true;
-
 	/**
 	 * @see \tethys_root\Start::init_database()
 	 */

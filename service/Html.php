@@ -14,7 +14,7 @@ require_once ROOT_DIR . '/service/Html.php';
 namespace service;
 
 require_once ROOT_DIR . '/service/Strings.php';
-
+require_once ROOT_DIR . '/core/Html.php';
 
 class Html {
 
@@ -32,6 +32,20 @@ class Html {
 			$html .= " $key='" . Strings::escape_value_html($value) . "'";
 		}
 		return $html;
+	}
+
+	public static function A($content, $href=null, $class=null){
+		return new \core\Html("a",$content,array("href"=>$href,"class"=>$class));
+	}
+
+	public static function A_button($content, $href=null, $classes=array()){
+		$html = new \core\Html("a",$content,array("href"=>$href,"class"=>"abutton"));
+		$html->addClasses($classes);
+		return $html;
+	}
+
+	public static function href_internal($relative_page_without_extension){
+		return HTTP_ROOT . '/' . $relative_page_without_extension .'.'.EXT;
 	}
 
 }

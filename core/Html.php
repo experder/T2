@@ -14,9 +14,10 @@ require_once ROOT_DIR . '/core/Html.php';
 namespace core;
 
 require_once ROOT_DIR . '/service/Html.php';
+require_once ROOT_DIR . '/core/Echoable.php';
 
 
-class Html {
+class Html implements Echoable {
 
 	protected $tag;
 	private $content;
@@ -35,7 +36,7 @@ class Html {
 	public function __construct($tag, $content, $params = null) {
 		$this->tag = $tag;
 		$this->content = $content;
-		$this->setParams($params);
+		$this->addParams($params);
 	}
 
 	/**
@@ -54,34 +55,41 @@ class Html {
 		}
 	}
 
+	public function addClasses($classes) {
+		foreach ($classes as $class){
+			$this->addClass($class);
+		}
+	}
+
 	public function addClass($class) {
 		if ($class === null) {
 			return;
 		}
 		if (isset($this->params["class"])) {
-			$this->params["class"] .= $class;
+			$this->params["class"] .= ' '.$class;
 		} else {
 			$this->params["class"] = $class;
 		}
 	}
 
-	public function setParam($key, $value) {
+	public function set_param($key, $value) {
+		$key = strtolower($key);
 		if ($value === null) {
-			unset($this->params[strtolower($key)]);
+			unset($this->params[$key]);
 		}
-		$this->params[strtolower($key)] = $value;
+		$this->params[$key] = $value;
 	}
 
-	public function setId($value) {
-		$this->setParam("id", $value);
+	public function set_id($value) {
+		$this->set_param("id", $value);
 	}
 
-	public function setParams($array) {
+	public function addParams($array) {
 		if (!is_array($array)) {
 			return;
 		}
 		foreach ($array as $key => $value) {
-			$this->setParam($key, $value);
+			$this->set_param($key, $value);
 		}
 	}
 

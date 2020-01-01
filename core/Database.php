@@ -171,6 +171,7 @@ class Database {
 				ob_start();
 				$statement->debugDumpParams();
 				$compiled_query = ob_get_clean();
+				$compiled_query = preg_replace("/\\R$/", "", $compiled_query);
 				$compiled_query .= Error::HR;
 			}
 			$error_type = Error::TYPE_SQL;

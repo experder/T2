@@ -68,8 +68,13 @@ class Start {
 		Config::load_values(array(
 			"EXTENSION",
 			"PROJEKT_TITLE",
+			"STYLE",
+			"HTTP_ROOT",
 		));
 		define("EXT", Config::get_value_core("EXTENSION", "php"));
+
+		define("HTTP_ROOT", Config::get_value_core("HTTP_ROOT", ""));
+
 		#Config::$PROJECT_TITLE = Config::get_value_core("PROJEKT_TITLE", 'T2');
 	}
 

@@ -10,6 +10,8 @@
 namespace core;
 
 require_once ROOT_DIR . '/core/Html.php';
+require_once ROOT_DIR . '/core/Stylesheet.php';
+require_once ROOT_DIR . '/core/Echoable.php';
 
 use service\Config;
 use tethys_root\Start;
@@ -39,6 +41,9 @@ class Page {
 	 */
 	public static $compiler_messages = array();
 
+	/**
+	 * @var Stylesheet[] $stylesheets
+	 */
 	private $stylesheets = array();
 
 	private $javascripts = array();
@@ -93,6 +98,9 @@ class Page {
 		return $this->id;
 	}
 
+	/**
+	 * @param Echoable|string $node
+	 */
 	public function add($node) {
 		$this->html_nodes[] = $node;
 	}
@@ -114,14 +122,12 @@ class Page {
 
 		$title = $this->get_title();
 		$messages = $this->get_message_html();
-		$css_html = "";
+		$css_html = $this->get_css_html();
 		$js_html = "";
 
 		$dev_stats = "";
 		if (Config::$DEVMODE) {
-			$dev_stats = new Html("div", Database::get_dev_stats() . " / " . Start::get_dev_stats(), array("class" => "dev_stats"
-			, "style" => (Config::$PRE_CSS ? "color:blue;":"")
-			));
+			$dev_stats = new Html("div", Database::get_dev_stats() . " / " . Start::get_dev_stats(), array("class" => "dev_stats"));
 		}
 
 		// @formatter:off
@@ -147,6 +153,19 @@ class Page {
 
 	}
 
+	private function get_css_html() {
+		$style = Config::get_value_core("STYLE", 'bare');
+		if(in_array($style,array("bare"))){
+			$this->stylesheets["CSS_ID_ALL"]=new Stylesheet(HTTP_ROOT."/style/$style/all.css");
+			$this->stylesheets["CSS_ID_PRINT"]=new Stylesheet(HTTP_ROOT."/style/$style/print.css", Stylesheet::MEDIA_PRINT);
+		}
+		$html = "";
+		foreach ($this->stylesheets as $stylesheet){
+			$html.="<link href=\"".$stylesheet->get_url()."\" rel=\"stylesheet\" type=\"text/css\" media=\"".$stylesheet->get_media()."\"/>\n";;
+		}
+		return $html;
+	}
+
 	private function get_message_html() {
 		$html = "";
 		/**
@@ -155,9 +174,7 @@ class Page {
 		$all_messages = array_merge(self::$compiler_messages, $this->messages);
 		foreach ($all_messages as $message) {
 			$css_class = $message->get_type_cssClass();
-			$html .= "<div class='message $css_class' "
-				. (Config::$PRE_CSS ? " style='border:1px solid black;border-radius:5px;'":"")
-				. " >" . $message->get_message() . "</div>";
+			$html .= "<div class='message $css_class'>" . $message->get_message() . "</div>";
 		}
 		$html = "<div class='messages'>$html</div>";
 		return $html;
@@ -176,7 +193,9 @@ class Page {
 	private function get_body($echo = false) {
 		$body = "";
 		foreach ($this->html_nodes as $node) {
-			if (is_string($node)) {
+			if (is_string($node)
+			||$node instanceof Echoable
+			) {
 				if ($echo) {
 					echo $node;
 				} else {

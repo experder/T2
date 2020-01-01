@@ -1,8 +1,8 @@
-## Developers
+Developers
+==========
 
-
-### Release
-
+Release
+-------
 Before merging the `dev` branch onto the `master`:
 * Check for TODOs, deprecated code, compiler warnings, PHPdoc
 * Check for out commented and unused code
@@ -12,3 +12,11 @@ Before merging the `dev` branch onto the `master`:
 * Write [release note](../release_notes.md)
 * Create tag
 
+Current TODOs
+-------------
+
+### High
+
+### Low
+* remove camel case methods from whole project
+* Page.php: organize classes as collection

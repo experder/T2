@@ -1,0 +1,58 @@
+/*
+======================== Text ===========================
+ */
+
+pre{
+	white-space: pre-wrap;
+}
+
+/*
+======================== Links ===========================
+ */
+
+a.abutton{
+	background:lightgray;
+	margin:0 2px;
+	padding: 0 2px;
+	border-radius:5px;
+	transition: .5s;
+}
+a.abutton:hover{
+	background:lightyellow;
+	transition: .5s;
+}
+
+/*
+======================== dev-stuff ===========================
+ */
+
+pre.dev_error_info{
+	background:url('img/graystripe.png');
+}
+div.dev_stats{
+	color:blue;
+}
+
+/*
+======================== Messages ===========================
+ */
+
+div.messages div.message {
+	border:1px solid;border-radius:5px;
+}
+div.messages div.message.msg_type_error {
+	border-color:red;
+	background-color: #ffe3e3;
+}
+div.messages div.message.msg_type_info {
+	border-color:blue;
+	background-color: #e5dfff;
+}
+div.messages div.message.msg_type_confirm {
+	border-color:green;
+	background-color: #d7e5d8;
+}
+div.messages div.message.msg_type_unknown {
+	border-color:orange;
+	background-color: #ffe6d1;
+}
