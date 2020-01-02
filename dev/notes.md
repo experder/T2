@@ -17,6 +17,7 @@ Current TODOs
 
 ### High
 * $page->set_focusFieldId
+* rename column 'user' in core_sessions
 
 ### Low
 * remove camel case methods from whole project

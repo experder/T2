@@ -7,17 +7,11 @@
  GPL*/
 
 require_once '../Start.php';
-$page = \core\Page::init("PAGEID_CORE_ADMIN", "Admin");
+$page = \core\Page::init("PAGE_ID_MYPAGE", "My page");
 
-use core\Html;
+require_once ROOT_DIR . "/templates/Core_database.php";
 
-$page->add(\service\Html::A_button("Update",\service\Html::href_internal("admin/update")));
-
-if(\service\Config::$DEVMODE){
-	$devarea = new Html("div","");
-	$devarea->addChild(new Html("h2","dev area"));
-	$devarea->addChild(\service\Html::A_button("CSS demo",\service\Html::href_internal("dev/cssdemo")));
-	$page->add($devarea);
-}
+$updater = new \installer\Core_database();
+echo $updater->update();
 
 $page->send_and_quit();

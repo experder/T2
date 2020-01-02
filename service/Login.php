@@ -24,6 +24,8 @@ use core\Page;
 
 class Login {
 
+	private static $session_cookie_name = 'T2_session';
+
 	public static function get_uid(){
 
 		$uid = self::check_session();
@@ -38,12 +40,13 @@ class Login {
 			Error::quit("Couldn't initialize session.");
 		}
 
+		Page::$compiler_messages[]=new Message(Message::TYPE_CONFIRM, "Login successful. Welcome!");
 		return $uid;
 	}
 
 	public static function check_session(){
-		if(isset($_COOKIE['T2_session']) && $_COOKIE['T2_session']!=='-'){
-			$session_id = $_COOKIE['T2_session'];
+		if(isset($_COOKIE[self::$session_cookie_name]) && $_COOKIE[self::$session_cookie_name]!=='-'){
+			$session_id = $_COOKIE[self::$session_cookie_name];
 
 			$session_data = Database::select_single_(
 				"SELECT user, expires FROM core_sessions WHERE session_id=:session_id"
@@ -108,7 +111,7 @@ class Login {
 	}
 
 	public static function set_cookie($session_id){
-		return setcookie("T2_session", $session_id, 0, '/');
+		return setcookie(self::$session_cookie_name, $session_id, 0, '/');
 	}
 
 	public static function prompt_credentials(){

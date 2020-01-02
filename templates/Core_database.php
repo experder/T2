@@ -36,7 +36,7 @@ class Core_database extends Update_database {
 		$this->q(1, "ALTER TABLE `core_config` MODIFY COLUMN `module`  VARCHAR(40) CHARACTER SET utf8 COLLATE utf8_bin NULL AFTER `idstring`;");
 
 		#$core_user = DB_CORE_PREFIX.'_user';
-		$this->q(2, "CREATE TABLE IF NOT EXISTS `core_user` (
+		$this->q(2, "CREATE TABLE `core_user` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `ref_id` int(11) DEFAULT NULL,
 			  `username` varchar(40) COLLATE utf8_bin NOT NULL,
@@ -46,7 +46,7 @@ class Core_database extends Update_database {
 			  UNIQUE KEY `username` (`username`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;");
 
-		$this->q(3,"CREATE TABLE IF NOT EXISTS `core_sessions` (
+		$this->q(3,"CREATE TABLE `core_sessions` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `user` int(11) NOT NULL,
 			  `session_id` varchar(20) COLLATE utf8_bin NOT NULL,
