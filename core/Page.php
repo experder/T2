@@ -12,8 +12,10 @@ namespace core;
 require_once ROOT_DIR . '/core/Html.php';
 require_once ROOT_DIR . '/core/Stylesheet.php';
 require_once ROOT_DIR . '/core/Echoable.php';
+require_once ROOT_DIR . '/service/User.php';
 
 use service\Config;
+use service\User;
 use tethys_root\Start;
 
 class Page {
@@ -47,6 +49,18 @@ class Page {
 	private $stylesheets = array();
 
 	private $javascripts = array();
+
+	/**
+	 * @var string|null $focus_field_id
+	 */
+	private $focus_field_id = null;
+
+	/**
+	 * @param string|null $focus_field_id
+	 */
+	public function set_focusFieldId($focus_field_id) {
+		$this->focus_field_id = $focus_field_id;
+	}
 
 	private $inline_js = "";
 
@@ -186,7 +200,7 @@ class Page {
 	}
 
 	private function get_title() {
-		$project = Config::get_value_core("PROJEKT_TITLE", 'T2');
+		$project = Config::get_value_core("PROJECT_TITLE", 'T2');
 		$title = $this->title." - $project";
 		return $title;
 	}

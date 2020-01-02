@@ -89,6 +89,7 @@ class Install_wizard {
 	public static function init3_db_config() {
 		$database=Database::get_singleton();
 
+		#$core_config = DB_CORE_PREFIX.'_config';
 		$database->get_pdo()->exec("CREATE TABLE IF NOT EXISTS `core_config` (
 			  `id` INT(11) NOT NULL AUTO_INCREMENT,
 			  `idstring` VARCHAR(40) COLLATE utf8_bin NOT NULL,

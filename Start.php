@@ -22,6 +22,7 @@ use core\Database;
 use core\Error;
 use service\Config;
 use admin\Install_wizard;
+use service\User;
 
 class Start {
 
@@ -48,6 +49,7 @@ class Start {
 		require_once ROOT_DIR . '/core/Database.php';
 		require_once ROOT_DIR . '/core/Message.php';
 		require_once ROOT_DIR . '/service/Config.php';
+		require_once ROOT_DIR . '/service/User.php';
 	}
 
 	public static function init_config() {
@@ -62,12 +64,13 @@ class Start {
 		if (Database::get_singleton(false) === false) {
 			Error::quit("Local config file (\"$config_file\") not found or corrupt. Please check.");
 		}
+		#define('DB_CORE_PREFIX', Database::get_singleton()->core_prefix);
 	}
 
 	public static function init_database() {
 		Config::load_values(array(
 			"EXTENSION",
-			"PROJEKT_TITLE",
+			"PROJECT_TITLE",
 			"STYLE",
 			"HTTP_ROOT",
 		));
@@ -75,7 +78,11 @@ class Start {
 
 		define("HTTP_ROOT", Config::get_value_core("HTTP_ROOT", ""));
 
-		#Config::$PROJECT_TITLE = Config::get_value_core("PROJEKT_TITLE", 'T2');
+		#Config::$PROJECT_TITLE = Config::get_value_core("PROJECT_TITLE", 'T2');
+	}
+
+	public static function init_userrights() {
+		User::init();
 	}
 
 }
@@ -84,3 +91,4 @@ Start::init_constants();
 Start::init_dependencies();
 Start::init_config();
 Start::init_database();
+Start::init_userrights();

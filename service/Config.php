@@ -38,7 +38,7 @@ class Config {
 	private static $config = array();
 
 	/**
-	 * The default value is NOT cached (self::$core_config),
+	 * The default value is NOT cached (self::$config),
 	 * so the next call of this function can return a different value.
 	 * @param string        $id
 	 * @param string|null        $module
@@ -105,6 +105,7 @@ class Config {
 	 */
 	public static function load_values($ids, $module = null, $user = null) {
 		$ids_sql = Strings::build_sql_collection($ids);
+		#$core_config = DB_CORE_PREFIX.'_config';
 		$data = Database::select_(
 			"SELECT idstring,`content` FROM core_config WHERE `idstring` in ($ids_sql) AND module<=>:module AND userid <=> :userid;",
 			array(

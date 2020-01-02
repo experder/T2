@@ -36,6 +36,8 @@ class Database {
 	/** @var Database $singleton */
 	static private $singleton = null;
 
+	public $core_prefix;
+
 	private $pdo;
 
 	private $error = false;
@@ -44,7 +46,8 @@ class Database {
 
 	private $dbname;
 
-	public function __construct($host, $dbname, $user, $password, $stacktrace_depth = 0, $quit_on_error = true) {
+	public function __construct($host, $dbname, $user, $password, $stacktrace_depth = 0, $quit_on_error = true, $core_prefix='core') {
+		$this->core_prefix = $core_prefix;
 		$this->dbname=$dbname;
 		try {
 			$this->pdo = new \PDO("mysql:host=" . $host . ";dbname=" . $dbname, $user, $password);
@@ -80,19 +83,19 @@ class Database {
 		return self::$singleton;
 	}
 
-	public static function init($host, $dbname, $user, $password, $backtrace_depth = 0) {
+	public static function init($host, $dbname, $user, $password, $core_prefix='core') {
 
 		if (self::$singleton !== null) {
 			Error::quit("Database is already initialized!", 1);
 		}
 
-		self::$singleton = new Database($host, $dbname, $user, $password, 1, false);
+		self::$singleton = new Database($host, $dbname, $user, $password, 1, false, $core_prefix);
 
 		if (($error = self::$singleton->getError()) && $error instanceof Error) {
 			if ($error->get_type() == Error::TYPE_DB_NOT_FOUND) {
 				//Database doesn't exist -> Call Installer to initialize Database:
 				require_once ROOT_DIR . '/admin/Install_wizard.php';
-				self::$singleton = Install_wizard::init2_db($host, $dbname, $user, $password, $backtrace_depth + 1);
+				self::$singleton = Install_wizard::init2_db($host, $dbname, $user, $password, 1);
 			}
 		}
 
@@ -119,16 +122,30 @@ class Database {
 
 	/**
 	 * @param string $query
+	 * @param null|array   $substitutions
+	 * @param int    $backtrace_depth
 	 * @return int|false
 	 */
-	public function insert($query) {
-		return self::iquery($query, null, self::RETURN_LASTINSERTID);
+	public function insert($query, $substitutions = null, $backtrace_depth = 0) {
+		return self::iquery($query, $substitutions, self::RETURN_LASTINSERTID, true, $backtrace_depth+1);
 	}
 
+	/**
+	 * @param string     $query
+	 * @param array|null $substitutions
+	 * @param int        $backtrace_depth
+	 * @return array|false
+	 */
 	public static function select_single_($query, $substitutions = null, $backtrace_depth = 0) {
 		return self::get_singleton()->select_single($query, $substitutions, $backtrace_depth + 1);
 	}
 
+	/**
+	 * @param string     $query
+	 * @param array|null $substitutions
+	 * @param int        $backtrace_depth
+	 * @return array|false
+	 */
 	public function select_single($query, $substitutions = null, $backtrace_depth = 0) {
 		$result = self::iquery($query, $substitutions, self::RETURN_ASSOC, true, $backtrace_depth + 1);
 		if (!$result) {
@@ -199,11 +216,21 @@ class Database {
 		}
 	}
 
-	public static function insert_assoc_($tabelle, $data_set) {
-		return self::get_singleton()->insert_assoc($tabelle, $data_set);
+	/**
+	 * @param string $table
+	 * @param array $data_set
+	 * @return false|int
+	 */
+	public static function insert_assoc_($table, $data_set, $backtrace_depth = 0) {
+		return self::get_singleton()->insert_assoc($table, $data_set, $backtrace_depth+1);
 	}
 
-	public function insert_assoc($tabelle, $data_set) {
+	/**
+	 * @param string $tabelle
+	 * @param array $data_set
+	 * @return false|int
+	 */
+	public function insert_assoc($tabelle, $data_set, $backtrace_depth = 0) {
 		$keys_sql = array();
 		$values_sql = array();
 		foreach ($data_set as $key => $value) {
@@ -213,15 +240,16 @@ class Database {
 		$keys = implode(", ", $keys_sql);
 		$values = implode(", ", $values_sql);
 		$query2 = "INSERT INTO $tabelle ($keys) VALUES ($values);";
-		return self::insert($query2);
+		return self::insert($query2, null, $backtrace_depth+1);
 	}
 
 	/**
 	 * @param string $query
+	 * @param array  $substitutions
 	 * @return int|false
 	 */
-	public function update($query) {
-		return $this->iquery($query, null, self::RETURN_ROWCOUNT);
+	public function update($query, $substitutions = array()) {
+		return $this->iquery($query, $substitutions, self::RETURN_ROWCOUNT);
 	}
 
 	public function update_assoc($tabelle, $where, $data_set) {

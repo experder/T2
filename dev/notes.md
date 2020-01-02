@@ -16,6 +16,7 @@ Current TODOs
 -------------
 
 ### High
+* $page->set_focusFieldId
 
 ### Low
 * remove camel case methods from whole project
