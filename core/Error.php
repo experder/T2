@@ -22,6 +22,7 @@ class Error {
 	#const TYPE_WRONG_CREDENTIALS = "WRONG_CREDENTIALS";
 	const TYPE_TABLE_NOT_FOUND = "SQL_TABLE_NOT_FOUND";
 	const TYPE_SQL = "SQL-Error";
+	const TYPE_FILESYSTEM_WRITEACCESS = "FILESYSTEM_WRITEACCESS";
 
 	const HR = "\n=========================\n";
 
@@ -47,7 +48,6 @@ class Error {
 			if ($page = Page::get_singleton(false)) {
 				$page->send_and_quit();
 			} else {
-				require_once ROOT_DIR . '/admin/Install_wizard.php';
 				$page = new Page("T2_INSTWIZARD", "T2 - Fatal Error");
 				$page->send_and_quit();
 			}

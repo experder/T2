@@ -20,21 +20,24 @@ class Files {
 
 	/**
 	 * Saves a string to a file.
-	 * @param string $file
+	 * @param string $filename
 	 * @param string $content
-	 * @param bool   $append
+	 * @param bool $append
+	 * @param bool $halt_on_error
+	 * @return bool|int the number of bytes written, or <b>FALSE</b> on error.
 	 */
-	public static function save($file, $content, $append = false) {
+	public static function save($filename, $content, $append = false, $halt_on_error=true) {
 		/** Explanation of the file params: http://gitfabian.github.io/Tethys/php/files.html */
-		$file = fopen($file, $append ? "a" : "w");
+		$file = @fopen($filename, $append ? "a" : "w");
 		$success = false;
 		if ($file !== false) {
 			$success = fwrite($file, $content);
 			fclose($file);
 		}
-		if ($success === false) {
-			Error::quit("Failure on storing file \"$file\"!");
+		if ($success === false && $halt_on_error) {
+			Error::quit("Failure on storing file \"$filename\"!", 1);
 		}
+		return $success;
 	}
 
 

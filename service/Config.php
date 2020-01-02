@@ -50,7 +50,7 @@ class Config {
 	 */
 	public static function get_value($id, $module = null, $user = null, $default_value = null, $use_cache = true, $database = null) {
 		if ($database === null) {
-			$database = Database::get_singleton();
+			$database = Database::get_singleton(false);
 		}
 		if ($use_cache) {
 			$value = self::recall_val($module, $user, $id);
@@ -58,14 +58,18 @@ class Config {
 				return $value;
 			}
 		}
-		$data = $database->select_single(
-			"SELECT `content` FROM core_config WHERE `idstring`=:id AND module<=>:module AND userid<=>:userid;",
-			array(
-				"id" => $id,
-				"module" => $module,
-				"userid" => $user,
-			)
-		);
+		if($database===false){
+			$data=false;
+		}else{
+			$data = $database->select_single(
+				"SELECT `content` FROM core_config WHERE `idstring`=:id AND module<=>:module AND userid<=>:userid;",
+				array(
+					"id" => $id,
+					"module" => $module,
+					"userid" => $user,
+				)
+			);
+		}
 		if (!$data) {
 			return $default_value;
 		}

@@ -52,7 +52,10 @@ class Templates {
 
 	public static function create_file($target_file, $template_file, $keyVals) {
 		$content = self::load($template_file, $keyVals);
-		Files::save($target_file, $content);
+		$success = Files::save($target_file, $content, false, false);
+		if($success===false){
+			new Error("Couldn't store file \"$target_file\". Please check rights.", Error::TYPE_FILESYSTEM_WRITEACCESS, true, 1, true);
+		}
 	}
 
 }

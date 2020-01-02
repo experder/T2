@@ -174,7 +174,13 @@ class Page {
 
 	private function get_css_html() {
 		$style = Config::get_value_core("STYLE", 'bare');
-		if(in_array($style,array("bare"))){
+		if(in_array($style,array("bare")) && defined('HTTP_ROOT') ){
+
+			//Installer:
+			if(!defined('HTTP_ROOT')){
+				define("HTTP_ROOT", '.');//Geht nur, wenn Installer verwendet wird / relativer Pfad bekannt ist.
+			}
+
 			$this->stylesheets["CSS_ID_ALL"]=new Stylesheet(HTTP_ROOT."/style/$style/all.css");
 			$this->stylesheets["CSS_ID_PRINT"]=new Stylesheet(HTTP_ROOT."/style/$style/print.css", Stylesheet::MEDIA_PRINT);
 		}
