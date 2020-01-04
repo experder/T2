@@ -48,7 +48,7 @@ class Config {
 	 * @param Database|null $database
 	 * @return string|null
 	 */
-	public static function get_value($id, $module = null, $user = null, $default_value = null, $use_cache = true, $database = null) {
+	public static function get_value($id, $module = null, $user = null, $default_value = null, $use_cache = true, $database = null, $backtrace_depth=0) {
 		if ($database === null) {
 			$database = Database::get_singleton(false);
 		}
@@ -68,6 +68,7 @@ class Config {
 					"module" => $module,
 					"userid" => $user,
 				)
+				, $backtrace_depth+1
 			);
 		}
 		if (!$data) {
@@ -86,8 +87,8 @@ class Config {
 	 * @param int|null $user
 	 * @return string|null
 	 */
-	public static function get_value_core($id, $default_value = null, $user = null) {
-		return self::get_value($id, null, $user, $default_value);
+	public static function get_value_core($id, $default_value = null, $user = null, $backtrace_depth=0) {
+		return self::get_value($id, null, $user, $default_value, true, null, $backtrace_depth+1);
 	}
 
 	public static function set_value($id, $value, $module = null, $user = null, $database = null) {

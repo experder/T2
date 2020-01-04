@@ -24,16 +24,21 @@ h4{
 ======================== Links ===========================
  */
 
-a.abutton{
+a.abutton,
+div.abutton{
 	background:lightgray;
 	margin:0 2px;
 	padding: 0 2px;
 	border-radius:5px;
 	transition: .5s;
 }
-a.abutton:hover{
+a.abutton:hover,
+div.abutton:hover{
 	background:lightyellow;
 	transition: .5s;
+}
+div.abutton{
+	display:inline-block;
 }
 a[target="_blank"]{
 	background-image: url('img/Icon_External_Link.svg');
@@ -57,8 +62,33 @@ pre.dev_error_info{
 	background:url('img/graystripe.png');
 }
 div.dev_stats{
-	color:blue;
 }
+div.dev_stats div.abutton{
+	background:white;
+}
+div.dev_stats div.abutton:hover{
+	background:lightyellow;
+}
+div.dev_stats div.dev_stats_queries{
+}
+div.dev_stats div.dev_stats_runtime:hover{
+	background:white;
+}
+#id_dev_stats_queries_detail{
+}
+#id_dev_stats_queries_detail span.detail_functionSource{
+	color:darkred;
+}
+#id_dev_stats_queries_detail span.detail_sqlDump{
+	color:slategray;
+}
+#id_dev_stats_queries_detail span.detail_functionSource.core_query_class{
+	color: #a97e7c;
+}
+#id_dev_stats_queries_detail span.detail_sqlDump.core_query_class{
+	color: #9eb2c4;
+}
+
 
 /*
 ======================== Messages ===========================

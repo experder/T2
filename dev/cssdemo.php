@@ -53,10 +53,9 @@ $page->add_message(\core\Message::TYPE_INFO, '<b>NOTE!</b> The following error i
 $page->add_message(\core\Message::TYPE_ERROR,
 'An Error occured. Please report/see log: #'.time().'.<pre class="dev_error_info">SQL_TABLE_NOT_FOUND
 =========================
-SQL: [19] SELECT * FROM SPACE
-Params:  0
+SELECT * FROM SPACE
 =========================
-Table \''.\core\Database::get_singleton()->get_dbname().'.space\' doesn\'t exist
+Table \''.\core\Database::get_singleton()->get_dbname().'.SPACE\' doesn\'t exist
 =========================
 '.__FILE__.':'.__LINE__.'</pre>'
 );

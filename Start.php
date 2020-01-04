@@ -20,6 +20,7 @@ namespace tethys_root;
 
 use core\Database;
 use core\Error;
+use core\Html;
 use service\Config;
 use admin\Install_wizard;
 use service\User;
@@ -27,6 +28,7 @@ use service\User;
 class Start {
 
 	private static $dev_start_time;
+	public static $dev_queries = array();
 
 	public static function init_constants() {
 		self::$dev_start_time = microtime(true);
@@ -40,7 +42,7 @@ class Start {
 
 	public static function get_dev_stats() {
 		$end_time = microtime(true);
-		return round($end_time - self::$dev_start_time, 3) . " Seconds";
+		return new Html("div", "<b>".round($end_time - self::$dev_start_time, 3) . "</b> Seconds", array("class"=>"dev_stats_runtime abutton"));
 	}
 
 	public static function init_dependencies() {
@@ -73,6 +75,7 @@ class Start {
 			"PROJECT_TITLE",
 			"STYLE",
 			"HTTP_ROOT",
+			"SESSION_EXPIRES",
 		));
 		define("EXT", Config::get_value_core("EXTENSION", "php"));
 

@@ -48,6 +48,9 @@ class Page {
 	 */
 	private $stylesheets = array();
 
+	/**
+	 * @var string[]
+	 */
 	private $javascripts = array();
 
 	/**
@@ -129,9 +132,15 @@ class Page {
 		$this->messages[] = $msg;
 	}
 
+	public function add_inline_js($js) {
+		$this->inline_js.=$js."\n";
+	}
+
 	public function get_dev_stats(){
-		$dev_stats = new Html("div", Database::get_dev_stats() . " / " . Start::get_dev_stats(), array("class" => "dev_stats noprint"));
-		return $dev_stats;
+		$db_stats = Database::get_dev_stats();
+		$dev_stats = new Html("div", "\n\t".$db_stats ."\n\t". Start::get_dev_stats()."\n"
+			, array("class" => "dev_stats noprint"));
+		return "\n".$dev_stats."\n";
 	}
 
 	/**
@@ -142,29 +151,30 @@ class Page {
 		$title = $this->get_title();
 		$messages = $this->get_message_html();
 		$css_html = $this->get_css_html();
-		$js_html = "";
 
 		$dev_stats = "";
 		if (Config::$DEVMODE) {
 			$dev_stats = $this->get_dev_stats();
 		}
 
+		$js_html = $this->get_js_html();
+
 		// @formatter:off
-		echo "<!DOCTYPE html>"
+		echo "<!DOCTYPE html>\n"
 			."<html>\n"
 				."<head>\n"
-					."<meta charset=\"UTF-8\">\n"
-					."<title>$title</title>\n"
+					."\t<meta charset=\"UTF-8\">\n"
+					."\t<title>$title</title>\n"
 					.$css_html
 					.$js_html
 				."</head>\n"
 				."<body id='$this->id'>\n"
 					.$messages
-					."<div class='body_inner'>";
+					."<div class='body_inner'>\n";
 						$this->get_body(true);
-		echo
-					"</div>$dev_stats"
-				."</body>"
+						echo "\n"
+					."</div>$dev_stats"
+				."</body>\n"
 			."</html>";
 		// @formatter:on
 
@@ -172,7 +182,40 @@ class Page {
 
 	}
 
+	public function add_js_jquery341(){
+		$this->add_javascript("JS_ID_JQUERY", "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js");
+	}
+
+	private function get_js_html(){
+		$html="";
+
+		/*
+		 * External scriptfiles
+		 */
+		foreach ($this->javascripts as $javascript){
+			$html.="\t<script src=\"$javascript\" type=\"text/javascript\"></script>\n";
+		}
+
+		/*
+		 * Inline script
+		 */
+		if($this->inline_js){
+			$html.="\t<script language='JavaScript'>\n$this->inline_js\t</script>\n";
+		}
+
+		return $html;
+	}
+
+	public function add_stylesheet($id, Stylesheet $stylesheet){
+		$this->stylesheets[$id] = $stylesheet;
+	}
+
+	public function add_javascript($id, $url){
+		$this->javascripts[$id] = $url;
+	}
+
 	private function get_css_html() {
+		$stylesheets = array();
 		$style = Config::get_value_core("STYLE", 'bare');
 		if(in_array($style,array("bare")) && defined('HTTP_ROOT') ){
 
@@ -181,12 +224,15 @@ class Page {
 				define("HTTP_ROOT", '.');//Geht nur, wenn Installer verwendet wird / relativer Pfad bekannt ist.
 			}
 
-			$this->stylesheets["CSS_ID_ALL"]=new Stylesheet(HTTP_ROOT."/style/$style/all.css");
-			$this->stylesheets["CSS_ID_PRINT"]=new Stylesheet(HTTP_ROOT."/style/$style/print.css", Stylesheet::MEDIA_PRINT);
+			$stylesheets["CSS_ID_ALL"]=new Stylesheet(HTTP_ROOT."/style/$style/all.css");
+			$stylesheets["CSS_ID_PRINT"]=new Stylesheet(HTTP_ROOT."/style/$style/print.css", Stylesheet::MEDIA_PRINT);
+		}
+		foreach ($this->stylesheets as $key => $stylesheet){
+			$stylesheets[$key] = $stylesheet;
 		}
 		$html = "";
-		foreach ($this->stylesheets as $stylesheet){
-			$html.="<link href=\"".$stylesheet->get_url()."\" rel=\"stylesheet\" type=\"text/css\" media=\"".$stylesheet->get_media()."\"/>\n";;
+		foreach ($stylesheets as $stylesheet){
+			$html.="\t<link href=\"".$stylesheet->get_url()."\" rel=\"stylesheet\" type=\"text/css\" media=\"".$stylesheet->get_media()."\"/>\n";;
 		}
 		return $html;
 	}
@@ -199,9 +245,11 @@ class Page {
 		$all_messages = array_merge(self::$compiler_messages, $this->messages);
 		foreach ($all_messages as $message) {
 			$css_class = $message->get_type_cssClass();
-			$html .= "<div class='message $css_class'>" . $message->get_message() . "</div>";
+			$html .= "\n\t<div class='message $css_class'>" . $message->get_message() . "</div>";
 		}
-		$html = "<div class='messages noprint'>$html</div>";
+		if($html){
+			$html = "<div class='messages noprint'>$html\n</div>\n";
+		}
 		return $html;
 	}
 

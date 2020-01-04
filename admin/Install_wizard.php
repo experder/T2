@@ -106,10 +106,15 @@ class Install_wizard {
 		return $msg;
 	}
 
-	public static function init4_config_params() {
-		$HTTP_ROOT = Request::value('HTTP_ROOT', false);
-		if($HTTP_ROOT!==false){
-			Config::set_value('HTTP_ROOT', $HTTP_ROOT);
+	private static function init4_config_params() {
+		foreach (array(
+			'EXTENSION',
+			'PROJECT_TITLE',
+			'STYLE',
+			'HTTP_ROOT',
+			'SESSION_EXPIRES',
+				 ) as $param){
+			if(($val=Request::value($param, false))!==false){ Config::set_value($param, $val); }
 		}
 		return new Message(Message::TYPE_CONFIRM, "Config params set.");
 	}
@@ -125,7 +130,11 @@ class Install_wizard {
 		$HTTP_ROOT_proposal = Config::get_value_core("HTTP_ROOT", pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_DIRNAME));
 
 		$form = new Form("submit_core_config");
+		$form->add_field($ff=new Formfield_text("EXTENSION", "EXTENSION", "php"));
+		$form->add_field($ff=new Formfield_text("PROJECT_TITLE", "PROJECT_TITLE", "T2"));
+		$form->add_field($ff=new Formfield_text("STYLE", "STYLE", "bare"));
 		$form->add_field($ff=new Formfield_text("HTTP_ROOT", "HTTP_ROOT", $HTTP_ROOT_proposal));
+		$form->add_field($ff=new Formfield_text("SESSION_EXPIRES", "SESSION_EXPIRES", 86400/*24 hours*/));
 
 		$page->add_message(Message::TYPE_INFO, $form);
 

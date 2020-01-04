@@ -10,7 +10,9 @@
 namespace core;
 
 use admin\Install_wizard;
+use service\Config;
 use service\Strings;
+use tethys_root\Start;
 
 class Database {
 
@@ -35,6 +37,14 @@ class Database {
 
 	/** @var Database $singleton */
 	static private $singleton = null;
+
+	//A blank page needs 3 Queries:
+	private static $blank_queries=array(
+		"load_values ( :ROOT_DIR/service/Config.php:120 )",
+		"check_session ( :ROOT_DIR/service/Login.php:54 )",
+		"update_session ( :ROOT_DIR/service/Login.php:80 )",
+	);
+	private static $blank_queries_compiled=null;
 
 	public $core_prefix;
 
@@ -154,8 +164,33 @@ class Database {
 		return $this->pdo;
 	}
 
+	private static function get_blank_queries() {
+		if(self::$blank_queries_compiled===null){
+			self::$blank_queries_compiled=array();
+			foreach (self::$blank_queries as $query){
+				self::$blank_queries_compiled[]=str_replace(':ROOT_DIR',ROOT_DIR,$query);
+			}
+		}
+		return self::$blank_queries_compiled;
+	}
 	public static function get_dev_stats() {
-		return self::$dev_global_count . " Queries";
+		$blank_page_queries = count(self::get_blank_queries());
+		$querie_count = $blank_page_queries."+<b>".(self::$dev_global_count-$blank_page_queries). "</b> Queries";
+		$querie_count=new Html("span", $querie_count, array("onclick"=>"show_dev_stat_queries();"));
+		$page = Page::get_singleton(false);
+		if($page){
+			$page->add_js_jquery341();
+			$page->add_inline_js("function show_dev_stat_queries(){
+				$('#id_dev_stats_queries_detail').toggle(500);
+			}");
+			$hide="display:none;";
+		}else{
+			$hide="";
+		}
+
+		$queries=\service\Html::UL(Start::$dev_queries);
+		$queries=new Html("pre", $queries, array("style"=>"$hide", "id"=>"id_dev_stats_queries_detail"));
+		return new Html("div", $querie_count, array("class"=>"dev_stats_queries abutton")).$queries;
 	}
 
 	/**
@@ -173,6 +208,31 @@ class Database {
 		/** @var \PDOStatement $statement */
 		$statement = $this->pdo->prepare($query);
 		$ok = @$statement->execute($substitutions);
+		if(Config::$DEVMODE){
+			$backtrace = debug_backtrace();
+
+			ob_flush();
+			ob_start();
+			$statement->debugDumpParams();
+			$debugDump = ob_get_clean();
+			$compiled_query = self::get_compiled_query_from_debugDump($debugDump);
+			if(!$compiled_query){
+				$compiled_query=($debugDump?:$query);
+			}
+
+			$caller = (isset($backtrace[$backtrace_depth+1]['function'])?$backtrace[$backtrace_depth+1]['function']." ":"")
+				."( ".Error::backtrace($backtrace_depth + 1, "\n", false)." )";
+
+			$core_query_class = "";
+			if(in_array(str_replace('\\','/',$caller), self::get_blank_queries())){
+				$core_query_class=" core_query_class";
+			}
+
+			$query_html = (new Html("span",$caller, array("class"=>"detail_functionSource$core_query_class")))
+					."\n".(new Html("span", $compiled_query, array("class"=>"detail_sqlDump$core_query_class")))
+				;
+			Start::$dev_queries[]=$query_html;
+		}
 		if (!$ok) {
 			$compiled_query = "";
 			$errorInfo = $statement->errorInfo();
@@ -183,8 +243,11 @@ class Database {
 				ob_flush();
 				ob_start();
 				$statement->debugDumpParams();
-				$compiled_query = ob_get_clean();
-				$compiled_query = preg_replace("/\\R$/", "", $compiled_query);
+				$debugDump = ob_get_clean();
+				$compiled_query = self::get_compiled_query_from_debugDump($debugDump);
+				if(!$compiled_query){
+					$compiled_query=($debugDump?:$query);
+				}
 				$compiled_query .= Error::HR;
 			}
 			$error_type = Error::TYPE_SQL;
@@ -244,8 +307,8 @@ class Database {
 	 * @param array  $substitutions
 	 * @return int|false
 	 */
-	public function update($query, $substitutions = array()) {
-		return $this->iquery($query, $substitutions, self::RETURN_ROWCOUNT);
+	public function update($query, $substitutions = array(), $stacktrace_depth=0) {
+		return $this->iquery($query, $substitutions, self::RETURN_ROWCOUNT, true, $stacktrace_depth+1);
 	}
 
 	public function update_assoc($tabelle, $where, $data_set) {
@@ -292,6 +355,24 @@ class Database {
 			$data_alltogehter = array_merge($data_where, $data_set);
 			return $this->insert_assoc($tabelle, $data_alltogehter);
 		}
+	}
+
+	/** Explanation of the RegEx: http://gitfabian.github.io/Tethys/php/regex.html */
+	public static function get_compiled_query_from_debugDump($dump){
+		$compiled_query=false;
+		if(preg_match("/^SQL: \\[[0-9]*?\\] (.*?)\nParams:  0$/", $dump, $matches)){
+			$compiled_query=$matches[1];
+		}else{
+			preg_match("/\\nSent SQL: \\[([0-9]*?)\\] /", $dump, $matches);
+			if(isset($matches[1])){
+				$count=$matches[1];
+				preg_match("/\\nSent SQL: \\[$count\\] (.{{$count}})\nParams:/s", $dump, $matches);
+				if(isset($matches[1])){
+					$compiled_query=$matches[1];
+				}
+			}
+		}
+		return $compiled_query;
 	}
 
 }
