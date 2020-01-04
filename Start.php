@@ -62,7 +62,7 @@ class Start {
 		require_once $config_file;
 		//Make the Test:
 		if (Database::get_singleton(false) === false) {
-			Error::quit("Local config file (\"$config_file\") not found or corrupt. Please check.");
+			Error::quit("Local config file (\"$config_file\") corrupt. Please check.");
 		}
 		#define('DB_CORE_PREFIX', Database::get_singleton()->core_prefix);
 	}
@@ -76,7 +76,14 @@ class Start {
 		));
 		define("EXT", Config::get_value_core("EXTENSION", "php"));
 
-		define("HTTP_ROOT", Config::get_value_core("HTTP_ROOT", ""));
+		$http_root = Config::get_value_core("HTTP_ROOT", false);
+		if($http_root===false){
+			require_once ROOT_DIR . '/admin/Install_wizard.php';
+			Install_wizard::prompt_config();
+			$http_root = Config::get_value_core("HTTP_ROOT", "");
+		}
+
+		define("HTTP_ROOT", $http_root);
 
 		#Config::$PROJECT_TITLE = Config::get_value_core("PROJECT_TITLE", 'T2');
 	}

@@ -25,6 +25,7 @@ use core\Formfield_text;
 use core\Message;
 use core\Page;
 use installer\Core_database;
+use service\Config;
 use service\Request;
 use service\Templates;
 
@@ -103,6 +104,33 @@ class Install_wizard {
 		$msg = $updater->update();
 
 		return $msg;
+	}
+
+	public static function init4_config_params() {
+		$HTTP_ROOT = Request::value('HTTP_ROOT', false);
+		if($HTTP_ROOT!==false){
+			Config::set_value('HTTP_ROOT', $HTTP_ROOT);
+		}
+		return new Message(Message::TYPE_CONFIRM, "Config params set.");
+	}
+
+	public static function prompt_config() {
+		if (Request::cmd("submit_core_config")) {
+			Page::$compiler_messages[] = self::init4_config_params();
+			return;
+		}
+
+		$page = self::get_pre_page("Core config");
+
+		$HTTP_ROOT_proposal = Config::get_value_core("HTTP_ROOT", pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_DIRNAME));
+
+		$form = new Form("submit_core_config");
+		$form->add_field($ff=new Formfield_text("HTTP_ROOT", "HTTP_ROOT", $HTTP_ROOT_proposal));
+
+		$page->add_message(Message::TYPE_INFO, $form);
+
+		$page->send_and_quit();
+
 	}
 
 }
