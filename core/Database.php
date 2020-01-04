@@ -53,11 +53,7 @@ class Database {
 			$this->pdo = new \PDO("mysql:host=" . $host . ";dbname=" . $dbname, $user, $password);
 			$this->pdo->query('SET NAMES utf8');
 		} catch (\Exception $e) {
-			if ($quit_on_error) {
-				Error::quit("Fatal error on database initialization (#1). " . $e->getMessage(), $stacktrace_depth + 1);
-			} else {
-				$this->error = Error::from_exception($e, false);
-			}
+			$this->error = Error::from_exception($e, false, $quit_on_error);
 		}
 	}
 
@@ -74,7 +70,7 @@ class Database {
 	 * @return Database|false
 	 */
 	public static function get_singleton($quit_on_error = true) {
-		if (self::$singleton === null) {
+		if (self::$singleton === null || !isset(self::$singleton->pdo)) {
 			if ($quit_on_error) {
 				Error::quit("Please initialize Database singelton first: <code>\\core\\Database::init();</code>", 1);
 			}

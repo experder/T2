@@ -48,7 +48,7 @@ class Error {
 			if ($page = Page::get_singleton(false)) {
 				$page->send_and_quit();
 			} else {
-				$page = new Page("T2_INSTWIZARD", "T2 - Fatal Error");
+				$page = new Page("PAGEID_CORE_PREPAGEERROR", "Fatal Error");
 				$page->send_and_quit();
 			}
 		}
