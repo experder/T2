@@ -1,5 +1,6 @@
 .noprint,
-a.abutton{
+a.abutton,
+form div.buttons{
 	display:none;
 }
 a{

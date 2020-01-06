@@ -16,13 +16,29 @@ if(!\service\Config::$DEVMODE){
 	$page->send_and_quit();
 }
 
+$print_view = isset($_REQUEST['print']);
+
 $page->add(\service\Html::H1("CSS demo"));
+
+/*
+======================== Print ===========================
+ */
+
+if($print_view){
+	$page->add(\service\Html::A("screen.css", $_SERVER['SCRIPT_NAME']));
+	$style = \service\Config::get_value_core("STYLE");
+	$stylesheet = \core\Page::get_demoskins_stylesheet_print($style);
+	$stylesheet->setMedia('all');
+	$page->add_stylesheet("CSS_ID_PRINT",$stylesheet);
+}else{
+	$page->add(\service\Html::A_button("print.css", "?print"));
+}
 
 /*
 ======================== Text ===========================
  */
 
-$page->add(\service\Html::H2("Text", "Text"));
+$page->add(\service\Html::H2("Text", "text"));
 $page->add(schlauer_spruch());
 $page->add(\service\Html::PRE("pre {\n\twhite-space: pre-wrap;\n}"));
 
@@ -38,7 +54,7 @@ $page->add(\service\Html::H4("&lt;h4>"));
 ======================== Links ===========================
  */
 
-$page->add(\service\Html::H2("Links", "Links"));
+$page->add(\service\Html::H2("Links", "links"));
 $page->add(\service\Html::A('\service\Html::A',"https://github.com/experder/T2/blob/99b7c6cfd9173b5150c840a3553ae5c03061ace9/service/Html.php#L37:L39"));
 $page->add(\service\Html::A_button('\service\Html::A_button',"https://github.com/experder/T2/blob/99b7c6cfd9173b5150c840a3553ae5c03061ace9/style/bare/all.css#L27:L37"));
 $page->add(\service\Html::A_external('http://tethys-framework.de (external)','http://tethys-framework.de'));
@@ -69,8 +85,7 @@ $page->add_message(-1,
 /*
 ======================== Forms ===========================
  */
-
-$page->add(\service\Html::H2("Forms", "Forms"));
+$page->add(\service\Html::H2("Forms", "forms"));
 
 $page->add($form=new \core\Form());
 $form->add_field(new \core\Formfield_text("text"));
@@ -80,7 +95,6 @@ $form->add_field(new \core\Formfield_textarea("textarea2","this is a very long t
 
 
 
-#$page->add($page->get_dev_stats());
 $page->send_and_quit();
 //==================================================================================================
 function schlauer_spruch(){

@@ -1,9 +1,16 @@
+*{
+	padding:0;
+	margin:0;
+}
+
 /*
 ======================== Text ===========================
  */
 
 pre {
 	white-space: pre-wrap;
+	tab-size: 4;
+	-moz-tab-size: 4;
 }
 h1{
 	font-size: 200%;
@@ -18,6 +25,19 @@ h3{
 }
 h4{
 	font-size:100%;
+}
+ul{
+	padding-left:20px;
+}
+
+/*
+======================== Interaction ===========================
+ */
+.zoom-in{
+	cursor:zoom-in;
+}
+.zoom-out{
+	cursor:zoom-out;
 }
 
 /*
@@ -58,10 +78,21 @@ a[target="_blank"]:hover{
 ======================== dev-stuff ===========================
  */
 
+body{
+	margin-bottom:30px;
+}
 pre.dev_error_info{
 	background:url('img/graystripe.png');
 }
 div.dev_stats{
+	background: white;
+	box-shadow: 0px 0px 20px gray;
+	position:fixed;
+	bottom:0;
+	padding:4px;
+	border-top-right-radius: 5px;
+	max-height:50%;
+	overflow: auto;
 }
 div.dev_stats div.abutton{
 	background:white;
@@ -136,6 +167,8 @@ form div.form_field input[type="text"],
 form div.form_field input[type="password"],
 form div.form_field textarea
 {
+	font-family: inherit;
+	font-size: inherit;
 	vertical-align:bottom;
 	width:300px;
 }

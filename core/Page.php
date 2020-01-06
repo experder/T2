@@ -137,7 +137,7 @@ class Page {
 	}
 
 	public function get_dev_stats(){
-		$db_stats = Database::get_dev_stats();
+		$db_stats = Database::get_dev_stats($this);
 		$dev_stats = new Html("div", "\n\t".$db_stats ."\n\t". Start::get_dev_stats()."\n"
 			, array("class" => "dev_stats noprint"));
 		return "\n".$dev_stats."\n";
@@ -186,6 +186,11 @@ class Page {
 		$this->add_javascript("JS_ID_JQUERY", "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js");
 	}
 
+	public function add_js_core(){
+		$this->add_js_jquery341();
+		$this->add_javascript("JS_ID_T2CORE", HTTP_ROOT . "/core/client/core.js");
+	}
+
 	private function get_js_html(){
 		$html="";
 
@@ -214,6 +219,10 @@ class Page {
 		$this->javascripts[$id] = $url;
 	}
 
+	public static function get_demoskins_stylesheet_print($style){
+		return new Stylesheet(HTTP_ROOT."/style/$style/print.css", Stylesheet::MEDIA_PRINT);
+	}
+
 	private function get_css_html() {
 		$stylesheets = array();
 		$style = Config::get_value_core("STYLE");
@@ -225,7 +234,7 @@ class Page {
 			}
 
 			$stylesheets["CSS_ID_ALL"]=new Stylesheet(HTTP_ROOT."/style/$style/all.css");
-			$stylesheets["CSS_ID_PRINT"]=new Stylesheet(HTTP_ROOT."/style/$style/print.css", Stylesheet::MEDIA_PRINT);
+			$stylesheets["CSS_ID_PRINT"]=self::get_demoskins_stylesheet_print($style);
 		}
 		foreach ($this->stylesheets as $key => $stylesheet){
 			$stylesheets[$key] = $stylesheet;

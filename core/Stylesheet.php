@@ -32,6 +32,13 @@ class Stylesheet {
 	}
 
 	/**
+	 * @param string $media
+	 */
+	public function setMedia($media) {
+		$this->media = $media;
+	}
+
+	/**
 	 * @return string
 	 */
 	public function get_media() {
