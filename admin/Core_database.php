@@ -8,10 +8,10 @@
 
 
 /*
-require_once ROOT_DIR . "/templates/Core_database.php";
+require_once ROOT_DIR . "/admin/Core_database.php";
  */
 
-namespace installer;
+namespace admin;
 
 require_once ROOT_DIR . "/core/Update_database.php";
 

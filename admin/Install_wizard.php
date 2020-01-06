@@ -15,7 +15,7 @@ namespace admin;
 
 require_once ROOT_DIR . '/core/form/Form.php';
 require_once ROOT_DIR . '/service/Templates.php';
-require_once ROOT_DIR . "/templates/Core_database.php";
+require_once ROOT_DIR . "/admin/Core_database.php";
 
 use core\Database;
 use core\Error;
@@ -24,7 +24,6 @@ use core\Formfield_password;
 use core\Formfield_text;
 use core\Message;
 use core\Page;
-use installer\Core_database;
 use service\Config;
 use service\Request;
 use service\Templates;

@@ -58,6 +58,9 @@ abstract class Update_database {
 	 * @return string|false
 	 */
 	public function update() {
+		/**
+		 * @var int $db_version1
+		 */
 		$db_version1 = Config::get_value("DB_VERSION", $this->module, null, "0", false, $this->database);
 		$this->ver_next = $db_version1 + 1;
 		$this->do_update();

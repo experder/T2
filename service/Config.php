@@ -20,7 +20,7 @@ use core\Database;
 use core\Error;
 use core\Message;
 use core\Page;
-use t2\core\Default_values;
+use admin\Core_values;
 
 class Config {
 
@@ -53,11 +53,11 @@ class Config {
 	}
 
 	private static function set_modules_default(){
-		require_once ROOT_DIR.'/templates/Default_values.php';
-		$dv = new Default_values();
+		require_once ROOT_DIR . '/admin/Core_values.php';
+		$dv = new Core_values();
 		$modules_json = $dv->get_default_value("MODULES");
 		if(!(self::$MODULES = json_decode($modules_json, true))){
-			Error::quit("Invalid JSON:\n\\t2\\core\\Default_values->\$default_values:\n$modules_json");
+			Error::quit("Invalid JSON:\n\\admin\\Core_values->\$default_values:\n$modules_json");
 		}
 	}
 
@@ -130,11 +130,11 @@ class Config {
 	/**
 	 * @param string        $id
 	 * @param string|true   $default_value
-	 *                      TRUE: get default value from \t2\core\Default_values
+	 *                      TRUE: get default value from \admin\Core_values
 	 * @param int|null      $user
 	 * @param int           $backtrace_depth
 	 * @return string
-	 * @see \t2\core\Default_values
+	 * @see \admin\Core_values
 	 */
 	public static function get_value_core($id, $default_value = true, $user = null, $backtrace_depth=0) {
 		return self::get_value($id, null, $user, $default_value, true, null, $backtrace_depth+1);

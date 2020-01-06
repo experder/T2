@@ -7,19 +7,18 @@
  GPL*/
 
 
-namespace t2\core;
+namespace admin;
 
-require_once ROOT_DIR.'/api/Default_values.php';
+require_once ROOT_DIR . '/api/Default_values.php';
 
-//TODO:Move to admin
-class Default_values extends \t2\api\Default_values {
+class Core_values extends \t2\api\Default_values {
 
 	protected $default_values = array(
 		"MODULES" => '{
 				"core":{
 					"Default_values":{
-						"include":":ROOT_DIR\/templates\/Default_values.php",
-						"class":"\\\t2\\\core\\\Default_values"
+						"include":":ROOT_DIR\/admin\/Core_values.php",
+						"class":"\\\admin\\\Core_values"
 					}
 				}
 			}',

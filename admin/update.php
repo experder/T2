@@ -9,9 +9,9 @@
 require_once '../Start.php';
 $page = \core\Page::init("PAGE_ID_MYPAGE", "My page");
 
-require_once ROOT_DIR . "/templates/Core_database.php";
+require_once ROOT_DIR . "/admin/Core_database.php";
 
-$updater = new \installer\Core_database();
+$updater = new \admin\Core_database();
 echo $updater->update();
 
 $page->send_and_quit();
