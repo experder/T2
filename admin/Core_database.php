@@ -13,9 +13,9 @@ require_once ROOT_DIR . "/admin/Core_database.php";
 
 namespace admin;
 
-require_once ROOT_DIR . "/core/Update_database.php";
+require_once ROOT_DIR . "/api/Update_database.php";
 
-use core\Update_database;
+use t2\api\Update_database;
 
 class Core_database extends Update_database {
 
