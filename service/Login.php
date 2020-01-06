@@ -128,7 +128,7 @@ class Login {
 			}
 		}
 
-		$LOGIN_H1 = Config::get_value_core('LOGIN_H1', "Login");
+		$LOGIN_H1 = Config::get_value_core('LOGIN_H1', true);
 
 		$page->add(Html::H1($LOGIN_H1));
 		$page->add($form = new Form("t2_dologin","","Login"));

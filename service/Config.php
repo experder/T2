@@ -14,11 +14,13 @@ require_once ROOT_DIR . '/service/Config.php';
 namespace service;
 
 require_once ROOT_DIR . '/service/Strings.php';
+require_once ROOT_DIR.'/api/Default_values.php';
 
 use core\Database;
 use core\Error;
 use core\Message;
 use core\Page;
+use t2\core\Default_values;
 
 class Config {
 
@@ -30,6 +32,30 @@ class Config {
 	 */
 	#public static $PROJECT_TITLE;
 
+	private static $MODULES = null;
+
+	/**
+	 * @return array
+	 */
+	public static function MODULES(){
+		if(self::$MODULES===null){
+			$modules_json = self::get_value('MODULES', null, null, false);
+			if($modules_json!==false && !(self::$MODULES = json_decode($modules_json, true))){
+				new Error("Module configuration is invalid JSON. Switching to default.");
+				$modules_json=false;
+			}
+			if($modules_json===false){
+				require_once ROOT_DIR.'/templates/Default_values.php';
+				$dv = new Default_values("");
+				$modules_json=$dv->get_default_value("MODULES");
+				if(!(self::$MODULES = json_decode($modules_json, true))){
+					Error::quit("Invalig JSON:\n\\t2\\core\\Default_values->\$default_values:\n$modules_json");
+				}
+			}
+		}
+		return self::$MODULES;
+	}
+
 	/**
 	 * All config values that has been loaded from the database are stored here.
 	 * The structure of the 3-level associative array is: self::$config[module][user_id|0][key]
@@ -38,17 +64,17 @@ class Config {
 	private static $config = array();
 
 	/**
-	 * The default value is NOT cached (self::$config),
-	 * so the next call of this function can return a different value.
 	 * @param string        $id
-	 * @param string|null        $module
-	 * @param int|null           $user
-	 * @param string|null         $default_value
+	 * @param string|null   $module
+	 * @param int|null      $user
+	 * @param string|true   $default_value
+	 *                      TRUE: get default value from module-specific configured source
 	 * @param bool          $use_cache
 	 * @param Database|null $database
-	 * @return string|null
+	 * @param int           $backtrace_depth
+	 * @return string
 	 */
-	public static function get_value($id, $module = null, $user = null, $default_value = null, $use_cache = true, $database = null, $backtrace_depth=0) {
+	public static function get_value($id, $module = null, $user = null, $default_value = true, $use_cache = true, $database = null, $backtrace_depth=0) {
 		if ($database === null) {
 			$database = Database::get_singleton(false);
 		}
@@ -72,6 +98,9 @@ class Config {
 			);
 		}
 		if (!$data) {
+			if($default_value===true){
+				$default_value = self::get_default_value($module?:'core', $id, $backtrace_depth+1);
+			}
 			return $default_value;
 		}
 		$value = $data["content"];
@@ -81,13 +110,27 @@ class Config {
 		return $value;
 	}
 
+	public static function get_default_value($module, $id, $backtrace_depth=0){
+		$singleton = \t2\api\Default_values::get_singleton_by_module($module);
+		$value = $singleton->get_default_value($id);
+		if($value===null){
+			Error::quit("No default value provided for $module:$id.", $backtrace_depth+1);
+		}
+		return $value;
+	}
+
+
+
 	/**
-	 * @param string $id
-	 * @param string|null $default_value
-	 * @param int|null $user
-	 * @return string|null
+	 * @param string        $id
+	 * @param string|true   $default_value
+	 *                      TRUE: get default value from \t2\core\Default_values
+	 * @param int|null      $user
+	 * @param int           $backtrace_depth
+	 * @return string
+	 * @see \t2\core\Default_values
 	 */
-	public static function get_value_core($id, $default_value = null, $user = null, $backtrace_depth=0) {
+	public static function get_value_core($id, $default_value = true, $user = null, $backtrace_depth=0) {
 		return self::get_value($id, null, $user, $default_value, true, null, $backtrace_depth+1);
 	}
 
