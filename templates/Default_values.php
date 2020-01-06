@@ -11,7 +11,7 @@ namespace t2\core;
 
 require_once ROOT_DIR.'/api/Default_values.php';
 
-
+//TODO:Move to admin
 class Default_values extends \t2\api\Default_values {
 
 	protected $default_values = array(
@@ -24,6 +24,10 @@ class Default_values extends \t2\api\Default_values {
 				}
 			}',
 		"LOGIN_H1"=>"Login",
+		"PROJECT_TITLE"=>"T2",
+		"STYLE"=>"bare",
+		"EXTENSION"=>"php",
+		"SESSION_EXPIRES"=>"86400",//24 hours
 	);
 
 }

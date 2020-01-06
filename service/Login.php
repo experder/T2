@@ -86,7 +86,10 @@ class Login {
 	}
 
 	private static function session_expires(){
-		$session_age = Config::get_value_core('SESSION_EXPIRES', 86400/*24 hours*/);
+		/**
+		 * @var int $session_age
+		 */
+		$session_age = Config::get_value_core('SESSION_EXPIRES');
 		$expires = time()+$session_age;
 		return $expires;
 	}

@@ -216,7 +216,7 @@ class Page {
 
 	private function get_css_html() {
 		$stylesheets = array();
-		$style = Config::get_value_core("STYLE", 'bare');
+		$style = Config::get_value_core("STYLE");
 		if(in_array($style,array("bare")) && defined('HTTP_ROOT') ){
 
 			//Installer:
@@ -254,7 +254,7 @@ class Page {
 	}
 
 	private function get_title() {
-		$project = Config::get_value_core("PROJECT_TITLE", 'T2');
+		$project = Config::get_value_core("PROJECT_TITLE");
 		$title = $this->title." - $project";
 		return $title;
 	}

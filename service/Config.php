@@ -38,6 +38,7 @@ class Config {
 	 * @return array
 	 */
 	public static function MODULES(){
+		#echo "<hr><pre>".Error::backtrace()."</pre>";
 		if(self::$MODULES===null){
 			$modules_json = self::get_value('MODULES', null, null, false);
 			if($modules_json!==false && !(self::$MODULES = json_decode($modules_json, true))){
@@ -45,15 +46,19 @@ class Config {
 				$modules_json=false;
 			}
 			if($modules_json===false){
-				require_once ROOT_DIR.'/templates/Default_values.php';
-				$dv = new Default_values("");
-				$modules_json=$dv->get_default_value("MODULES");
-				if(!(self::$MODULES = json_decode($modules_json, true))){
-					Error::quit("Invalig JSON:\n\\t2\\core\\Default_values->\$default_values:\n$modules_json");
-				}
+				self::set_modules_default();
 			}
 		}
 		return self::$MODULES;
+	}
+
+	private static function set_modules_default(){
+		require_once ROOT_DIR.'/templates/Default_values.php';
+		$dv = new Default_values();
+		$modules_json = $dv->get_default_value("MODULES");
+		if(!(self::$MODULES = json_decode($modules_json, true))){
+			Error::quit("Invalid JSON:\n\\t2\\core\\Default_values->\$default_values:\n$modules_json");
+		}
 	}
 
 	/**
@@ -111,6 +116,7 @@ class Config {
 	}
 
 	public static function get_default_value($module, $id, $backtrace_depth=0){
+		$module = $module?:'core';
 		$singleton = \t2\api\Default_values::get_singleton_by_module($module);
 		$value = $singleton->get_default_value($id);
 		if($value===null){
@@ -151,7 +157,7 @@ class Config {
 	 * @param string|null   $module
 	 * @param int|null      $user
 	 */
-	public static function load_values($ids, $module = null, $user = null) {
+	public static function load_values($ids, $module = null, $user = null, $init_modules=false) {
 		$ids_sql = Strings::build_sql_collection($ids);
 		#$core_config = DB_CORE_PREFIX.'_config';
 		$data = Database::select_(
@@ -178,6 +184,18 @@ class Config {
 		if ($data) {
 			foreach ($data as $val) {
 				self::store_val($module, $user, $val['idstring'], $val['content']);
+			}
+			if($init_modules){
+				if(self::recall_val($module, $user, 'MODULES')===false){
+					self::set_modules_default();
+				}
+			}
+			//Default values:
+			foreach ($ids as $id){
+				if(self::recall_val($module, $user, $id)===false){
+					$default_value = self::get_default_value($module, $id);
+					self::store_val($module, $user, $id, $default_value);
+				}
 			}
 		}
 	}

@@ -76,16 +76,19 @@ class Start {
 			"STYLE",
 			"HTTP_ROOT",
 			"SESSION_EXPIRES",
-		));
-		define("EXT", Config::get_value_core("EXTENSION", "php"));
+			"MODULES",
+		),null,null,true);
+		define("EXT", Config::get_value_core("EXTENSION"));
 
 		$http_root = Config::get_value_core("HTTP_ROOT", false);
 		if($http_root===false){
 			require_once ROOT_DIR . '/admin/Install_wizard.php';
 			Install_wizard::prompt_config();
-			$http_root = Config::get_value_core("HTTP_ROOT", "");
+			$http_root = Config::get_value_core("HTTP_ROOT", false);
+			if($http_root===false){
+				Error::quit("Internal error.");
+			}
 		}
-
 		define("HTTP_ROOT", $http_root);
 
 		#Config::$PROJECT_TITLE = Config::get_value_core("PROJECT_TITLE", 'T2');

@@ -34,7 +34,7 @@ class Error {
 
 	public function __construct($message, $type = self::TYPE_UNKNOWN, $report = true, $backtrace_depth = 0, $fatal = false) {
 		if (!self::$recusion_protection) {
-			self::quit_bare("(RECURSIVE ERROR)", 1);
+			self::quit_bare("(ERROR OCCURED IN ERROR HANDLING)<pre>$message</pre>", $backtrace_depth+1);
 		}
 		self::$recusion_protection = false;
 		$this->type = $type;
