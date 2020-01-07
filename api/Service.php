@@ -28,13 +28,19 @@ class Service {
 		if(!file_exists($include_file)){
 			Error::quit("Module configuration is corrupt. {\"$module\":{\"$classname\":{\"include\":...}}}:\nFile not found: $include_file");
 		}
+		/** @noinspection PhpIncludeInspection */
 		include_once $include_file;
 		$class = $modules[$module][$classname]['class'];
 		if (!class_exists($class)){
 			Error::quit("Module configuration defines not-existing class: \"$class\" {\"$module\":{\"$classname\":{\"class\":...}}}");
 		}
-		$reflection = new \ReflectionClass($class);
-		if(!($reflection->isSubclassOf($ref_api=new \ReflectionClass($api_classname)))){
+		try {
+			$reflection = new \ReflectionClass($class);
+			$ref_api = new \ReflectionClass($api_classname);
+		} catch (\ReflectionException $e) {
+			Error::from_exception($e);
+		}
+		if(!($reflection->isSubclassOf($ref_api))){
 			Error::quit("Module configuration defines class that is not of type of $classname: \"$class\" {\"$module\":{\"$classname\":{\"class\":...}}}");
 		}
 		if(($constructor=$reflection->getConstructor()) && $constructor->getNumberOfRequiredParameters()!=0){

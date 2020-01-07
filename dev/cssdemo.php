@@ -56,7 +56,6 @@ $page->add(\service\Html::H4("&lt;h4>"));
 
 $page->add(\service\Html::H2("Links", "links"));
 $page->add(\service\Html::A('\service\Html::A',"https://github.com/experder/T2/blob/99b7c6cfd9173b5150c840a3553ae5c03061ace9/service/Html.php#L37:L39"));
-$page->add(\service\Html::A_button('\service\Html::A_button',"https://github.com/experder/T2/blob/99b7c6cfd9173b5150c840a3553ae5c03061ace9/style/bare/all.css#L27:L37"));
 $page->add(\service\Html::A_external('http://tethys-framework.de (external)','http://tethys-framework.de'));
 
 /*

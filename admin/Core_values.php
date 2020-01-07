@@ -11,11 +11,13 @@ namespace admin;
 
 require_once ROOT_DIR . '/api/Default_values.php';
 
-class Core_values extends \t2\api\Default_values {
+use t2\api\Default_values;
+
+class Core_values extends Default_values {
 
 	protected $default_values = array(
 		"MODULES" => '{
-				"core":{
+				"Xcore":{
 					"Default_values":{
 						"include":":ROOT_DIR\/admin\/Core_values.php",
 						"class":"\\\admin\\\Core_values"

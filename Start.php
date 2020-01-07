@@ -29,6 +29,7 @@ class Start {
 
 	private static $dev_start_time;
 	public static $dev_queries = array();
+	public static $started = false;
 
 	public static function init_constants() {
 		self::$dev_start_time = microtime(true);
@@ -105,3 +106,4 @@ Start::init_dependencies();
 Start::init_config();
 Start::init_database();
 Start::init_userrights();
+Start::$started = true;

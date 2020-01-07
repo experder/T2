@@ -14,12 +14,12 @@ require_once ROOT_DIR . '/core/Error.php';
 namespace core;
 
 use service\Config;
+use tethys_root\Start;
 
 class Error {
 
 	const TYPE_UNKNOWN = 0;
 	const TYPE_DB_NOT_FOUND = "DB_NOT_FOUND";
-	#const TYPE_WRONG_CREDENTIALS = "WRONG_CREDENTIALS";
 	const TYPE_TABLE_NOT_FOUND = "SQL_TABLE_NOT_FOUND";
 	const TYPE_SQL = "SQL-Error";
 	const TYPE_FILESYSTEM_WRITEACCESS = "FILESYSTEM_WRITEACCESS";
@@ -37,6 +37,9 @@ class Error {
 			self::quit_bare("(ERROR OCCURED IN ERROR HANDLING)<pre>$message</pre>", $backtrace_depth+1);
 		}
 		self::$recusion_protection = false;
+		if (!Start::$started){
+			self::quit_bare("(ERROR ON T2-STARTUP)<pre>$message</pre>", $backtrace_depth+1);
+		}
 		$this->type = $type;
 		$this->message = $message;
 		$this->timestamp = time();
@@ -78,13 +81,10 @@ class Error {
 	public static function from_exception(\Exception $e, $report = true, $quit_on_error = false) {
 		if ($e instanceof \PDOException) {
 			if ($e->getCode() === 1049/*Unknown database*/) {
-				return new Error($e->getMessage(), self::TYPE_DB_NOT_FOUND, $report, 0, $quit_on_error);
+				return new Error($e->getMessage(), self::TYPE_DB_NOT_FOUND, $report, 1, $quit_on_error);
 			}
-//			if($e->getCode()===1045/*Access denied */){
-//				return new Error($e->getMessage(), self::TYPE_WRONG_CREDENTIALS, $report, 0, $quit_on_error);
-//			}
 		}
-		return new Error("[" . $e->getCode() . "] " . $e->getMessage(), self::TYPE_UNKNOWN, $report, 0, $quit_on_error);
+		return new Error("(EXCEPTION) [" . $e->getCode() . "] " . $e->getMessage(), self::TYPE_UNKNOWN, $report, 1, $quit_on_error);
 	}
 
 	public function get_type() {

@@ -13,6 +13,8 @@ namespace t2\api;
 
 require_once ROOT_DIR.'/api/Service.php';
 
+use admin\Core_values;
+
 
 abstract class Default_values {
 
@@ -36,7 +38,12 @@ abstract class Default_values {
 	 */
 	public static function get_singleton_by_module($module){
 		if(!isset(self::$singleton_by_module[$module])){
-			self::$singleton_by_module[$module] = Service::get_api_class($module, "Default_values");
+			if($module=='core'){
+				require_once ROOT_DIR . '/admin/Core_values.php';
+				self::$singleton_by_module[$module]=new Core_values();
+			}else{
+				self::$singleton_by_module[$module] = Service::get_api_class($module, "Default_values");
+			}
 		}
 		return self::$singleton_by_module[$module];
 	}
