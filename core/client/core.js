@@ -5,9 +5,17 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
+/**
+ * @deprecated
+ */
 function show_dev_stat_queries(html_node_toggle_zoom){
 	$('#id_dev_stats_queries_detail').toggle(500);
 	if(html_node_toggle_zoom){
 		$(html_node_toggle_zoom).toggleClass('zoom-out');
 	}
+}
+
+function t2_toggle_detail_zoom(content_id, html_node_toggle_zoom){
+	$('#'+content_id).toggle(500);
+	$(html_node_toggle_zoom).toggleClass('zoom-out');
 }

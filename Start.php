@@ -20,6 +20,9 @@ use service\User;
 class Start {
 
 	private static $dev_start_time;
+	/**
+	 * @deprecated 
+	 */
 	public static $dev_queries = array();
 	public static $started = false;
 
@@ -40,6 +43,13 @@ class Start {
 		}
 	}
 
+	public static function dev_get_start_time() {
+		return self::$dev_start_time;
+	}
+
+	/**
+	 * @deprecated
+	 */
 	public static function get_dev_stats() {
 		$end_time = microtime(true);
 		return new Html("div", "<b>".round($end_time - self::$dev_start_time, 3) . "</b> Seconds", array("class"=>"dev_stats_runtime abutton"));

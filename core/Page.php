@@ -19,6 +19,7 @@ require_once ROOT_DIR . '/service/User.php';
 require_once ROOT_DIR . '/service/Config.php';
 require_once ROOT_DIR . '/dev/Debug.php';
 require_once ROOT_DIR . '/service/Files.php';
+require_once ROOT_DIR . '/core/Error_warn.php';
 
 use admin\Install_wizard;
 use service\Config;
@@ -132,21 +133,23 @@ class Page {
 	}
 
 	private function init_http_root(){
-		if($this->standalone){
-			$http_root=Files::relative_path($_SERVER["SCRIPT_FILENAME"], ROOT_DIR);
-		}else{
-			$http_root = Config::get_value_core("HTTP_ROOT", false);
-			if($http_root===false){
-				require_once ROOT_DIR . '/admin/Install_wizard.php';
-				#Install_wizard::prompt_config();
-				Install_wizard::init_set_http_root();
+		if(!defined('HTTP_ROOT')){
+			if($this->standalone){
+				$http_root=Files::relative_path($_SERVER["SCRIPT_FILENAME"], ROOT_DIR);
+			}else{
 				$http_root = Config::get_value_core("HTTP_ROOT", false);
 				if($http_root===false){
-					Error::quit("Could not set HTTP_ROOT.");
+					require_once ROOT_DIR . '/admin/Install_wizard.php';
+					#Install_wizard::prompt_config();
+					Install_wizard::init_set_http_root();
+					$http_root = Config::get_value_core("HTTP_ROOT", false);
+					if($http_root===false){
+						Error::quit("Could not set HTTP_ROOT.");
+					}
 				}
 			}
+			define("HTTP_ROOT", $http_root);
 		}
-		define("HTTP_ROOT", $http_root);
 	}
 
 	public function get_id() {
@@ -174,9 +177,13 @@ class Page {
 		$this->inline_js.=$js."\n";
 	}
 
+	/**
+	 * @deprecated
+	 */
 	public function get_dev_stats(){
 		$db_stats = Database::get_dev_stats($this);
-		$dev_stats = new Html("div", "\n\t".$db_stats ."\n\t". Start::get_dev_stats()."\n"
+		$runtime = Debug::dev_get_runtime();
+		$dev_stats = new Html("div", "\n\t" . $db_stats . "\n\t" . $runtime . "\n"
 			, array("class" => "dev_stats noprint"));
 		return "\n".$dev_stats."\n";
 	}
@@ -192,7 +199,8 @@ class Page {
 
 		$dev_stats = "";
 		if (Config::$DEVMODE) {
-			$dev_stats = $this->get_dev_stats();
+			#$dev_stats = $this->get_dev_stats();
+			$dev_stats = Debug::get_stats($this);
 		}
 
 		$js_html = $this->get_js_html();

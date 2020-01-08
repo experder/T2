@@ -8,7 +8,7 @@
 
 
 require_once 'Start.php';
-$page = \core\Page::init("PAGEID_CORE_INDEX", "Start");
+$page = \t2\Start::init("PAGEID_CORE_INDEX", "Start");
 
 $page->add("Welcome!");
 

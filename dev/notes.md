@@ -16,7 +16,6 @@ Current TODOs
 -------------
 
 ### Medium
-* \t2\dev\Debug (tethys/dev/Debug.php:19): Move dev_stats to here. Show outputs in dev stats (header: "file:line")
 * $page->set_focusFieldId
 * Errors: Provide solutions (Level: User, Admin, Developer)
 * file_exists($filename, $fatal=true)

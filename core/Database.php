@@ -12,6 +12,7 @@ namespace core;
 use admin\Install_wizard;
 use service\Config;
 use service\Strings;
+use t2\dev\Debug;
 use t2\Start;
 
 class Database {
@@ -39,12 +40,30 @@ class Database {
 	static private $singleton = null;
 
 	//A blank page needs 3 Queries:
+	/**
+	 * @deprecated
+	 */
 	private static $blank_queries=array(
 		"load_values ( :ROOT_DIR/service/Config.php:169 )",
 		"check_session ( :ROOT_DIR/service/Login.php:54 )",
 		"update_session ( :ROOT_DIR/service/Login.php:80 )",
 	);
+	/**
+	 * @deprecated
+	 */
 	private static $blank_queries_compiled=null;
+	/**
+	 * @deprecated
+	 */
+	private static function get_blank_queries() {
+		if(self::$blank_queries_compiled===null){
+			self::$blank_queries_compiled=array();
+			foreach (self::$blank_queries as $query){
+				self::$blank_queries_compiled[]=str_replace(':ROOT_DIR',ROOT_DIR,$query);
+			}
+		}
+		return self::$blank_queries_compiled;
+	}
 
 	public $core_prefix;
 
@@ -52,6 +71,9 @@ class Database {
 
 	private $error = false;
 
+	/**
+	 * @deprecated
+	 */
 	private static $dev_global_count = 0;
 
 	private $dbname;
@@ -169,15 +191,10 @@ class Database {
 		return $this->pdo;
 	}
 
-	private static function get_blank_queries() {
-		if(self::$blank_queries_compiled===null){
-			self::$blank_queries_compiled=array();
-			foreach (self::$blank_queries as $query){
-				self::$blank_queries_compiled[]=str_replace(':ROOT_DIR',ROOT_DIR,$query);
-			}
-		}
-		return self::$blank_queries_compiled;
-	}
+
+	/**
+	 * @deprecated
+	 */
 	public static function get_dev_stats(Page $page) {
 		$blank_page_queries = count(self::get_blank_queries());
 		$querie_count = $blank_page_queries."+<b>".(self::$dev_global_count-$blank_page_queries). "</b> Queries";
@@ -227,14 +244,14 @@ class Database {
 				."( ".Error::backtrace($backtrace_depth + 1, "\n", false)." )";
 
 			$core_query_class = "";
-			if(in_array(str_replace('\\','/',$caller), self::get_blank_queries())){
+			if(in_array(str_replace('\\','/',$caller), Debug::get_core_queries())){
 				$core_query_class=" core_query_class";
 			}
 
 			$query_html = (new Html("span",$caller, array("class"=>"detail_functionSource$core_query_class")))
 					."\n".(new Html("span", $compiled_query, array("class"=>"detail_sqlDump$core_query_class")))
 				;
-			Start::$dev_queries[]=$query_html;
+			Debug::$queries[]=$query_html;
 		}
 		if (!$ok) {
 			$compiled_query = "";

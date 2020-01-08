@@ -13,7 +13,7 @@ if(true)exit;
 /**TPLDOCEND*/
 
 require_once '../../Start.php';
-$page = \core\Page::init("PAGEID_MYPAGE", "(:PAGE_TITLE)");
+$page = \t2\Start::init("PAGEID_MYPAGE", "(:PAGE_TITLE)");
 
 $page->add("Index of module (:MYMODULE)");
 

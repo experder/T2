@@ -5,8 +5,6 @@
  * T2 comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
-
-
 /*
 require_once ROOT_DIR . '/core/Error_warn.php';
  */
@@ -14,6 +12,7 @@ require_once ROOT_DIR . '/core/Error_warn.php';
 namespace core;
 
 use service\Config;
+use t2\dev\Debug;
 use t2\Start;
 
 class Error_warn {
@@ -97,29 +96,12 @@ class Error_warn {
 		exit;
 	}
 
+	/**
+	 * @deprecated Use Debug::backtrace() instead.
+	 * @see Debug::backtrace()
+	 */
 	public static function backtrace($depth = 0, $linebreak = "\n", $multiline = true) {
-		$caller = array();
-		$backtrace = debug_backtrace();
-		if ($backtrace && is_array($backtrace)) {
-			if (isset($backtrace[$depth])) {
-				$backtrace = array_slice($backtrace, $depth);
-			} else {
-				$caller[] = "(given depth not found)";
-			}
-			foreach ($backtrace as $row) {
-				$caller[] =
-					(isset($row["file"]) ? $row["file"] : "?")
-					. ":"
-					. (isset($row["line"]) ? $row["line"] : "?");
-				if (!$multiline) {
-					return $caller[0];
-				}
-			}
-		}
-		if (!$caller) {
-			$caller[] = "unknown_caller";
-		}
-		return implode($linebreak, $caller);
+		Debug::backtrace($depth+1, $linebreak, $multiline);
 	}
 
 }

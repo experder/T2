@@ -103,7 +103,7 @@ div.dev_stats div.dev_stats_queries{
 div.dev_stats div.dev_stats_runtime:hover{
 	background:white;
 }
-#id_dev_stats_queries_detail{
+div.dev_stats pre.dev_stats_detail{
 	max-height:400px;
 	overflow: auto;
 }
@@ -118,6 +118,9 @@ div.dev_stats div.dev_stats_runtime:hover{
 }
 #id_dev_stats_queries_detail span.detail_sqlDump.core_query_class{
 	color: #9eb2c4;
+}
+div.dev_stats span.zoom-out{
+	font-weight: bold;
 }
 
 
