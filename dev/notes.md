@@ -14,10 +14,9 @@ Before merging the `dev` branch onto the `master`:
 
 Current TODOs
 -------------
-### High
-* \core\Page::init_http_root (tethys/core/Page.php:124): Guess $http_root!
 
 ### Medium
+* \t2\dev\Debug (tethys/dev/Debug.php:19): Move dev_stats to here. Show outputs in dev stats (header: "file:line")
 * $page->set_focusFieldId
 * Errors: Provide solutions (Level: User, Admin, Developer)
 * file_exists($filename, $fatal=true)

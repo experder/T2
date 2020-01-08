@@ -17,9 +17,13 @@ require_once ROOT_DIR . '/core/Stylesheet.php';
 require_once ROOT_DIR . '/core/Echoable.php';
 require_once ROOT_DIR . '/service/User.php';
 require_once ROOT_DIR . '/service/Config.php';
+require_once ROOT_DIR . '/dev/Debug.php';
+require_once ROOT_DIR . '/service/Files.php';
 
 use admin\Install_wizard;
 use service\Config;
+use service\Files;
+use t2\dev\Debug;
 use t2\Start;
 
 class Page {
@@ -129,7 +133,7 @@ class Page {
 
 	private function init_http_root(){
 		if($this->standalone){
-			$http_root=".";
+			$http_root=Files::relative_path($_SERVER["SCRIPT_FILENAME"], ROOT_DIR);
 		}else{
 			$http_root = Config::get_value_core("HTTP_ROOT", false);
 			if($http_root===false){
