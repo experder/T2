@@ -19,6 +19,7 @@ require_once ROOT_DIR . "/admin/Core_database.php";
 
 use core\Database;
 use core\Error;
+use core\Error_warn;
 use core\Form;
 use core\Formfield_password;
 use core\Formfield_text;
@@ -32,11 +33,10 @@ class Install_wizard {
 
 	public static function prompt_dbParams() {
 		if (Request::cmd("submit_db_credentials")) {
-			Page::$compiler_messages[] = self::init1_config();
+			Page::$compiler_messages[] = self::init_config();
+			Install_wizard::dev_step_by_step();
 			return;
 		}
-
-		$page = self::get_pre_page("Database connection");
 
 		$form = new Form("submit_db_credentials");
 		$form->add_field(new Formfield_text("server_addr", "Host", "localhost"));
@@ -44,12 +44,14 @@ class Install_wizard {
 		$form->add_field(new Formfield_text("username", "Admin account", "root"));
 		$form->add_field(new Formfield_password("dbpass", "Admin password", ""));
 
-		$page->add_message(Message::TYPE_INFO, $form);
+		$message = new Message(Message::TYPE_INFO, $form);
+		Page::$compiler_messages[] = $message;
 
-		$page->send_and_quit();
+		self::installer_exit("Database connection");
 	}
 
-	public static function init1_config() {
+	public static function init_config() {
+		self::check_if_index();
 		$target_file = ROOT_DIR . '/config_exclude.php';
 		Templates::create_file($target_file, ROOT_DIR . '/config_template.php', array(
 			":server_addr" => Request::value("server_addr", "(please specify)"),
@@ -60,33 +62,28 @@ class Install_wizard {
 		return new Message(Message::TYPE_CONFIRM, "Config file \"$target_file\" has been created.");
 	}
 
-	/**
-	 * @param string $title
-	 * @return Page
-	 */
-	public static function get_pre_page($title) {
-		$page = new Page("T2_INSTWIZARD", "Installation: " . $title);
-		return $page;
-	}
-
-	public static function init2_db($host, $dbname, $user, $password, $backtrace_depth = 0) {
+	public static function init_db($host, $dbname, $user, $password, $backtrace_depth = 0) {
+		self::check_if_index();
 
 		try {
 			$dbh = new \PDO("mysql:host=" . $host, $user, $password);
 			$dbh->exec("CREATE DATABASE `" . $dbname . "`;") or die(print_r($dbh->errorInfo(), true) . "Error65");
 
 		} catch (\PDOException $e) {
-			Error::quit($e->getMessage(), $backtrace_depth + 1);
+			Error::from_exception($e);
+			#Error::quit($e->getMessage(), $backtrace_depth + 1);
 		}
 
 		$database = new Database($host, $dbname, $user, $password);
 
 		Page::$compiler_messages[] = new Message(Message::TYPE_CONFIRM, "Database \"$dbname\" created.");
+		self::dev_step_by_step();
 
 		return $database;
 	}
 
-	public static function init3_db_config() {
+	public static function init_db_config() {
+		self::check_if_index();
 		$database=Database::get_singleton();
 
 		#$core_config = DB_CORE_PREFIX.'_config';
@@ -105,32 +102,62 @@ class Install_wizard {
 		return $msg;
 	}
 
-	private static function init4_config_params() {
-		foreach (array(
-			'HTTP_ROOT',
-				 ) as $param){
-			if(($val=Request::value($param, false))!==false){ Config::set_value($param, $val); }
+//	private static function init4_config_params() {
+//		foreach (array(
+//			'HTTP_ROOT',
+//				 ) as $param){
+//			if(($val=Request::value($param, false))!==false){ Config::set_value($param, $val); }
+//		}
+//		return new Message(Message::TYPE_CONFIRM, "Config params set.");
+//	}
+
+	public static function check_if_index() {
+		if(!isset($_SERVER['SCRIPT_FILENAME'])||$_SERVER['SCRIPT_FILENAME']!=ROOT_DIR.'/index.php'){
+			Error::quit("Please run index.php in root directory to complete installation.");
 		}
-		return new Message(Message::TYPE_CONFIRM, "Config params set.");
 	}
 
-	public static function prompt_config() {
-		if (Request::cmd("submit_core_config")) {
-			Page::$compiler_messages[] = self::init4_config_params();
-			return;
-		}
-
-		$page = self::get_pre_page("Core config");
-
-		$HTTP_ROOT_proposal = Config::get_value_core("HTTP_ROOT", pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_DIRNAME));
-
-		$form = new Form("submit_core_config");
-		$form->add_field($ff=new Formfield_text("HTTP_ROOT", "HTTP_ROOT", $HTTP_ROOT_proposal));
-
-		$page->add_message(Message::TYPE_INFO, $form);
-
-		$page->send_and_quit();
-
+	public static function init_set_http_root() {
+		self::check_if_index();
+		$http_root = pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_DIRNAME);
+		Config::set_value('HTTP_ROOT', $http_root);
+		Page::$compiler_messages[]=new Message(Message::TYPE_CONFIRM, "HTTP_ROOT set to: $http_root");
+		self::dev_step_by_step();
 	}
+
+	public static function dev_step_by_step() {
+		#self::installer_exit("STEP-BY-STEP");
+	}
+
+	/**
+	 * @param string       $title
+	 * @param Message[] $messages
+	 * @param null|string   $body
+	 * @param string $id
+	 */
+	public static function installer_exit($title, $messages=null, $body=null, $id="PAGEID_CORE_INSTALLER") {
+		self::check_if_index();
+		Error_warn::abort("$title - Installer", $messages, $body, $id);
+		exit;
+	}
+
+//	public static function prompt_config() {
+//		if (Request::cmd("submit_core_config")) {
+//			Page::$compiler_messages[] = self::init4_config_params();
+//			return;
+//		}
+//
+//		$page = self::get_pre_page("Core config");
+//
+//		$HTTP_ROOT_proposal = Config::get_value_core("HTTP_ROOT", pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_DIRNAME));
+//
+//		$form = new Form("submit_core_config");
+//		$form->add_field($ff=new Formfield_text("HTTP_ROOT", "HTTP_ROOT", $HTTP_ROOT_proposal));
+//
+//		$page->add_message(Message::TYPE_INFO, $form);
+//
+//		$page->send_and_quit();
+//
+//	}
 
 }

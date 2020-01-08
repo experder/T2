@@ -14,15 +14,20 @@ Before merging the `dev` branch onto the `master`:
 
 Current TODOs
 -------------
+### High
+* \core\Page::init_http_root (tethys/core/Page.php:124): Guess $http_root!
 
 ### Medium
 * $page->set_focusFieldId
-* Cleanup Error class: Provide solution (Level: User, Admin, Developer; Log additional info), unify quit and don't quit (class Error_fatal)
+* Errors: Provide solutions (Level: User, Admin, Developer)
 * file_exists($filename, $fatal=true)
 * stop mysql service, catch exception ("SQLSTATE\[HY000] \[2002] No such file or directory")
 * backtrace: echo function
 
 ### Low
+* onclick zoom-in als objekt
 * rename column 'user' in core_sessions
 * remove camel case methods from whole project
 * Page.php: organize classes as collection
+* move all namespaces to t2
+* remove implicit installer wizard calls - make installer explicit

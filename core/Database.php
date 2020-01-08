@@ -12,7 +12,7 @@ namespace core;
 use admin\Install_wizard;
 use service\Config;
 use service\Strings;
-use tethys_root\Start;
+use t2\Start;
 
 class Database {
 
@@ -101,12 +101,17 @@ class Database {
 			if ($error->get_type() == Error::TYPE_DB_NOT_FOUND) {
 				//Database doesn't exist -> Call Installer to initialize Database:
 				require_once ROOT_DIR . '/admin/Install_wizard.php';
-				self::$singleton = Install_wizard::init2_db($host, $dbname, $user, $password, 1);
+				self::$singleton = Install_wizard::init_db($host, $dbname, $user, $password, 1);
+			}
+			if ($error->get_type() == Error::TYPE_HOST_UNKNOWN) {
+				require_once ROOT_DIR . '/admin/Install_wizard.php';
+				//TODO:Error_Fatal
+				Install_wizard::installer_exit("Database connection", array(new Message(Message::TYPE_ERROR, "Database host unknown! Please check config.")));
 			}
 		}
 
 		if (self::$singleton->getError()) {
-			Error::quit("Fatal error on database initialization (#2). " . self::$singleton->getError()->get_message(), 1);
+			Error::quit("Fatal error on database initialization. " . self::$singleton->getError()->get_message(), 1);
 		}
 
 		return self::$singleton;
@@ -177,7 +182,15 @@ class Database {
 		$blank_page_queries = count(self::get_blank_queries());
 		$querie_count = $blank_page_queries."+<b>".(self::$dev_global_count-$blank_page_queries). "</b> Queries";
 		$querie_count=new Html("span", $querie_count, array("onclick"=>"show_dev_stat_queries(this);","class"=>"zoom-in"));
+
 		$page->add_js_core();
+//		if(defined('HTTP_ROOT')){
+//			$style="display:none;";
+//			$page->add_js_core();
+//		}else{
+//			$style="";
+//		}
+
 		$queries=\service\Html::UL(Start::$dev_queries);
 		$queries=new Html("pre", $queries, array("style"=>"display:none;", "id"=>"id_dev_stats_queries_detail"));
 		return new Html("div", $querie_count, array("class"=>"dev_stats_queries abutton")).$queries;

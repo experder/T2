@@ -7,20 +7,12 @@
  GPL*/
 
 
-/*
- * <code>
-require_once '../../tethys/Start.php';
-$page = \core\Page::init("PAGEID_MYMODULE_MYPAGE", "My page");
-$page->add("Hello World!");
-$page->send_and_quit();
- * </code>
- */
-
-namespace tethys_root;
+namespace t2;
 
 use core\Database;
 use core\Error;
 use core\Html;
+use core\Page;
 use service\Config;
 use admin\Install_wizard;
 use service\User;
@@ -30,6 +22,13 @@ class Start {
 	private static $dev_start_time;
 	public static $dev_queries = array();
 	public static $started = false;
+
+	/**
+	 * @return bool
+	 */
+	public static function isStarted() {
+		return self::$started;
+	}
 
 	public static function init_constants() {
 		self::$dev_start_time = microtime(true);
@@ -81,17 +80,6 @@ class Start {
 		),null,null,true);
 		define("EXT", Config::get_value_core("EXTENSION"));
 
-		$http_root = Config::get_value_core("HTTP_ROOT", false);
-		if($http_root===false){
-			require_once ROOT_DIR . '/admin/Install_wizard.php';
-			Install_wizard::prompt_config();
-			$http_root = Config::get_value_core("HTTP_ROOT", false);
-			if($http_root===false){
-				Error::quit("Internal error.");
-			}
-		}
-		define("HTTP_ROOT", $http_root);
-
 		#Config::$PROJECT_TITLE = Config::get_value_core("PROJECT_TITLE", 'T2');
 	}
 
@@ -99,11 +87,21 @@ class Start {
 		User::init();
 	}
 
+	/**
+	 * @param string $id
+	 * @param string $title
+	 * @return Page
+	 */
+	public static function init($id, $title) {
+		Start::init_dependencies();
+		Start::init_config();
+		Start::init_database();
+		Start::init_userrights();
+		$page = Page::init2($id, $title);
+		self::$started = true;
+		return $page;
+	}
+
 }
 
 Start::init_constants();
-Start::init_dependencies();
-Start::init_config();
-Start::init_database();
-Start::init_userrights();
-Start::$started = true;

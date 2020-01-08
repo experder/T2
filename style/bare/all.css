@@ -91,8 +91,6 @@ div.dev_stats{
 	bottom:0;
 	padding:4px;
 	border-top-right-radius: 5px;
-	max-height:50%;
-	overflow: auto;
 }
 div.dev_stats div.abutton{
 	background:white;
@@ -106,6 +104,8 @@ div.dev_stats div.dev_stats_runtime:hover{
 	background:white;
 }
 #id_dev_stats_queries_detail{
+	max-height:400px;
+	overflow: auto;
 }
 #id_dev_stats_queries_detail span.detail_functionSource{
 	color:darkred;

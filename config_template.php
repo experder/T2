@@ -7,11 +7,14 @@
  GPL*/
 /**TPLDOCSTART
  * This template is used by the installer wizard to create the configuration file "config_exclude.php".
- * @see \admin\Install_wizard::init1_config()
+ * @see \admin\Install_wizard::init_config()
  * TPLDOCEND*/
 
-//You might want to store this file in your project's repository:
-#require_once ROOT_DIR . "/../config.php";
+//You might want to store this file in your project's repository instead:
+#require_once ROOT_DIR . "/../config_exclude.php";
 
-//Put this database connection in your project's config file:
+//Set to TRUE in your development environment, FALSE (default) for production:
+#\service\Config::$DEVMODE = true;
+
+//Initialize database connection:
 \core\Database::init(':server_addr', ':tethysdb', ':username', ':dbpass');

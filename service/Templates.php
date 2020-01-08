@@ -54,7 +54,7 @@ class Templates {
 		$content = self::load($template_file, $keyVals);
 		$success = Files::save($target_file, $content, false, false);
 		if($success===false){
-			new Error("Couldn't store file \"$target_file\". Please check rights.", Error::TYPE_FILESYSTEM_WRITEACCESS, true, 1, true);
+			new Error("Couldn't store file \"$target_file\". Please check rights.", Error::TYPE_UNKNOWN, true, 1, true);
 		}
 	}
 

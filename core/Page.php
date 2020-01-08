@@ -5,6 +5,9 @@
  * T2 comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
+/*
+require_once ROOT_DIR . '/core/Page.php';
+ */
 
 
 namespace core;
@@ -13,15 +16,18 @@ require_once ROOT_DIR . '/core/Html.php';
 require_once ROOT_DIR . '/core/Stylesheet.php';
 require_once ROOT_DIR . '/core/Echoable.php';
 require_once ROOT_DIR . '/service/User.php';
+require_once ROOT_DIR . '/service/Config.php';
 
+use admin\Install_wizard;
 use service\Config;
-use service\User;
-use tethys_root\Start;
+use t2\Start;
 
 class Page {
 
 	/** @var Page $singleton */
 	static private $singleton = null;
+
+	protected $standalone = false;
 
 	/**
 	 * @var string $id Unique string used to address page in navigation and CSS.
@@ -75,6 +81,7 @@ class Page {
 	 */
 	public function __construct($id, $title) {
 		$this->reset($id, $title);
+		$this->init_http_root();
 	}
 
 	public function reset($pageId, $title) {
@@ -97,18 +104,45 @@ class Page {
 	}
 
 	/**
+	 * @deprecated Use Start::init() instead!
+	 * @see Start::init()
+	 */
+	public static function init($id, $title) {
+		return Start::init($id, $title);
+	}
+
+	/**
 	 * @param string $id
 	 * @param string $title
 	 * @return Page
 	 */
-	public static function init($id, $title) {
+	public static function init2($id, $title) {
 
 		if (self::$singleton !== null) {
 			Error::quit("Page is already initialized!", 1);
 		}
 
 		self::$singleton = new Page($id, $title);
+
 		return self::$singleton;
+	}
+
+	private function init_http_root(){
+		if($this->standalone){
+			$http_root=".";
+		}else{
+			$http_root = Config::get_value_core("HTTP_ROOT", false);
+			if($http_root===false){
+				require_once ROOT_DIR . '/admin/Install_wizard.php';
+				#Install_wizard::prompt_config();
+				Install_wizard::init_set_http_root();
+				$http_root = Config::get_value_core("HTTP_ROOT", false);
+				if($http_root===false){
+					Error::quit("Could not set HTTP_ROOT.");
+				}
+			}
+		}
+		define("HTTP_ROOT", $http_root);
 	}
 
 	public function get_id() {
@@ -188,6 +222,9 @@ class Page {
 
 	public function add_js_core(){
 		$this->add_js_jquery341();
+//		if($this->standalone && !defined('HTTP_ROOT')){
+//			$this->init_http_root();
+//		}
 		$this->add_javascript("JS_ID_T2CORE", HTTP_ROOT . "/core/client/core.js");
 	}
 

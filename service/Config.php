@@ -14,21 +14,22 @@ require_once ROOT_DIR . '/service/Config.php';
 namespace service;
 
 require_once ROOT_DIR . '/service/Strings.php';
-require_once ROOT_DIR.'/api/Default_values.php';
+require_once ROOT_DIR . '/core/Database.php';
+require_once ROOT_DIR . '/api/Default_values.php';
 
+use admin\Core_values;
+use admin\Install_wizard;
 use core\Database;
 use core\Error;
 use core\Message;
 use core\Page;
-use admin\Core_values;
 
 class Config {
 
-	// Set to false if in production environment:
-	public static $DEVMODE = true;
+	public static $DEVMODE = false;
 
 	/**
-	 * @see \tethys_root\Start::init_database()
+	 * @see \t2\Start::init_database()
 	 */
 	#public static $PROJECT_TITLE;
 
@@ -172,11 +173,12 @@ class Config {
 			if($error instanceof Error){
 				if($error->get_type()==Error::TYPE_TABLE_NOT_FOUND){
 					require_once ROOT_DIR . '/admin/Install_wizard.php';
-					$msg = new Message(Message::TYPE_CONFIRM, "DB \"".Database::get_singleton()->get_dbname()."\" initialized. ".\admin\Install_wizard::init3_db_config());
+					$msg = new Message(Message::TYPE_CONFIRM, "DB \"".Database::get_singleton()->get_dbname()."\" initialized. ".Install_wizard::init_db_config());
 				}else{
 					$msg = $error->report();
 				}
 				Page::$compiler_messages[] = $msg;
+				Install_wizard::dev_step_by_step();
 			}else{
 				new Error("Wrong Error Type");
 			}
