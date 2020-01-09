@@ -27,6 +27,7 @@ class Debug {
 	private static $core_queries_compiled = null;
 
 	public static $queries = array();
+	public static $queries_corequeries_count = 0;
 
 	private static $outputs = array();
 
@@ -79,8 +80,7 @@ class Debug {
 	}
 
 	private static function stats_db(Page $page) {
-		$blank_page_queries = count(self::$core_queries);
-		$querie_count = $blank_page_queries."+<b>".(count(self::$queries)-$blank_page_queries). "</b> Queries";
+		$querie_count = self::$queries_corequeries_count."+<b>".(count(self::$queries)-self::$queries_corequeries_count). "</b> Queries";
 		$querie_count=new Html("span", $querie_count, array("onclick"=>"t2_toggle_detail_zoom('id_dev_stats_queries_detail',this);","class"=>"zoom-in"));
 		$page->add_js_core();
 		$queries=\service\Html::UL(self::$queries);

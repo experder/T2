@@ -246,6 +246,7 @@ class Database {
 			$core_query_class = "";
 			if(in_array(str_replace('\\','/',$caller), Debug::get_core_queries())){
 				$core_query_class=" core_query_class";
+				Debug::$queries_corequeries_count++;
 			}
 
 			$query_html = (new Html("span",$caller, array("class"=>"detail_functionSource$core_query_class")))
