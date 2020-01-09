@@ -16,6 +16,7 @@ require_once ROOT_DIR . '/service/Php7.php';
 
 use core\Database;
 use core\Error;
+use core\Error_warn;
 use core\Form;
 use core\Formfield_password;
 use core\Formfield_text;
@@ -44,7 +45,7 @@ class Login {
 		return $uid;
 	}
 
-	public static function check_session(){
+	private static function check_session(){
 		if(isset($_COOKIE[self::$session_cookie_name]) && $_COOKIE[self::$session_cookie_name]!=='-'){
 			$session_id = $_COOKIE[self::$session_cookie_name];
 
@@ -64,7 +65,7 @@ class Login {
 						":session_id"=>$session_id,
 					));
 				}else{
-					self::update_session($session_id);
+					self::update_session($session_id, $expires);
 					return $session_data["user"];
 				}
 			}
@@ -73,15 +74,17 @@ class Login {
 		return false;
 	}
 
-	public static function update_session($session_id){
+	private static function update_session($session_id, $session_expires){
 		$expires = self::session_expires();
+		if($expires==$session_expires){
+			return;
+		}
 		$rowcount = Database::get_singleton()->update("UPDATE core_sessions SET expires=:expires WHERE session_id=:session_id",array(
 			":expires"=>$expires,
 			":session_id"=>$session_id,
 		));
 		if($rowcount!==1){
-			//$rowcount is 0 when update_session is called twice in the same second.
-			//new Error("Couldn't update session!");
+			new Error_warn("Couldn't update session!");
 		}
 	}
 

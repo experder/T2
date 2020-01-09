@@ -87,11 +87,12 @@ class Debug {
 
 	private static function stats_db(Page $page) {
 		$querie_count = self::$queries_corequeries_count."+<b>".(count(self::$queries)-self::$queries_corequeries_count). "</b> Queries";
-		$querie_count=new Html("span", $querie_count, array("onclick"=>"t2_toggle_detail_zoom('id_dev_stats_queries_detail',this);","class"=>"zoom-in"));
+		#$querie_count=new Html("span", $querie_count, array("onclick"=>"t2_toggle_detail_zoom('id_dev_stats_queries_detail',this);","class"=>"zoom-in"));
 		$page->add_js_core();
 		$queries=\service\Html::UL(self::$queries);
 		$queries=new Html("pre", $queries, array("style"=>"display:none;", "class"=>"dev_stats_detail", "id"=>"id_dev_stats_queries_detail"));
-		return new Html("div", $querie_count, array("class"=>"dev_stats_queries abutton")).$queries;
+		return new Html("div", $querie_count, array("class"=>"dev_stats_queries abutton zoom-in",
+				"onclick"=>"t2_toggle_detail_zoom('id_dev_stats_queries_detail',this);")).$queries;
 	}
 
 	public static function get_stats(Page $page){

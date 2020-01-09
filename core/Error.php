@@ -42,7 +42,7 @@ class Error {
 		}
 		self::$recusion_protection = false;
 		if (!Start::isStarted() && $fatal){
-			self::quit_bare("(ERROR ON T2-STARTUP)<pre>$message</pre>", $backtrace_depth+1);
+			self::quit_bare("(ERROR ON STARTUP)<pre>$message</pre>", $backtrace_depth+1);
 		}
 		$this->type = $type;
 		$this->message = $message;
