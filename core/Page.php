@@ -109,6 +109,13 @@ class Page {
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function isStandalone() {
+		return $this->standalone;
+	}
+
+	/**
 	 * @deprecated Use Start::init() instead!
 	 * @see Start::init()
 	 */

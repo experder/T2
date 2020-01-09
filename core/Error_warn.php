@@ -11,6 +11,8 @@ require_once ROOT_DIR . '/core/Error_warn.php';
 
 namespace core;
 
+require_once ROOT_DIR . '/core/Solution.php';
+
 use service\Config;
 use t2\dev\Debug;
 use t2\Start;
@@ -36,11 +38,14 @@ class Error_warn {
 
 	public function __construct($message, $type = self::TYPE_UNKNOWN, $backtrace_depth = 0, $debug_info=null) {
 		if (!self::$recusion_protection) {
-			$msg = "(ERROR OCCURED IN ERROR HANDLING)";
+			echo "(ERROR OCCURED IN ERROR HANDLING)<br>";
+			echo "Please contact your administrator.";
 			if(Config::$DEVMODE){
-				$msg.="<pre>$message</pre><pre>".self::backtrace($backtrace_depth+1)."</pre>";
+				echo "<pre>$message</pre><pre>".Debug::backtrace($backtrace_depth+1)."</pre>";
 			}
-			echo $msg;
+			foreach (Page::$compiler_messages as $msg){
+				echo "<hr><pre>".$msg->get_message()."</pre>";
+			}
 			exit;
 		}
 		self::$recusion_protection = false;
@@ -55,11 +60,36 @@ class Error_warn {
 	}
 
 	private function report($backtrace_depth = 0){
-		$msg = new Message(Message::TYPE_ERROR, "An Error occured. Please report/see log: #" . $this->timestamp . "."
+		$message_body = "An error occured.";
+
+		$solutions = Solution::get_solutions_for_error($this->type);
+		$sol_html=array();
+		foreach ($solutions as $solution){
+			$body = $solution->get_html(array(
+				"(:REF)" => ($this->type ? $this->type . '/' : '#') . $this->timestamp,
+				"(:ID)" => '#'.$this->timestamp,
+				"(:MSG)" => '<pre>'.htmlentities($this->message).'</pre>',
+				"(:TRACE)" => '<pre>'.Debug::backtrace($backtrace_depth + 1).'</pre>',
+			));
+			if($body){
+				$sol_html[] = $body;
+			}
+		}
+		if(!$sol_html){
+			$sol_html = "";
+		}else if (count($sol_html)==1){
+			$sol_html = " ".$sol_html[0];
+		}else{
+			$sol_html = \service\Html::UL($sol_html);
+		}
+		$message_body .= $sol_html;
+
+		$msg = new Message(Message::TYPE_ERROR, "An error occured: ".($this->type?$this->type.'/':'#'). $this->timestamp . "."
 			. (Config::$DEVMODE ? "<pre class='dev_error_info'>" . htmlentities(
-					($this->type === self::TYPE_UNKNOWN ? "" : ($this->type . self::HR)) . $this->message . self::HR . self::backtrace($backtrace_depth + 1)
+					($this->type === self::TYPE_UNKNOWN ? "" : ($this->type . self::HR)) . $this->message . self::HR . Debug::backtrace($backtrace_depth + 1)
 				) . "</pre>" : "")
 		);
+		$msg = new Message(Message::TYPE_ERROR, $message_body);
 		return $msg;
 	}
 
@@ -85,9 +115,6 @@ class Error_warn {
 				Page::$compiler_messages[] = $message;
 			}
 		}
-//		if(!defined('HTTP_ROOT')){
-//			define('HTTP_ROOT', '.');//It's just a guess -> works fine from root directory (index.php, Installer)
-//		}
 		$page = new Page_standalone($id, $title." - T2");
 		if($body!==null){
 			$page->add($body);

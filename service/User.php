@@ -15,6 +15,7 @@ namespace service;
 require_once ROOT_DIR . '/service/Login.php';
 
 use core\Error;
+use core\Error_fatal;
 
 class User {
 
@@ -25,9 +26,12 @@ class User {
 		self::$ID = Login::get_uid();
 	}
 
-	public static function id(){
+	public static function id($standalone=false){
 		if (self::$ID===false){
-			Error::quit("UID not set.", 1);
+			if($standalone){
+				return false;
+			}
+			new Error_fatal("UID not set.");
 		}
 		return self::$ID;
 	}
