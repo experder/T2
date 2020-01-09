@@ -244,9 +244,10 @@ class Database {
 				."( ".Error::backtrace($backtrace_depth + 1, "\n", false)." )";
 
 			$core_query_class = "";
-			if(in_array(str_replace('\\','/',$caller), Debug::get_core_queries())){
+			if($caller2=in_array(str_replace('\\','/',$caller), Debug::get_core_queries())){
 				$core_query_class=" core_query_class";
 				Debug::$queries_corequeries_count++;
+				Debug::mark_core_query_checked($caller2);
 			}
 
 			$query_html = (new Html("span",$caller, array("class"=>"detail_functionSource$core_query_class")))

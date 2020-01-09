@@ -11,10 +11,12 @@ require_once ROOT_DIR . '/dev/Debug.php';
 
 namespace t2\dev;
 
+require_once ROOT_DIR . '/service/Arrays.php';
 
-use core\Error_warn;
 use core\Html;
 use core\Page;
+use service\Arrays;
+use service\User;
 use t2\Start;
 
 class Debug {
@@ -66,6 +68,10 @@ class Debug {
 		return self::$core_queries_compiled;
 	}
 
+	public static function mark_core_query_checked($value) {
+		self::$core_queries_compiled = Arrays::remove_from_array_by_value(self::get_core_queries(), $value);
+	}
+
 	private static function stats_outputs(Page $page) {
 		$page->add_js_core();
 		$out = array();
@@ -93,6 +99,7 @@ class Debug {
 			"\n\t" . self::stats_db($page)
 			. "\n\t" . self::stats_runtime()
 			. self::stats_outputs($page)
+			."\n\t".(new Html("div", 'UID:'.(User::id($page->isStandalone())?:'-/-'), array("class"=>"dev_stats_uid abutton")))
 			. "\n"
 			, array("class" => "dev_stats noprint"));
 		return "\n".$dev_stats."\n";
