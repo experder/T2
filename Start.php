@@ -10,7 +10,7 @@
 namespace t2;
 
 use core\Database;
-use core\Error;
+use core\Error_fatal;
 use core\Html;
 use core\Page;
 use service\Config;
@@ -58,6 +58,8 @@ class Start {
 	public static function init_dependencies() {
 		require_once ROOT_DIR . '/core/Page.php';
 		require_once ROOT_DIR . '/core/Error.php';
+		require_once ROOT_DIR . '/core/Error_warn.php';
+		require_once ROOT_DIR . '/core/Error_fatal.php';
 		require_once ROOT_DIR . '/core/Database.php';
 		require_once ROOT_DIR . '/core/Message.php';
 		require_once ROOT_DIR . '/service/Config.php';
@@ -74,7 +76,7 @@ class Start {
 		require_once $config_file;
 		//Make the Test:
 		if (Database::get_singleton(false) === false) {
-			Error::quit("Local config file (\"$config_file\") corrupt. Please check.");
+			new Error_fatal("Local config file (\"$config_file\") corrupt. Please check.", "TYPE_CONFIG_CORRUPT");
 		}
 		#define('DB_CORE_PREFIX', Database::get_singleton()->core_prefix);
 	}

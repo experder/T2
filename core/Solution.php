@@ -34,19 +34,19 @@ class Solution {
 	public static function get_solutions_for_error($error_type){
 		$solutions = array();
 
-		//...
-
-		if(count($solutions)==0){
-			$solutions=self::get_default_solutions();
+		if($error_type=='TYPE_CONFIG_CORRUPT'){
+			$solutions[] = (new Solution("Check config file."));//TODO
 		}
+
+		$solutions[] = self::get_default_solution();
 		return $solutions;
 	}
 
 	/**
-	 * @return Solution[]
+	 * @return Solution
 	 */
-	private static function get_default_solutions() {
-		return array(
+	private static function get_default_solution() {
+		return (
 			new Solution(
 				"",
 				"Please report the following reference to your administrator: (:ID).",

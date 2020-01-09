@@ -107,6 +107,8 @@ class Error_warn {
 	 * @param Message[] $messages
 	 * @param null|string   $body
 	 * @param string $id
+	 *
+	 * TODO:private? machbar über error_fatal?
 	 */
 	public static function abort($title, $messages=null, $body=null, $id="PAGEID_CORE_ABORT") {
 		require_once ROOT_DIR . '/core/Page_standalone.php';

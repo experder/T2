@@ -17,7 +17,6 @@ Current TODOs
 
 ### Medium
 * $page->set_focusFieldId
-* Errors: Provide solutions (Level: User, Admin, Developer)
 * file_exists($filename, $fatal=true)
 * stop mysql service, catch exception ("SQLSTATE\[HY000] \[2002] No such file or directory")
 * backtrace: echo function

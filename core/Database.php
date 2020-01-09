@@ -228,6 +228,7 @@ class Database {
 		/** @var \PDOStatement $statement */
 		$statement = $this->pdo->prepare($query);
 		$ok = @$statement->execute($substitutions);
+		//TODO:subroutines für debug_info und fehler-handling
 		if(Config::$DEVMODE){
 			$backtrace = debug_backtrace();
 
