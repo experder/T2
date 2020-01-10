@@ -18,6 +18,9 @@ use service\User;
 use t2\dev\Debug;
 use t2\Start;
 
+/**
+ * TODO: New class Error_ that combines Error_fatal and Error_warn
+ */
 class Error_warn {
 
 	const TYPE_UNKNOWN = 0;
@@ -170,6 +173,11 @@ class Error_warn {
 	 */
 	public static function backtrace($depth = 0, $linebreak = "\n", $multiline = true) {
 		Debug::backtrace($depth+1, $linebreak, $multiline);
+	}
+
+	public static function from_exception(\Exception $e){
+		//TODO: Copy from Error
+		//TODO: stop mysql service, catch exception ("SQLSTATE\[HY000] \[2002] No such file or directory")
 	}
 
 }

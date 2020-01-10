@@ -68,7 +68,7 @@ class Html implements Echoable {
 		}
 	}
 
-	public function addClass($class) {
+	public function addClass($class) {//TODO: Check, if class already exists
 		if ($class === null) {
 			return;
 		}

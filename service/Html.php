@@ -16,6 +16,9 @@ namespace service;
 require_once ROOT_DIR . '/service/Strings.php';
 require_once ROOT_DIR . '/core/Html.php';
 
+/**
+ * TODO:Move service\Html to core\Html
+ */
 class Html {
 
 	/**

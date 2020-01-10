@@ -10,7 +10,7 @@ require_once ROOT_DIR . '/core/Page.php';
  */
 
 
-namespace core;
+namespace core;//TODO: move all namespaces to t2
 
 require_once ROOT_DIR . '/core/Html.php';
 require_once ROOT_DIR . '/core/Stylesheet.php';
@@ -27,6 +27,9 @@ use service\Files;
 use t2\dev\Debug;
 use t2\Start;
 
+/**
+ * TODO: $page->set_focusFieldId
+ */
 class Page {
 
 	/** @var Page $singleton */

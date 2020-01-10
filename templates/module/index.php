@@ -7,7 +7,7 @@
  GPL*/
 /**TPLDOCSTART
  * This template is used to create a new module.
- * @see TODO
+ * @see (TODO: Module Template Generator)
  */
 if(true)exit;
 /**TPLDOCEND*/

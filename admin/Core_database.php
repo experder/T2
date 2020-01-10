@@ -48,7 +48,7 @@ class Core_database extends Update_database {
 
 		$this->q(3,"CREATE TABLE `core_sessions` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
-			  `user` int(11) NOT NULL,
+			  `user` int(11) NOT NULL,-- TODO:rename column 'user' in core_sessions
 			  `session_id` varchar(20) COLLATE utf8_bin NOT NULL,
 			  `expires` int(11) NOT NULL,
 			  PRIMARY KEY (`id`),

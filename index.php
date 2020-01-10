@@ -14,4 +14,6 @@ $page->add("Welcome!");
 
 $page->add(\service\Html::A_button("Admin", \service\Html::href_internal("admin/index") ));
 
+#\t2\dev\Debug::out($_SERVER);
+
 $page->send_and_quit();

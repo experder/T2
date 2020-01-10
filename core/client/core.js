@@ -15,6 +15,9 @@ function show_dev_stat_queries(html_node_toggle_zoom){
 	}
 }
 
+/**
+ * TODO: onclick zoom-in als objekt
+ */
 function t2_toggle_detail_zoom(content_id, html_node_toggle_zoom){
 	$('#'+content_id).toggle(500);
 	$(html_node_toggle_zoom).toggleClass('zoom-out');

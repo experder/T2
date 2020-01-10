@@ -107,6 +107,10 @@ class Debug {
 		return "\n".$dev_stats."\n";
 	}
 
+	/**
+	 * TODO: Trenner nach der ersten Zeile
+	 * TODO: Funktion mit anzeigen
+	 */
 	public static function backtrace($depth = 0, $linebreak = "\n", $multiline = true) {
 		$caller = array();
 		$backtrace = debug_backtrace();

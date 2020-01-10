@@ -29,6 +29,7 @@ class Templates {
 	 * @return string
 	 */
 	public static function load($file, $replacements) {
+		//TODO: file_exists($filename, $fatal=true)
 		if (!file_exists($file)) {
 			Error::quit("Template file \"$file\" not found!");
 		}

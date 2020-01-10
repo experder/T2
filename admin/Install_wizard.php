@@ -29,7 +29,7 @@ use service\Config;
 use service\Request;
 use service\Templates;
 
-class Install_wizard {
+class Install_wizard {//TODO: Make an installer class that must be called explicitly (not via index)
 
 	public static function prompt_dbParams() {
 		if (Request::cmd("submit_db_credentials")) {

@@ -26,12 +26,15 @@ class User {
 		self::$ID = Login::get_uid();
 	}
 
+	/**
+	 * TODO: revert logic ($halt_on_error=false)
+	 */
 	public static function id($continue_on_error=false){
 		if (self::$ID===false){
 			if($continue_on_error){
 				return false;
 			}
-			new Error_fatal(Error_fatal::TYPE_UNKNOWN, "UID not set.");
+			new Error_fatal(Error_fatal::TYPE_UNKNOWN, "Please init User first", 1, "( \service\User::init() )");
 		}
 		return self::$ID;
 	}

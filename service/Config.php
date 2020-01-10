@@ -26,7 +26,7 @@ use core\Page;
 
 class Config {
 
-	public static $DEVMODE = false;
+	public static $DEVMODE = true;
 
 	/**
 	 * @see \t2\Start::init_database()
