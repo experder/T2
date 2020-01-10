@@ -10,7 +10,7 @@
 require_once ROOT_DIR . '/core/form/Form.php';
  */
 
-namespace core;
+namespace t2\core;
 
 require_once ROOT_DIR . '/core/Html.php';
 require_once ROOT_DIR . '/core/form/Formfield.php';

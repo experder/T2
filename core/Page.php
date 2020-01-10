@@ -10,7 +10,7 @@ require_once ROOT_DIR . '/core/Page.php';
  */
 
 
-namespace core;//TODO: move all namespaces to t2
+namespace t2\core;//TODO: move all namespaces to t2
 
 require_once ROOT_DIR . '/core/Html.php';
 require_once ROOT_DIR . '/core/Stylesheet.php';
@@ -103,7 +103,7 @@ class Page {
 	public static function get_singleton($halt_on_error = true) {
 		if (self::$singleton === null) {
 			if ($halt_on_error) {
-				Error::quit("Please initialize Page singelton first:\n\$page = \\core\\Page::init(\"PAGEID_MYMODULE_MYPAGE\", \"My page\");", 1);
+				Error::quit("Please initialize Page singelton first:\n\$page = \\t2\\core\\Page::init(\"PAGEID_MYMODULE_MYPAGE\", \"My page\");", 1);
 			} else {
 				return false;
 			}
@@ -247,7 +247,7 @@ class Page {
 //		if($this->standalone && !defined('HTTP_ROOT')){
 //			$this->init_http_root();
 //		}
-		$this->add_javascript("JS_ID_T2CORE", HTTP_ROOT . "/core/client/core.js");
+		$this->add_javascript("JS_ID_T2CORE", HTTP_ROOT . "/core/client/t2\core.js");
 	}
 
 	private function get_js_html(){

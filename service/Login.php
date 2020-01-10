@@ -15,15 +15,15 @@ require_once ROOT_DIR . '/core/form/Form.php';
 require_once ROOT_DIR . '/service/Php7.php';
 require_once ROOT_DIR . '/core/Page_standalone.php';
 
-use core\Database;
-use core\Error;
-use core\Error_warn;
-use core\Form;
-use core\Formfield_password;
-use core\Formfield_text;
-use core\Message;
-use core\Page;
-use core\Page_standalone;
+use t2\core\Database;
+use t2\core\Error;
+use t2\core\Error_warn;
+use t2\core\Form;
+use t2\core\Formfield_password;
+use t2\core\Formfield_text;
+use t2\core\Message;
+use t2\core\Page;
+use t2\core\Page_standalone;
 
 class Login {
 

@@ -11,7 +11,7 @@ require_once ROOT_DIR.'/api/Service.php';
 namespace t2\api;
 
 
-use core\Error;
+use t2\core\Error;
 use service\Config;
 
 class Service {

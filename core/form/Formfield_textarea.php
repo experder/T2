@@ -7,7 +7,7 @@
  GPL*/
 
 
-namespace core;
+namespace t2\core;
 
 
 class Formfield_textarea extends Formfield {

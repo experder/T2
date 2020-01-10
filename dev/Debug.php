@@ -13,8 +13,8 @@ namespace t2\dev;
 
 require_once ROOT_DIR . '/service/Arrays.php';
 
-use core\Html;
-use core\Page;
+use t2\core\Html;
+use t2\core\Page;
 use service\Arrays;
 use service\User;
 use t2\Start;

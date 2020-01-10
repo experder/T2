@@ -11,7 +11,7 @@
 require_once ROOT_DIR . '/core/Html.php';
  */
 
-namespace core;
+namespace t2\core;
 
 require_once ROOT_DIR . '/service/Html.php';
 require_once ROOT_DIR . '/core/Echoable.php';
@@ -54,6 +54,7 @@ class Html implements Echoable {
 	 */
 	public function addChildren($childs) {
 		if(!is_array($childs)){
+			/** @noinspection PhpParamsInspection */
 			self::addChild($childs);
 			return;
 		}

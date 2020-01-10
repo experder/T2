@@ -7,9 +7,9 @@
  GPL*/
 
 require_once '../Start.php';
-$page = \core\Page::init("PAGEID_CORE_ADMIN", "Admin");
+$page = \t2\Start::init("PAGEID_CORE_ADMIN", "Admin");
 
-use core\Html;
+use t2\core\Html;
 
 $page->add(\service\Html::A_button("Update",\service\Html::href_internal("admin/update")));
 

@@ -10,7 +10,7 @@
 require_once ROOT_DIR . '/core/form/Formfield.php';
  */
 
-namespace core;
+namespace t2\core;
 
 use service\Config;
 use service\Request;

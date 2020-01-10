@@ -12,7 +12,7 @@ require_once ROOT_DIR . '/service/Files.php';
 namespace service;
 
 
-use core\Error;
+use t2\core\Error;
 
 class Files {
 

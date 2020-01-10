@@ -19,10 +19,11 @@ require_once ROOT_DIR . '/api/Default_values.php';
 
 use admin\Core_values;
 use admin\Install_wizard;
-use core\Database;
-use core\Error;
-use core\Message;
-use core\Page;
+use t2\api\Default_values;
+use t2\core\Database;
+use t2\core\Error;
+use t2\core\Message;
+use t2\core\Page;
 
 class Config {
 
@@ -118,7 +119,7 @@ class Config {
 
 	public static function get_default_value($module, $id, $backtrace_depth=0){
 		$module = $module?:'core';
-		$singleton = \t2\api\Default_values::get_singleton_by_module($module);
+		$singleton = Default_values::get_singleton_by_module($module);
 		$value = $singleton->get_default_value($id);
 		if($value===null){
 			Error::quit("No default value provided for $module:$id.", $backtrace_depth+1);

@@ -9,10 +9,10 @@
 
 namespace t2;
 
-use core\Database;
-use core\Error_fatal;
-use core\Html;
-use core\Page;
+use t2\core\Database;
+use t2\core\Error_fatal;
+use t2\core\Html;
+use t2\core\Page;
 use service\Config;
 use admin\Install_wizard;
 use service\User;
@@ -100,16 +100,16 @@ class Start {
 	}
 
 	/**
-	 * @param string $id
+	 * @param string $PAGEID_
 	 * @param string $title
 	 * @return Page
 	 */
-	public static function init($id, $title) {
+	public static function init($PAGEID_, $title) {
 		Start::init_dependencies();
 		Start::init_config();
 		Start::init_database();
 		Start::init_userrights();
-		$page = Page::init2($id, $title);
+		$page = Page::init2($PAGEID_, $title);
 		self::$started = true;
 		return $page;
 	}

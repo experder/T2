@@ -7,7 +7,7 @@
  GPL*/
 
 
-namespace core;
+namespace t2\core;
 
 require_once ROOT_DIR . '/core/form/Formfield.php';
 

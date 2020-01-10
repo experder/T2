@@ -7,7 +7,7 @@
  GPL*/
 
 
-namespace core;
+namespace t2\core;
 
 use admin\Install_wizard;
 use service\Config;
@@ -104,7 +104,7 @@ class Database {
 	public static function get_singleton($quit_on_error = true) {
 		if (self::$singleton === null || !isset(self::$singleton->pdo)) {
 			if ($quit_on_error) {
-				Error::quit("Please initialize Database singelton first: <code>\\core\\Database::init();</code>", 1);
+				Error::quit("Please initialize Database singelton first: <code>\\t2\\core\\Database::init();</code>", 1);
 			}
 			return false;
 		}

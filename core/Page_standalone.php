@@ -9,7 +9,7 @@
 require_once ROOT_DIR . '/core/Page_standalone.php';
  */
 
-namespace core;
+namespace t2\core;
 
 require_once ROOT_DIR . '/core/Page.php';
 

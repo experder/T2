@@ -10,7 +10,7 @@
 require_once ROOT_DIR . '/core/Stylesheet.php';
  */
 
-namespace core;
+namespace t2\core;
 
 
 class Stylesheet {

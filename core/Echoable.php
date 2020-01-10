@@ -1,10 +1,10 @@
 <?php
 
 /*
-require_once ROOT_DIR . '/core/Echoable.php';
+require_once ROOT_DIR . '/t2\core/Echoable.php';
  */
 
-namespace core;
+namespace t2\core;
 
 
 interface Echoable {

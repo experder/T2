@@ -7,7 +7,7 @@
  GPL*/
 
 require_once '../Start.php';
-$page = \core\Page::init("PAGE_ID_MYPAGE", "My page");
+$page = \t2\Start::init("PAGE_ID_MYPAGE", "My page");
 
 require_once ROOT_DIR . "/admin/Core_database.php";
 

@@ -14,8 +14,7 @@ namespace service;
 
 require_once ROOT_DIR . '/service/Login.php';
 
-use core\Error;
-use core\Error_fatal;
+use t2\core\Error_fatal;
 
 class User {
 

@@ -11,7 +11,7 @@
 require_once ROOT_DIR . '/core/Error.php';
  */
 
-namespace core;
+namespace t2\core;
 
 use service\Config;
 use t2\Start;

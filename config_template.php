@@ -17,4 +17,4 @@
 #\service\Config::$DEVMODE = true;
 
 //Initialize database connection:
-\core\Database::init(':server_addr', ':tethysdb', ':username', ':dbpass');
+\t2\core\Database::init(':server_addr', ':tethysdb', ':username', ':dbpass');

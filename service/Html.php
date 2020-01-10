@@ -17,7 +17,7 @@ require_once ROOT_DIR . '/service/Strings.php';
 require_once ROOT_DIR . '/core/Html.php';
 
 /**
- * TODO:Move service\Html to core\Html
+ * TODO:Move service\Html to t2\core\Html
  */
 class Html {
 
@@ -38,27 +38,27 @@ class Html {
 	}
 
 	public static function A($content, $href, $class=null){
-		return new \core\Html("a",$content,array("href"=>$href,"class"=>$class));
+		return new \t2\core\Html("a",$content,array("href"=>$href,"class"=>$class));
 	}
 
 	public static function H1($content, $id=null){
-		return new \core\Html("h1",$content,array("id"=>$id));
+		return new \t2\core\Html("h1",$content,array("id"=>$id));
 	}
 
 	public static function H2($content, $id=null){
-		return new \core\Html("h2",$content,array("id"=>$id));
+		return new \t2\core\Html("h2",$content,array("id"=>$id));
 	}
 
 	public static function H3($content, $id=null){
-		return new \core\Html("h3",$content,array("id"=>$id));
+		return new \t2\core\Html("h3",$content,array("id"=>$id));
 	}
 
 	public static function H4($content, $id=null){
-		return new \core\Html("h4",$content,array("id"=>$id));
+		return new \t2\core\Html("h4",$content,array("id"=>$id));
 	}
 
 	public static function PRE($content){
-		return new \core\Html("pre",$content,array());
+		return new \t2\core\Html("pre",$content,array());
 	}
 
 	public static function UL($children=array(), $params=null){
@@ -66,10 +66,10 @@ class Html {
 	}
 
 	private static function list_builder($elem, $children, $params){
-		$html = new \core\Html($elem,"",$params);
+		$html = new \t2\core\Html($elem,"",$params);
 		foreach ($children as $child){
-			if(!($child instanceof \core\Html) || strtolower($child->get_tag())!='li'){
-				$child = new \core\Html("li", null, null, $child);
+			if(!($child instanceof \t2\core\Html) || strtolower($child->get_tag())!='li'){
+				$child = new \t2\core\Html("li", null, null, $child);
 			}
 			$html->addChild($child);
 		}
@@ -85,7 +85,7 @@ class Html {
 	public static function A_external($content, $href, $params=array()){
 		$params['href']=$href;
 		$params['target']='_blank';
-		$html = new \core\Html("a", $content, $params);
+		$html = new \t2\core\Html("a", $content, $params);
 		return $html;
 	}
 

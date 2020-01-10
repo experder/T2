@@ -15,7 +15,7 @@ namespace service;
 require_once ROOT_DIR . '/service/Strings.php';
 require_once ROOT_DIR . '/service/Files.php';
 
-use core\Error;
+use t2\core\Error;
 
 
 class Templates {
