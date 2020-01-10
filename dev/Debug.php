@@ -22,9 +22,10 @@ use t2\Start;
 class Debug {
 
 	public static $core_queries = array(
+		//TODO:update these values before deployment
 		"load_values ( :ROOT_DIR/service/Config.php:170 )",
-		"check_session ( :ROOT_DIR/service/Login.php:55 )",
-		"update_session ( :ROOT_DIR/service/Login.php:84 )",
+		"check_session ( :ROOT_DIR/service/Login.php:57 )",
+		"update_session ( :ROOT_DIR/service/Login.php:86 )",
 	);
 	private static $core_queries_compiled = null;
 

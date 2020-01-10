@@ -271,15 +271,17 @@ class Database {
 				if(!$compiled_query){
 					$compiled_query=($debugDump?:$query);
 				}
-				$compiled_query .= Error::HR;
+				#$compiled_query .= Error::HR;
 			}
-			$error_type = Error::TYPE_SQL;
+			$error_type = Error_warn::TYPE_SQL;
 			if($statement->errorCode()=="42S02"/*Unknown table*/){
-				$error_type = Error::TYPE_TABLE_NOT_FOUND;
+				//TODO: quit without error and pass to calling function to process install wizard
+				$error_type = Error_warn::TYPE_TABLE_NOT_FOUND;
 				#$errorInfo.=print_r($statement->errorInfo(),1);
 			}
 
-			$this->error = new Error($compiled_query . $errorInfo, $error_type, $report_error, $backtrace_depth + 1);
+			#$this->error = new Error($compiled_query . $errorInfo, $error_type, $report_error, $backtrace_depth + 1);
+			new Error_warn($error_type, $errorInfo, $backtrace_depth + 1, $compiled_query);
 			return false;
 		}
 		switch ($return_type) {

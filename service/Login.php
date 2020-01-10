@@ -86,7 +86,7 @@ class Login {
 			":session_id"=>$session_id,
 		));
 		if($rowcount!==1){
-			new Error_warn("Couldn't update session!");
+			new Error_warn(Error_warn::TYPE_UNKNOWN,"Couldn't update session!");
 		}
 	}
 

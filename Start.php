@@ -76,7 +76,7 @@ class Start {
 		require_once $config_file;
 		//Make the Test:
 		if (Database::get_singleton(false) === false) {
-			new Error_fatal("Local config file (\"$config_file\") corrupt. Please check.", "TYPE_CONFIG_CORRUPT");
+			new Error_fatal("ERROR_CONFIG_CORRUPT", "Local config file corrupt.", 0, "Config file: ".$config_file);
 		}
 		#define('DB_CORE_PREFIX', Database::get_singleton()->core_prefix);
 	}

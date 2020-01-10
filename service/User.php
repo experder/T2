@@ -26,12 +26,12 @@ class User {
 		self::$ID = Login::get_uid();
 	}
 
-	public static function id($standalone=false){
+	public static function id($continue_on_error=false){
 		if (self::$ID===false){
-			if($standalone){
+			if($continue_on_error){
 				return false;
 			}
-			new Error_fatal("UID not set.");
+			new Error_fatal(Error_fatal::TYPE_UNKNOWN, "UID not set.");
 		}
 		return self::$ID;
 	}
