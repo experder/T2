@@ -13,6 +13,7 @@ namespace service;
 
 require_once ROOT_DIR . '/core/form/Form.php';
 require_once ROOT_DIR . '/service/Php7.php';
+require_once ROOT_DIR . '/core/Page_standalone.php';
 
 use core\Database;
 use core\Error;
@@ -22,6 +23,7 @@ use core\Formfield_password;
 use core\Formfield_text;
 use core\Message;
 use core\Page;
+use core\Page_standalone;
 
 class Login {
 
@@ -121,7 +123,7 @@ class Login {
 	}
 
 	public static function prompt_credentials(){
-		$page = new Page("PAGEID_CORE_LOGIN", "Login");
+		$page = new Page_standalone("PAGEID_CORE_LOGIN", "Login");
 		$val_from_request = true;
 
 		if(Request::cmd('t2_dologin')){
