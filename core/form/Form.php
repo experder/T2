@@ -40,17 +40,17 @@ class Form implements Echoable {
 	 * Form constructor.
 	 * @param string       $action is an URL that is called on form submission. Can be left empty (same page is called).
 	 * @param string|false $submit_text Label of the submit button. FALSE to turn off submit button.
-	 * @param string|null  $cmd If set, a hidden key "cmd" is sent on submission.
+	 * @param string|null  $CMD_ If set, a hidden key "cmd" is sent on submission.
 	 * @param string|null  $method Form submission method. The submission method is "post" by default.
 	 */
-	public function __construct($cmd = null, $action = "", $submit_text = "Absenden", $method = "post") {
+	public function __construct($CMD_ = null, $action = "", $submit_text = "Send"/*TODO:i18n*/, $method = "post") {
 
 		$this->action = $action;
 
 		$this->method = $method;
 
-		if ($cmd) {
-			$this->fields[] = new Formfield_hidden("cmd", $cmd);
+		if ($CMD_) {
+			$this->fields[] = new Formfield_hidden("cmd", $CMD_);
 		}
 
 		if ($submit_text !== false) {

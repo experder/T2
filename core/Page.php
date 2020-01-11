@@ -10,7 +10,7 @@ require_once ROOT_DIR . '/core/Page.php';
  */
 
 
-namespace t2\core;//TODO: move all namespaces to t2
+namespace t2\core;
 
 require_once ROOT_DIR . '/core/Html.php';
 require_once ROOT_DIR . '/core/Stylesheet.php';
@@ -177,25 +177,29 @@ class Page {
 	 * @see Message
 	 * @param int    $type [Message::TYPE_ERROR|Message::TYPE_INFO|Message::TYPE_INFO]
 	 * @param string $message
+	 * @deprecated
 	 */
 	public function add_message($type, $message) {
 		$msg = new Message($type, $message);
-		$this->messages[] = $msg;
+		$this->add_message_($msg);
+	}
+
+	/**
+	 * @param Message $message
+	 * @return Page $this
+	 * TODO: Make private and create add_message_error, add_message_info and add_message_confirm (add_message_ok)
+	 */
+	public function add_message_(Message $message) {
+		$this->messages[] = $message;
+		return $this;
+	}
+
+	public static function add_message_error($message){
+		self::get_singleton()->add_message_(new Message(Message::TYPE_ERROR, $message));
 	}
 
 	public function add_inline_js($js) {
 		$this->inline_js.=$js."\n";
-	}
-
-	/**
-	 * @deprecated
-	 */
-	public function get_dev_stats(){
-		$db_stats = Database::get_dev_stats($this);
-		$runtime = Debug::dev_get_runtime();
-		$dev_stats = new Html("div", "\n\t" . $db_stats . "\n\t" . $runtime . "\n"
-			, array("class" => "dev_stats noprint"));
-		return "\n".$dev_stats."\n";
 	}
 
 	/**
@@ -247,7 +251,7 @@ class Page {
 //		if($this->standalone && !defined('HTTP_ROOT')){
 //			$this->init_http_root();
 //		}
-		$this->add_javascript("JS_ID_T2CORE", HTTP_ROOT . "/core/client/t2\core.js");
+		$this->add_javascript("JS_ID_T2CORE", HTTP_ROOT . "/core/client/core.js");
 	}
 
 	private function get_js_html(){

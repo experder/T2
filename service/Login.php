@@ -9,7 +9,7 @@
 /*
 require_once ROOT_DIR . '/service/Login.php';
  */
-namespace service;
+namespace service;//TODO: move all namespaces to t2
 
 require_once ROOT_DIR . '/core/form/Form.php';
 require_once ROOT_DIR . '/service/Php7.php';
@@ -25,7 +25,7 @@ use t2\core\Message;
 use t2\core\Page;
 use t2\core\Page_standalone;
 
-class Login {
+class Login {//TODO:Logout
 
 	private static $session_cookie_name = 'T2_session';
 

@@ -11,7 +11,7 @@
 require_once ROOT_DIR . '/admin/Install_wizard.php';
  */
 
-namespace admin;
+namespace admin;//TODO: move all namespaces to t2
 
 require_once ROOT_DIR . '/core/form/Form.php';
 require_once ROOT_DIR . '/service/Templates.php';

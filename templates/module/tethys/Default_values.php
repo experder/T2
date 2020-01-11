@@ -1,5 +1,5 @@
 <?php
-namespace t2\modules\core_template;//(:moduleIdLc)
+namespace t2\modules\core_template\api;//(:moduleIdLc)
 /**TPLDOCSTART
 GPL
  * This file is part of the T2 toolbox;
@@ -8,15 +8,19 @@ GPL
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
 GPL
  * This template is used to create a new module.
- * @see TODO: Module Generator: \t2\admin\Admin::prompt_new_module()
+ * @see \t2\admin\Admin::prompt_new_module()
  */
 if(true)exit;
 /**TPLDOCEND*/
 
-require_once '../../Start.php';//(:relativePath)
-use t2\Start;
-$page = Start::init("PAGEID_(:MODULE_ID_UC)_INDEX", "Index - (:MODULE_NAME)");
+require_once ROOT_DIR . '/api/Default_values.php';
 
-$page->add("Index of module \"(:MODULE_NAME)\"");
+use t2\api\Default_values;
 
-$page->send_and_quit();
+class Core_values extends Default_values {
+
+	protected $default_values = array(
+		#"KEY"=>"VALUE",
+	);
+
+}

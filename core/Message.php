@@ -33,6 +33,13 @@ class Message {
 		return $this->message;
 	}
 
+	/**
+	 * @return int
+	 */
+	public function getType() {
+		return $this->type;
+	}
+
 	public function get_type_cssClass() {
 		switch ($this->type) {
 			case self::TYPE_ERROR:

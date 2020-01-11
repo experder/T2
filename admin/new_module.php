@@ -6,16 +6,16 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-namespace t2;
+namespace t2\admin;
 
-require_once 'Start.php';
-use service\Html;
-$page = Start::init("PAGEID_CORE_INDEX", "Start");
+require_once '../../tethys/Start.php';
+require_once ROOT_DIR . '/admin/Admin.php';
 
-$page->add("Welcome!");
+use t2\dev\Debug;
+use \t2\Start;
 
-$page->add(Html::A_button("Admin", Html::href_internal("admin/index") ));
+$page = Start::init("PAGEID_ADMIN_NEWMOD", "New module");
 
-#\t2\dev\Debug::out($_SERVER);
+Admin::prompt_new_module($page);
 
 $page->send_and_quit();

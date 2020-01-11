@@ -12,6 +12,7 @@ $page = \t2\Start::init("PAGEID_CORE_ADMIN", "Admin");
 use t2\core\Html;
 
 $page->add(\service\Html::A_button("Update",\service\Html::href_internal("admin/update")));
+$page->add(\service\Html::A_button("New module",\service\Html::href_internal("admin/new_module")));
 
 if(\service\Config::$DEVMODE){
 	$devarea = new Html("div","");

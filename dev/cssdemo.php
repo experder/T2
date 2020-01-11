@@ -15,7 +15,7 @@ use t2\core\Message;
 $page = \t2\Start::init("PAGEID_DEV_CSSDEMO", "CSS demo");
 
 if(!\service\Config::$DEVMODE){
-	$page->add_message(Message::TYPE_ERROR, "Not available.");
+	$page->add_message_(new Message(Message::TYPE_ERROR, "Not available."));
 	$page->send_and_quit();
 }
 

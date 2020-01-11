@@ -41,8 +41,8 @@ class Error_warn {
 
 	private static $recusion_protection = true;
 
-	public function __construct($type, $message, $backtrace_depth = 0, $debug_info=null) {
-		$this->type = $type;
+	public function __construct($ERROR_TYPE, $message, $backtrace_depth = 0, $debug_info=null) {
+		$this->type = $ERROR_TYPE;
 		$this->message = $message;
 		$this->timestamp = time();
 		$this->debug_info = $debug_info;
@@ -83,7 +83,7 @@ class Error_warn {
 	private function report_havarie($backtrace_depth = 0){
 		//TODO: $type und $debug_info verwursten?
 		echo "(ERROR OCCURED IN ERROR HANDLING)<br>";
-		echo "Please contact your administrator.";
+		echo "Please contact your administrator.";//TODO:i18n
 		#if(Config::$DEVMODE)
 		{
 			echo $this->message//$this->get_msg(true).self::HR
@@ -98,6 +98,7 @@ class Error_warn {
 	private function report($backtrace_depth = 0){
 
 		if(Config::$DEVMODE/*TODO: OR ADMIN*/){
+			//TODO:i18n
 			$message_body='An error occured: '.$this->get_ref() .$this->get_msg(true, true, true, $backtrace_depth+1);
 		}else if(User::id(true)){
 			$message_body='An error occured. Please report this reference to your administrator: '.$this->get_ref();
