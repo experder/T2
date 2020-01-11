@@ -13,17 +13,16 @@ namespace t2\dev;
 
 require_once ROOT_DIR . '/service/Arrays.php';
 
-use t2\core\Html;
-use t2\core\Page;
 use service\Arrays;
 use service\User;
+use t2\core\Html;
+use t2\core\Page;
 use t2\Start;
 
 class Debug {
 
 	public static $core_queries = array(
-		//TODO:update these values before deployment
-		"load_values ( :ROOT_DIR/service/Config.php:170 )",
+		"load_values ( :ROOT_DIR/service/Config.php:171 )",
 		"check_session ( :ROOT_DIR/service/Login.php:57 )",
 		"update_session ( :ROOT_DIR/service/Login.php:86 )",
 	);
@@ -31,6 +30,8 @@ class Debug {
 
 	public static $queries = array();
 	public static $queries_corequeries_count = 0;
+	const TOO_MANY_QUERIES = 10;
+	const TOO_LONG_TIME = .5/*seconds*/;
 
 	private static $outputs = array();
 
@@ -56,7 +57,9 @@ class Debug {
 
 	private static function stats_runtime() {
 		$end_time = microtime(true);
-		return new Html("div", "<b>".round($end_time - Start::dev_get_start_time(), 3) . "</b> Seconds", array("class"=>"dev_stats_runtime abutton"));
+		$runtime = round($end_time - Start::dev_get_start_time(), 3);
+		$confirm_class = ($runtime>=self::TOO_LONG_TIME?"confirm_bad":"confirm_good");
+		return new Html("div", "<b>".$runtime . "</b> Seconds", array("class"=>"dev_stats_runtime abutton $confirm_class"));
 	}
 
 	public static function get_core_queries() {
@@ -87,13 +90,22 @@ class Debug {
 	}
 
 	private static function stats_db(Page $page) {
-		$querie_count = self::$queries_corequeries_count."+<b>".(count(self::$queries)-self::$queries_corequeries_count). "</b> Queries";
-		#$querie_count=new Html("span", $querie_count, array("onclick"=>"t2_toggle_detail_zoom('id_dev_stats_queries_detail',this);","class"=>"zoom-in"));
+		$additional_queries_count = count(self::$queries)-self::$queries_corequeries_count;
+		$confirm_class="confirm_good";
+		if (
+			self::$queries_corequeries_count!=count(self::$core_queries)//We missed to update core queries
+			||$additional_queries_count>=self::TOO_MANY_QUERIES
+		){
+			$confirm_class="confirm_bad";
+		}
+		$querie_count = self::$queries_corequeries_count."+<b>".$additional_queries_count. "</b> Queries";
 		$page->add_js_core();
 		$queries=\service\Html::UL(self::$queries);
 		$queries=new Html("pre", $queries, array("style"=>"display:none;", "class"=>"dev_stats_detail", "id"=>"id_dev_stats_queries_detail"));
-		return new Html("div", $querie_count, array("class"=>"dev_stats_queries abutton zoom-in",
-				"onclick"=>"t2_toggle_detail_zoom('id_dev_stats_queries_detail',this);")).$queries;
+		return new Html("div", $querie_count, array(
+				"class" => "dev_stats_queries abutton zoom-in $confirm_class",
+				"onclick" => "t2_toggle_detail_zoom('id_dev_stats_queries_detail',this);",
+			)) . $queries;
 	}
 
 	public static function get_stats(Page $page){

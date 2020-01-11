@@ -96,7 +96,11 @@ div.dev_stats div.abutton{
 	background:white;
 	box-shadow: -1px -1px 3px gray inset;
 }
-div.dev_stats div.dev_stats_queries{
+div.dev_stats div.confirm_good{
+	background:#EFFFEC;
+}
+div.dev_stats div.confirm_bad{
+	background:#FFEDEF;
 }
 div.dev_stats pre.dev_stats_detail{
 	max-height:400px;
