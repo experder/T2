@@ -61,4 +61,33 @@ class Strings {
 		return $sql;
 	}
 
+	/**
+	 * (returns bigger values than format_memory_binary)
+	 * @param number $bytes
+	 * @return string
+	 */
+	public static function format_memory($bytes) {
+		$string = self::magnitude($bytes, array(' Byte',' kB',' MB',' GB',' TB',' PB',' EB'));
+		#$string = $bytes." &rarr; ".$string;
+		return $string;
+	}
+
+	/**
+	 * @param number $bytes
+	 * @return string
+	 */
+	public static function format_memory_binary($bytes) {
+		$string = self::magnitude($bytes, array(' Byte',' KB',' MiB',' GiB',' TiB',' PiB',' EiB'), 1024);
+		#$string = $bytes." &rarr; ".$string;
+		return $string;
+	}
+
+	private static function magnitude($number, $units, $steps=1000, $precision=2, $cycles=0) {
+		$quotient = $number/$steps;
+		if($quotient<1){
+			return round($number, $precision).(isset($units[$cycles])?$units[$cycles]:"*$steps^$cycles".$units[0]);
+		}
+		return self::magnitude($quotient, $units, $steps, $precision, $cycles+1);
+	}
+
 }

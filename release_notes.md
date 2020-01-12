@@ -9,6 +9,7 @@
 New readme, some links,
 Classes: Page, Error, Message, Forms, Database, Html.
 Service classes: Config, Files, Html, Request, Strings, Templates.
-Compiler messages, Installer, Updater, dev stats.  
+Compiler messages, Installer, Updater, dev stats.
+PHP language level: 5.3.  
 **Extinctions:** None
 
