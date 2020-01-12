@@ -8,7 +8,7 @@
 
 
 /*
-require_once ROOT_DIR . '/service/Strings.php';
+require_once ROOT_DIR . '/core/service/Strings.php';
  */
 
 namespace service;

@@ -8,14 +8,14 @@
 
 
 /*
-require_once ROOT_DIR . '/admin/Install_wizard.php';
+require_once ROOT_DIR . '/dev/Install_wizard.php';
  */
 
 namespace admin;//TODO: move all namespaces to t2
 
 require_once ROOT_DIR . '/core/form/Form.php';
-require_once ROOT_DIR . '/service/Templates.php';
-require_once ROOT_DIR . "/admin/Core_database.php";
+require_once ROOT_DIR . '/core/service/Templates.php';
+require_once ROOT_DIR . "/core/api/Core_database.php";
 
 use t2\core\Database;
 use t2\core\Error;

@@ -11,7 +11,7 @@ require_once ROOT_DIR . '/dev/Debug.php';
 
 namespace t2\dev;
 
-require_once ROOT_DIR . '/service/Arrays.php';
+require_once ROOT_DIR . '/core/service/Arrays.php';
 
 use service\Arrays;
 use service\User;

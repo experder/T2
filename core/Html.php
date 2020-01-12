@@ -13,7 +13,7 @@ require_once ROOT_DIR . '/core/Html.php';
 
 namespace t2\core;
 
-require_once ROOT_DIR . '/service/Html.php';
+require_once ROOT_DIR . '/core/service/Html.php';
 require_once ROOT_DIR . '/core/Echoable.php';
 
 

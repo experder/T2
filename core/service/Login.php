@@ -7,12 +7,12 @@
  GPL*/
 
 /*
-require_once ROOT_DIR . '/service/Login.php';
+require_once ROOT_DIR . '/core/service/Login.php';
  */
 namespace service;//TODO: move all namespaces to t2
 
 require_once ROOT_DIR . '/core/form/Form.php';
-require_once ROOT_DIR . '/service/Php7.php';
+require_once ROOT_DIR . '/core/service/Php7.php';
 require_once ROOT_DIR . '/core/Page_standalone.php';
 
 use t2\core\Database;

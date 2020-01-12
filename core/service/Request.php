@@ -7,7 +7,7 @@
  GPL*/
 
 /*
-require_once ROOT_DIR . '/service/Request.php';
+require_once ROOT_DIR . '/core/service/Request.php';
  */
 
 namespace service;

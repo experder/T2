@@ -12,13 +12,9 @@ $page = \t2\Start::init("PAGEID_CORE_ADMIN", "Admin");
 use t2\core\Html;
 
 $page->add(\service\Html::A_button("Update",\service\Html::href_internal("admin/update")));
-$page->add(\service\Html::A_button("New module",\service\Html::href_internal("admin/new_module")));
 
 if(\service\Config::$DEVMODE){
-	$devarea = new Html("div","");
-	$devarea->addChild(new Html("h2","dev area"));
-	$devarea->addChild(\service\Html::A_button("CSS demo",\service\Html::href_internal("dev/cssdemo")));
-	$page->add($devarea);
+	$page->add(\service\Html::A_button("Dev area",\service\Html::href_internal("dev/index")));
 }
 
 $page->send_and_quit();

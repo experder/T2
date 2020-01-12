@@ -7,11 +7,11 @@
  GPL*/
 
 require_once '../Start.php';
-$page = \t2\Start::init("PAGE_ID_MYPAGE", "My page");
+$page = \t2\Start::init("PAGEID_CORE_DEVAREA", "Dev area");
 
-require_once ROOT_DIR . "/core/api/Core_database.php";
+use t2\core\Html;
 
-$updater = new \admin\Core_database();
-echo $updater->update();
+$page->add(\service\Html::A_button("New module",\service\Html::href_internal("dev/new_module")));
+$page->add(\service\Html::A_button("CSS demo",\service\Html::href_internal("dev/templates/cssdemo")));
 
 $page->send_and_quit();

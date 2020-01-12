@@ -8,14 +8,14 @@
 
 
 /*
-require_once ROOT_DIR . '/service/Config.php';
+require_once ROOT_DIR . '/core/service/Config.php';
  */
 
 namespace service;
 
-require_once ROOT_DIR . '/service/Strings.php';
+require_once ROOT_DIR . '/core/service/Strings.php';
 require_once ROOT_DIR . '/core/Database.php';
-require_once ROOT_DIR . '/api/Default_values.php';
+require_once ROOT_DIR . '/dev/api/Default_values.php';
 
 use admin\Core_values;
 use admin\Install_wizard;
@@ -55,7 +55,7 @@ class Config {
 	}
 
 	private static function set_modules_default(){
-		require_once ROOT_DIR . '/admin/Core_values.php';
+		require_once ROOT_DIR . '/core/api/Core_values.php';
 		$dv = new Core_values();
 		$modules_json = $dv->get_default_value("MODULES");
 		if(!(self::$MODULES = json_decode($modules_json, true))){
@@ -173,7 +173,7 @@ class Config {
 		if($error=Database::get_singleton()->getError()){
 			if($error instanceof Error){
 				if($error->get_type()==Error::TYPE_TABLE_NOT_FOUND){
-					require_once ROOT_DIR . '/admin/Install_wizard.php';
+					require_once ROOT_DIR . '/dev/Install_wizard.php';
 					$msg = new Message(Message::TYPE_CONFIRM, "DB \"".Database::get_singleton()->get_dbname()."\" initialized. ".Install_wizard::init_db_config());
 				}else{
 					$msg = $error->report();

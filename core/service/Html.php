@@ -8,12 +8,12 @@
 
 
 /*
-require_once ROOT_DIR . '/service/Html.php';
+require_once ROOT_DIR . '/core/service/Html.php';
  */
 
 namespace service;
 
-require_once ROOT_DIR . '/service/Strings.php';
+require_once ROOT_DIR . '/core/service/Strings.php';
 require_once ROOT_DIR . '/core/Html.php';
 
 /**

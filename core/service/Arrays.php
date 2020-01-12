@@ -6,20 +6,19 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 /*
-require_once ROOT_DIR . '/service/Php7.php';
+require_once ROOT_DIR . '/core/service/Arrays.php';
  */
 
 namespace service;
 
 
-class Php7 {
+class Arrays {
 
-	public static function random_bytes ( $length ){
-		$string = "";
-		for ($i=0; $i<$length; $i++){
-			$string.=chr(rand(0, 255));
+	public static function remove_from_array_by_value($array, $key){
+		if (($key = array_search($key, $array)) !== false) {
+			unset($array[$key]);
 		}
-		return $string;
+		return $array;
 	}
 
 }

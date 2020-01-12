@@ -17,13 +17,27 @@ Before merging `dev` to `master`:
 
 Current TODOs
 -------------
+* download third party packages
+* check/reorg namespaces:
+    * core/service
+    * dev/templates/cssdemo.php
+    * dev/api
+    * core/api/Core_values.php
+    * core/api/Core_database.php
+    * dev/Tools.php
+    * dev/Install_wizard.php
+    * dev\new_module.php
+
+
+    Config.php
+    (16, 17) class Config {//TODO
     Admin.php
-    (26, 51) const empty_path = '(Leave empty for default)';//TODO:i18n
-    (46, 76) $form->add_field(new Formfield_text("path", "Path", self::empty_path));//TODO: register module in Config::$MODULES
-    (61, 5) //TODO:Create module id from module name
-    (62, 5) //TODO:Create absolute_path
-    (63, 5) //TODO:Create relative_path
-    (64, 5) //TODO
+    (29, 51) const empty_path = '(Leave empty for default)';//TODO:i18n
+    (49, 76) $form->add_field(new Formfield_text("path", "Path", self::empty_path));//TODO: register module in Config::$MODULES
+    (64, 5) //TODO:Create module id from module name
+    (65, 5) //TODO:Create absolute_path
+    (66, 5) //TODO:Create relative_path
+    (67, 5) //TODO
     Install_wizard.php
     (14, 19) namespace admin;//TODO: move all namespaces to t2
     (32, 25) class Install_wizard {//TODO: Make an installer class that must be called explicitly (not via index)
@@ -45,13 +59,19 @@ Current TODOs
     (154, 5) * TODO:private? machbar über error_fatal?
     (180, 5) //TODO: Copy from Error
     (181, 5) //TODO: stop mysql service, catch exception ("SQLSTATE\[HY000] \[2002] No such file or directory")
+    Gui.php
+    (15, 43) public function html_index(Page $page);//TODO:?????
     Form.php
     (46, 81) public function __construct($CMD_ = null, $action = "", $submit_text = "Send"/*TODO:i18n*/, $method = "post") {
     Html.php
     (72, 38) public function addClass($class) {//TODO: Check, if class already exists
     Page.php
     (31, 4) * TODO: $page->set_focusFieldId
-    (190, 5) * TODO: Make private and create add_message_error, add_message_info and add_message_confirm (add_message_ok)
+    (173, 5) //TODO: is_string || instanceof Node
+    (191, 5) * TODO: Make private and create add_message_error, add_message_info and add_message_confirm (add_message_ok)
+    (245, 39) public function add_js_jquery341(){//TODO: Move to includes
+    (249, 34) public function add_js_core(){//TODO: Move to includes
+    (341, 6) //TODO: Try/catch __toString
     Debug.php
     (123, 5) * TODO: Trenner nach der ersten Zeile
     (124, 5) * TODO: Funktion mit anzeigen
@@ -66,3 +86,10 @@ Current TODOs
     (29, 5) * TODO: revert logic ($halt_on_error=false)
     index.php
     (11, 9) * @see TODO: Module Generator: \t2\admin\Admin::prompt_new_module()
+    Tools.php
+    (26, 51) const empty_path = '(Leave empty for default)';//TODO:i18n
+    (46, 76) $form->add_field(new Formfield_text("path", "Path", self::empty_path));//TODO: register module in Config::$MODULES
+    (61, 5) //TODO:Create module id from module name
+    (62, 5) //TODO:Create absolute_path
+    (63, 5) //TODO:Create relative_path
+    (64, 5) //TODO

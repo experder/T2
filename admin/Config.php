@@ -6,12 +6,13 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-require_once '../Start.php';
-$page = \t2\Start::init("PAGE_ID_MYPAGE", "My page");
 
-require_once ROOT_DIR . "/core/api/Core_database.php";
+namespace t2\admin;
 
-$updater = new \admin\Core_database();
-echo $updater->update();
 
-$page->send_and_quit();
+use t2\core\Gui;
+use t2\core\Page;
+
+class Config {//TODO
+
+}

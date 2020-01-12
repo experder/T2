@@ -7,11 +7,8 @@ require_once ROOT_DIR . '/t2\core/Echoable.php';
 namespace t2\core;
 
 
-/**
- * @deprecated
- */
-interface Echoable {
+interface Node {
 
-	public function __toString();
+	public function to_html();
 
 }

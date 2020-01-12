@@ -15,10 +15,10 @@ namespace t2\core;
 require_once ROOT_DIR . '/core/Html.php';
 require_once ROOT_DIR . '/core/Stylesheet.php';
 require_once ROOT_DIR . '/core/Echoable.php';
-require_once ROOT_DIR . '/service/User.php';
-require_once ROOT_DIR . '/service/Config.php';
+require_once ROOT_DIR . '/core/service/User.php';
+require_once ROOT_DIR . '/core/service/Config.php';
 require_once ROOT_DIR . '/dev/Debug.php';
-require_once ROOT_DIR . '/service/Files.php';
+require_once ROOT_DIR . '/core/service/Files.php';
 require_once ROOT_DIR . '/core/Error_warn.php';
 
 use admin\Install_wizard;
@@ -149,7 +149,7 @@ class Page {
 			}else{
 				$http_root = Config::get_value_core("HTTP_ROOT", false);
 				if($http_root===false){
-					require_once ROOT_DIR . '/admin/Install_wizard.php';
+					require_once ROOT_DIR . '/dev/Install_wizard.php';
 					#Install_wizard::prompt_config();
 					Install_wizard::init_set_http_root();
 					$http_root = Config::get_value_core("HTTP_ROOT", false);
@@ -167,9 +167,10 @@ class Page {
 	}
 
 	/**
-	 * @param Echoable|string $node
+	 * @param Node|string $node
 	 */
 	public function add($node) {
+		//TODO: is_string || instanceof Node
 		$this->html_nodes[] = $node;
 	}
 
@@ -213,7 +214,6 @@ class Page {
 
 		$dev_stats = "";
 		if (Config::$DEVMODE) {
-			#$dev_stats = $this->get_dev_stats();
 			$dev_stats = Debug::get_stats($this);
 		}
 
@@ -242,16 +242,16 @@ class Page {
 
 	}
 
-	public function add_js_jquery341(){
+	public function add_js_jquery341(){//TODO: Move to includes
 		$this->add_javascript("JS_ID_JQUERY", "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js");
 	}
 
-	public function add_js_core(){
+	public function add_js_core(){//TODO: Move to includes
 		$this->add_js_jquery341();
 //		if($this->standalone && !defined('HTTP_ROOT')){
 //			$this->init_http_root();
 //		}
-		$this->add_javascript("JS_ID_T2CORE", HTTP_ROOT . "/core/client/core.js");
+		$this->add_javascript("JS_ID_T2CORE", HTTP_ROOT . "/client/core.js");
 	}
 
 	private function get_js_html(){
@@ -338,6 +338,7 @@ class Page {
 	private function get_body($echo = false) {
 		$body = "";
 		foreach ($this->html_nodes as $node) {
+			//TODO: Try/catch __toString
 			if (is_string($node)
 			||$node instanceof Echoable
 			) {

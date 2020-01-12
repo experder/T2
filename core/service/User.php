@@ -7,12 +7,12 @@
  GPL*/
 
 /*
-require_once ROOT_DIR . '/service/User.php';
+require_once ROOT_DIR . '/core/service/User.php';
  */
 
 namespace service;
 
-require_once ROOT_DIR . '/service/Login.php';
+require_once ROOT_DIR . '/core/service/Login.php';
 
 use t2\core\Error_fatal;
 

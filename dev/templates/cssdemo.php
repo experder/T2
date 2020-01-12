@@ -7,7 +7,7 @@
  GPL*/
 
 
-require_once '../Start.php';
+require_once '../../Start.php';
 require_once ROOT_DIR . '/core/form/Form.php';
 
 use t2\core\Message;

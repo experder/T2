@@ -122,11 +122,11 @@ class Database {
 		if (($error = self::$singleton->getError()) && $error instanceof Error) {
 			if ($error->get_type() == Error::TYPE_DB_NOT_FOUND) {
 				//Database doesn't exist -> Call Installer to initialize Database:
-				require_once ROOT_DIR . '/admin/Install_wizard.php';
+				require_once ROOT_DIR . '/dev/Install_wizard.php';
 				self::$singleton = Install_wizard::init_db($host, $dbname, $user, $password, 1);
 			}
 			if ($error->get_type() == Error::TYPE_HOST_UNKNOWN) {
-				require_once ROOT_DIR . '/admin/Install_wizard.php';
+				require_once ROOT_DIR . '/dev/Install_wizard.php';
 				//TODO:Error_Fatal
 				Install_wizard::installer_exit("Database connection", array(new Message(Message::TYPE_ERROR, "Database host unknown! Please check config.")));
 			}

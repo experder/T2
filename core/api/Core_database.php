@@ -8,12 +8,12 @@
 
 
 /*
-require_once ROOT_DIR . "/admin/Core_database.php";
+require_once ROOT_DIR . "/core/api/Core_database.php";
  */
 
 namespace admin;
 
-require_once ROOT_DIR . "/api/Update_database.php";
+require_once ROOT_DIR . "/dev/api/Update_database.php";
 
 use t2\api\Update_database;
 

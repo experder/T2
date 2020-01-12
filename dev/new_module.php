@@ -9,13 +9,14 @@
 namespace t2\admin;
 
 require_once '../../tethys/Start.php';
-require_once ROOT_DIR . '/admin/Admin.php';
+require_once ROOT_DIR . '/dev/Admin.php';
+require_once ROOT_DIR . '/dev/Tools.php';
 
 use t2\dev\Debug;
 use \t2\Start;
 
 $page = Start::init("PAGEID_ADMIN_NEWMOD", "New module");
 
-Admin::prompt_new_module($page);
+Tools::prompt_new_module($page);
 
 $page->send_and_quit();

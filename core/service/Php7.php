@@ -5,13 +5,21 @@
  * T2 comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
+/*
+require_once ROOT_DIR . '/core/service/Php7.php';
+ */
 
-require_once '../Start.php';
-$page = \t2\Start::init("PAGE_ID_MYPAGE", "My page");
+namespace service;
 
-require_once ROOT_DIR . "/core/api/Core_database.php";
 
-$updater = new \admin\Core_database();
-echo $updater->update();
+class Php7 {
 
-$page->send_and_quit();
+	public static function random_bytes ( $length ){
+		$string = "";
+		for ($i=0; $i<$length; $i++){
+			$string.=chr(rand(0, 255));
+		}
+		return $string;
+	}
+
+}

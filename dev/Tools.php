@@ -6,7 +6,7 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 /*
-require_once ROOT_DIR . '/admin/Admin.php';
+require_once ROOT_DIR . '/dev/Tools.php';
  */
 
 namespace t2\admin;
@@ -21,7 +21,7 @@ use t2\core\Formfield_text;
 use t2\core\Message;
 use t2\core\Page;
 
-class Admin {
+class Tools {
 
 	const empty_path = '(Leave empty for default)';//TODO:i18n
 

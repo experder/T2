@@ -5,20 +5,13 @@
  * T2 comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
-/*
-require_once ROOT_DIR . '/service/Arrays.php';
- */
-
-namespace service;
 
 
-class Arrays {
+namespace t2\core;
 
-	public static function remove_from_array_by_value($array, $key){
-		if (($key = array_search($key, $array)) !== false) {
-			unset($array[$key]);
-		}
-		return $array;
-	}
+
+interface Gui {
+
+	public function html_index(Page $page);//TODO:?????
 
 }

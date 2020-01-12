@@ -62,14 +62,14 @@ class Start {
 		require_once ROOT_DIR . '/core/Error_fatal.php';
 		require_once ROOT_DIR . '/core/Database.php';
 		require_once ROOT_DIR . '/core/Message.php';
-		require_once ROOT_DIR . '/service/Config.php';
-		require_once ROOT_DIR . '/service/User.php';
+		require_once ROOT_DIR . '/core/service/Config.php';
+		require_once ROOT_DIR . '/core/service/User.php';
 	}
 
 	public static function init_config() {
 		$config_file = ROOT_DIR . '/config_exclude.php';
 		if (!file_exists($config_file)) {
-			require_once ROOT_DIR . '/admin/Install_wizard.php';
+			require_once ROOT_DIR . '/dev/Install_wizard.php';
 			Install_wizard::prompt_dbParams();
 		}
 		/** @noinspection PhpIncludeInspection */
