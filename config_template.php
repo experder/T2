@@ -6,12 +6,12 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 /**TPLDOCSTART
- * This template is used by the installer wizard to create the configuration file "config_exclude.php".
- * @see \admin\Install_wizard::init_config()
+ * This template is used by the installer wizard (\admin\Install_wizard::init_config)
+ * to create the configuration file "config_exclude.php"
+ * which is called from \t2\Start::init_config
+ * @see \admin\Install_wizard::init_config
+ * @see \t2\Start::init_config
  * TPLDOCEND*/
-
-//You might want to store this file in your project's repository instead:
-#require_once ROOT_DIR . "/../config_exclude.php";
 
 //Set to TRUE in your development environment, FALSE (default) for production:
 #\service\Config::$DEVMODE = true;

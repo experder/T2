@@ -54,7 +54,7 @@ div.abutton{
 }
 a.abutton:hover,
 div.abutton:hover{
-	background: #ffecb8;
+	background-color: #ffecb8;
 	transition: .5s;
 }
 div.abutton{

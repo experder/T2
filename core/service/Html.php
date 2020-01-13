@@ -38,8 +38,10 @@ class Html {
 		return $html;
 	}
 
-	public static function A($content, $href, $class=null){
-		return new \t2\core\Html("a",$content,array("href"=>$href,"class"=>$class));
+	public static function A($content, $href, $class=null, $params=array()){
+		$params["href"]=$href;
+		$params["class"]=$class;
+		return new \t2\core\Html("a",$content,$params);
 	}
 
 	public static function H1($content, $id=null){
@@ -77,8 +79,8 @@ class Html {
 		return $html;
 	}
 
-	public static function A_button($content, $href, $classes=array()){
-		$html = self::A($content, $href, "abutton");
+	public static function A_button($content, $href, $classes=array(), $params=array()){
+		$html = self::A($content, $href, "abutton", $params);
 		$html->addClasses($classes);
 		return $html;
 	}

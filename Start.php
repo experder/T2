@@ -66,6 +66,7 @@ class Start {
 
 	public static function init_config() {
 		require_once ROOT_DIR . '/core/Database.php';
+		require_once ROOT_DIR . '/core/service/Config.php';
 		$config_file = ROOT_DIR . '/config_exclude.php';
 		if (!file_exists($config_file)) {
 			require_once ROOT_DIR . '/dev/Install_wizard.php';

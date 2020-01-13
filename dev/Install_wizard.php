@@ -15,9 +15,13 @@ namespace admin;//TODO: move all namespaces to t2
 
 require_once ROOT_DIR . '/core/Message.php';
 require_once ROOT_DIR . "/core/api/Core_database.php";
-//require_once ROOT_DIR . '/core/form/Form.php';
-//require_once ROOT_DIR . '/core/service/Templates.php';
+require_once ROOT_DIR . '/core/service/Request.php';
+require_once ROOT_DIR . '/core/form/Form.php';
+require_once ROOT_DIR . '/core/service/Templates.php';
 
+use service\Config;
+use service\Request;
+use service\Templates;
 use t2\core\Database;
 use t2\core\Error_;
 use t2\core\Form;
@@ -25,11 +29,8 @@ use t2\core\Formfield_password;
 use t2\core\Formfield_text;
 use t2\core\Message;
 use t2\core\Page;
-use service\Config;
-use service\Request;
-use service\Templates;
 
-class Install_wizard {//TODO: Make an installer class that must be called explicitly (not via index)
+class Install_wizard {
 
 	public static function prompt_dbParams() {
 		if (Request::cmd("submit_db_credentials")) {
@@ -99,7 +100,7 @@ class Install_wizard {//TODO: Make an installer class that must be called explic
 
 	public static function dev_step_by_step() {
 		if(Config::$DEVMODE){
-			Error_::abort("STEP-BY-STEP");
+			Error_::abort("Installer", array(new Message(Message::TYPE_INFO, "DEV: Step-by-step")));
 		}
 	}
 

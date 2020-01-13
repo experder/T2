@@ -26,8 +26,8 @@ class Debug {
 
 	public static $core_queries = array(
 		"load_values ( :ROOT_DIR/core/service/Config.php:173 )",
-		"check_session ( :ROOT_DIR/core/service/Login.php:57 )",
-		"update_session ( :ROOT_DIR/core/service/Login.php:88 )",
+		"check_session ( :ROOT_DIR/core/service/Login.php:56 )",
+		"update_session ( :ROOT_DIR/core/service/Login.php:87 )",
 	);
 	private static $core_queries_compiled = null;
 	public static $queries = array();

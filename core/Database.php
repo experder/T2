@@ -5,11 +5,13 @@
  * T2 comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
-
+/*
+require_once ROOT_DIR . '/core/Database.php';
+ */
 
 namespace t2\core;
 
-#require_once ROOT_DIR . '/core/Error_.php';
+require_once ROOT_DIR . '/core/Error_.php';
 
 use admin\Install_wizard;
 use service\Config;
@@ -121,11 +123,18 @@ class Database {
 	public static function get_singleton($quit_on_error = true) {
 		if (self::$singleton === null || !isset(self::$singleton->pdo)) {
 			if ($quit_on_error) {
-				new Error_("Please initialize Database singelton first", "ERROR_DB_NOT_INITIALIZED", "\\t2\\core\\Database::init();", 1);
+				new Error_("Please initialize Database singelton first", "ERROR_DB_NOT_INITIALIZED",
+					"* \\t2\\core\\Database::init(...);"
+					."\n* require_once ROOT_DIR . '/config_exclude.php';"
+					, 1);
 			}
 			return false;
 		}
 		return self::$singleton;
+	}
+
+	public static function destroy() {
+		self::$singleton = null;
 	}
 
 	public static function init($host, $dbname, $user, $password, $core_prefix='core') {

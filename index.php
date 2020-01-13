@@ -18,6 +18,8 @@ $page = Start::init("PAGEID_CORE_INDEX", "Start");
 
 $page->add("Welcome!");
 
+#$page->send_and_quit();
+
 $page->add(Html::A_button("Admin", Html::href_internal("admin/index") ));
 
 #\t2\dev\Debug::out($_SERVER);

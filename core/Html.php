@@ -17,7 +17,7 @@ require_once ROOT_DIR . '/core/Echoable.php';//core/Html.php:20
 require_once ROOT_DIR . '/core/service/Html.php';
 
 
-class Html implements Echoable {
+class Html {
 
 	protected $tag;
 	private $content;

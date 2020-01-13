@@ -169,10 +169,20 @@ class Page {
 	}
 
 	/**
-	 * @param Node|string $node
+	 * @param mixed $node must be string or have function __toString()
 	 */
 	public function add($node) {
-		//TODO: is_string || instanceof Node
+		if(is_array($node)){
+			foreach ($node as $n){
+				$this->add($n);
+			}
+			return;
+		}
+
+		if (!is_string($node) && !method_exists($node, '__toString')){
+			new Error_("Invalid node", "ERROR_INVALID_NODE", null, 1);
+		}
+
 		$this->html_nodes[] = $node;
 	}
 
@@ -342,15 +352,10 @@ class Page {
 	private function get_body($echo = false) {
 		$body = "";
 		foreach ($this->html_nodes as $node) {
-			//TODO: Try/catch __toString
-			if (is_string($node)
-			||$node instanceof Echoable
-			) {
-				if ($echo) {
-					echo $node;
-				} else {
-					$body .= $node;
-				}
+			if ($echo) {
+				echo $node;
+			} else {
+				$body .= $node;
 			}
 		}
 		if ($echo) {

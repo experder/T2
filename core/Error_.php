@@ -13,6 +13,7 @@ namespace t2\core;
 
 require_once ROOT_DIR . '/core/service/Config.php';
 require_once ROOT_DIR . '/dev/Debug.php';
+require_once ROOT_DIR . '/core/Page.php';
 
 use service\Config;
 use service\User;

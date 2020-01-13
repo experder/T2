@@ -9,6 +9,7 @@
 
 require_once '../../Start.php';
 require_once ROOT_DIR . '/core/form/Form.php';
+require_once ROOT_DIR . '/core/Message.php';
 
 use t2\core\Message;
 
@@ -57,9 +58,11 @@ $page->add(\service\Html::H4("&lt;h4>"));
 ======================== Links ===========================
  */
 
-$page->add(\service\Html::H2("Links", "links"));
-$page->add(\service\Html::A('\service\Html::A',"https://github.com/experder/T2/blob/99b7c6cfd9173b5150c840a3553ae5c03061ace9/service/Html.php#L37:L39"));
-$page->add(\service\Html::A_external('http://tethys-framework.de (external)','http://tethys-framework.de'));
+$page->add(\service\Html::H2("Links", "links")."\n");
+$page->add(\service\Html::A('Index',\service\Html::href_internal('index'))."\n");
+$page->add(\service\Html::A_external('\service\Html::A_external',"https://github.com/experder/T2/blob/99b7c6cfd9173b5150c840a3553ae5c03061ace9/service/Html.php#L82:L87")."\n");
+$page->add(\service\Html::A_external('External, button','http://tethys-framework.de',array("class"=>"abutton"))."\n");
+$page->add(\service\Html::A_button('Button, external','http://tethys-framework.de',array(),array("target"=>"_blank"))."\n");
 
 /*
 ======================== Messages ===========================
@@ -78,7 +81,11 @@ Table \''.\t2\core\Database::get_singleton()->get_dbname().'.SPACE\' doesn\'t ex
 '.__FILE__.':'.__LINE__.'</pre>'
 );
 
-$page->add_message(Message::TYPE_CONFIRM, \service\Html::PRE('$page->add_message(\core\Message::TYPE_CONFIRM, \'\');'));
+$page->add_message_(new Message(Message::TYPE_CONFIRM,
+	\service\Html::PRE(
+		'$page->add_message_(new Message(Message::TYPE_CONFIRM, \'...\');'
+	)));
+#$page->add_message(Message::TYPE_CONFIRM, "");
 $page->add_message(-1,
 	\service\Html::H1('div.messages div.message h1')
 	.'div.messages div.message.<a href="https://raw.githubusercontent.com/experder/T2/master/core/Message.php">msg_type_unknown</a>'
