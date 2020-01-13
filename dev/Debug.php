@@ -11,6 +11,8 @@ require_once ROOT_DIR . '/dev/Debug.php';
 
 namespace t2\dev;
 
+require_once ROOT_DIR . '/core/Html.php';
+require_once ROOT_DIR . '/core/service/Html.php';
 require_once ROOT_DIR . '/core/service/Arrays.php';
 
 use service\Arrays;
@@ -23,15 +25,40 @@ use t2\Start;
 class Debug {
 
 	public static $core_queries = array(
-		"load_values ( :ROOT_DIR/service/Config.php:171 )",
-		"check_session ( :ROOT_DIR/service/Login.php:57 )",
-		"update_session ( :ROOT_DIR/service/Login.php:86 )",
+		"load_values ( :ROOT_DIR/core/service/Config.php:173 )",
+		"check_session ( :ROOT_DIR/core/service/Login.php:57 )",
+		"update_session ( :ROOT_DIR/core/service/Login.php:88 )",
 	);
 	private static $core_queries_compiled = null;
-
 	public static $queries = array();
 	public static $queries_corequeries_count = 0;
+
+	public static $core_includes = array(
+		":ROOT_DIR/Start.php",
+		":ROOT_DIR/core/Page.php",//Start.php:113
+		":ROOT_DIR/core/Stylesheet.php",//core/Page.php:299
+		":ROOT_DIR/core/Database.php",//config_exclude.php:6
+#		":ROOT_DIR/core/Error_.php",
+		":ROOT_DIR/config_exclude.php",//Start.php:75
+		":ROOT_DIR/core/service/Config.php",//Start.php:85
+		":ROOT_DIR/core/service/Strings.php",//core/service/Config.php:163
+		":ROOT_DIR/dev/Debug.php",//core/Database.php:250 (DEVMODE)
+		":ROOT_DIR/core/Html.php",//core/Database.php:257 (DEVMODE)
+		":ROOT_DIR/core/Echoable.php",//core/Html.php:20 (DEVMODE)
+		":ROOT_DIR/core/service/Html.php",//core/Html.php:112 (DEVMODE)
+		":ROOT_DIR/core/service/User.php",//Start.php:99
+		":ROOT_DIR/core/service/Login.php",//core/service/User.php:25
+		":ROOT_DIR/core/service/Arrays.php",//dev/Debug.php:112 (DEVMODE)
+	);
+	private static $core_includes_compiled = null;
+	public static $includes = array();
+	/**
+	 * @deprecated
+	 */
+	public static $includes_corecount = 0;
+
 	const TOO_MANY_QUERIES = 10;
+	const TOO_MANY_INCLUDES = 21;
 	const TOO_LONG_TIME = .5/*seconds*/;
 	const TOO_MUCH_MEMORY = .25/*percent*/;
 
@@ -80,7 +107,24 @@ class Debug {
 	}
 
 	public static function mark_core_query_checked($value) {
+		require_once ROOT_DIR . '/core/service/Arrays.php';//dev/Debug.php:112
 		self::$core_queries_compiled = Arrays::remove_from_array_by_value(self::get_core_queries(), $value);
+	}
+
+	public static function get_core_includes() {
+		if (self::$core_includes_compiled === null) {
+			self::$core_includes_compiled = array();
+			foreach (self::$core_includes as $d) {
+				self::$core_includes_compiled[] = str_replace(':ROOT_DIR', ROOT_DIR, $d);
+			}
+			//The script itself:
+			self::$core_includes_compiled[]=$_SERVER['SCRIPT_FILENAME'];
+		}
+		return self::$core_includes_compiled;
+	}
+
+	public static function mark_core_include_checked($value) {
+		self::$core_includes_compiled = Arrays::remove_from_array_by_value(self::$core_includes_compiled, $value);
 	}
 
 	private static function stats_outputs(Page $page) {
@@ -131,7 +175,7 @@ class Debug {
 
 		$title=$mem_string;
 		$detail="Memory available: ".$mem_available;
-		$detail.="\nPeak memory usage: ".Strings::format_memory(memory_get_peak_usage(false));
+		$detail.="\nPeak memory usage: <b>".Strings::format_memory(memory_get_peak_usage(false))."</b>";
 		$detail.="\nReal memory usage: ".$mem_string." (".round($percentage_used*100,1)."%)";
 
 		$detail=new Html("pre", $detail, array("style"=>"display:none;", "class"=>"dev_stats_detail", "id"=>"id_dev_stats_mem_detail"));
@@ -174,14 +218,40 @@ class Debug {
 	}
 
 	private static function stats_inc(Page $page) {
-		//TODO: Core includes
-		$confirm_class="";//"confirm_good";
+		$confirm_class="confirm_good";
 		$page->add_js_core();
 
 		$includes = get_included_files();
-		$title="<b>".count($includes)."</b> Includes";
-		$detail=\service\Html::UL($includes);
+		$includes_count = count($includes);
+		$includes_count_core = count(Debug::get_core_includes());
 
+		//Core includes:
+		$includes_formatted=array();
+		$corecount = 0;
+		foreach ($includes as $include){
+			$include = str_replace('\\','/',$include);
+			if(in_array($include, Debug::get_core_includes())){
+				$corecount++;
+				Debug::mark_core_include_checked($include);
+				$include = "<i class='core_include_class'>$include</i>";
+			}
+			$includes_formatted[]=$include;
+		}
+		$additional_includes = $includes_count-$corecount;
+
+		$unused="";
+		if ($corecount!=$includes_count_core){//We missed to update core includes
+			$unused="Unused:".(self::$core_includes_compiled?\service\Html::UL(self::$core_includes_compiled):" -");
+			$confirm_class="confirm_bad";
+		}
+		if ($additional_includes>=self::TOO_MANY_INCLUDES){
+			$confirm_class="confirm_bad";
+		}
+
+		$title=$corecount."+<b>".$additional_includes."</b> Includes";
+		$detail=\service\Html::UL($includes_formatted);
+
+		$detail.=$unused;
 
 		$detail=new Html("pre", $detail, array("style"=>"display:none;", "class"=>"dev_stats_detail", "id"=>"id_dev_stats_inc_detail"));
 		return new Html("div", $title, array(
@@ -194,10 +264,10 @@ class Debug {
 		$dev_stats = new Html("div",
 			"\n\t" . self::stats_db($page)
 			. "\n\t" . self::stats_runtime()
-			. self::stats_outputs($page)
-			#."\n\t".(new Html("div", 'UID:'.(User::id($page->isStandalone())?:'-/-'), array("class"=>"dev_stats_uid abutton")))
 			."\n\t".self::stats_mem($page)
 			."\n\t".self::stats_inc($page)
+			#."\n\t".(new Html("div", 'UID:'.(User::id($page->isStandalone())?:'-/-'), array("class"=>"dev_stats_uid abutton")))
+			. self::stats_outputs($page)
 			. "\n"
 			, array("class" => "dev_stats noprint"));
 		return "\n".$dev_stats."\n";

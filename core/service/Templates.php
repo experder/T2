@@ -15,7 +15,7 @@ namespace service;
 require_once ROOT_DIR . '/core/service/Strings.php';
 require_once ROOT_DIR . '/core/service/Files.php';
 
-use t2\core\Error;
+use t2\core\Error_;
 
 
 class Templates {
@@ -31,14 +31,14 @@ class Templates {
 	public static function load($file, $replacements) {
 		//TODO: file_exists($filename, $fatal=true)
 		if (!file_exists($file)) {
-			Error::quit("Template file \"$file\" not found!");
+			Error_::quit("Template file \"$file\" not found!");
 		}
 
 		//Read template file:
 		$content = file_get_contents($file);
 
 		if ($content === false) {
-			Error::quit("Template file \"$file\" could not be loaded.");
+			Error_::quit("Template file \"$file\" could not be loaded.");
 		}
 
 		//Replacements:
@@ -55,7 +55,7 @@ class Templates {
 		$content = self::load($template_file, $keyVals);
 		$success = Files::save($target_file, $content, false, false);
 		if($success===false){
-			new Error("Couldn't store file \"$target_file\". Please check rights.", Error::TYPE_UNKNOWN, true, 1, true);
+			new Error_("Couldn't store file \"$target_file\". Please check rights.", 0, "", 1);
 		}
 	}
 

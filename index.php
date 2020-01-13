@@ -10,6 +10,10 @@ namespace t2;
 
 require_once 'Start.php';
 use service\Html;
+use t2\core\Database;
+use t2\core\Error_;
+use t2\dev\Debug;
+
 $page = Start::init("PAGEID_CORE_INDEX", "Start");
 
 $page->add("Welcome!");
@@ -17,5 +21,10 @@ $page->add("Welcome!");
 $page->add(Html::A_button("Admin", Html::href_internal("admin/index") ));
 
 #\t2\dev\Debug::out($_SERVER);
+
+#require_once ROOT_DIR . '/core/Error_.php';
+#new Error_("");
+
+#Database::select_("SELECT * FROM core_config;");
 
 $page->send_and_quit();

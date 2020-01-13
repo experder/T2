@@ -13,13 +13,13 @@ require_once ROOT_DIR . '/dev/Install_wizard.php';
 
 namespace admin;//TODO: move all namespaces to t2
 
-require_once ROOT_DIR . '/core/form/Form.php';
-require_once ROOT_DIR . '/core/service/Templates.php';
+require_once ROOT_DIR . '/core/Message.php';
 require_once ROOT_DIR . "/core/api/Core_database.php";
+//require_once ROOT_DIR . '/core/form/Form.php';
+//require_once ROOT_DIR . '/core/service/Templates.php';
 
 use t2\core\Database;
-use t2\core\Error;
-use t2\core\Error_warn;
+use t2\core\Error_;
 use t2\core\Form;
 use t2\core\Formfield_password;
 use t2\core\Formfield_text;
@@ -45,13 +45,11 @@ class Install_wizard {//TODO: Make an installer class that must be called explic
 		$form->add_field(new Formfield_password("dbpass", "Admin password", ""));
 
 		$message = new Message(Message::TYPE_INFO, $form);
-		Page::$compiler_messages[] = $message;
 
-		self::installer_exit("Database connection");
+		Error_::abort("Database connection - Installer", array($message), null, "PAGEID_CORE_INSTALLER_PROMPTDBPARAMS");
 	}
 
 	public static function init_config() {
-		self::check_if_index();
 		$target_file = ROOT_DIR . '/config_exclude.php';
 		Templates::create_file($target_file, ROOT_DIR . '/config_template.php', array(
 			":server_addr" => Request::value("server_addr", "(please specify)"),
@@ -62,16 +60,14 @@ class Install_wizard {//TODO: Make an installer class that must be called explic
 		return new Message(Message::TYPE_CONFIRM, "Config file \"$target_file\" has been created.");
 	}
 
-	public static function init_db($host, $dbname, $user, $password, $backtrace_depth = 0) {
-		self::check_if_index();
+	public static function init_db($host, $dbname, $user, $password) {
 
 		try {
 			$dbh = new \PDO("mysql:host=" . $host, $user, $password);
 			$dbh->exec("CREATE DATABASE `" . $dbname . "`;") or die(print_r($dbh->errorInfo(), true) . "Error65");
 
 		} catch (\PDOException $e) {
-			Error::from_exception($e);
-			#Error::quit($e->getMessage(), $backtrace_depth + 1);
+			Error_::from_exception($e);
 		}
 
 		$database = new Database($host, $dbname, $user, $password);
@@ -83,7 +79,6 @@ class Install_wizard {//TODO: Make an installer class that must be called explic
 	}
 
 	public static function init_db_config() {
-		self::check_if_index();
 		$database=Database::get_singleton();
 
 		#$core_config = DB_CORE_PREFIX.'_config';
@@ -102,62 +97,10 @@ class Install_wizard {//TODO: Make an installer class that must be called explic
 		return $msg;
 	}
 
-//	private static function init4_config_params() {
-//		foreach (array(
-//			'HTTP_ROOT',
-//				 ) as $param){
-//			if(($val=Request::value($param, false))!==false){ Config::set_value($param, $val); }
-//		}
-//		return new Message(Message::TYPE_CONFIRM, "Config params set.");
-//	}
-
-	public static function check_if_index() {
-		if(!isset($_SERVER['SCRIPT_FILENAME'])||$_SERVER['SCRIPT_FILENAME']!=ROOT_DIR.'/index.php'){
-			Error::quit("Please run index.php in root directory to complete installation.");
+	public static function dev_step_by_step() {
+		if(Config::$DEVMODE){
+			Error_::abort("STEP-BY-STEP");
 		}
 	}
-
-	public static function init_set_http_root() {
-		self::check_if_index();
-		$http_root = pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_DIRNAME);
-		Config::set_value('HTTP_ROOT', $http_root);
-		Page::$compiler_messages[]=new Message(Message::TYPE_CONFIRM, "HTTP_ROOT set to: $http_root");
-		self::dev_step_by_step();
-	}
-
-	public static function dev_step_by_step() {
-		#self::installer_exit("STEP-BY-STEP");
-	}
-
-	/**
-	 * @param string       $title
-	 * @param Message[] $messages
-	 * @param null|string   $body
-	 * @param string $id
-	 */
-	public static function installer_exit($title, $messages=null, $body=null, $id="PAGEID_CORE_INSTALLER") {
-		self::check_if_index();
-		Error_warn::abort("$title - Installer", $messages, $body, $id);
-		exit;
-	}
-
-//	public static function prompt_config() {
-//		if (Request::cmd("submit_core_config")) {
-//			Page::$compiler_messages[] = self::init4_config_params();
-//			return;
-//		}
-//
-//		$page = self::get_pre_page("Core config");
-//
-//		$HTTP_ROOT_proposal = Config::get_value_core("HTTP_ROOT", pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_DIRNAME));
-//
-//		$form = new Form("submit_core_config");
-//		$form->add_field($ff=new Formfield_text("HTTP_ROOT", "HTTP_ROOT", $HTTP_ROOT_proposal));
-//
-//		$page->add_message(Message::TYPE_INFO, $form);
-//
-//		$page->send_and_quit();
-//
-//	}
 
 }

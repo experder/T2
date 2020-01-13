@@ -13,8 +13,8 @@ require_once ROOT_DIR . '/core/service/Html.php';
 
 namespace service;
 
-require_once ROOT_DIR . '/core/service/Strings.php';
-require_once ROOT_DIR . '/core/Html.php';
+//require_once ROOT_DIR . '/core/service/Strings.php';
+//require_once ROOT_DIR . '/core/Html.php';
 
 /**
  * TODO:Move service\Html to t2\core\Html
@@ -27,6 +27,7 @@ class Html {
 	 * @return string
 	 */
 	public static function tag_keyValues($params) {
+		require_once ROOT_DIR . '/core/service/Strings.php';
 		if (!is_array($params)) {
 			return "";
 		}

@@ -12,9 +12,9 @@ require_once ROOT_DIR . '/core/service/User.php';
 
 namespace service;
 
-require_once ROOT_DIR . '/core/service/Login.php';
+require_once ROOT_DIR . '/core/service/Login.php';//core/service/User.php:25
 
-use t2\core\Error_fatal;
+use t2\core\Error_;
 
 class User {
 
@@ -26,14 +26,19 @@ class User {
 	}
 
 	/**
-	 * TODO: revert logic ($halt_on_error=false)
+	 * Examples:
+	 * $uid_or_zero = User::id_()?:"0";
+	 * $uid_or_error = User::id_(true);
+	 *
+	 * @param bool $halt_on_error
+	 * @return int|false
 	 */
-	public static function id($continue_on_error=false){
+	public static function id_($halt_on_error=false){
 		if (self::$ID===false){
-			if($continue_on_error){
-				return false;
+			if($halt_on_error){
+				new Error_("Please init User first", "ERROR_USER_INIT", "( \\service\\User::init() )", 1);
 			}
-			new Error_fatal(Error_fatal::TYPE_UNKNOWN, "Please init User first", 1, "( \service\User::init() )");
+			return false;
 		}
 		return self::$ID;
 	}

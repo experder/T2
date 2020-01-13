@@ -92,7 +92,7 @@ $page->add(\service\Html::H2("Forms", "forms"));
 $page->add($form=new \t2\core\Form());
 $form->add_field(new \t2\core\Formfield_text("text"));
 $form->add_field(new \t2\core\Formfield_password("password"));
-$form->add_field(new \t2\core\Formfield_textarea("textarea"));
+$form->add_field(new \t2\core\Formfield_textarea("textarea",null,schlauer_spruch()));
 $form->add_field(new \t2\core\Formfield_textarea("textarea2","this is a very long title with many chars in a lot of rows"));
 
 

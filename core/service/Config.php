@@ -13,15 +13,14 @@ require_once ROOT_DIR . '/core/service/Config.php';
 
 namespace service;
 
-require_once ROOT_DIR . '/core/service/Strings.php';
-require_once ROOT_DIR . '/core/Database.php';
-require_once ROOT_DIR . '/dev/api/Default_values.php';
+//require_once ROOT_DIR . '/core/Database.php';
+//require_once ROOT_DIR . '/dev/api/Default_values.php';
 
 use admin\Core_values;
 use admin\Install_wizard;
 use t2\api\Default_values;
 use t2\core\Database;
-use t2\core\Error;
+use t2\core\Error_;
 use t2\core\Message;
 use t2\core\Page;
 
@@ -44,7 +43,8 @@ class Config {
 		if(self::$MODULES===null){
 			$modules_json = self::get_value('MODULES', null, null, false);
 			if($modules_json!==false && !(self::$MODULES = json_decode($modules_json, true))){
-				new Error("Module configuration is invalid JSON. Switching to default.");
+				//TODO:Warning, not Error.
+				new Error_("Module configuration is invalid JSON. Switching to default.");
 				$modules_json=false;
 			}
 			if($modules_json===false){
@@ -59,7 +59,7 @@ class Config {
 		$dv = new Core_values();
 		$modules_json = $dv->get_default_value("MODULES");
 		if(!(self::$MODULES = json_decode($modules_json, true))){
-			Error::quit("Invalid JSON:\n\\admin\\Core_values->\$default_values:\n$modules_json");
+			Error_::quit("Invalid JSON:\n\\admin\\Core_values->\$default_values:\n$modules_json");
 		}
 	}
 
@@ -118,11 +118,12 @@ class Config {
 	}
 
 	public static function get_default_value($module, $id, $backtrace_depth=0){
+		require_once ROOT_DIR.'/dev/api/Default_values.php';
 		$module = $module?:'core';
 		$singleton = Default_values::get_singleton_by_module($module);
 		$value = $singleton->get_default_value($id);
 		if($value===null){
-			Error::quit("No default value provided for $module:$id.", $backtrace_depth+1);
+			Error_::quit("No default value provided for $module:$id.", $backtrace_depth+1);
 		}
 		return $value;
 	}
@@ -160,6 +161,7 @@ class Config {
 	 * @param int|null      $user
 	 */
 	public static function load_values($ids, $module = null, $user = null, $init_modules=false) {
+		require_once ROOT_DIR . '/core/service/Strings.php';
 		$ids_sql = Strings::build_sql_collection($ids);
 		#$core_config = DB_CORE_PREFIX.'_config';
 		$data = Database::select_(
@@ -170,20 +172,36 @@ class Config {
 			)
 			,false
 		);
-		if($error=Database::get_singleton()->getError()){
-			if($error instanceof Error){
-				if($error->get_type()==Error::TYPE_TABLE_NOT_FOUND){
-					require_once ROOT_DIR . '/dev/Install_wizard.php';
-					$msg = new Message(Message::TYPE_CONFIRM, "DB \"".Database::get_singleton()->get_dbname()."\" initialized. ".Install_wizard::init_db_config());
-				}else{
-					$msg = $error->report();
-				}
+		$errorCode=Database::get_singleton()->getError_();
+		if($errorCode!==false){
+			if($errorCode=="42S02"/*Unknown table*/){
+
+				require_once ROOT_DIR . '/dev/Install_wizard.php';
+				$report = Install_wizard::init_db_config();
+				$msg = new Message(Message::TYPE_CONFIRM, "DB \"".Database::get_singleton()->get_dbname()."\" initialized. ".$report);
 				Page::$compiler_messages[] = $msg;
 				Install_wizard::dev_step_by_step();
+
 			}else{
-				new Error("Wrong Error Type");
+				new Error_($errorCode);//TODO: Pass and format error message
+
 			}
+
 		}
+//		if($error=Database::get_singleton()->getError()){
+//			if($error instanceof Error){
+//				if($error->get_type()==Error::TYPE_TABLE_NOT_FOUND){
+//					require_once ROOT_DIR . '/dev/Install_wizard.php';
+//					$msg = new Message(Message::TYPE_CONFIRM, "DB \"".Database::get_singleton()->get_dbname()."\" initialized. ".Install_wizard::init_db_config());
+//				}else{
+//					$msg = $error->report();
+//				}
+//				Page::$compiler_messages[] = $msg;
+//				Install_wizard::dev_step_by_step();
+//			}else{
+//				new Error("Wrong Error Type");
+//			}
+//		}
 		if ($data) {
 			foreach ($data as $val) {
 				self::store_val($module, $user, $val['idstring'], $val['content']);

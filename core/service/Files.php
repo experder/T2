@@ -11,8 +11,11 @@ require_once ROOT_DIR . '/core/service/Files.php';
 
 namespace service;
 
+require_once ROOT_DIR . '/dev/Debug.php';
 
-use t2\core\Error;
+#use t2\core\Error;
+
+#echo "<pre>".\t2\dev\Debug::backtrace()."</pre>";
 
 class Files {
 
@@ -33,7 +36,7 @@ class Files {
 			fclose($file);
 		}
 		if ($success === false && $halt_on_error) {
-			Error::quit("Failure on storing file \"$filename\"!", 1);
+			Error_::quit("Failure on storing file \"$filename\"!", 1);
 		}
 		return $success;
 	}

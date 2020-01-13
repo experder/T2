@@ -12,14 +12,14 @@ require_once ROOT_DIR . '/core/Page.php';
 
 namespace t2\core;
 
-require_once ROOT_DIR . '/core/Html.php';
+//require_once ROOT_DIR . '/core/Html.php';
 require_once ROOT_DIR . '/core/Stylesheet.php';
-require_once ROOT_DIR . '/core/Echoable.php';
-require_once ROOT_DIR . '/core/service/User.php';
-require_once ROOT_DIR . '/core/service/Config.php';
-require_once ROOT_DIR . '/dev/Debug.php';
-require_once ROOT_DIR . '/core/service/Files.php';
-require_once ROOT_DIR . '/core/Error_warn.php';
+//require_once ROOT_DIR . '/core/Echoable.php';
+//require_once ROOT_DIR . '/core/service/User.php';
+//require_once ROOT_DIR . '/core/service/Config.php';
+//require_once ROOT_DIR . '/dev/Debug.php';
+//require_once ROOT_DIR . '/core/service/Files.php';
+//require_once ROOT_DIR . '/core/Error_warn.php';
 
 use admin\Install_wizard;
 use service\Config;
@@ -103,7 +103,7 @@ class Page {
 	public static function get_singleton($halt_on_error = true) {
 		if (self::$singleton === null) {
 			if ($halt_on_error) {
-				Error::quit("Please initialize Page singelton first:\n\$page = \\t2\\core\\Page::init(\"PAGEID_MYMODULE_MYPAGE\", \"My page\");", 1);
+				new Error_("Please initialize Page singelton first","NO_PAGE","\$page = \\t2\\core\\Page::init(\"PAGEID_MYMODULE_MYPAGE\", \"My page\");",1);
 			} else {
 				return false;
 			}
@@ -134,7 +134,7 @@ class Page {
 	public static function init2($id, $title) {
 
 		if (self::$singleton !== null) {
-			Error::quit("Page is already initialized!", 1);
+			Error_::quit("Page is already initialized!", 1);
 		}
 
 		self::$singleton = new Page($id, $title);
@@ -144,18 +144,20 @@ class Page {
 
 	private function init_http_root(){
 		if(!defined('HTTP_ROOT')){
+			require_once ROOT_DIR . '/core/service/Files.php';
 			if($this->standalone){
 				$http_root=Files::relative_path($_SERVER["SCRIPT_FILENAME"], ROOT_DIR);
 			}else{
 				$http_root = Config::get_value_core("HTTP_ROOT", false);
 				if($http_root===false){
-					require_once ROOT_DIR . '/dev/Install_wizard.php';
-					#Install_wizard::prompt_config();
-					Install_wizard::init_set_http_root();
-					$http_root = Config::get_value_core("HTTP_ROOT", false);
+					$http_root=Files::relative_path($_SERVER["SCRIPT_FILENAME"], ROOT_DIR);
 					if($http_root===false){
-						Error::quit("Could not set HTTP_ROOT.");
+						Error_::quit("Could not set HTTP_ROOT.");
 					}
+					Config::set_value('HTTP_ROOT', $http_root);
+					Page::$compiler_messages[]=new Message(Message::TYPE_CONFIRM, "HTTP_ROOT set to: $http_root");
+					require_once ROOT_DIR . '/dev/Install_wizard.php';
+					Install_wizard::dev_step_by_step();
 				}
 			}
 			define("HTTP_ROOT", $http_root);
@@ -207,6 +209,8 @@ class Page {
 	 * Builds and sends the HTML page.
 	 */
 	public function send_and_quit() {
+		#require_once ROOT_DIR . '/core/Error_.php';
+		#new Error_("!","TYPE", "DEBUG-INFO");
 
 		$title = $this->get_title();
 		$messages = $this->get_message_html();

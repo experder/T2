@@ -14,8 +14,6 @@ namespace t2\admin;
 
 use service\Html;
 use service\Request;
-use t2\core\Database;
-use t2\core\Error_fatal;
 use t2\core\Form;
 use t2\core\Formfield_text;
 use t2\core\Message;
@@ -44,6 +42,7 @@ class Tools {
 		$form->add_field(new Formfield_text("module_name", "Module name", "My module"));
 		$form->add_field(new Formfield_text("module_id", "Module ID", "mymod"));
 		$form->add_field(new Formfield_text("path", "Path", self::empty_path));//TODO: register module in Config::$MODULES
+		//TODO:Multiselection: Possible templates
 
 		$page->add(Html::H1("Create blank module"));
 		$page->add($form);

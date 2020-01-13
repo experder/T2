@@ -6,12 +6,15 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-
 namespace admin;
 
 require_once ROOT_DIR . '/dev/api/Default_values.php';
+require_once ROOT_DIR . '/dev/Debug.php';
 
 use t2\api\Default_values;
+use t2\dev\Debug;
+
+#echo "<pre>".Debug::backtrace()."</pre>";
 
 class Core_values extends Default_values {
 

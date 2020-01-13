@@ -10,7 +10,7 @@
 namespace t2;
 
 use t2\core\Database;
-use t2\core\Error_fatal;
+use t2\core\Error_;
 use t2\core\Html;
 use t2\core\Page;
 use service\Config;
@@ -56,17 +56,16 @@ class Start {
 	}
 
 	public static function init_dependencies() {
-		require_once ROOT_DIR . '/core/Page.php';
-		require_once ROOT_DIR . '/core/Error.php';
-		require_once ROOT_DIR . '/core/Error_warn.php';
-		require_once ROOT_DIR . '/core/Error_fatal.php';
-		require_once ROOT_DIR . '/core/Database.php';
-		require_once ROOT_DIR . '/core/Message.php';
-		require_once ROOT_DIR . '/core/service/Config.php';
-		require_once ROOT_DIR . '/core/service/User.php';
+//		require_once ROOT_DIR . '/core/Page.php';
+//		require_once ROOT_DIR . '/core/Error.php';
+//		require_once ROOT_DIR . '/core/Error_warn.php';
+//		require_once ROOT_DIR . '/core/Error_fatal.php';
+//		require_once ROOT_DIR . '/core/Message.php';
+//		require_once ROOT_DIR . '/core/service/User.php';
 	}
 
 	public static function init_config() {
+		require_once ROOT_DIR . '/core/Database.php';
 		$config_file = ROOT_DIR . '/config_exclude.php';
 		if (!file_exists($config_file)) {
 			require_once ROOT_DIR . '/dev/Install_wizard.php';
@@ -76,12 +75,13 @@ class Start {
 		require_once $config_file;
 		//Make the Test:
 		if (Database::get_singleton(false) === false) {
-			new Error_fatal("ERROR_CONFIG_CORRUPT", "Local config file seems to be corrupt. Please check.", 0, "Config file: ".$config_file);
+			new Error_("Local config file seems to be corrupt. Please check.", "ERROR_CONFIG_CORRUPT", "Config file: ".$config_file);
 		}
 		#define('DB_CORE_PREFIX', Database::get_singleton()->core_prefix);
 	}
 
 	public static function init_database() {
+		require_once ROOT_DIR . '/core/service/Config.php';
 		Config::load_values(array(
 			"EXTENSION",
 			"PROJECT_TITLE",
@@ -96,6 +96,7 @@ class Start {
 	}
 
 	public static function init_userrights() {
+		require_once ROOT_DIR . '/core/service/User.php';//Start.php:99
 		User::init();
 	}
 
@@ -105,6 +106,7 @@ class Start {
 	 * @return Page
 	 */
 	public static function init($PAGEID_, $title) {
+		require_once ROOT_DIR . '/core/Page.php';//Start.php:113
 		Start::init_dependencies();
 		Start::init_config();
 		Start::init_database();

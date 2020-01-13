@@ -14,8 +14,6 @@ namespace t2\admin;
 
 use service\Html;
 use service\Request;
-use t2\core\Database;
-use t2\core\Error_fatal;
 use t2\core\Form;
 use t2\core\Formfield_text;
 use t2\core\Message;

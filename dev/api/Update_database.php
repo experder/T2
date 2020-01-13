@@ -12,7 +12,6 @@ require_once ROOT_DIR . "/dev/api/Update_database.php";
 namespace t2\api;
 
 use t2\core\Database;
-use t2\core\Error;
 use service\Config;
 
 abstract class Update_database {
@@ -34,7 +33,7 @@ abstract class Update_database {
 	protected function q($ver, $query) {
 
 		if ($ver != $this->start_ver) {
-			Error::quit("Order is violated!", 1);
+			Error_::quit("Order is violated!", 1);
 		}
 		$this->start_ver++;
 
@@ -42,7 +41,7 @@ abstract class Update_database {
 			$statement = $this->database->get_pdo()->query($query);
 			if ($statement === false) {
 				$errorInfo = $this->database->get_pdo()->errorInfo();
-				Error::quit("Database update #$ver failed!\n" . $errorInfo[2], 1);
+				Error_::quit("Database update #$ver failed!\n" . $errorInfo[2], 1);
 			}
 			//Update:
 			Config::set_value("DB_VERSION", $ver, $this->module, null, $this->database);

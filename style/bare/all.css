@@ -118,6 +118,10 @@ div.dev_stats pre.dev_stats_detail{
 #id_dev_stats_queries_detail span.detail_sqlDump.core_query_class{
 	color: #9eb2c4;
 }
+#id_dev_stats_inc_detail i.core_include_class{
+	color: #7a7a7a;
+	font-style: inherit;
+}
 div.dev_stats span.zoom-out{
 	font-weight: bold;
 }

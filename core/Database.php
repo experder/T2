@@ -9,6 +9,8 @@
 
 namespace t2\core;
 
+#require_once ROOT_DIR . '/core/Error_.php';
+
 use admin\Install_wizard;
 use service\Config;
 use service\Strings;
@@ -69,7 +71,12 @@ class Database {
 
 	private $pdo;
 
+	/**
+	 * @deprecated
+	 */
 	private $error = false;
+	private $error_ = false;
+	private $exception = false;
 
 	/**
 	 * @deprecated
@@ -85,12 +92,22 @@ class Database {
 			$this->pdo = new \PDO("mysql:host=" . $host . ";dbname=" . $dbname, $user, $password);
 			$this->pdo->query('SET NAMES utf8');
 		} catch (\Exception $e) {
-			$this->error = Error::from_exception($e, false, $quit_on_error);
+			$this->exception = $e;
+			if($quit_on_error) {
+				require_once ROOT_DIR . '/core/Error_.php';
+				Error_::from_exception($e);
+			}
 		}
 	}
 
 	public function getError() {
 		return $this->error;
+	}
+	public function getError_() {
+		return $this->error_;
+	}
+	public function getException() {
+		return $this->exception;
 	}
 
 	public function get_dbname() {
@@ -104,7 +121,7 @@ class Database {
 	public static function get_singleton($quit_on_error = true) {
 		if (self::$singleton === null || !isset(self::$singleton->pdo)) {
 			if ($quit_on_error) {
-				Error::quit("Please initialize Database singelton first: <code>\\t2\\core\\Database::init();</code>", 1);
+				new Error_("Please initialize Database singelton first", "ERROR_DB_NOT_INITIALIZED", "\\t2\\core\\Database::init();", 1);
 			}
 			return false;
 		}
@@ -114,26 +131,26 @@ class Database {
 	public static function init($host, $dbname, $user, $password, $core_prefix='core') {
 
 		if (self::$singleton !== null) {
-			Error::quit("Database is already initialized!", 1);
+			new Error_("Database is already initialized!", "ERROR_DB_ALREADY_INITIALIZED", null, 1);
 		}
 
 		self::$singleton = new Database($host, $dbname, $user, $password, 1, false, $core_prefix);
+		$e=self::$singleton->getException();
 
-		if (($error = self::$singleton->getError()) && $error instanceof Error) {
-			if ($error->get_type() == Error::TYPE_DB_NOT_FOUND) {
-				//Database doesn't exist -> Call Installer to initialize Database:
-				require_once ROOT_DIR . '/dev/Install_wizard.php';
-				self::$singleton = Install_wizard::init_db($host, $dbname, $user, $password, 1);
+		if ($e!==false) {
+			require_once ROOT_DIR . '/core/Error_.php';
+			if ($e instanceof \PDOException) {
+				if ($e->getCode() === 1049/*Unknown database*/) {
+					require_once ROOT_DIR . '/dev/Install_wizard.php';
+					self::$singleton = Install_wizard::init_db($host, $dbname, $user, $password);
+					$e=false;
+				}else if ($e->getCode() === 2002/*php_network_getaddresses: getaddrinfo failed*/) {
+					new Error_("Database host unknown! Please check config.", Error_::TYPE_HOST_UNKNOWN, null, 1);
+				}
 			}
-			if ($error->get_type() == Error::TYPE_HOST_UNKNOWN) {
-				require_once ROOT_DIR . '/dev/Install_wizard.php';
-				//TODO:Error_Fatal
-				Install_wizard::installer_exit("Database connection", array(new Message(Message::TYPE_ERROR, "Database host unknown! Please check config.")));
+			if ($e!==false) {
+				Error_::from_exception($e);
 			}
-		}
-
-		if (self::$singleton->getError()) {
-			Error::quit("Fatal error on database initialization. " . self::$singleton->getError()->get_message(), 1);
 		}
 
 		return self::$singleton;
@@ -150,7 +167,7 @@ class Database {
 	 * @return array|false
 	 */
 	public function select($query, $substitutions = array(), $backtrace_depth = 0, $report_error = true) {
-		return self::iquery($query, $substitutions, self::RETURN_ASSOC, $report_error, $backtrace_depth + 1);
+		return self::iquery($query, $substitutions, self::RETURN_ASSOC, $backtrace_depth + 1, $report_error);
 	}
 
 	/**
@@ -160,7 +177,7 @@ class Database {
 	 * @return int|false
 	 */
 	public function insert($query, $substitutions = null, $backtrace_depth = 0) {
-		return self::iquery($query, $substitutions, self::RETURN_LASTINSERTID, true, $backtrace_depth+1);
+		return self::iquery($query, $substitutions, self::RETURN_LASTINSERTID, $backtrace_depth+1);
 	}
 
 	/**
@@ -180,7 +197,7 @@ class Database {
 	 * @return array|false
 	 */
 	public function select_single($query, $substitutions = null, $backtrace_depth = 0) {
-		$result = self::iquery($query, $substitutions, self::RETURN_ASSOC, true, $backtrace_depth + 1);
+		$result = self::iquery($query, $substitutions, self::RETURN_ASSOC, $backtrace_depth + 1);
 		if (!$result) {
 			return false;
 		}
@@ -218,18 +235,21 @@ class Database {
 	 * @param string $query
 	 * @param array  $substitutions
 	 * @param int    $return_type Database::RETURN_...
-	 * @param bool   $report_error
+	 * @param bool   $halt_on_error
 	 * @param int    $backtrace_depth
 	 * @return array|int|false|null
 	 */
-	private function iquery($query, $substitutions, $return_type, $report_error = true, $backtrace_depth = 0) {
+	private function iquery($query, $substitutions, $return_type, $backtrace_depth = 0, $halt_on_error = true) {
 		self::$dev_global_count++;
 		$this->error = false;
+		$this->error_=false;
 		/** @var \PDOStatement $statement */
 		$statement = $this->pdo->prepare($query);
 		$ok = @$statement->execute($substitutions);
 		//TODO:subroutines für debug_info und fehler-handling
 		if(Config::$DEVMODE){
+			require_once ROOT_DIR . '/dev/Debug.php';
+			require_once ROOT_DIR . '/core/Html.php';
 			$backtrace = debug_backtrace();
 
 			ob_flush();
@@ -242,7 +262,7 @@ class Database {
 			}
 
 			$caller = (isset($backtrace[$backtrace_depth+1]['function'])?$backtrace[$backtrace_depth+1]['function']." ":"")
-				."( ".Error::backtrace($backtrace_depth + 1, "\n", false)." )";
+				."( ".Debug::backtrace($backtrace_depth + 1, "\n", false)." )";
 
 			$core_query_class = "";
 			if($caller2=in_array(str_replace('\\','/',$caller), Debug::get_core_queries())){
@@ -258,9 +278,10 @@ class Database {
 		}
 		if (!$ok) {
 			$compiled_query = "";
-			$errorInfo = $statement->errorInfo();
-			$errorInfo = $errorInfo[2];
-			if (!$errorInfo && $statement->errorCode() === 'HY093'/*Invalid parameter number: parameter was not defined*/) {
+			$eInfo = $statement->errorInfo();
+			$errorCode = $eInfo[0];
+			$errorInfo = "[$errorCode] ".$eInfo[2];
+			if (!$errorInfo && $errorCode === 'HY093'/*Invalid parameter number: parameter was not defined*/) {
 				$errorInfo = "Invalid parameter number: parameter was not defined";
 			} else {
 				ob_flush();
@@ -271,17 +292,14 @@ class Database {
 				if(!$compiled_query){
 					$compiled_query=($debugDump?:$query);
 				}
-				#$compiled_query .= Error::HR;
-			}
-			$error_type = Error_warn::TYPE_SQL;
-			if($statement->errorCode()=="42S02"/*Unknown table*/){
-				//TODO: quit without error and pass to calling function to process install wizard
-				$error_type = Error_warn::TYPE_TABLE_NOT_FOUND;
-				#$errorInfo.=print_r($statement->errorInfo(),1);
 			}
 
-			#$this->error = new Error($compiled_query . $errorInfo, $error_type, $report_error, $backtrace_depth + 1);
-			new Error_warn($error_type, $errorInfo, $backtrace_depth + 1, $compiled_query);
+			if($halt_on_error){
+				require_once ROOT_DIR . '/core/Error_.php';
+				new Error_($errorInfo, Error_::TYPE_SQL, $compiled_query, $backtrace_depth+1);
+			}else{
+				$this->error_ = $errorCode;
+			}
 			return false;
 		}
 		switch ($return_type) {
@@ -333,7 +351,7 @@ class Database {
 	 * @return int|false
 	 */
 	public function update($query, $substitutions = array(), $stacktrace_depth=0) {
-		return $this->iquery($query, $substitutions, self::RETURN_ROWCOUNT, true, $stacktrace_depth+1);
+		return $this->iquery($query, $substitutions, self::RETURN_ROWCOUNT, $stacktrace_depth+1);
 	}
 
 	public function update_assoc($tabelle, $where, $data_set) {

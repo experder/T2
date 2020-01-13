@@ -11,13 +11,12 @@ require_once ROOT_DIR . '/core/service/Login.php';
  */
 namespace service;//TODO: move all namespaces to t2
 
-require_once ROOT_DIR . '/core/form/Form.php';
-require_once ROOT_DIR . '/core/service/Php7.php';
-require_once ROOT_DIR . '/core/Page_standalone.php';
+//require_once ROOT_DIR . '/core/form/Form.php';
+//require_once ROOT_DIR . '/core/service/Php7.php';
+//require_once ROOT_DIR . '/core/Page_standalone.php';
 
 use t2\core\Database;
-use t2\core\Error;
-use t2\core\Error_warn;
+use t2\core\Error_;
 use t2\core\Form;
 use t2\core\Formfield_password;
 use t2\core\Formfield_text;
@@ -40,7 +39,7 @@ class Login {//TODO:Logout
 
 		$ok = self::new_session($uid);
 		if(!$ok){
-			Error::quit("Couldn't initialize session.");
+			Error_::quit("Couldn't initialize session.");
 		}
 
 		Page::$compiler_messages[]=new Message(Message::TYPE_CONFIRM, "Login successful. Welcome!");
@@ -58,10 +57,12 @@ class Login {//TODO:Logout
 				)
 			);
 			if(!$session_data){
+				require_once ROOT_DIR . '/core/Message.php';
 				Page::$compiler_messages[] = new Message(Message::TYPE_INFO, "Session not found.");
 			}else{
 				$expires = $session_data["expires"];
 				if($expires<time()){
+					require_once ROOT_DIR . '/core/Message.php';
 					Page::$compiler_messages[] = new Message(Message::TYPE_INFO, "Your session has expired.");
 					Database::get_singleton()->update("DELETE FROM `core_sessions` WHERE session_id=:session_id LIMIT 1;",array(
 						":session_id"=>$session_id,
@@ -86,7 +87,8 @@ class Login {//TODO:Logout
 			":session_id"=>$session_id,
 		));
 		if($rowcount!==1){
-			new Error_warn(Error_warn::TYPE_UNKNOWN,"Couldn't update session!");
+			//TODO: Warning, not error.
+			new Error_("Couldn't update session!");
 		}
 	}
 
@@ -100,6 +102,8 @@ class Login {//TODO:Logout
 	}
 
 	public static function new_session($uid){
+		require_once ROOT_DIR . '/core/service/Php7.php';
+
 		$session_id = bin2hex(Php7::random_bytes(10));
 		$expires = self::session_expires();
 		$ok = Database::insert_assoc_("core_sessions", array(
@@ -112,7 +116,7 @@ class Login {//TODO:Logout
 			if($ok2){
 				return true;
 			}else{
-				Error::quit("Internal error.");
+				Error_::quit("Internal error.");
 			}
 		}
 		return false;
@@ -123,6 +127,11 @@ class Login {//TODO:Logout
 	}
 
 	public static function prompt_credentials(){
+		require_once ROOT_DIR . '/core/Page_standalone.php';
+		require_once ROOT_DIR . '/core/service/Request.php';
+		require_once ROOT_DIR . '/core/form/Form.php';
+		require_once ROOT_DIR . '/core/Message.php';
+
 		$page = new Page_standalone("PAGEID_CORE_LOGIN", "Login");
 		$val_from_request = true;
 
