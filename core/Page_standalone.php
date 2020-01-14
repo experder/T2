@@ -13,8 +13,11 @@ namespace t2\core;
 
 require_once ROOT_DIR . '/core/Page.php';
 
+/**
+ * @deprecated
+ */
 class Page_standalone extends Page {
 
-	protected $standalone = true;
+	protected $standalone = false;
 
 }

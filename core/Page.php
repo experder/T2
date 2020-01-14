@@ -12,11 +12,11 @@ require_once ROOT_DIR . '/core/Page.php';
 
 namespace t2\core;
 
-//require_once ROOT_DIR . '/core/Html.php';
 require_once ROOT_DIR . '/core/Stylesheet.php';
+require_once ROOT_DIR . '/core/service/Config.php';
+//require_once ROOT_DIR . '/core/Html.php';
 //require_once ROOT_DIR . '/core/Echoable.php';
 //require_once ROOT_DIR . '/core/service/User.php';
-//require_once ROOT_DIR . '/core/service/Config.php';
 //require_once ROOT_DIR . '/dev/Debug.php';
 //require_once ROOT_DIR . '/core/service/Files.php';
 //require_once ROOT_DIR . '/core/Error_warn.php';
@@ -35,7 +35,9 @@ class Page {
 	/** @var Page $singleton */
 	static private $singleton = null;
 
-	protected $standalone = false;
+	protected $use_database;
+	private static $recusion_protection_abort = true;
+	public static $prompting_http_root = false;
 
 	/**
 	 * @var string $id Unique string used to address page in navigation and CSS.
@@ -83,18 +85,28 @@ class Page {
 
 	private $html_nodes = array();
 
+	private $HTTP_ROOT = null;
+
 	/**
 	 * @param string $id
 	 * @param string $title
 	 */
-	public function __construct($id, $title) {
+	public function __construct($id, $title, $use_database=true) {
+		if($use_database && Database::get_singleton(false)===false){
+			$use_database=false;
+		}
+		$this->use_database = $use_database;
 		$this->reset($id, $title);
-		#$this->init_http_root();
+		$this->HTTP_ROOT();
 	}
 
 	public function reset($pageId, $title) {
 		$this->id = $pageId;
 		$this->title = $title;
+	}
+
+	public function uses_database(){
+		return $this->use_database;
 	}
 
 	/**
@@ -109,13 +121,6 @@ class Page {
 			}
 		}
 		return self::$singleton;
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function isStandalone() {
-		return $this->standalone;
 	}
 
 	/**
@@ -142,15 +147,25 @@ class Page {
 		return self::$singleton;
 	}
 
-	private $HTTP_ROOT = null;
 	public function HTTP_ROOT(){
 		if($this->HTTP_ROOT===null){
-			if($this->standalone){
+			if(!$this->use_database
+				|| self::$prompting_http_root//We're just prompting for it.
+			){
+
+				//Guess HTTP_ROOT:
+
 				require_once ROOT_DIR . '/core/service/Files.php';
 				$this->HTTP_ROOT=Files::relative_path($_SERVER["SCRIPT_FILENAME"], ROOT_DIR);
 			}else{
+
+				//Load HTTP_ROOT:
+
 				$this->HTTP_ROOT = Config::get_value_core("HTTP_ROOT", false);
 				if($this->HTTP_ROOT===false){
+
+					//Prompt HTTP_ROOT:
+
 					require_once ROOT_DIR . '/dev/Install_wizard.php';
 					$this->HTTP_ROOT=Install_wizard::prompt_http_root();
 					if($this->HTTP_ROOT===false){
@@ -167,33 +182,8 @@ class Page {
 		if($page===null){
 			$page = self::get_singleton();
 		}
-//		Debug::out();
-//		$page = self::get_singleton(false);
-//		if($page===false){
-//			$page = new Page_standalone("","");
-//		}
 		return $page->HTTP_ROOT();
 	}
-//	private function init_http_root(){
-//		if(!defined('HTTP_ROOT')){
-//			require_once ROOT_DIR . '/core/service/Files.php';
-//			if($this->standalone){
-//				$http_root=Files::relative_path($_SERVER["SCRIPT_FILENAME"], ROOT_DIR);
-//			}else{
-//				$http_root = Config::get_value_core("HTTP_ROOT", false);
-//				if($http_root===false){
-//					$http_root=Files::relative_path($_SERVER["SCRIPT_FILENAME"], ROOT_DIR);
-//					if($http_root===false){
-//						Error_::quit("Could not set HTTP_ROOT.");
-//					}
-//					Config::set_value('HTTP_ROOT', $http_root);
-//					require_once ROOT_DIR . '/dev/Install_wizard.php';
-//					Page::$compiler_messages[]=new Message(Message::TYPE_CONFIRM, "HTTP_ROOT set to: $http_root");
-//				}
-//			}
-//			define("HTTP_ROOT", $http_root);
-//		}
-//	}
 
 	public function get_id() {
 		return $this->id;
@@ -210,11 +200,19 @@ class Page {
 			return;
 		}
 
-		if (!is_string($node) && !method_exists($node, '__toString')){
-			new Error_("Invalid node", "ERROR_INVALID_NODE", null, 1);
+		if (!is_string($node)
+			&& !method_exists($node, '__toString')
+			&& !is_numeric($node)
+			&& !is_null($node)
+		){
+			new Error_("Invalid node", "ERROR_INVALID_NODE", print_r($node,1), 1);
 		}
 
 		$this->html_nodes[] = $node;
+	}
+
+	public function add_p($content, $params=array()) {
+		$this->add(\service\Html::P($content, null, $params));
 	}
 
 	/**
@@ -389,6 +387,36 @@ class Page {
 			return $body;
 		}
 
+	}
+
+	public static function abort($title, $messages=null, $body=null, $id="PAGEID_CORE_ABORT") {
+		if(!self::$recusion_protection_abort){
+			new Error_("(ABORTION OCCURED IN ABORTION)");
+			exit;
+		}
+		self::$recusion_protection_abort = false;
+
+		$page=Page::get_singleton(false);
+		if($page===false){
+
+			$page = new Page($id, $title);
+
+			if(is_array($messages)){
+				foreach ($messages as $message){
+					Page::$compiler_messages[] = $message;
+				}
+			}
+
+			if($body!==null){
+				$page->add($body);
+			}
+
+		}
+
+		$page->send_and_quit();
+
+		exit;
+		#self::$recusion_protection = true;
 	}
 
 }

@@ -19,7 +19,6 @@ require_once ROOT_DIR . '/core/service/Request.php';
 require_once ROOT_DIR . '/core/form/Form.php';
 require_once ROOT_DIR . '/core/service/Templates.php';
 
-use service\Config;
 use service\Html;
 use service\Request;
 use service\Templates;
@@ -31,15 +30,16 @@ use t2\core\Formfield_text;
 use t2\core\Message;
 use t2\core\Page;
 
-class Install_wizard {
+class Install_wizard {//TODO: Prompt all field in one form
+
+	public static $prompting_http_root = false;
 
 	public static function prompt_http_root() {
+		self::$prompting_http_root=true;
+		Page::$prompting_http_root=true;
+
 		if (Request::cmd("submit_http_root")) {
-			$http_root = Request::value('http_root');
-			if(!$http_root){
-				#Page::$compiler_messages[] = new Message(Message::TYPE_ERROR, "Please");
-			}
-			return $http_root;
+			return Request::value('http_root');
 		}
 
 		$proposal = pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_DIRNAME);
@@ -51,7 +51,8 @@ class Install_wizard {
 
 		$message = new Message(Message::TYPE_INFO, $html);
 
-		Error_::abort("Server configuration - Installer", array($message), null, "PAGEID_CORE_INSTALLER_PROMPTHTTPROOT");
+		Page::abort("Server configuration - Installer", array($message), null, "PAGEID_CORE_INSTALLER_PROMPT_HTTPROOT");
+		return false;
 	}
 
 	public static function prompt_dbParams() {
@@ -70,7 +71,7 @@ class Install_wizard {
 
 		$message = new Message(Message::TYPE_INFO, $html);
 
-		Error_::abort("Database connection - Installer", array($message), null, "PAGEID_CORE_INSTALLER_PROMPTDBPARAMS");
+		Page::abort("Database connection - Installer", array($message), null, "PAGEID_CORE_INSTALLER_PROMPT_DBPARAMS");
 	}
 
 	private static function prompt_coreUser() {
@@ -93,8 +94,8 @@ class Install_wizard {
 
 		$message = new Message(Message::TYPE_INFO, $html);
 
-		Database::destroy();
-		Error_::abort("Root user - Installer", array($message), null, "PAGEID_CORE_INSTALLER_PROMPTROOTUSER");
+		Database::destroy();//TODO: $prompting_coreUser
+		Page::abort("Root user - Installer", array($message), null, "PAGEID_CORE_INSTALLER_PROMPTROOTUSER");
 	}
 
 	private static function init_config() {
@@ -121,7 +122,6 @@ class Install_wizard {
 		$database = new Database($host, $dbname, $user, $password);
 
 		Page::$compiler_messages[] = new Message(Message::TYPE_CONFIRM, "Database \"$dbname\" created.");
-		#self::dev_step_by_step();
 
 		return $database;
 	}
@@ -149,6 +149,7 @@ class Install_wizard {
 			"username"=>$root_user,
 			"pass_hash"=>md5($root_pass),
 		));
+		Page::$compiler_messages[] = new Message(Message::TYPE_CONFIRM, "User \"$root_user\" created.");
 
 		return $msg;
 	}

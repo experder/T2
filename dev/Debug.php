@@ -25,7 +25,7 @@ use t2\Start;
 class Debug {
 
 	public static $core_queries = array(
-		"load_values ( :ROOT_DIR/core/service/Config.php:173 )",
+		"load_values ( :ROOT_DIR/core/service/Config.php:174 )",
 		"check_session ( :ROOT_DIR/core/service/Login.php:56 )",
 		"update_session ( :ROOT_DIR/core/service/Login.php:87 )",
 	);
@@ -34,21 +34,22 @@ class Debug {
 	public static $queries_corequeries_count = 0;
 
 	public static $core_includes = array(
-		":ROOT_DIR/Start.php",
-		":ROOT_DIR/core/Page.php",//Start.php:113
-		":ROOT_DIR/core/Stylesheet.php",//core/Page.php:299
-		":ROOT_DIR/core/Database.php",//config_exclude.php:6
-#		":ROOT_DIR/core/Error_.php",
-		":ROOT_DIR/config_exclude.php",//Start.php:75
-		":ROOT_DIR/core/service/Config.php",//Start.php:85
-		":ROOT_DIR/core/service/Strings.php",//core/service/Config.php:163
-		":ROOT_DIR/dev/Debug.php",//core/Database.php:250 (DEVMODE)
-		":ROOT_DIR/core/Html.php",//core/Database.php:257 (DEVMODE)
-		":ROOT_DIR/core/Echoable.php",//core/Html.php:20 (DEVMODE)
-		":ROOT_DIR/core/service/Html.php",//core/Html.php:112 (DEVMODE)
-		":ROOT_DIR/core/service/User.php",//Start.php:99
-		":ROOT_DIR/core/service/Login.php",//core/service/User.php:25
-		":ROOT_DIR/core/service/Arrays.php",//dev/Debug.php:112 (DEVMODE)
+//(Check again with autoloader)
+//		":ROOT_DIR/Start.php",
+//		":ROOT_DIR/core/Page.php",//Start.php:113
+//		":ROOT_DIR/core/Stylesheet.php",//core/Page.php:299
+//		":ROOT_DIR/core/Database.php",//config_exclude.php:6
+//		":ROOT_DIR/core/Error_.php",
+//		":ROOT_DIR/core/service/Config.php",//Start.php:85
+//		":ROOT_DIR/core/service/Strings.php",//core/service/Config.php:163
+//		":ROOT_DIR/dev/Debug.php",//core/Database.php:250 (DEVMODE)
+//		":ROOT_DIR/core/Html.php",//core/Database.php:257 (DEVMODE)
+//		":ROOT_DIR/core/Echoable.php",//core/Html.php:20 (DEVMODE)
+//		":ROOT_DIR/core/service/Html.php",//core/Html.php:112 (DEVMODE)
+//		":ROOT_DIR/core/service/Arrays.php",//dev/Debug.php:112 (DEVMODE)
+//		":ROOT_DIR/config_exclude.php",//Start.php:75
+//		":ROOT_DIR/core/service/User.php",//Start.php:99
+//		":ROOT_DIR/core/service/Login.php",//core/service/User.php:25
 	);
 	private static $core_includes_compiled = null;
 	public static $includes = array();
@@ -141,8 +142,13 @@ class Debug {
 	}
 
 	private static function stats_db(Page $page) {
-		$additional_queries_count = count(self::$queries)-self::$queries_corequeries_count;
 		$confirm_class="confirm_good";
+		if(!$page->uses_database()){
+			return new Html("div", "<del>DB</del>", array(
+					"class" => "dev_stats_queries abutton $confirm_class",
+				));
+		}
+		$additional_queries_count = count(self::$queries)-self::$queries_corequeries_count;
 		if (
 			self::$queries_corequeries_count!=count(self::$core_queries)//We missed to update core queries
 			||$additional_queries_count>=self::TOO_MANY_QUERIES

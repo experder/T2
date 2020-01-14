@@ -19,6 +19,8 @@ use service\Strings;
 use t2\dev\Debug;
 use t2\Start;
 
+#Debug::out();
+
 class Database {
 
 	/**

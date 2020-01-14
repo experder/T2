@@ -24,6 +24,8 @@ use t2\Start;
 
 class Error_ {
 
+	private static $dev_error_counter=1;
+
 	const TYPE_UNKNOWN = 0;
 	const TYPE_EXCEPTION = "ERROR_EXCEPTION";
 	const TYPE_DB_NOT_FOUND = "ERROR_DB_NOT_FOUND";
@@ -49,15 +51,17 @@ class Error_ {
 
 		if (!self::$recusion_protection) {
 			self::report_havarie($backtrace_depth+1);
+			exit;
 		}
 
 		self::$recusion_protection = false;
 
 		Page::$compiler_messages[] = $this->report($backtrace_depth+1);
 
-		$this->quit_();
+		Page::abort("ERROR", null, null, "PAGEID_CORE_ERRORARBORT");
 
-		self::$recusion_protection = true;
+		exit;
+		#self::$recusion_protection = true;
 	}
 
 	private function get_ref(){
@@ -65,6 +69,7 @@ class Error_ {
 	}
 
 	private function get_msg($debug_info=true, $backtrace=true, $htmlentities=false, $backtrace_depth=0, $minimalistic=false){
+		//$minimalistic to prevent recusion
 		require_once ROOT_DIR . '/dev/Debug.php';
 		$msg = $this->message;
 		if($debug_info && $this->debug_info){
@@ -80,10 +85,12 @@ class Error_ {
 	}
 
 	private function get_msg_body($minimalistic=false, $backtrace_depth=0){
+		//$minimalistic to prevent recusion
 		if(Config::$DEVMODE/*TODO: OR ADMIN (!$minimalistic)*/){
 			//TODO:i18n(!$minimalistic)
-			$message_body='An error occured: '.$this->get_ref() .$this->get_msg(true, true, true, $backtrace_depth+1, $minimalistic);
-		}else if(User::id_()){
+			$message_body = #'(' . (self::$dev_error_counter++) . ') ' .
+				'An error occured: ' . $this->get_ref() . $this->get_msg(true, true, true, $backtrace_depth + 1, $minimalistic);
+		}else if(User::id_(false)){
 			$message_body='An error occured. Please report this reference to your administrator: '.$this->get_ref();
 		}else{
 			$message_body='This site is currently under maintenance. Please try again later.';
@@ -134,36 +141,6 @@ class Error_ {
 			. " - $uid($ip)"
 			. "\n".($this->type?:"ERROR")
 			. $url;
-	}
-
-	private function quit_(){
-		if (Start::isStarted() && ($page = Page::get_singleton(false))) {
-			$page->send_and_quit();
-		} else {
-			self::abort("ERROR");
-		}
-		exit;
-	}
-
-	/**
-	 * @param string       $title
-	 * @param Message[] $messages
-	 * @param null|string   $body
-	 * @param string $id
-	 */
-	public static function abort($title, $messages=null, $body=null, $id="PAGEID_CORE_ABORT") {
-		require_once ROOT_DIR . '/core/Page_standalone.php';
-		if(is_array($messages)){
-			foreach ($messages as $message){
-				Page::$compiler_messages[] = $message;
-			}
-		}
-		$page = new Page_standalone($id, $title);
-		if($body!==null){
-			$page->add($body);
-		}
-		$page->send_and_quit();
-		exit;
 	}
 
 	public static function from_exception(\Exception $e){

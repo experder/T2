@@ -24,6 +24,9 @@ class Start {
 	 * @deprecated 
 	 */
 	public static $dev_queries = array();
+	/**
+	 * @deprecated
+	 */
 	public static $started = false;
 
 	/**
@@ -88,7 +91,7 @@ class Start {
 	}
 
 	private static function init_userrights() {
-		require_once ROOT_DIR . '/core/service/User.php';//Start.php:99
+		require_once ROOT_DIR . '/core/service/User.php';
 		User::init();
 	}
 
@@ -98,7 +101,7 @@ class Start {
 	 * @return Page
 	 */
 	public static function init($PAGEID_, $title) {
-		require_once ROOT_DIR . '/core/Page.php';//Start.php:113
+		require_once ROOT_DIR . '/core/Page.php';
 		Start::init_config();
 		Start::init_database();
 		Start::init_userrights();

@@ -87,6 +87,10 @@ class Html {
 		return $html;
 	}
 
+	public static function P($content, $children=null, $params = array()) {
+		return new \t2\core\Html("p", $content, $params, $children);
+	}
+
 	public static function A_external($content, $href, $params=array()){
 		$params['href']=$href;
 		$params['target']='_blank';

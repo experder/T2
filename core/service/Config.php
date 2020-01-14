@@ -13,7 +13,7 @@ require_once ROOT_DIR . '/core/service/Config.php';
 
 namespace service;
 
-//require_once ROOT_DIR . '/core/Database.php';
+require_once ROOT_DIR . '/core/Database.php';
 //require_once ROOT_DIR . '/dev/api/Default_values.php';
 
 use admin\Core_values;
@@ -153,6 +153,7 @@ class Config {
 			"userid" => $user
 		);
 		$database->update_or_insert("core_config", $where, array("content" => $value));
+		self::store_val($module, $user, $id, $value);
 	}
 
 	/**
