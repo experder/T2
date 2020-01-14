@@ -165,8 +165,8 @@ class Database {
 		return self::$singleton;
 	}
 
-	public static function select_($query, $substitutions = array(), $report_error = true) {
-		return self::get_singleton()->select($query, $substitutions, 1, $report_error);
+	public static function select_($query, $substitutions = array(), $halt_on_error = true) {
+		return self::get_singleton()->select($query, $substitutions, 1, $halt_on_error);
 	}
 
 	/**
@@ -175,8 +175,8 @@ class Database {
 	 * @param int    $backtrace_depth
 	 * @return array|false
 	 */
-	public function select($query, $substitutions = array(), $backtrace_depth = 0, $report_error = true) {
-		return self::iquery($query, $substitutions, self::RETURN_ASSOC, $backtrace_depth + 1, $report_error);
+	public function select($query, $substitutions = array(), $backtrace_depth = 0, $halt_on_error = true) {
+		return self::iquery($query, $substitutions, self::RETURN_ASSOC, $backtrace_depth + 1, $halt_on_error);
 	}
 
 	/**

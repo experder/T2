@@ -180,7 +180,6 @@ class Config {
 				$report = Install_wizard::init_db_config();
 				$msg = new Message(Message::TYPE_CONFIRM, "DB \"".Database::get_singleton()->get_dbname()."\" initialized. ".$report);
 				Page::$compiler_messages[] = $msg;
-				Install_wizard::dev_step_by_step();
 
 			}else{
 				new Error_($errorCode);//TODO: Pass and format error message
@@ -188,20 +187,6 @@ class Config {
 			}
 
 		}
-//		if($error=Database::get_singleton()->getError()){
-//			if($error instanceof Error){
-//				if($error->get_type()==Error::TYPE_TABLE_NOT_FOUND){
-//					require_once ROOT_DIR . '/dev/Install_wizard.php';
-//					$msg = new Message(Message::TYPE_CONFIRM, "DB \"".Database::get_singleton()->get_dbname()."\" initialized. ".Install_wizard::init_db_config());
-//				}else{
-//					$msg = $error->report();
-//				}
-//				Page::$compiler_messages[] = $msg;
-//				Install_wizard::dev_step_by_step();
-//			}else{
-//				new Error("Wrong Error Type");
-//			}
-//		}
 		if ($data) {
 			foreach ($data as $val) {
 				self::store_val($module, $user, $val['idstring'], $val['content']);

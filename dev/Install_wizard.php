@@ -20,6 +20,7 @@ require_once ROOT_DIR . '/core/form/Form.php';
 require_once ROOT_DIR . '/core/service/Templates.php';
 
 use service\Config;
+use service\Html;
 use service\Request;
 use service\Templates;
 use t2\core\Database;
@@ -32,10 +33,30 @@ use t2\core\Page;
 
 class Install_wizard {
 
+	public static function prompt_http_root() {
+		if (Request::cmd("submit_http_root")) {
+			$http_root = Request::value('http_root');
+			if(!$http_root){
+				#Page::$compiler_messages[] = new Message(Message::TYPE_ERROR, "Please");
+			}
+			return $http_root;
+		}
+
+		$proposal = pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_DIRNAME);
+
+		$form = new Form("submit_http_root");
+		$form->add_field(new Formfield_text("http_root", "HTTP_ROOT", $proposal));
+
+		$html=Html::H1("Server configuration")."Please enter your servers alias or path to the T2 root.".$form;
+
+		$message = new Message(Message::TYPE_INFO, $html);
+
+		Error_::abort("Server configuration - Installer", array($message), null, "PAGEID_CORE_INSTALLER_PROMPTHTTPROOT");
+	}
+
 	public static function prompt_dbParams() {
 		if (Request::cmd("submit_db_credentials")) {
 			Page::$compiler_messages[] = self::init_config();
-			Install_wizard::dev_step_by_step();
 			return;
 		}
 
@@ -45,12 +66,38 @@ class Install_wizard {
 		$form->add_field(new Formfield_text("username", "Admin account", "root"));
 		$form->add_field(new Formfield_password("dbpass", "Admin password", ""));
 
-		$message = new Message(Message::TYPE_INFO, $form);
+		$html=Html::H1("Database connection")."Please enter sql connection parameters".$form;
+
+		$message = new Message(Message::TYPE_INFO, $html);
 
 		Error_::abort("Database connection - Installer", array($message), null, "PAGEID_CORE_INSTALLER_PROMPTDBPARAMS");
 	}
 
-	public static function init_config() {
+	private static function prompt_coreUser() {
+		if (Request::cmd("submit_db_rootUser")) {
+			if (!Request::value('username')){
+				Page::$compiler_messages[] = new Message(Message::TYPE_ERROR, "Username required.");
+			}else if (Request::value('password')!==Request::value('password2')){
+				Page::$compiler_messages[] = new Message(Message::TYPE_ERROR, "Passwords doesn't match.");
+			}else{
+				return;
+			}
+		}
+
+		$form = new Form("submit_db_rootUser");
+		$form->add_field(new Formfield_text("username", "Username", "root"));
+		$form->add_field(new Formfield_password("password", "Password", ""));
+		$form->add_field(new Formfield_password("password2", "Repeat password", ""));
+
+		$html=Html::H1("Root user")."Please create first user account.".$form;
+
+		$message = new Message(Message::TYPE_INFO, $html);
+
+		Database::destroy();
+		Error_::abort("Root user - Installer", array($message), null, "PAGEID_CORE_INSTALLER_PROMPTROOTUSER");
+	}
+
+	private static function init_config() {
 		$target_file = ROOT_DIR . '/config_exclude.php';
 		Templates::create_file($target_file, ROOT_DIR . '/config_template.php', array(
 			":server_addr" => Request::value("server_addr", "(please specify)"),
@@ -74,13 +121,14 @@ class Install_wizard {
 		$database = new Database($host, $dbname, $user, $password);
 
 		Page::$compiler_messages[] = new Message(Message::TYPE_CONFIRM, "Database \"$dbname\" created.");
-		self::dev_step_by_step();
+		#self::dev_step_by_step();
 
 		return $database;
 	}
 
 	public static function init_db_config() {
 		$database=Database::get_singleton();
+		self::prompt_coreUser();
 
 		#$core_config = DB_CORE_PREFIX.'_config';
 		$database->get_pdo()->exec("CREATE TABLE IF NOT EXISTS `core_config` (
@@ -95,13 +143,14 @@ class Install_wizard {
 		$updater = new Core_database($database);
 		$msg = $updater->update();
 
-		return $msg;
-	}
+		$root_user = Request::value('username', 'root');
+		$root_pass = Request::value('password', '');
+		$database->insert_assoc('core_user', array(
+			"username"=>$root_user,
+			"pass_hash"=>md5($root_pass),
+		));
 
-	public static function dev_step_by_step() {
-		if(Config::$DEVMODE){
-			Error_::abort("Installer", array(new Message(Message::TYPE_INFO, "DEV: Step-by-step")));
-		}
+		return $msg;
 	}
 
 }

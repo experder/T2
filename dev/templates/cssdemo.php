@@ -31,7 +31,7 @@ $page->add(\service\Html::H1("CSS demo"));
 if($print_view){
 	$page->add(\service\Html::A("screen.css", $_SERVER['SCRIPT_NAME']));
 	$style = \service\Config::get_value_core("STYLE");
-	$stylesheet = \t2\core\Page::get_demoskins_stylesheet_print($style);
+	$stylesheet = $page->get_demoskins_stylesheet_print($style);
 	$stylesheet->setMedia('all');
 	$page->add_stylesheet("CSS_ID_PRINT",$stylesheet);
 }else{
@@ -70,16 +70,15 @@ $page->add(\service\Html::A_button('Button, external','http://tethys-framework.d
 
 $page->add_message(Message::TYPE_INFO, '<b>NOTE!</b> The following error is not real!');
 
-#\t2\core\Database::select_("SELECT * FROM SPACE");
-$page->add_message(Message::TYPE_ERROR,
-'An Error occured. Please report/see log: #'.time().'.<pre class="dev_error_info">SQL_TABLE_NOT_FOUND
-=========================
+$page->add_message_(new Message(Message::TYPE_ERROR,
+'An error occured: ERROR_SQL/'.time().'<pre class="dev_error_info">
+[42S02] Table \''.\t2\core\Database::get_singleton()->get_dbname().'.SPACE\' doesn\'t exist
+----------------------------------------
 SELECT * FROM SPACE
-=========================
-Table \''.\t2\core\Database::get_singleton()->get_dbname().'.SPACE\' doesn\'t exist
-=========================
+----------------------------------------
 '.__FILE__.':'.__LINE__.'</pre>'
-);
+));
+#\t2\core\Database::select_("SELECT * FROM SPACE");
 
 $page->add_message_(new Message(Message::TYPE_CONFIRM,
 	\service\Html::PRE(

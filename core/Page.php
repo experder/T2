@@ -89,7 +89,7 @@ class Page {
 	 */
 	public function __construct($id, $title) {
 		$this->reset($id, $title);
-		$this->init_http_root();
+		#$this->init_http_root();
 	}
 
 	public function reset($pageId, $title) {
@@ -142,27 +142,58 @@ class Page {
 		return self::$singleton;
 	}
 
-	private function init_http_root(){
-		if(!defined('HTTP_ROOT')){
-			require_once ROOT_DIR . '/core/service/Files.php';
+	private $HTTP_ROOT = null;
+	public function HTTP_ROOT(){
+		if($this->HTTP_ROOT===null){
 			if($this->standalone){
-				$http_root=Files::relative_path($_SERVER["SCRIPT_FILENAME"], ROOT_DIR);
+				require_once ROOT_DIR . '/core/service/Files.php';
+				$this->HTTP_ROOT=Files::relative_path($_SERVER["SCRIPT_FILENAME"], ROOT_DIR);
 			}else{
-				$http_root = Config::get_value_core("HTTP_ROOT", false);
-				if($http_root===false){
-					$http_root=Files::relative_path($_SERVER["SCRIPT_FILENAME"], ROOT_DIR);
-					if($http_root===false){
-						Error_::quit("Could not set HTTP_ROOT.");
-					}
-					Config::set_value('HTTP_ROOT', $http_root);
-					Page::$compiler_messages[]=new Message(Message::TYPE_CONFIRM, "HTTP_ROOT set to: $http_root");
+				$this->HTTP_ROOT = Config::get_value_core("HTTP_ROOT", false);
+				if($this->HTTP_ROOT===false){
 					require_once ROOT_DIR . '/dev/Install_wizard.php';
-					Install_wizard::dev_step_by_step();
+					$this->HTTP_ROOT=Install_wizard::prompt_http_root();
+					if($this->HTTP_ROOT===false){
+						new Error_("Could not set HTTP_ROOT.");
+					}
+					Config::set_value('HTTP_ROOT', $this->HTTP_ROOT);
+					Page::$compiler_messages[]=new Message(Message::TYPE_CONFIRM, "HTTP_ROOT set to: \"$this->HTTP_ROOT\"");
 				}
 			}
-			define("HTTP_ROOT", $http_root);
 		}
+		return $this->HTTP_ROOT;
 	}
+	public static function HTTP_ROOT_($page=null){
+		if($page===null){
+			$page = self::get_singleton();
+		}
+//		Debug::out();
+//		$page = self::get_singleton(false);
+//		if($page===false){
+//			$page = new Page_standalone("","");
+//		}
+		return $page->HTTP_ROOT();
+	}
+//	private function init_http_root(){
+//		if(!defined('HTTP_ROOT')){
+//			require_once ROOT_DIR . '/core/service/Files.php';
+//			if($this->standalone){
+//				$http_root=Files::relative_path($_SERVER["SCRIPT_FILENAME"], ROOT_DIR);
+//			}else{
+//				$http_root = Config::get_value_core("HTTP_ROOT", false);
+//				if($http_root===false){
+//					$http_root=Files::relative_path($_SERVER["SCRIPT_FILENAME"], ROOT_DIR);
+//					if($http_root===false){
+//						Error_::quit("Could not set HTTP_ROOT.");
+//					}
+//					Config::set_value('HTTP_ROOT', $http_root);
+//					require_once ROOT_DIR . '/dev/Install_wizard.php';
+//					Page::$compiler_messages[]=new Message(Message::TYPE_CONFIRM, "HTTP_ROOT set to: $http_root");
+//				}
+//			}
+//			define("HTTP_ROOT", $http_root);
+//		}
+//	}
 
 	public function get_id() {
 		return $this->id;
@@ -265,7 +296,7 @@ class Page {
 //		if($this->standalone && !defined('HTTP_ROOT')){
 //			$this->init_http_root();
 //		}
-		$this->add_javascript("JS_ID_T2CORE", HTTP_ROOT . "/client/core.js");
+		$this->add_javascript("JS_ID_T2CORE", $this->HTTP_ROOT() . "/client/core.js");
 	}
 
 	private function get_js_html(){
@@ -296,22 +327,16 @@ class Page {
 		$this->javascripts[$id] = $url;
 	}
 
-	public static function get_demoskins_stylesheet_print($style){
-		return new Stylesheet(HTTP_ROOT."/style/$style/print.css", Stylesheet::MEDIA_PRINT);
+	public function get_demoskins_stylesheet_print($style){
+		return new Stylesheet($this->HTTP_ROOT()."/style/$style/print.css", Stylesheet::MEDIA_PRINT);
 	}
 
 	private function get_css_html() {
 		$stylesheets = array();
 		$style = Config::get_value_core("STYLE");
-		if(in_array($style,array("bare")) && defined('HTTP_ROOT') ){
-
-			//Installer:
-			if(!defined('HTTP_ROOT')){
-				define("HTTP_ROOT", '.');//Geht nur, wenn Installer verwendet wird / relativer Pfad bekannt ist.
-			}
-
-			$stylesheets["CSS_ID_ALL"]=new Stylesheet(HTTP_ROOT."/style/$style/all.css");
-			$stylesheets["CSS_ID_PRINT"]=self::get_demoskins_stylesheet_print($style);
+		if(in_array($style,array("bare"))){
+			$stylesheets["CSS_ID_ALL"]=new Stylesheet($this->HTTP_ROOT()."/style/$style/all.css");
+			$stylesheets["CSS_ID_PRINT"]=$this->get_demoskins_stylesheet_print($style);
 		}
 		foreach ($this->stylesheets as $key => $stylesheet){
 			$stylesheets[$key] = $stylesheet;

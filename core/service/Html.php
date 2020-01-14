@@ -16,6 +16,8 @@ namespace service;
 //require_once ROOT_DIR . '/core/service/Strings.php';
 //require_once ROOT_DIR . '/core/Html.php';
 
+use t2\core\Page;
+
 /**
  * TODO:Move service\Html to t2\core\Html
  */
@@ -93,7 +95,7 @@ class Html {
 	}
 
 	public static function href_internal($relative_page_without_extension){
-		return HTTP_ROOT . '/' . $relative_page_without_extension .'.'.EXT;
+		return Page::HTTP_ROOT_() . '/' . $relative_page_without_extension .'.'.EXT;
 	}
 
 }

@@ -12,6 +12,6 @@ $page = \t2\Start::init("PAGE_ID_MYPAGE", "My page");
 require_once ROOT_DIR . "/core/api/Core_database.php";
 
 $updater = new \admin\Core_database();
-echo $updater->update();
+echo $updater->update()?:"(-/-)";
 
 $page->send_and_quit();

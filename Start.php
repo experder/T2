@@ -55,16 +55,7 @@ class Start {
 		return new Html("div", "<b>".round($end_time - self::$dev_start_time, 3) . "</b> Seconds", array("class"=>"dev_stats_runtime abutton"));
 	}
 
-	public static function init_dependencies() {
-//		require_once ROOT_DIR . '/core/Page.php';
-//		require_once ROOT_DIR . '/core/Error.php';
-//		require_once ROOT_DIR . '/core/Error_warn.php';
-//		require_once ROOT_DIR . '/core/Error_fatal.php';
-//		require_once ROOT_DIR . '/core/Message.php';
-//		require_once ROOT_DIR . '/core/service/User.php';
-	}
-
-	public static function init_config() {
+	private static function init_config() {
 		require_once ROOT_DIR . '/core/Database.php';
 		require_once ROOT_DIR . '/core/service/Config.php';
 		$config_file = ROOT_DIR . '/config_exclude.php';
@@ -81,7 +72,7 @@ class Start {
 		#define('DB_CORE_PREFIX', Database::get_singleton()->core_prefix);
 	}
 
-	public static function init_database() {
+	private static function init_database() {
 		require_once ROOT_DIR . '/core/service/Config.php';
 		Config::load_values(array(
 			"EXTENSION",
@@ -96,7 +87,7 @@ class Start {
 		#Config::$PROJECT_TITLE = Config::get_value_core("PROJECT_TITLE", 'T2');
 	}
 
-	public static function init_userrights() {
+	private static function init_userrights() {
 		require_once ROOT_DIR . '/core/service/User.php';//Start.php:99
 		User::init();
 	}
@@ -108,7 +99,6 @@ class Start {
 	 */
 	public static function init($PAGEID_, $title) {
 		require_once ROOT_DIR . '/core/Page.php';//Start.php:113
-		Start::init_dependencies();
 		Start::init_config();
 		Start::init_database();
 		Start::init_userrights();
