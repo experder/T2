@@ -75,17 +75,12 @@ class Database {
 
 	private $pdo;
 
-	/**
-	 * @deprecated
-	 */
 	private $error = false;
-	private $error_ = false;
-	private $exception = false;
 
 	/**
-	 * @deprecated
+	 * @deprecated TODO: Use Error Class instead
 	 */
-	private static $dev_global_count = 0;
+	private $exception = false;
 
 	private $dbname;
 
@@ -104,12 +99,16 @@ class Database {
 		}
 	}
 
+	/**
+	 * @return Error_|false
+	 */
 	public function getError() {
 		return $this->error;
 	}
-	public function getError_() {
-		return $this->error_;
-	}
+
+	/**
+	 * @deprecated
+	 */
 	public function getException() {
 		return $this->exception;
 	}
@@ -135,6 +134,10 @@ class Database {
 		return self::$singleton;
 	}
 
+	/**
+	 * Can be used to invalidate Database to force Page to be Standalone.
+	 * Better: Catch recursion when outputting page.
+	 */
 	public static function destroy() {
 		self::$singleton = null;
 	}
@@ -219,28 +222,6 @@ class Database {
 		return $this->pdo;
 	}
 
-
-	/**
-	 * @deprecated
-	 */
-	public static function get_dev_stats(Page $page) {
-		$blank_page_queries = count(self::get_blank_queries());
-		$querie_count = $blank_page_queries."+<b>".(self::$dev_global_count-$blank_page_queries). "</b> Queries";
-		$querie_count=new Html("span", $querie_count, array("onclick"=>"show_dev_stat_queries(this);","class"=>"zoom-in"));
-
-		$page->add_js_core();
-//		if(defined('HTTP_ROOT')){
-//			$style="display:none;";
-//			$page->add_js_core();
-//		}else{
-//			$style="";
-//		}
-
-		$queries=\service\Html::UL(Start::$dev_queries);
-		$queries=new Html("pre", $queries, array("style"=>"display:none;", "id"=>"id_dev_stats_queries_detail"));
-		return new Html("div", $querie_count, array("class"=>"dev_stats_queries abutton")).$queries;
-	}
-
 	/**
 	 * Handles different types of queries, specified by $return
 	 * @param string $query
@@ -251,9 +232,7 @@ class Database {
 	 * @return array|int|false|null
 	 */
 	private function iquery($query, $substitutions, $return_type, $backtrace_depth = 0, $halt_on_error = true) {
-		self::$dev_global_count++;
 		$this->error = false;
-		$this->error_=false;
 		/** @var \PDOStatement $statement */
 		$statement = $this->pdo->prepare($query);
 		$ok = @$statement->execute($substitutions);
@@ -292,8 +271,12 @@ class Database {
 			$eInfo = $statement->errorInfo();
 			$errorCode = $eInfo[0];
 			$errorInfo = "[$errorCode] ".$eInfo[2];
+			$errorType = Error_::TYPE_SQL;
+			if($errorCode === "42S02"/*Unknown table*/){
+				$errorType = Error_::TYPE_TABLE_NOT_FOUND;
+			}
 			if (!$errorInfo && $errorCode === 'HY093'/*Invalid parameter number: parameter was not defined*/) {
-				$errorInfo = "Invalid parameter number: parameter was not defined";
+				$errorInfo = "Invalid parameter number: parameter was not defined";//TODO:Query trotzdem ausgeben?
 			} else {
 				ob_flush();
 				ob_start();
@@ -305,12 +288,9 @@ class Database {
 				}
 			}
 
-			if($halt_on_error){
-				require_once ROOT_DIR . '/core/Error_.php';
-				new Error_($errorInfo, Error_::TYPE_SQL, $compiled_query, $backtrace_depth+1);
-			}else{
-				$this->error_ = $errorCode;
-			}
+			require_once ROOT_DIR . '/core/Error_.php';
+			$this->error = new Error_($errorInfo, $errorType, $compiled_query, $backtrace_depth+1, $halt_on_error);
+
 			return false;
 		}
 		switch ($return_type) {

@@ -28,10 +28,10 @@ class Error_ {
 
 	const TYPE_UNKNOWN = 0;
 	const TYPE_EXCEPTION = "ERROR_EXCEPTION";
-	const TYPE_DB_NOT_FOUND = "ERROR_DB_NOT_FOUND";
-	const TYPE_HOST_UNKNOWN = "ERROR_HOST_UNKNOWN";
-	const TYPE_TABLE_NOT_FOUND = "ERROR_TABLE_NOT_FOUND";
 	const TYPE_SQL = "ERROR_SQL";
+
+	const TYPE_HOST_UNKNOWN = "ERROR_HOST_UNKNOWN";//2002/*php_network_getaddresses: getaddrinfo failed*/
+	const TYPE_TABLE_NOT_FOUND = "ERROR_TABLE_NOT_FOUND";//"42S02"/*Unknown table*/
 
 	const HR = "\n----------------------------------------\n";
 	const HR_outer = "\n========================================\n";
@@ -43,7 +43,7 @@ class Error_ {
 
 	private static $recusion_protection = true;
 
-	public function __construct($message, $ERROR_TYPE=self::TYPE_UNKNOWN, $debug_info=null, $backtrace_depth = 0) {
+	public function __construct($message, $ERROR_TYPE=self::TYPE_UNKNOWN, $debug_info=null, $backtrace_depth = 0, $report=true) {
 		$this->type = $ERROR_TYPE;
 		$this->message = $message?:"(Please enter error message)";
 		$this->timestamp = time();
@@ -56,16 +56,26 @@ class Error_ {
 
 		self::$recusion_protection = false;
 
-		Page::$compiler_messages[] = $this->report($backtrace_depth+1);
+		if($report){
+			$this->report($backtrace_depth+1);
+		}
 
-		Page::abort("ERROR", null, null, "PAGEID_CORE_ERRORARBORT");
-
-		exit;
-		#self::$recusion_protection = true;
+		self::$recusion_protection = true;
 	}
 
 	private function get_ref(){
 		return ($this->type ? $this->type . '/' : '#') . $this->timestamp;
+	}
+
+	/**
+	 * @return string|0
+	 */
+	public function getType() {
+		return $this->type;
+	}
+
+	public function isType($type) {
+		return $this->type==$type;
 	}
 
 	private function get_msg($debug_info=true, $backtrace=true, $htmlentities=false, $backtrace_depth=0, $minimalistic=false){
@@ -98,7 +108,7 @@ class Error_ {
 		return $message_body;
 	}
 
-	private function report($backtrace_depth = 0){
+	public function report($backtrace_depth = 0){
 		require_once ROOT_DIR . '/core/Message.php';
 
 		$message_body = $this->get_msg_body(false, $backtrace_depth+1);
@@ -113,7 +123,11 @@ class Error_ {
 		#Page::$compiler_messages[]=new Message(Message::TYPE_INFO, "<pre>".htmlentities($file_body)."</pre>");
 
 		$msg = new Message(Message::TYPE_ERROR, $message_body);
-		return $msg;
+
+		Page::$compiler_messages[] = $msg;
+
+		Page::abort("ERROR", null, null, "PAGEID_CORE_ERRORARBORT");
+		exit;
 	}
 
 	private function report_havarie($backtrace_depth = 0){

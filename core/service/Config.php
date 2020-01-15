@@ -173,21 +173,19 @@ class Config {
 			)
 			,false
 		);
-		$errorCode=Database::get_singleton()->getError_();
-		if($errorCode!==false){
-			if($errorCode=="42S02"/*Unknown table*/){
-
+		$error=Database::get_singleton()->getError();
+		if($error!==false){
+			if($error->isType(Error_::TYPE_TABLE_NOT_FOUND)){
 				require_once ROOT_DIR . '/dev/Install_wizard.php';
 				$report = Install_wizard::init_db_config();
 				$msg = new Message(Message::TYPE_CONFIRM, "DB \"".Database::get_singleton()->get_dbname()."\" initialized. ".$report);
 				Page::$compiler_messages[] = $msg;
-
 			}else{
-				new Error_($errorCode);//TODO: Pass and format error message
-
+				Database::destroy();//Make Page Standalone (TODO: Necessary?)
+				$error->report();
 			}
-
 		}
+
 		if ($data) {
 			foreach ($data as $val) {
 				self::store_val($module, $user, $val['idstring'], $val['content']);
