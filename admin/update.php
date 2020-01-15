@@ -6,12 +6,18 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
+//TODO:Namespace
+
 require_once '../Start.php';
-$page = \t2\Start::init("PAGE_ID_MYPAGE", "My page");
+$page = \t2\Start::init("PAGEID_CORE_UPDATER", "Updater");
 
 require_once ROOT_DIR . "/core/api/Core_database.php";
 
 $updater = new \admin\Core_database();
-echo $updater->update()?:"(-/-)";
+$page->add($updater->update()?:"(-/-)");
+
+//TODO: git pull
+$result="";
+$page->add(\service\Html::PRE_console($result));
 
 $page->send_and_quit();

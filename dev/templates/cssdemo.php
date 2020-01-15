@@ -54,6 +54,8 @@ $page->add($ul=\service\Html::UL(array(
 )));
 
 $page->add(\service\Html::H4("&lt;h4>"));
+$page->add(\service\Html::H3("Console"));
+$page->add(\service\Html::PRE_console(schlauer_spruch()));
 
 /*
 ======================== Links ===========================
@@ -100,6 +102,7 @@ $form->add_field(new \t2\core\Formfield_password("password"));
 $form->add_field(new \t2\core\Formfield_textarea("textarea",null,schlauer_spruch()));
 $form->add_field(new \t2\core\Formfield_textarea("textarea2","this is a very long title with many chars in a lot of rows"));
 
+$form->add_button(\service\Html::BUTTON("BUTTON","alert('".\service\Strings::escape_value_html2(schlauer_spruch())."');"));
 
 
 $page->send_and_quit();
@@ -126,5 +129,8 @@ function schlauer_spruch(){
 		//Quelle: http://www.monkeyislandinside.de/sprueche.php
 
 	);
-	return $sprueche[rand(0,count($sprueche)-1)];
+	$spruch = $sprueche[rand(0,count($sprueche)-1)];
+	#$spruch="\"ä\"<hr>'ö'\\n\n".$spruch;
+	#$spruch=htmlentities($spruch);
+	return $spruch;
 }

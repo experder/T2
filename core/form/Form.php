@@ -18,30 +18,28 @@ require_once ROOT_DIR . '/core/form/Formfield_hidden.php';
 require_once ROOT_DIR . '/core/form/Formfield_text.php';
 require_once ROOT_DIR . '/core/form/Formfield_textarea.php';
 require_once ROOT_DIR . '/core/form/Formfield_password.php';
-require_once ROOT_DIR . '/core/Echoable.php';
 
 
 class Form {
 
 	/**
-	 * $action is an URL that is called on form submission. Can be left empty (same page is called).
-	 * @var string $action
+	 * @var string|false $action
 	 */
 	private $action;
 	/**
-	 * Form submission method. The submission method is "post" by default.
-	 * @var string $method ["get"|"post"]
+	 * @var string $method
 	 */
 	private $method;
 	private $buttons = array();
 	private $fields = array();
 
 	/**
-	 * Form constructor.
-	 * @param string       $action is an URL that is called on form submission. Can be left empty (same page is called).
+	 * @param string|false $action      An URL that is called on form submission.
+	 *                                  Can be left empty (same page is called).
+	 *                                  Set to FALSE to disable html native send functionality. (Which will still send form via get)
 	 * @param string|false $submit_text Label of the submit button. FALSE to turn off submit button.
-	 * @param string|null  $CMD_ If set, a hidden key "cmd" is sent on submission.
-	 * @param string|null  $method Form submission method. The submission method is "post" by default.
+	 * @param string|null  $CMD_        If set, a hidden key "cmd" is sent on submission.
+	 * @param string|null  $method      ["get"|"post"] Form submission method. The submission method is "post" by default.
 	 */
 	public function __construct($CMD_ = null, $action = "", $submit_text = "Send"/*TODO:i18n*/, $method = "post") {
 
@@ -67,12 +65,20 @@ class Form {
 		return $this->toHtml();
 	}
 
+	public function add_button($button) {
+		$this->buttons[] = $button;
+	}
+
 	public function toHtml() {
-		$buttons = new Html("div", "", array(
-			"class" => "buttons"
-		), $this->buttons);
+		$buttons="";
+		if($this->buttons){
+			$buttons = "\n".new Html("div", "", array(
+				"class" => "buttons"
+			), $this->buttons);
+		}
 		$fields_html = implode("\n", $this->fields);
-		return "<form action=\"$this->action\" method='$this->method'>\n$fields_html\n$buttons\n</form>";
+		$action = ($this->action===false?"":(" action=\"$this->action\" method='$this->method'"));
+		return "<form$action>\n$fields_html$buttons\n</form>";
 	}
 
 }

@@ -34,6 +34,15 @@ class Strings {
 		));
 	}
 
+	public static function escape_value_html2($value) {
+		return self::replace_byArray($value, array(
+			"\"" => "&quot;",
+			"'" => "&apos;",
+			"\n" => "<br>",
+			"\\" => "\\\\",
+		));
+	}
+
 	/**
 	 * Other syntax for the str_replace function.
 	 * @param array  $substitutions An associative array containing the substitutions.

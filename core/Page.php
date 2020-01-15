@@ -15,7 +15,6 @@ namespace t2\core;
 require_once ROOT_DIR . '/core/Stylesheet.php';
 require_once ROOT_DIR . '/core/service/Config.php';
 //require_once ROOT_DIR . '/core/Html.php';
-//require_once ROOT_DIR . '/core/Echoable.php';
 //require_once ROOT_DIR . '/core/service/User.php';
 //require_once ROOT_DIR . '/dev/Debug.php';
 //require_once ROOT_DIR . '/core/service/Files.php';
@@ -199,7 +198,11 @@ class Page {
 			&& !is_numeric($node)
 			&& !is_null($node)
 		){
-			new Error_("Invalid node", "ERROR_INVALID_NODE", print_r($node,1), 1);
+			$hint = "";
+			if(is_bool($node)){
+				$hint = "Booleans need to be converted to strings.\n\$page->add(\$ok?'Yes':'No');";
+			}
+			new Error_("Invalid node!", "ERROR_INVALID_NODE", $hint, 1);
 		}
 
 		$this->html_nodes[] = $node;

@@ -26,8 +26,8 @@ class Debug {
 
 	public static $core_queries = array(
 		"load_values ( :ROOT_DIR/core/service/Config.php:174 )",
-		"check_session ( :ROOT_DIR/core/service/Login.php:56 )",
-		"update_session ( :ROOT_DIR/core/service/Login.php:87 )",
+		"check_session ( :ROOT_DIR/core/service/Login.php:55 )",
+		"update_session ( :ROOT_DIR/core/service/Login.php:86 )",
 	);
 	private static $core_queries_compiled = null;
 	public static $queries = array();
@@ -44,7 +44,6 @@ class Debug {
 //		":ROOT_DIR/core/service/Strings.php",//core/service/Config.php:163
 //		":ROOT_DIR/dev/Debug.php",//core/Database.php:250 (DEVMODE)
 //		":ROOT_DIR/core/Html.php",//core/Database.php:257 (DEVMODE)
-//		":ROOT_DIR/core/Echoable.php",//core/Html.php:20 (DEVMODE)
 //		":ROOT_DIR/core/service/Html.php",//core/Html.php:112 (DEVMODE)
 //		":ROOT_DIR/core/service/Arrays.php",//dev/Debug.php:112 (DEVMODE)
 //		":ROOT_DIR/config_exclude.php",//Start.php:75

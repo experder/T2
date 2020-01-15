@@ -29,6 +29,19 @@ h4{
 ul{
 	padding-left:20px;
 }
+pre.console{
+	font-size: 13px;
+	color:white;
+	padding:10px;
+	background:black;
+	border-radius: 5px;
+	box-shadow: 0px 0px 10px white inset;
+	border:1px solid black;
+	height:375px;
+	width:664px;
+	overflow-x: auto;
+	overflow-y:scroll;
+}
 
 /*
 ======================== Interaction ===========================
@@ -181,4 +194,10 @@ form div.form_field textarea
 form div.form_field textarea
 {
 	height:50px;
+}
+form div.buttons *{
+	margin-right:10px;
+}
+form div.buttons * *{
+	margin-right:0;
 }

@@ -21,6 +21,7 @@ Current TODOs
 * download third party packages (\t2\core\Includes, includes/Includes.php)
 * Module dev tools: Format TODOs, Passwordgenerator (, MD5, Base64)
 * Autoloader? (-> \t2\dev\Debug::$core_includes, dev/Debug.php:36)
+* Updater: git pull (admin/update.php)
 
 
     Admin.php

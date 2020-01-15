@@ -62,8 +62,25 @@ class Html {
 		return new \t2\core\Html("h4",$content,array("id"=>$id));
 	}
 
-	public static function PRE($content){
-		return new \t2\core\Html("pre",$content,array());
+	public static function BUTTON($value, $js=null, $params=array()){
+		$params["type"] = "button";
+		if($js){
+			$params["onclick"] = $js;
+		}
+		return new \t2\core\Html("button",$value,$params);
+	}
+
+	public static function PRE($content, $classes=array(), $params=array()){
+		$params["class"] = implode(" ",$classes);
+		return new \t2\core\Html("pre",$content,$params);
+	}
+
+	public static function PRE_console($content, $id=null){
+		$params = array();
+		if($id){
+			$params["id"]=$id;
+		}
+		return self::PRE($content, array("console"), $params);
 	}
 
 	public static function UL($children=array(), $params=null){
