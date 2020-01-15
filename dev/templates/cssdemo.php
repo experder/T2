@@ -6,6 +6,7 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
+//TODO:check/reorg namespaces
 
 require_once '../../Start.php';
 require_once ROOT_DIR . '/core/form/Form.php';
@@ -16,7 +17,7 @@ use t2\core\Message;
 $page = \t2\Start::init("PAGEID_DEV_CSSDEMO", "CSS demo");
 
 if(!\service\Config::$DEVMODE){
-	$page->add_message_(new Message(Message::TYPE_ERROR, "Not available."));
+	$page->add_message_e(new Message(Message::TYPE_ERROR, "Not available."));
 	$page->send_and_quit();
 }
 
@@ -68,7 +69,7 @@ $page->add(\service\Html::A_button('Button, external','http://tethys-framework.d
 ======================== Messages ===========================
  */
 
-$page->add_message(Message::TYPE_INFO, '<b>NOTE!</b> The following error is not real!');
+$page->add_message_info('<b>NOTE!</b> The following error is not real!');
 
 $page->add_message_(new Message(Message::TYPE_ERROR,
 'An error occured: ERROR_SQL/'.time().'<pre class="dev_error_info">
@@ -81,14 +82,12 @@ SELECT * FROM SPACE
 #\t2\core\Database::select_("SELECT * FROM SPACE");
 
 $page->add_message_(new Message(Message::TYPE_CONFIRM,
-	\service\Html::PRE(
-		'$page->add_message_(new Message(Message::TYPE_CONFIRM, \'...\');'
-	)));
-#$page->add_message(Message::TYPE_CONFIRM, "");
-$page->add_message(-1,
 	\service\Html::H1('div.messages div.message h1')
-	.'div.messages div.message.<a href="https://raw.githubusercontent.com/experder/T2/master/core/Message.php">msg_type_unknown</a>'
-);
+	.\service\Html::PRE(
+		'$page->add_message_(new Message(Message::TYPE_CONFIRM, \'...\');'
+	)
+	."<a href=\"https://raw.githubusercontent.com/experder/T2/master/core/Message.php\" target='_blank'>Link</a>"
+));
 
 /*
 ======================== Forms ===========================

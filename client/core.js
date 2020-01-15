@@ -6,7 +6,7 @@
  GPL*/
 
 /**
- * @deprecated
+ * @deprecated TODO: onclick zoom-in als objekt
  */
 function show_dev_stat_queries(html_node_toggle_zoom){
 	$('#id_dev_stats_queries_detail').toggle(500);

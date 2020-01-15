@@ -9,7 +9,7 @@
 require_once ROOT_DIR . '/dev/Tools.php';
  */
 
-namespace t2\admin;
+namespace t2\admin;//TODO:check/reorg namespaces
 
 
 use service\Html;

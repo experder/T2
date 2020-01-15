@@ -20,21 +20,6 @@ use service\User;
 class Start {
 
 	private static $dev_start_time;
-	/**
-	 * @deprecated 
-	 */
-	public static $dev_queries = array();
-	/**
-	 * @deprecated
-	 */
-	public static $started = false;
-
-	/**
-	 * @return bool
-	 */
-	public static function isStarted() {
-		return self::$started;
-	}
 
 	public static function init_constants() {
 		self::$dev_start_time = microtime(true);
@@ -48,14 +33,6 @@ class Start {
 
 	public static function dev_get_start_time() {
 		return self::$dev_start_time;
-	}
-
-	/**
-	 * @deprecated
-	 */
-	public static function get_dev_stats() {
-		$end_time = microtime(true);
-		return new Html("div", "<b>".round($end_time - self::$dev_start_time, 3) . "</b> Seconds", array("class"=>"dev_stats_runtime abutton"));
 	}
 
 	private static function init_config() {
@@ -106,7 +83,6 @@ class Start {
 		Start::init_database();
 		Start::init_userrights();
 		$page = Page::init2($PAGEID_, $title);
-		self::$started = true;
 		return $page;
 	}
 

@@ -45,32 +45,6 @@ class Database {
 	/** @var Database $singleton */
 	static private $singleton = null;
 
-	//A blank page needs 3 Queries:
-	/**
-	 * @deprecated
-	 */
-	private static $blank_queries=array(
-		"load_values ( :ROOT_DIR/service/Config.php:169 )",
-		"check_session ( :ROOT_DIR/service/Login.php:54 )",
-		"update_session ( :ROOT_DIR/service/Login.php:80 )",
-	);
-	/**
-	 * @deprecated
-	 */
-	private static $blank_queries_compiled=null;
-	/**
-	 * @deprecated
-	 */
-	private static function get_blank_queries() {
-		if(self::$blank_queries_compiled===null){
-			self::$blank_queries_compiled=array();
-			foreach (self::$blank_queries as $query){
-				self::$blank_queries_compiled[]=str_replace(':ROOT_DIR',ROOT_DIR,$query);
-			}
-		}
-		return self::$blank_queries_compiled;
-	}
-
 	public $core_prefix;
 
 	private $pdo;
@@ -78,7 +52,7 @@ class Database {
 	private $error = false;
 
 	/**
-	 * @deprecated TODO: Use Error Class instead
+	 * @deprecated TODO: Use Error Class instead (\t2\core\Database::$exception)
 	 */
 	private $exception = false;
 
@@ -107,7 +81,7 @@ class Database {
 	}
 
 	/**
-	 * @deprecated
+	 * @deprecated TODO: s.o.
 	 */
 	public function getException() {
 		return $this->exception;

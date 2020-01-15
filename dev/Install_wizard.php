@@ -11,7 +11,7 @@
 require_once ROOT_DIR . '/dev/Install_wizard.php';
  */
 
-namespace admin;//TODO: move all namespaces to t2
+namespace admin;//TODO: move all namespaces to t2//TODO:check/reorg namespaces
 
 require_once ROOT_DIR . '/core/Message.php';
 require_once ROOT_DIR . "/core/api/Core_database.php";
@@ -95,6 +95,9 @@ class Install_wizard {//TODO: Prompt all field in one form
 		$message = new Message(Message::TYPE_INFO, $html);
 
 		Database::destroy();//TODO: $prompting_coreUser
+		if(false){
+			Database::destroy();//This would ba a usecase for Database::destroy.
+		}
 		Page::abort("Root user - Installer", array($message), null, "PAGEID_CORE_INSTALLER_PROMPTROOTUSER");
 	}
 

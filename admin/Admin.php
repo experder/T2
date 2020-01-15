@@ -10,7 +10,6 @@
 namespace t2\admin;
 
 
-use t2\core\Gui;
 use t2\core\Page;
 
 class Admin {//TODO

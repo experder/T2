@@ -51,11 +51,13 @@ class Page {
 
 	/**
 	 * @var Message[] $messages
+	 * @deprecated TODO: Use only $compiler_messages
 	 */
 	private $messages = array();
 
 	/**
 	 * @var Message[] $compiler_messages pre-init messages
+	 * TODO: Make private (\t2\core\Page::$compiler_messages)
 	 */
 	public static $compiler_messages = array();
 
@@ -121,14 +123,6 @@ class Page {
 			}
 		}
 		return self::$singleton;
-	}
-
-	/**
-	 * @deprecated Use Start::init() instead!
-	 * @see Start::init()
-	 */
-	public static function init($id, $title) {
-		return Start::init($id, $title);
 	}
 
 	/**
@@ -216,28 +210,39 @@ class Page {
 	}
 
 	/**
-	 * @see Message
-	 * @param int    $type [Message::TYPE_ERROR|Message::TYPE_INFO|Message::TYPE_INFO]
-	 * @param string $message
-	 * @deprecated
-	 */
-	public function add_message($type, $message) {
-		$msg = new Message($type, $message);
-		$this->add_message_($msg);
-	}
-
-	/**
 	 * @param Message $message
 	 * @return Page $this
-	 * TODO: Make private and create add_message_error, add_message_info and add_message_confirm (add_message_ok)
+	 * TODO: Make private and use add_message_error, add_message_info and add_message_confirm (add_message_ok)
 	 */
 	public function add_message_(Message $message) {
 		$this->messages[] = $message;
 		return $this;
 	}
 
-	public static function add_message_error($message){
-		self::get_singleton()->add_message_(new Message(Message::TYPE_ERROR, $message));
+	public function add_message_error($message){
+		$this->add_message_(new Message(Message::TYPE_ERROR, $message));
+	}
+	public function add_message_info($message){
+		$this->add_message_(new Message(Message::TYPE_INFO, $message));
+	}
+	public function add_message_confirm($message){
+		$this->add_message_(new Message(Message::TYPE_CONFIRM, $message));
+	}
+	public function add_message_ok($message){
+		$this->add_message_confirm($message);
+	}
+
+	public static function add_message_error_($message){
+		self::get_singleton()->add_message_error_($message);
+	}
+	public static function add_message_info_($message){
+		self::get_singleton()->add_message_info($message);
+	}
+	public static function add_message_confirm_($message){
+		self::get_singleton()->add_message_confirm($message);
+	}
+	public static function add_message_ok_($message){
+		self::add_message_confirm_($message);
 	}
 
 	public function add_inline_js($js) {

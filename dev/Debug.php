@@ -53,10 +53,6 @@ class Debug {
 	);
 	private static $core_includes_compiled = null;
 	public static $includes = array();
-	/**
-	 * @deprecated
-	 */
-	public static $includes_corecount = 0;
 
 	const TOO_MANY_QUERIES = 10;
 	const TOO_MANY_INCLUDES = 21;

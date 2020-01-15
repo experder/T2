@@ -8,7 +8,7 @@
 /*
 require_once ROOT_DIR.'/api/Service.php';
  */
-namespace t2\api;
+namespace t2\api;//TODO:check/reorg namespaces
 
 
 use service\Config;

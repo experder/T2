@@ -162,7 +162,7 @@ class Error_ {
 	}
 
 	/**
-	 * @deprecated TODO
+	 * @deprecated TODO: Replace "Error_quit" with "new Error_()"
 	 */
 	public static function quit($message, $backtrace_depth = 0) {
 		new Error_($message, Error_::TYPE_UNKNOWN, "", $backtrace_depth+1);

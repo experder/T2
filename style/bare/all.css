@@ -150,10 +150,6 @@ div.messages div.message.msg_type_confirm {
 	border-color:green;
 	background-color: #d7e5d8;
 }
-div.messages div.message.msg_type_unknown {
-	border-color:orange;
-	background-color: #ffe6d1;
-}
 
 /*
 ======================== Forms ===========================

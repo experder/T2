@@ -11,7 +11,7 @@
 require_once ROOT_DIR . "/core/api/Core_database.php";
  */
 
-namespace admin;
+namespace admin;//TODO:check/reorg namespaces
 
 require_once ROOT_DIR . "/dev/api/Update_database.php";
 

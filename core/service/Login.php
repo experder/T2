@@ -22,7 +22,6 @@ use t2\core\Formfield_password;
 use t2\core\Formfield_text;
 use t2\core\Message;
 use t2\core\Page;
-use t2\core\Page_standalone;
 
 class Login {//TODO:Logout
 
@@ -132,13 +131,13 @@ class Login {//TODO:Logout
 		require_once ROOT_DIR . '/core/form/Form.php';
 		require_once ROOT_DIR . '/core/Message.php';
 
-		$page = new Page_standalone("PAGEID_CORE_LOGIN", "Login");
+		$page = new Page("PAGEID_CORE_LOGIN", "Login");
 		$val_from_request = true;
 
 		if(Request::cmd('t2_dologin')){
 			$uid = self::check_credentials(Request::value('username'), Request::value('password'));
 			if($uid===false){
-				$page->add_message(Message::TYPE_ERROR, "Wrong credentials!");
+				$page->add_message_error("Wrong credentials!");
 				$val_from_request = false;
 			}else{
 				return $uid;

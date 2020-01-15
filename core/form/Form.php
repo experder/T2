@@ -21,7 +21,7 @@ require_once ROOT_DIR . '/core/form/Formfield_password.php';
 require_once ROOT_DIR . '/core/Echoable.php';
 
 
-class Form implements Echoable {
+class Form {
 
 	/**
 	 * $action is an URL that is called on form submission. Can be left empty (same page is called).
