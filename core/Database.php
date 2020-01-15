@@ -272,20 +272,21 @@ class Database {
 			$errorCode = $eInfo[0];
 			$errorInfo = "[$errorCode] ".$eInfo[2];
 			$errorType = Error_::TYPE_SQL;
+			if (!$eInfo[2]){
+				if ($errorCode === 'HY093'/*Invalid parameter number: parameter was not defined*/) {
+					$errorInfo = "Invalid parameter number: parameter was not defined";
+				}
+			}
 			if($errorCode === "42S02"/*Unknown table*/){
 				$errorType = Error_::TYPE_TABLE_NOT_FOUND;
 			}
-			if (!$errorInfo && $errorCode === 'HY093'/*Invalid parameter number: parameter was not defined*/) {
-				$errorInfo = "Invalid parameter number: parameter was not defined";//TODO:Query trotzdem ausgeben?
-			} else {
-				ob_flush();
-				ob_start();
-				$statement->debugDumpParams();
-				$debugDump = ob_get_clean();
-				$compiled_query = self::get_compiled_query_from_debugDump($debugDump);
-				if(!$compiled_query){
-					$compiled_query=($debugDump?:$query);
-				}
+			ob_flush();
+			ob_start();
+			$statement->debugDumpParams();
+			$debugDump = ob_get_clean();
+			$compiled_query = self::get_compiled_query_from_debugDump($debugDump);
+			if(!$compiled_query){
+				$compiled_query=($debugDump?:$query);
 			}
 
 			require_once ROOT_DIR . '/core/Error_.php';

@@ -17,6 +17,8 @@ Before merging `dev` to `master`:
 
 Current TODOs
 -------------
+* TODO: Use Error Class instead (core/Database.php:81)
+--
 * download third party packages
 * check/reorg namespaces:
     * core/service
