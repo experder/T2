@@ -42,6 +42,11 @@ pre.console{
 	overflow-x: auto;
 	overflow-y:scroll;
 }
+pre.console div.console_inner{
+	display:table-cell;
+	vertical-align:bottom;
+	height:375px;
+}
 
 /*
 ======================== Interaction ===========================

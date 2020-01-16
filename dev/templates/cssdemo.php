@@ -17,7 +17,7 @@ use t2\core\Message;
 $page = \t2\Start::init("PAGEID_DEV_CSSDEMO", "CSS demo");
 
 if(!\service\Config::$DEVMODE){
-	$page->add_message_e(new Message(Message::TYPE_ERROR, "Not available."));
+	$page->add_message_error("Not available.");
 	$page->send_and_quit();
 }
 
@@ -73,23 +73,23 @@ $page->add(\service\Html::A_button('Button, external','http://tethys-framework.d
 
 $page->add_message_info('<b>NOTE!</b> The following error is not real!');
 
-$page->add_message_(new Message(Message::TYPE_ERROR,
-'An error occured: ERROR_SQL/'.time().'<pre class="dev_error_info">
+$page->add_message_error(
+'An error occured: ERROR_TABLE_NOT_FOUND/'.time().'<pre class="dev_error_info">
 [42S02] Table \''.\t2\core\Database::get_singleton()->get_dbname().'.SPACE\' doesn\'t exist
 ----------------------------------------
 SELECT * FROM SPACE
 ----------------------------------------
 '.__FILE__.':'.__LINE__.'</pre>'
-));
+);
 #\t2\core\Database::select_("SELECT * FROM SPACE");
 
-$page->add_message_(new Message(Message::TYPE_CONFIRM,
+$page->add_message_confirm(
 	\service\Html::H1('div.messages div.message h1')
 	.\service\Html::PRE(
 		'$page->add_message_(new Message(Message::TYPE_CONFIRM, \'...\');'
 	)
 	."<a href=\"https://raw.githubusercontent.com/experder/T2/master/core/Message.php\" target='_blank'>Link</a>"
-));
+);
 
 /*
 ======================== Forms ===========================

@@ -80,7 +80,7 @@ class Html {
 		if($id){
 			$params["id"]=$id;
 		}
-		return self::PRE($content, array("console"), $params);
+		return self::PRE(new \t2\core\Html("div", $content, array("class"=>"console_inner")), array("console"), $params);
 	}
 
 	public static function UL($children=array(), $params=null){

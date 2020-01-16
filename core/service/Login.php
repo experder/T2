@@ -13,7 +13,6 @@ namespace service;//TODO: move all namespaces to t2
 
 //require_once ROOT_DIR . '/core/form/Form.php';
 //require_once ROOT_DIR . '/core/service/Php7.php';
-//require_once ROOT_DIR . '/core/Page_standalone.php';
 
 use t2\core\Database;
 use t2\core\Error_;
@@ -126,7 +125,6 @@ class Login {//TODO:Logout
 	}
 
 	public static function prompt_credentials(){
-		require_once ROOT_DIR . '/core/Page_standalone.php';
 		require_once ROOT_DIR . '/core/service/Request.php';
 		require_once ROOT_DIR . '/core/form/Form.php';
 		require_once ROOT_DIR . '/core/Message.php';

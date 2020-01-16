@@ -23,77 +23,58 @@ Current TODOs
 * Autoloader? (-> \t2\dev\Debug::$core_includes, dev/Debug.php:36)
 * Updater: git pull (admin/update.php)
 
+### Others
+* class Admin {//TODO (Admin.php:15)
+* Namespace (update.php:9)
+* git pull (update.php:19)
+* onclick zoom-in als objekt (core.js:19)
+* check/reorg namespaces (Core_database.php:14)
+* rename column 'user' in core_sessions (Core_database.php:51)
+* check/reorg namespaces (Core_values.php:9)
+* subroutines für debug_info und fehler-handling (Database.php:213)
+* OR ADMIN (!$minimalistic) (Error_.php:99)
+* i18n(!$minimalistic) (Error_.php:100)
+* //Write to errorlog-file(TODO): (Error_.php:116)
+* Was ist mit SCRIPT_URI? (Error_.php:147)
+* Build full request (Error_.php:149)
+* i18n (Form.php:44)
+* Check, if class already exists (Html.php:71)
+* $page->set_focusFieldId (Page.php:30)
+* Make private (\t2\core\Page::$compiler_messages) (Page.php:59)
+* Make private and use add_message_error, add_message_info and add_message_confirm (add_message_ok) (Page.php:218)
+* Move to includes (Page.php:296)
+* Move to includes (Page.php:300)
+* check/reorg namespaces (Arrays.php:12)
+* Warning, not Error. (Config.php:46)
+* Necessary? (Config.php:184)
+* Move service\Html to t2\core\Html (Html.php:22)
+* move all namespaces to t2 (Login.php:12)
+* Logout (Login.php:25)
+* Warning, not error. (Login.php:88)
+* file_exists($filename, $fatal=true) (Templates.php:32)
+* check/reorg namespaces (Service.php:11)
+* Trenner nach der ersten Zeile (Debug.php:278)
+* Funktion mit anzeigen (Debug.php:279)
+* move all namespaces to t2//TODO:check/reorg namespaces (Install_wizard.php:14)
+* Prompt all field in one form (Install_wizard.php:33)
+* $prompting_coreUser (Install_wizard.php:97)
+* check/reorg namespaces (new_module.php:9)
+* check/reorg namespaces (cssdemo.php:9)
+* class D_example extends DBtable/*TODO*/{ (D_example.php:5)
+* Module Generator: \t2\admin\Admin::prompt_new_module() (index.php:11)
+* check/reorg namespaces (Tools.php:12)
+* i18n (Tools.php:24)
+* register module in Config::$MODULES (Tools.php:44)
+* Multiselection: Possible templates (Tools.php:45)
+* Create module id from module name (Tools.php:60)
+* Create absolute_path (Tools.php:61)
+* Create relative_path (Tools.php:62)
+* //TODO (Tools.php:63)
+* class Includes {//TODO (Includes.php:13)
 
-    Admin.php
-    (15, 16) class Admin {//TODO
-    core.js
-    (9, 16) * @deprecated TODO: onclick zoom-in als objekt
-    (19, 4) * TODO: onclick zoom-in als objekt
-    Core_database.php
-    (14, 19) namespace admin;//TODO:check/reorg namespaces
-    (51, 33) `user` int(11) NOT NULL,-- TODO:rename column 'user' in core_sessions
-    Core_values.php
-    (9, 19) namespace admin;//TODO:check/reorg namespaces
-    Database.php
-    (55, 17) * @deprecated TODO: Use Error Class instead (\t2\core\Database::$exception)
-    (84, 17) * @deprecated TODO: s.o.
-    (213, 5) //TODO:subroutines für debug_info und fehler-handling
-    Error_.php
-    (99, 24) if(Config::$DEVMODE/*TODO: OR ADMIN (!$minimalistic)*/){
-    (100, 6) //TODO:i18n(!$minimalistic)
-    (116, 28) //Write to errorlog-file(TODO):
-    (147, 5) //TODO: Was ist mit SCRIPT_URI?
-    (149, 5) //TODO: Build full request
-    (165, 17) * @deprecated TODO: Replace "Error_quit" with "new Error_()"
-    Form.php
-    (46, 81) public function __construct($CMD_ = null, $action = "", $submit_text = "Send"/*TODO:i18n*/, $method = "post") {
-    Html.php
-    (72, 38) public function addClass($class) {//TODO: Check, if class already exists
-    Page.php
-    (31, 4) * TODO: $page->set_focusFieldId
-    (54, 17) * @deprecated TODO: Use only $compiler_messages
-    (60, 5) * TODO: Make private (\t2\core\Page::$compiler_messages)
-    (215, 5) * TODO: Make private and use add_message_error, add_message_info and add_message_confirm (add_message_ok)
-    (293, 39) public function add_js_jquery341(){//TODO: Move to includes
-    (297, 34) public function add_js_core(){//TODO: Move to includes
-    Arrays.php
-    (12, 21) namespace service;//TODO:check/reorg namespaces
-    Config.php
-    (46, 7) //TODO:Warning, not Error.
-    (184, 49) Database::destroy();//Make Page Standalone (TODO: Necessary?)
-    Html.php
-    (22, 4) * TODO:Move service\Html to t2\core\Html
-    Login.php
-    (12, 21) namespace service;//TODO: move all namespaces to t2
-    (26, 16) class Login {//TODO:Logout
-    (89, 6) //TODO: Warning, not error.
-    Templates.php
-    (32, 5) //TODO: file_exists($filename, $fatal=true)
-    Service.php
-    (11, 20) namespace t2\api;//TODO:check/reorg namespaces
-    Debug.php
-    (279, 5) * TODO: Trenner nach der ersten Zeile
-    (280, 5) * TODO: Funktion mit anzeigen
-    Install_wizard.php
-    (14, 19) namespace admin;//TODO: move all namespaces to t2//TODO:check/reorg namespaces
-    (33, 25) class Install_wizard {//TODO: Prompt all field in one form
-    (97, 25) Database::destroy();//TODO: $prompting_coreUser
-    new_module.php
-    (9, 22) namespace t2\admin;//TODO:check/reorg namespaces
-    cssdemo.php
-    (9, 3) //TODO:check/reorg namespaces
-    D_example.php
-    (5, 34) class D_example extends DBtable/*TODO*/{
-    index.php
-    (11, 9) * @see TODO: Module Generator: \t2\admin\Admin::prompt_new_module()
-    Tools.php
-    (12, 22) namespace t2\admin;//TODO:check/reorg namespaces
-    (24, 51) const empty_path = '(Leave empty for default)';//TODO:i18n
-    (44, 76) $form->add_field(new Formfield_text("path", "Path", self::empty_path));//TODO: register module in Config::$MODULES
-    (45, 5) //TODO:Multiselection: Possible templates
-    (60, 5) //TODO:Create module id from module name
-    (61, 5) //TODO:Create absolute_path
-    (62, 5) //TODO:Create relative_path
-    (63, 5) //TODO
-    Includes.php
-    (13, 19) class Includes {//TODO
+### Deprecated
+* onclick zoom-in als objekt (core.js:9)
+* Use Error Class instead (\t2\core\Database::$exception) (Database.php:55)
+* s.o. (Database.php:84)
+* Replace "Error_quit" with "new Error_()" (Error_.php:165)
+* Use only $compiler_messages (Page.php:53)
