@@ -9,7 +9,7 @@
 require_once ROOT_DIR . '/dev/Tools.php';
  */
 
-namespace t2\admin;//TODO:check/reorg namespaces
+namespace t2\dev;
 
 
 use service\Html;
@@ -21,7 +21,7 @@ use t2\core\Page;
 
 class Tools {
 
-	const empty_path = '(Leave empty for default)';//TODO:i18n
+	const empty_path = '(Leave empty for default)';//TODO(3):i18n
 
 	public static function prompt_new_module(Page $page){
 

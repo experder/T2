@@ -6,66 +6,74 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-//TODO:check/reorg namespaces
+namespace t2\dev\tools;
 
 require_once '../../Start.php';
 require_once ROOT_DIR . '/core/form/Form.php';
 require_once ROOT_DIR . '/core/Message.php';
 
-use t2\core\Message;
+use service\Config;
+use service\Html;
+use service\Strings;
+use t2\core\Database;
+use t2\core\Form;
+use t2\core\Formfield_password;
+use t2\core\Formfield_text;
+use t2\core\Formfield_textarea;
+use t2\Start;
 
-$page = \t2\Start::init("PAGEID_DEV_CSSDEMO", "CSS demo");
+$page = Start::init("PAGEID_DEV_CSSDEMO", "CSS demo");
 
-if(!\service\Config::$DEVMODE){
+if(!Config::$DEVMODE){
 	$page->add_message_error("Not available.");
 	$page->send_and_quit();
 }
 
 $print_view = isset($_REQUEST['print']);
 
-$page->add(\service\Html::H1("CSS demo"));
+$page->add(Html::H1("CSS demo"));
 
 /*
 ======================== Print ===========================
  */
 
 if($print_view){
-	$page->add(\service\Html::A("screen.css", $_SERVER['SCRIPT_NAME']));
-	$style = \service\Config::get_value_core("STYLE");
+	$page->add(Html::A("screen.css", $_SERVER['SCRIPT_NAME']));
+	$style = Config::get_value_core("STYLE");
 	$stylesheet = $page->get_demoskins_stylesheet_print($style);
 	$stylesheet->setMedia('all');
 	$page->add_stylesheet("CSS_ID_PRINT",$stylesheet);
 }else{
-	$page->add(\service\Html::A_button("print.css", "?print"));
+	$page->add(Html::A_button("print.css", "?print"));
 }
 
 /*
 ======================== Text ===========================
  */
 
-$page->add(\service\Html::H2("Text", "text"));
+$page->add(Html::H2("Text", "text"));
 $page->add(schlauer_spruch());
-$page->add(\service\Html::PRE("pre {\n\twhite-space: pre-wrap;\n}"));
+$page->add(Html::PRE("pre {\n\twhite-space: pre-wrap;\n}"));
 
-$page->add(\service\Html::H3("Lists"));
-$page->add($ul=\service\Html::UL(array(
+$page->add(Html::H3("Lists"));
+$page->add($ul= Html::UL(array(
 	schlauer_spruch(),
 	schlauer_spruch(),
 )));
 
-$page->add(\service\Html::H4("&lt;h4>"));
-$page->add(\service\Html::H3("Console"));
-$page->add(\service\Html::PRE_console(schlauer_spruch()));
+$page->add(Html::H4("&lt;h4>"));
+$page->add(Html::H3("Console"));
+$page->add(Html::PRE_console(schlauer_spruch()));
 
 /*
 ======================== Links ===========================
  */
 
-$page->add(\service\Html::H2("Links", "links")."\n");
-$page->add(\service\Html::A('Index',\service\Html::href_internal('index'))."\n");
-$page->add(\service\Html::A_external('\service\Html::A_external',"https://github.com/experder/T2/blob/99b7c6cfd9173b5150c840a3553ae5c03061ace9/service/Html.php#L82:L87")."\n");
-$page->add(\service\Html::A_external('External, button','http://tethys-framework.de',array("class"=>"abutton"))."\n");
-$page->add(\service\Html::A_button('Button, external','http://tethys-framework.de',array(),array("target"=>"_blank"))."\n");
+$page->add(Html::H2("Links", "links")."\n");
+$page->add(Html::A('Index', Html::href_internal('index'))."\n");
+$page->add(Html::A_external('\service\Html::A_external',"https://github.com/experder/T2/blob/99b7c6cfd9173b5150c840a3553ae5c03061ace9/service/Html.php#L82:L87")."\n");
+$page->add(Html::A_external('External, button','http://tethys-framework.de',array("class"=>"abutton"))."\n");
+$page->add(Html::A_button('Button, external','http://tethys-framework.de',array(),array("target"=>"_blank"))."\n");
 
 /*
 ======================== Messages ===========================
@@ -75,7 +83,7 @@ $page->add_message_info('<b>NOTE!</b> The following error is not real!');
 
 $page->add_message_error(
 'An error occured: ERROR_TABLE_NOT_FOUND/'.time().'<pre class="dev_error_info">
-[42S02] Table \''.\t2\core\Database::get_singleton()->get_dbname().'.SPACE\' doesn\'t exist
+[42S02] Table \''. Database::get_singleton()->get_dbname().'.SPACE\' doesn\'t exist
 ----------------------------------------
 SELECT * FROM SPACE
 ----------------------------------------
@@ -84,8 +92,8 @@ SELECT * FROM SPACE
 #\t2\core\Database::select_("SELECT * FROM SPACE");
 
 $page->add_message_confirm(
-	\service\Html::H1('div.messages div.message h1')
-	.\service\Html::PRE(
+	Html::H1('div.messages div.message h1')
+	. Html::PRE(
 		'$page->add_message_(new Message(Message::TYPE_CONFIRM, \'...\');'
 	)
 	."<a href=\"https://raw.githubusercontent.com/experder/T2/master/core/Message.php\" target='_blank'>Link</a>"
@@ -94,15 +102,15 @@ $page->add_message_confirm(
 /*
 ======================== Forms ===========================
  */
-$page->add(\service\Html::H2("Forms", "forms"));
+$page->add(Html::H2("Forms", "forms"));
 
-$page->add($form=new \t2\core\Form());
-$form->add_field(new \t2\core\Formfield_text("text"));
-$form->add_field(new \t2\core\Formfield_password("password"));
-$form->add_field(new \t2\core\Formfield_textarea("textarea",null,schlauer_spruch()));
-$form->add_field(new \t2\core\Formfield_textarea("textarea2","this is a very long title with many chars in a lot of rows"));
+$page->add($form=new Form());
+$form->add_field(new Formfield_text("text"));
+$form->add_field(new Formfield_password("password"));
+$form->add_field(new Formfield_textarea("textarea",null,schlauer_spruch()));
+$form->add_field(new Formfield_textarea("textarea2","this is a very long title with many chars in a lot of rows"));
 
-$form->add_button(\service\Html::BUTTON("BUTTON","alert('".\service\Strings::escape_value_html2(schlauer_spruch())."');"));
+$form->add_button(Html::BUTTON("BUTTON","alert('". Strings::escape_value_html2(schlauer_spruch())."');"));
 
 
 $page->send_and_quit();

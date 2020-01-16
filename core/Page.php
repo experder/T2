@@ -215,9 +215,8 @@ class Page {
 	/**
 	 * @param Message $message
 	 * @return Page $this
-	 * TODO: Make private and use add_message_error, add_message_info and add_message_confirm (add_message_ok)
 	 */
-	public function add_message_(Message $message) {
+	private function add_message_(Message $message) {
 		$this->messages[] = $message;
 		return $this;
 	}

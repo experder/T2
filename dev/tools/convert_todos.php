@@ -5,6 +5,7 @@ namespace t2\dev\tools;
 require_once '../../Start.php';
 require_once ROOT_DIR . '/core/form/Form.php';
 
+use service\Config;
 use service\Html;
 use service\Request;
 use t2\core\Form;
@@ -12,6 +13,10 @@ use t2\core\Formfield_textarea;
 use t2\Start;
 
 $page = Start::init("A", "B");
+if(!Config::$DEVMODE){
+	$page->add_message_error("Not available.");
+	$page->send_and_quit();
+}
 $page->add(Html::H1("Format TODOs"));
 
 $form = new Form("do_process", "", "Process");
@@ -49,6 +54,7 @@ function process(){
 						if (preg_match("/^\\(([0-9]{1,4}), [0-9]{1,3}\\) (.*)/", $in, $matches)){//ZEILE
 							$zeile = $matches[1];
 							$todo = $matches[2];
+							//TODO:Parse TODO(1) (default)(high), TODO(2)(medium), TODO(3)(low)
 							if(preg_match("/\\(TODO\\:(.*)\\)/i",$todo,$matches_i)
 								||preg_match("/\\/\\*TODO\\:(.*?)\\*\\//i",$todo,$matches_i)
 								||preg_match("/\\/\\/TODO\\:(.*)/i",$todo,$matches_i)
@@ -59,8 +65,7 @@ function process(){
 									$todo = $todo_inner;
 								}
 							}
-							$in =
-								"$todo ($current_file:$zeile)";
+							$in = "$todo ($current_file:$zeile)";
 							$count_per_file[$current_file]++;
 						}
 					}
@@ -77,7 +82,8 @@ function process(){
 		$output[] = $current_file;
 	}
 
-	$out_html = "* ".implode("\n* ", $output);
+	$out_html="### High\n";
+	$out_html.= "* ".implode("\n* ", $output);
 	if($output_deprecated){
 		$out_html.="\n\n### Deprecated\n";
 		$out_html.="* ".implode("\n* ", $output_deprecated);

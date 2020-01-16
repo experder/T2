@@ -6,13 +6,11 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-namespace t2\admin;//TODO:check/reorg namespaces
+namespace t2\dev;
 
 require_once '../../tethys/Start.php';
-require_once ROOT_DIR . '/dev/Admin.php';
 require_once ROOT_DIR . '/dev/Tools.php';
 
-use t2\dev\Debug;
 use \t2\Start;
 
 $page = Start::init("PAGEID_ADMIN_NEWMOD", "New module");

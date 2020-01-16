@@ -12,5 +12,12 @@ a::after {
 }
 a[target="_blank"]{
 	background:none;
-	padding-left: 0px;
+	padding-left: 0;
+}
+pre.console{
+	background:white;
+	color:black;
+	overflow: inherit;
+	height:inherit;
+	width:inherit;
 }
