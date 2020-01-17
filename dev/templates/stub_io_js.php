@@ -1,4 +1,10 @@
 <?php
+/*GPL
+ * This file is part of the T2 toolbox;
+ * Copyright (C) 2014-2020 Fabian Perder (t2@qnote.de) and contributors
+ * T2 comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
+ * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
+ GPL*/
 
 namespace t2\modules\core_template;
 
@@ -10,7 +16,7 @@ use t2\core\Form;
 use t2\core\Formfield_textarea;
 use t2\Start;
 
-$page = Start::init("A", "B");
+$page = Start::init("PAGEID_CORE_TEMPLATE_STUB_IO_JS", "My page");
 
 $form = new Form(null, false, false);
 $form->add_button(Html::BUTTON("Process","process();"));

@@ -13,7 +13,7 @@ GPL
 if(true)exit;
 /**TPLDOCEND*/
 
-require_once '../../Start.php';//(:relativePath)
+require_once '../../../Start.php';//(:relativePath)
 use t2\Start;
 $page = Start::init("PAGEID_(:MODULE_ID_UC)_INDEX", "Index - (:MODULE_NAME)");
 

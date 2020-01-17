@@ -11,7 +11,7 @@ namespace t2\dev;
 require_once '../../tethys/Start.php';
 require_once ROOT_DIR . '/dev/Tools.php';
 
-use \t2\Start;
+use t2\Start;
 
 $page = Start::init("PAGEID_ADMIN_NEWMOD", "New module");
 
