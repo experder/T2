@@ -76,11 +76,19 @@ class Html {
 	}
 
 	public static function PRE_console($content, $id=null){
-		$params = array();
+		$params = array("class"=>"console_inner");
 		if($id){
 			$params["id"]=$id;
 		}
-		return self::PRE(new \t2\core\Html("div", $content, array("class"=>"console_inner")), array("console"), $params);
+		return self::PRE(new \t2\core\Html("div", $content, $params), array("console"));
+	}
+
+	public static function TEXTAREA_console($content, $id=null){
+		$params = array("class"=>"console");
+		if($id){
+			$params["id"]=$id;
+		}
+		return new \t2\core\Html("textarea", $content, $params);
 	}
 
 	public static function UL($children=array(), $params=null){

@@ -29,7 +29,9 @@ h4{
 ul{
 	padding-left:20px;
 }
-pre.console{
+pre.console,
+textarea.console{
+	font-family: monospace;
 	font-size: 13px;
 	color:white;
 	padding:10px;

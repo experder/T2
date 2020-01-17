@@ -25,7 +25,7 @@ $form->add_field(new Formfield_textarea("input", ""));
 $page->add($form);
 if(Request::cmd("do_process")){
 	$out = process();
-	$page->add(Html::PRE_console($out));
+	$page->add(Html::TEXTAREA_console($out));
 }
 
 $page->send_and_quit();

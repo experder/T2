@@ -63,7 +63,7 @@ $page->add($ul= Html::UL(array(
 
 $page->add(Html::H4("&lt;h4>"));
 $page->add(Html::H3("Console"));
-$page->add(Html::PRE_console(schlauer_spruch()));
+$page->add(Html::TEXTAREA_console(schlauer_spruch()));
 
 /*
 ======================== Links ===========================

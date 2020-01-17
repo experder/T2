@@ -24,6 +24,6 @@ $page->add_js_jquery341();
 $form->add_field(new Formfield_textarea("input", "", null, true, array("id"=>"id_input")));
 
 $page->add($form);
-$page->add(Html::PRE_console("","ID_CONSOLE"));
+$page->add(Html::TEXTAREA_console("","ID_CONSOLE"));
 
 $page->send_and_quit();
