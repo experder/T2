@@ -68,7 +68,7 @@ class Html {
 		}
 	}
 
-	public function addClass($class) {//TODO: Check, if class already exists
+	public function addClass($class) {//TODO(2): Check, if class already exists
 		if ($class === null) {
 			return;
 		}

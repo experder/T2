@@ -41,7 +41,7 @@ class Form {
 	 * @param string|null  $CMD_        If set, a hidden key "cmd" is sent on submission.
 	 * @param string|null  $method      ["get"|"post"] Form submission method. The submission method is "post" by default.
 	 */
-	public function __construct($CMD_ = null, $action = "", $submit_text = "Send"/*TODO:i18n*/, $method = "post") {
+	public function __construct($CMD_ = null, $action = "", $submit_text = "Send"/*TODO(3):i18n*/, $method = "post") {
 
 		$this->action = $action;
 

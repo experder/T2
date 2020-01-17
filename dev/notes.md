@@ -1,6 +1,8 @@
 Developers
 ==========
 
+[[Regex](https://github.com/experder/T2/blob/master/help/dev_regex.md)]
+
 Release
 -------
 Before merging `dev` to `master`:
@@ -19,7 +21,7 @@ Current TODOs
 -------------
 ### Feature requests
 * download third party packages (\t2\core\Includes, includes/Includes.php)
-* Module dev tools: Format TODOs, Passwordgenerator (, MD5, Base64)
+* Module dev tools: Format TODOs(DONE), Passwordgenerator (, MD5, Base64)
 * Autoloader? (-> \t2\dev\Debug::$core_includes, dev/Debug.php:36)
 * Updater: git pull (admin/update.php)
 

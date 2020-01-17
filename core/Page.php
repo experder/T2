@@ -27,7 +27,7 @@ use t2\dev\Debug;
 use t2\Start;
 
 /**
- * TODO: $page->set_focusFieldId
+ * TODO(2): $page->set_focusFieldId
  */
 class Page {
 
@@ -56,7 +56,7 @@ class Page {
 
 	/**
 	 * @var Message[] $compiler_messages pre-init messages
-	 * TODO: Make private (\t2\core\Page::$compiler_messages)
+	 * TODO(3): Make private (\t2\core\Page::$compiler_messages)
 	 */
 	public static $compiler_messages = array();
 
@@ -292,11 +292,11 @@ class Page {
 
 	}
 
-	public function add_js_jquery341(){//TODO: Move to includes
+	public function add_js_jquery341(){//TODO(3): Move to includes
 		$this->add_javascript("JS_ID_JQUERY", "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js");
 	}
 
-	public function add_js_core(){//TODO: Move to includes
+	public function add_js_core(){//TODO(3): Move to includes
 		$this->add_js_jquery341();
 //		if($this->standalone && !defined('HTTP_ROOT')){
 //			$this->init_http_root();

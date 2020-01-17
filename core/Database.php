@@ -210,7 +210,7 @@ class Database {
 		/** @var \PDOStatement $statement */
 		$statement = $this->pdo->prepare($query);
 		$ok = @$statement->execute($substitutions);
-		//TODO:subroutines für debug_info und fehler-handling
+		//TODO(3):subroutines für debug_info und fehler-handling
 		if(Config::$DEVMODE){
 			require_once ROOT_DIR . '/dev/Debug.php';
 			require_once ROOT_DIR . '/core/Html.php';
