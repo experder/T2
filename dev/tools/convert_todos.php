@@ -56,7 +56,12 @@ function process(){
 					$in0 = $in;
 					$prio = 1;
 					if($current_file!==false){
-						if (preg_match("/^\\(([0-9]{1,4}), [0-9]{1,3}\\) (.*)/", $in, $matches)){//ZEILE
+						/**
+						 * "(123, 45) T0D0"
+						 * https://github.com/experder/T2/blob/master/help/dev_regex.md
+						 * TODO(3):Describe regex projectwide
+						 */
+						if (preg_match("/^\\(([0-9]{1,4}), [0-9]{1,3}\\) (.+)/", $in, $matches)){//ZEILE
 							$zeile = $matches[1];
 							$todo = $matches[2];
 							$todo_w_prio_regex = "/(\\W)TODO\\(([123])\\)/i";
