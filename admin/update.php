@@ -24,12 +24,13 @@ $page->add(Html::H1("Updater"));
 $platform = Config::PLATFORM();
 
 if($platform==Config::PLATFORM_WINDOWS){
-	$result = `..\\update.cmd 2>&1`;
+	$result = `cd..&&update.cmd 2>&1`;
 	$result = mb_convert_encoding($result, "utf-8", "cp850");
 }else if($platform==Config::PLATFORM_LINUX){
 	//TODO
 	#$result="";
 }
+$result=htmlentities($result);
 $result.="\n";
 
 $updater = new Core_database();
