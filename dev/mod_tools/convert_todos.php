@@ -33,10 +33,11 @@ $page->send_and_quit();
 function process(){
 	$input = Request::value("input");
 	$output = array(
-		1=>array(),//High(default)
+		1=>array(),//High
 		2=>array(),//Medium
 		3=>array(),//Low
 		4=>array(),//Deprecated
+		5=>array(),//Unknown(default)
 	);
 
 	$current_file = false;
@@ -54,7 +55,7 @@ function process(){
 					$count_per_file[$current_file]=0;
 				}else{
 					$in0 = $in;
-					$prio = 1;
+					$prio = 5;
 					if($current_file!==false){
 						/**
 						 * "(123, 45) T0D0"
@@ -100,6 +101,10 @@ function process(){
 	if($output[1]){
 		$out_html[]="### High\n"
 		. "* ".implode("\n* ", $output[1]);
+	}
+	if($output[5]){
+		$out_html[]="### (Unknown)\n"
+			. "* ".implode("\n* ", $output[5]);
 	}
 	if($output[2]){
 		$out_html[]="### Medium\n"

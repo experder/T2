@@ -12,12 +12,13 @@ require_once '../Start.php';
 $page = \t2\Start::init("PAGEID_CORE_UPDATER", "Updater");
 
 require_once ROOT_DIR . "/core/api/Core_database.php";
-
-$updater = new \admin\Core_database();
-$page->add($updater->update()?:"(-/-)");
+$page->add(\service\Html::H1("Updater"));
+$page->add(\service\Html::PRE_console("", "ID_RESULTS"));
 
 //TODO: git pull
-$result="";
-$page->add(\service\Html::PRE_console($result));
+#$result="";
+
+#$updater = new \admin\Core_database();
+#$page->add($updater->update()?:"(-/-)");
 
 $page->send_and_quit();
