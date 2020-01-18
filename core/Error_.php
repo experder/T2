@@ -179,6 +179,9 @@ class Error_ {
 		exit;
 	}
 
+	/**
+	 * TODO(3): make private? (catch recursion?)
+	 */
 	public static function plain_abort_($message, $backtrace_depth=0){
 		echo $message;
 		echo self::HR;

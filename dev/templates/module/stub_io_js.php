@@ -8,7 +8,7 @@
 
 namespace t2\modules\core_template;
 
-require_once '../../Start.php';
+require_once '../../../Start.php';
 require_once ROOT_DIR . '/core/form/Form.php';
 
 use service\Html;

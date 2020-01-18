@@ -5,23 +5,19 @@
  * T2 comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
+/*
+require_once ROOT_DIR . '/dev/templates/module/Controller.php';
+ */
+
+namespace t2\modules\core_template;
 
 
-namespace t2\modules\core_devtools;
+class Controller {
 
-require_once ROOT_DIR . '/dev/api/Ajax.php';
-
-use t2\api\Ajax;
-
-class Devtools_ajax extends Ajax {
-
-	/**
-	 * @param string   $cmd
-	 * @param string[] $keyValues
-	 * @return string JSON or HTML, depending on $cmd
-	 */
-	public function return_by_cmd($cmd, $keyValues) {
-		return "Devtools\nCMD=$cmd / ".print_r($keyValues, 1);
+	public static function calculate_test2($foo){
+		$bar = "foo => $foo";
+		//...
+		return $bar."\n";
 	}
 
 }

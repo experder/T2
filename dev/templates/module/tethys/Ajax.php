@@ -5,16 +5,17 @@
  * T2 comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
-/*
-require_once ROOT_DIR . '/core/api/Core_ajax.php';
- */
-
-namespace t2\core\api;
 
 
-use t2\api\Ajax;
+namespace t2\modules\core_template\api;
 
-class Core_ajax extends Ajax {
+require_once ROOT_DIR . '/dev/templates/module/Controller.php';
+require_once ROOT_DIR . '/dev/api/Ajax.php';
+
+use service\Arrays;
+use t2\modules\core_template\Controller;
+
+class Ajax extends \t2\api\Ajax {
 
 	/**
 	 * @param string   $cmd
@@ -23,10 +24,10 @@ class Core_ajax extends Ajax {
 	 */
 	public function return_by_cmd($cmd, $keyValues) {
 		switch ($cmd){
-			case 'foo':
-//				return Controller::calculate_test2(
-//					Arrays::value_from_array($keyValues, 'Foo')
-//				);
+			case 'test2':
+				return Controller::calculate_test2(
+					Arrays::value_from_array($keyValues, 'foo')
+				);
 				break;
 		}
 		$this->unknown_command($cmd, 1);

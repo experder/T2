@@ -26,6 +26,9 @@ class Js {
 		$keyVals["module"]=$module;
 		$keyVals["cmd"]=$cmd;
 		$query = Strings::build_query_string($keyVals);
+		/*
+		 * TODO(2): AJAX: URL can get too long!
+		 */
 		return "t2_ajax_to_id('".Html::href_internal('core/ajax').$query."','$id',".($add?'true':'false').");";
 	}
 

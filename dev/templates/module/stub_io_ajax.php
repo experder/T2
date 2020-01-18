@@ -8,9 +8,10 @@
 
 namespace t2\modules\core_template;
 
-require_once '../../Start.php';
+require_once '../../../Start.php';
 require_once ROOT_DIR . "/core/api/Core_database.php";
 require_once ROOT_DIR . "/core/service/Js.php";
+require_once ROOT_DIR . '/dev/templates/module/Controller.php';
 
 use service\Html;
 use t2\service\Js;
@@ -19,15 +20,14 @@ use t2\Start;
 $page = Start::init("PAGEID_TEMPLATES_IOAJAX", "My page");
 
 $page->add(Html::H1("My page"));
-$page->add(Html::BUTTON("Add",Js::ajax_to_id("core", "test1", array("a"=>"b"), "ID_RESULTS", true))."\n");
+$page->add(Html::BUTTON("Add",Js::ajax_to_id("core_template", "test2", array("foo"=>"add"), "ID_RESULTS", true))."\n");
+$page->add(Html::BUTTON("Set",Js::ajax_to_id("core_template", "test2", array("foo"=>"set"), "ID_RESULTS", false))."<br>\n");
+$page->add(Html::TEXTAREA_console(
+	Controller::calculate_test2("init"),
+	"ID_RESULTS"
+));
 
-$page->add(Html::BUTTON("Set",Js::ajax_to_id("core", "test1", array("a"=>"b"), "ID_RESULTS", false))."<br>\n");
-#$page->add(Html::PRE_console("", "ID_RESULTS"));
-$page->add(Html::TEXTAREA_console("", "ID_RESULTS"));
-
-#$page->add_js_core();
-#$page->add_inline_js(Js::jquery_onload("$('#ID_RESULTS').html('!');"));
-$page->add_inline_js(Js::jquery_onload(Js::ajax_to_id("devtools", "test2", array("Foo"=>"Bar"), "ID_RESULTS", true)));
+$page->add_inline_js(Js::jquery_onload(Js::ajax_to_id("core_template", "test2", array("foo"=>"bar"), "ID_RESULTS", true)));
 
 
 $page->send_and_quit();

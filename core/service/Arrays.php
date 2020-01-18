@@ -21,4 +21,11 @@ class Arrays {
 		return $array;
 	}
 
+	public static function value_from_array($array, $key, $default_value=null){
+		if(isset($array[$key])){
+			return $array[$key];
+		}
+		return $default_value;
+	}
+
 }

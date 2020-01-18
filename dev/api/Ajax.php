@@ -46,4 +46,8 @@ abstract class Ajax {
 		return $ajax->return_by_cmd($cmd, $keyValues);
 	}
 
+	protected function unknown_command($cmd, $depth=0){
+		new Error_("Unknown command \"$cmd\"!",0,null,$depth+1);
+	}
+
 }

@@ -63,8 +63,10 @@ class Html {
 	}
 
 	public function addClasses($classes) {
-		foreach ($classes as $class){
-			$this->addClass($class);
+		if(is_array($classes)){
+			foreach ($classes as $class){
+				$this->addClass($class);
+			}
 		}
 	}
 

@@ -9,9 +9,7 @@ GPL
 GPL
  * This template is used to create a new module.
  * @see \t2\dev\Tools::prompt_new_module()
- */
-if(true)exit;
-/**TPLDOCEND*/
+TPLDOCEND*/
 
 require_once ROOT_DIR . '/dev/api/Default_values.php';
 

@@ -108,6 +108,7 @@ class Start {
 	}
 
 	public static function init_ajax() {
+		//TODO: init rights
 		self::$type=self::TYPE_AJAX;
 	}
 
