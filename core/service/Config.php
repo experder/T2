@@ -16,7 +16,7 @@ namespace service;
 require_once ROOT_DIR . '/core/Database.php';
 //require_once ROOT_DIR . '/dev/api/Default_values.php';
 
-use admin\Core_values;
+use t2\core\api\Core_values;
 use admin\Install_wizard;
 use t2\api\Default_values;
 use t2\core\Database;
@@ -35,11 +35,24 @@ class Config {
 
 	private static $MODULES = null;
 
+	private static $PLATFORM = null;
+
+	const PLATFORM_WINDOWS = 'windows';
+	const PLATFORM_LINUX = 'linux';
+
+	public static function PLATFORM(){
+		if(self::$PLATFORM===null){
+			//TODO(2):Detect platform!
+			#new Error_("Can't detect platform!");
+			self::$PLATFORM=self::PLATFORM_WINDOWS;
+		}
+		return self::$PLATFORM;
+	}
+
 	/**
 	 * @return array
 	 */
 	public static function MODULES(){
-		#echo "<hr><pre>".Error::backtrace()."</pre>";
 		if(self::$MODULES===null){
 			$modules_json = self::get_value('MODULES', null, null, false);
 			if($modules_json!==false && !(self::$MODULES = json_decode($modules_json, true))){
@@ -123,7 +136,7 @@ class Config {
 		$singleton = Default_values::get_singleton_by_module($module);
 		$value = $singleton->get_default_value($id);
 		if($value===null){
-			Error_::quit("No default value provided for $module:$id.", $backtrace_depth+1);
+			new Error_("No default value provided for: $module|$id",0,"Add here: \\t2\\core\\api\\Core_values", $backtrace_depth+1);
 		}
 		return $value;
 	}
@@ -137,7 +150,7 @@ class Config {
 	 * @param int|null      $user
 	 * @param int           $backtrace_depth
 	 * @return string
-	 * @see \admin\Core_values
+	 * @see \t2\core\api\Core_values
 	 */
 	public static function get_value_core($id, $default_value = true, $user = null, $backtrace_depth=0) {
 		return self::get_value($id, null, $user, $default_value, true, null, $backtrace_depth+1);

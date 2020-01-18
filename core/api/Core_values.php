@@ -6,7 +6,7 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-namespace admin;//TODO:check/reorg namespaces
+namespace t2\core\api;
 
 require_once ROOT_DIR . '/dev/api/Default_values.php';
 require_once ROOT_DIR . '/dev/Debug.php';

@@ -6,19 +6,38 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-//TODO:Namespace
+namespace t2\admin;
 
 require_once '../Start.php';
-$page = \t2\Start::init("PAGEID_CORE_UPDATER", "Updater");
-
 require_once ROOT_DIR . "/core/api/Core_database.php";
-$page->add(\service\Html::H1("Updater"));
-$page->add(\service\Html::PRE_console("", "ID_RESULTS"));
 
-//TODO: git pull
-#$result="";
+use admin\Core_database;
+use service\Config;
+use service\Html;
+use t2\core\Error_;
+use t2\Start;
 
-#$updater = new \admin\Core_database();
-#$page->add($updater->update()?:"(-/-)");
+$page = Start::init("PAGEID_CORE_UPDATER", "Updater");
+
+$page->add(Html::H1("Updater"));
+
+$platform = Config::PLATFORM();
+
+if($platform==Config::PLATFORM_WINDOWS){
+	$result = `..\\update.cmd 2>&1`;
+	$result = mb_convert_encoding($result, "utf-8", "cp850");
+}else if($platform==Config::PLATFORM_LINUX){
+	//TODO
+	#$result="";
+}
+$result.="\n";
+
+$updater = new Core_database();
+$result.="========= Update_database =========\n";
+$result.=$updater->update()?:"Already up to date.";
+
+//TODO:Get the two outputs by ajax
+$page->add(Html::PRE_console($result, "ID_RESULTS"));
+
 
 $page->send_and_quit();

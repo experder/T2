@@ -13,7 +13,7 @@ namespace t2\api;//TODO(1): Move api to root DIR!
 
 require_once ROOT_DIR . '/dev/api/Service.php';
 
-use admin\Core_values;
+use t2\core\api\Core_values;
 
 
 abstract class Default_values {

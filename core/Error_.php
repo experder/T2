@@ -22,6 +22,7 @@ use t2\Start;
 
 #echo "<pre>".Debug::backtrace()."</pre>";
 
+//TODO: Error class for admins and developers (-> notify) and Error class for users (warnings, don't notify)
 class Error_ {
 
 	private static $dev_error_counter=1;
