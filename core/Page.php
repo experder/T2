@@ -257,6 +257,8 @@ class Page {
 	public function send_and_quit() {
 		#require_once ROOT_DIR . '/core/Error_.php';
 		#new Error_("!","TYPE", "DEBUG-INFO");
+//TODO(1): Der Typ muss PAGE heissen (AJAX kann auch HTML sein)
+		Start::check_type(Start::TYPE_HTML);
 
 		$title = $this->get_title();
 		$messages = $this->get_message_html();

@@ -28,6 +28,12 @@ class Request {
 		return $default;
 	}
 
+	public static function value_unset($key, $default = null) {
+		$val = self::value($key, $default);
+		unset($_REQUEST[$key]);
+		return $val;
+	}
+
 	/**
 	 * Checks, if the $_REQUEST value of "cmd" is set to command $cmd.
 	 * @param string $cmd

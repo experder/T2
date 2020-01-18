@@ -22,3 +22,23 @@ function t2_toggle_detail_zoom(content_id, html_node_toggle_zoom){
 	$('#'+content_id).toggle(500);
 	$(html_node_toggle_zoom).toggleClass('zoom-out');
 }
+
+function t2_ajax_to_func(query,Funktion){
+	var xmlhttp=new XMLHttpRequest();
+	xmlhttp.open("GET",query,true);
+	xmlhttp.onreadystatechange=function(){
+		if (xmlhttp.readyState===4 && xmlhttp.status===200){
+			new Function("response",Funktion)(xmlhttp.responseText);
+		}
+	};
+	xmlhttp.send();
+}
+
+function t2_ajax_to_id(query,id,add){
+	if(add){
+		func = "$('#"+id+"').append(response);";
+	}else{
+		func = "document.getElementById('"+id+"').innerHTML=response;";
+	}
+	t2_ajax_to_func(query,func);
+}

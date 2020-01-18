@@ -20,10 +20,14 @@ class Core_values extends Default_values {
 
 	protected $default_values = array(
 		"MODULES" => '{
-				"Xcore":{
+				"devtools":{
 					"Default_values":{
-						"include":":ROOT_DIR\/admin\/Core_values.php",
-						"class":"\\\admin\\\Core_values"
+						"include":":ROOT_DIR\/...\/Demo.php",
+						"class":"\\\t2\\\...\\\Demo"
+					},
+					"Ajax":{
+						"include":":ROOT_DIR\/dev\/mod_tools\/Devtools_ajax.php",
+						"class":"t2\\\modules\\\core_devtools\\\Devtools_ajax"
 					}
 				}
 			}',

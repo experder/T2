@@ -94,12 +94,12 @@ class Error_ {
 		return $msg;
 	}
 
-	private function get_msg_body($minimalistic=false, $backtrace_depth=0){
+	private function get_msg_body($minimalistic=false, $backtrace_depth=0, $htmlentities=true, $backtrace=true){
 		//$minimalistic to prevent recusion
 		if(Config::$DEVMODE/*TODO: OR ADMIN (!$minimalistic)*/){
 			//TODO:i18n(!$minimalistic)
 			$message_body = #'(' . (self::$dev_error_counter++) . ') ' .
-				'An error occured: ' . $this->get_ref() . $this->get_msg(true, true, true, $backtrace_depth + 1, $minimalistic);
+				'An error occured: ' . $this->get_ref() ."\n". $this->get_msg(true, $backtrace, $htmlentities, $backtrace_depth + 1, $minimalistic);
 		}else if(User::id_(false)){
 			$message_body='An error occured. Please report this reference to your administrator: '.$this->get_ref();
 		}else{
@@ -109,9 +109,9 @@ class Error_ {
 	}
 
 	public function report($backtrace_depth = 0){
-		require_once ROOT_DIR . '/core/Message.php';
-
-		$message_body = $this->get_msg_body(false, $backtrace_depth+1);
+		if(Start::is_type(Start::TYPE_AJAX)){
+			$this->plain_abort($backtrace_depth+1);
+		}
 
 		//Write to errorlog-file(TODO):
 		$file_body = self::HR_outer
@@ -121,6 +121,10 @@ class Error_ {
 			.self::HR_outer
 		;
 		#Page::$compiler_messages[]=new Message(Message::TYPE_INFO, "<pre>".htmlentities($file_body)."</pre>");
+
+		$message_body = $this->get_msg_body(false, $backtrace_depth+1);
+
+		require_once ROOT_DIR . '/core/Message.php';
 
 		$msg = new Message(Message::TYPE_ERROR, $message_body);
 
@@ -166,6 +170,20 @@ class Error_ {
 	 */
 	public static function quit($message, $backtrace_depth = 0) {
 		new Error_($message, Error_::TYPE_UNKNOWN, "", $backtrace_depth+1);
+	}
+
+	private function plain_abort($backtrace_depth=0, $minimalistic=false){
+		echo $this->get_msg_body($minimalistic, $backtrace_depth+1, false, false);
+		echo self::HR;
+		echo Debug::backtrace($backtrace_depth+1);
+		exit;
+	}
+
+	public static function plain_abort_($message, $backtrace_depth=0){
+		echo $message;
+		echo self::HR;
+		echo Debug::backtrace($backtrace_depth+1);
+		exit;
 	}
 
 }

@@ -12,9 +12,10 @@ $page = \t2\Start::init("PAGEID_CORE_DEVAREA", "Dev area");
 use t2\core\Html;
 
 $page->add(\service\Html::A_button("New module",\service\Html::href_internal("dev/new_module")));
-$page->add(\service\Html::A_button("CSS demo",\service\Html::href_internal("dev/tools/cssdemo")));
+$page->add(\service\Html::A_button("CSS demo",\service\Html::href_internal("dev/mod_tools/cssdemo")));
 
 $page->add(\service\Html::H1("Tools"));
-$page->add(\service\Html::A_button("Convert TODOs",\service\Html::href_internal("dev/tools/convert_todos")));
+//TODO:href_internal_mod
+$page->add(\service\Html::A_button("Convert TODOs",\service\Html::href_internal("dev/mod_tools/convert_todos")));
 
 $page->send_and_quit();

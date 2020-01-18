@@ -19,10 +19,30 @@ use service\User;
 
 class Start {
 
-	private static $dev_start_time;
+	const TYPE_UNKNOWN = 0;
+	const TYPE_HTML = 1;
+	const TYPE_AJAX = 2;
+	const TYPE_CLI = 3;
+
+	private static $type = self::TYPE_UNKNOWN;
+
+	private static $dev_start_time = null;
+
+	public static function get_type(){
+		return self::$type;
+	}
+
+	public static function is_type($type){
+		return self::$type==$type;
+	}
 
 	public static function init_constants() {
-		self::$dev_start_time = microtime(true);
+		if(self::$dev_start_time===null){
+			self::$dev_start_time = microtime(true);
+		}else{
+			require_once ROOT_DIR . '/core/Error_.php';
+			new Error_("Init called twice!", 0, null, 1);
+		}
 		if (!defined("ROOT_DIR")) {
 			$dir = __DIR__;
 			//Windwos:
@@ -79,11 +99,29 @@ class Start {
 	 */
 	public static function init($PAGEID_, $title) {
 		require_once ROOT_DIR . '/core/Page.php';
+		self::$type=self::TYPE_HTML;
 		Start::init_config();
 		Start::init_database();
 		Start::init_userrights();
 		$page = Page::init2($PAGEID_, $title);
 		return $page;
+	}
+
+	public static function init_ajax() {
+		self::$type=self::TYPE_AJAX;
+	}
+
+	public static function check_type($type){
+		if(!defined('ROOT_DIR')){
+			self::init_constants();
+		}
+		require_once ROOT_DIR . '/core/Error_.php';
+		if (self::$type==self::TYPE_UNKNOWN){
+			Error_::plain_abort_("Unknown type. T2 has not been initialized. \"Start::init\" should be the very first call.",1);
+		}
+		if (self::$type!=$type){
+			Error_::plain_abort_("Wrong type: ".self::$type.". Please call proper \"Start::init...\".",1);
+		}
 	}
 
 }

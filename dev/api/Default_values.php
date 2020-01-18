@@ -9,7 +9,7 @@
 require_once ROOT_DIR.'/dev/api/Default_values.php';
  */
 
-namespace t2\api;
+namespace t2\api;//TODO(1): Move api to root DIR!
 
 require_once ROOT_DIR . '/dev/api/Service.php';
 

@@ -10,12 +10,30 @@ require_once ROOT_DIR.'/api/Service.php';
  */
 namespace t2\api;//TODO:check/reorg namespaces
 
+require_once ROOT_DIR . '/core/service/Config.php';
+require_once ROOT_DIR . '/core/Error_.php';
 
 use service\Config;
+use t2\core\api\Core_ajax;
+use t2\core\Error_;
 
 class Service {
 
+	public static function get_api_class_core($classname){
+		switch ($classname) {
+			case "Ajax":
+				require_once ROOT_DIR . '/core/api/Core_ajax.php';
+				return new Core_ajax();
+				break;
+			default:
+				new Error_("Unknown classname \"$classname\".", 0, "Please specify class in \"\\t2\\api\\Service::get_api_class_core\".");
+				break;
+		}
+	}
 	public static function get_api_class($module, $classname){
+		if($module=='core'){
+			return self::get_api_class_core($classname);
+		}
 		if(!class_exists($api_classname = "\\t2\\api\\$classname")){
 			Error_::quit("Invalid API-Request (class $api_classname does not exist)", 1);
 		}

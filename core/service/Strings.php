@@ -99,4 +99,12 @@ class Strings {
 		return self::magnitude($quotient, $units, $steps, $precision, $cycles+1);
 	}
 
+	public static function build_query_string($keyVals){
+		$pairs=array();
+		foreach ($keyVals as $key=>$value) {
+			$pairs[] = urlencode($key) . '=' . urlencode($value);
+		}
+		return "?".implode("&", $pairs);
+	}
+
 }
