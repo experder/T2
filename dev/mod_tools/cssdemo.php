@@ -14,12 +14,17 @@ require_once ROOT_DIR . '/core/Message.php';
 
 use service\Config;
 use service\Html;
+use service\Request;
 use service\Strings;
 use t2\core\Database;
 use t2\core\Form;
+use t2\core\Formfield_checkbox;
 use t2\core\Formfield_password;
+use t2\core\Formfield_radio;
 use t2\core\Formfield_text;
 use t2\core\Formfield_textarea;
+use t2\core\Page;
+use t2\dev\Debug;
 use t2\Start;
 
 $page = Start::init("PAGEID_DEV_CSSDEMO", "CSS demo");
@@ -61,9 +66,11 @@ $page->add($ul= Html::UL(array(
 	schlauer_spruch(),
 )));
 
-$page->add(Html::H4("&lt;h4>"));
 $page->add(Html::H3("Console"));
+$page->add(Html::H4("TEXTAREA"));
 $page->add(Html::TEXTAREA_console(schlauer_spruch()));
+$page->add(Html::H4("PRE"));
+$page->add(Html::PRE_console(schlauer_spruch()));
 
 /*
 ======================== Links ===========================
@@ -104,11 +111,18 @@ $page->add_message_confirm(
  */
 $page->add(Html::H2("Forms", "forms"));
 
-$page->add($form=new Form());
+if(Request::cmd("demo")){
+	Debug::out(print_r($_REQUEST,1));
+}
+
+$page->add($form=new Form("demo"));
 $form->add_field(new Formfield_text("text"));
 $form->add_field(new Formfield_password("password"));
 $form->add_field(new Formfield_textarea("textarea",null,schlauer_spruch()));
 $form->add_field(new Formfield_textarea("textarea2","this is a very long title with many chars in a lot of rows"));
+$form->add_field(new Formfield_checkbox("checkbox",null,false));
+//TODO: submit uncked checkboxes!
+$form->add_field(new Formfield_radio("radio"));
 
 $form->add_button(Html::BUTTON("BUTTON","alert('". Strings::escape_value_html2(schlauer_spruch())."');"));
 

@@ -11,6 +11,8 @@ require_once ROOT_DIR . '/dev/Tools.php';
 
 namespace t2\dev;
 
+require_once ROOT_DIR . '/core/service/Request.php';
+require_once ROOT_DIR . '/core/form/Form.php';
 
 use service\Html;
 use service\Request;

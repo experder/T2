@@ -18,8 +18,11 @@ require_once ROOT_DIR . '/core/form/Formfield_hidden.php';
 require_once ROOT_DIR . '/core/form/Formfield_text.php';
 require_once ROOT_DIR . '/core/form/Formfield_textarea.php';
 require_once ROOT_DIR . '/core/form/Formfield_password.php';
+require_once ROOT_DIR . '/core/form/Formfield_checkbox.php';
+require_once ROOT_DIR . '/core/form/Formfield_radio.php';
 
 
+//TODO(2): Submission of a form on a page called with "?key=val" results in an $_REQUEST array that contains key=val instead of submitted value
 class Form {
 
 	/**

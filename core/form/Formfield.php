@@ -58,7 +58,7 @@ abstract class Formfield {
 	 * @param array       $more_params
 	 *                    All params except "name", "value" and "id".
 	 */
-	function __construct($name, $title = null, $value = null, $val_from_request = true, $more_params = array()) {
+	public function __construct($name, $title = null, $value = null, $val_from_request = true, $more_params = array()) {
 		$this->name = $name;
 
 		//Title: If set to null, the fieldname is used as label.
