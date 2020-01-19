@@ -191,16 +191,21 @@ form div.form_field label{
 	vertical-align: top;
 	position:relative;
 	top:2px;
+x	border:1px solid blue;
 }
-
 form div.form_field input[type="text"],
 form div.form_field input[type="password"],
+form div.formfield_inner,
 form div.form_field textarea
 {
+x	border:1px solid red;
 	font-family: inherit;
 	font-size: inherit;
 	vertical-align:bottom;
 	width:300px;
+}
+form div.formfield_inner{
+	display:inline-block;
 }
 form div.form_field textarea
 {

@@ -12,12 +12,26 @@ namespace t2\core;
 
 class Formfield_checkbox extends Formfield {
 
-	public function __construct($name, $title = null, $value = null, $val_from_request = true, $more_params = array()) {
+	private $label;
+
+	public function __construct($name, $title = null, $value = null, $label=null, $val_from_request = true, $more_params = array()) {
+		$this->label=$label;
 		parent::__construct($name, $title, $value, $val_from_request, $more_params);
 	}
 
+	protected function toHtml() {
+		$label=$this->label?:"&nbsp;";
+		return "<div" . $this->getParams_outer() . ">"
+			. "<label>$label</label>"
+			. "<div class='formfield_inner'" . $this->get_title() . ">"
+			. "<input type='checkbox'" . ($this->value ? " checked" : "") . $this->getParams_inner() . " />"
+			.$this->get_label()
+			. "</div>"
+			. "</div>";
+	}
+
 	public function inner_html() {
-		return "<input type='checkbox'".($this->value?" checked":"") . $this->getParams_inner() . " />";
+		return "???";//(never used)
 	}
 
 }

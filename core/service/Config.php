@@ -151,6 +151,7 @@ class Config {
 	 * @param int           $backtrace_depth
 	 * @return string
 	 * @see \t2\core\api\Core_values
+	 * TODO: aufräumen bei get config und default Berechnung für modules, http root und platform
 	 */
 	public static function get_value_core($id, $default_value = true, $user = null, $backtrace_depth=0) {
 		return self::get_value($id, null, $user, $default_value, true, null, $backtrace_depth+1);

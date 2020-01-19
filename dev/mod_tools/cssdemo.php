@@ -116,11 +116,10 @@ if(Request::cmd("demo")){
 }
 
 $page->add($form=new Form("demo"));
-$form->add_field(new Formfield_text("text"));
+$form->add_field(new Formfield_text("text / this is a very long title with many chars in a lot of rows"));
 $form->add_field(new Formfield_password("password"));
 $form->add_field(new Formfield_textarea("textarea",null,schlauer_spruch()));
-$form->add_field(new Formfield_textarea("textarea2","this is a very long title with many chars in a lot of rows"));
-$form->add_field(new Formfield_checkbox("checkbox",null,false));
+$form->add_field(new Formfield_checkbox("checkbox",null,null,"Label"));
 //TODO: submit uncked checkboxes!
 $form->add_field(new Formfield_radio("radio"));
 

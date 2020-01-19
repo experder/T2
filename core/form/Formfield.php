@@ -80,21 +80,29 @@ abstract class Formfield {
 	}
 
 	protected function toHtml() {
-		$label = $this->title;
-		$tooltip = $this->tooltip;
+		return "<div" . $this->getParams_outer() . ">"
+			. "<label".$this->get_title().">".$this->get_label()."</label>"
+			. $this->inner_html()
+			. "</div>";
+	}
 
-		//Tooltip? Change label
-		if ($tooltip) $label .= " (!)";
+	protected function get_title(){
+		$tooltip = $this->tooltip;
 
 		//Developers see the fieldname
 		if (Config::$DEVMODE) $tooltip .= " [" . $this->name . "]";
 
-		$title = $tooltip ? "title='" . Strings::escape_value_html($tooltip) . "'" : "";
+		$title = $tooltip ? " title='" . Strings::escape_value_html($tooltip) . "'" : "";
+		return $title;
+	}
 
-		return "<div" . $this->getParams_outer() . ">"
-			. "<label $title>$label</label>"
-			. $this->inner_html()
-			. "</div>";
+	protected function get_label(){
+		$label = $this->title;
+		//Tooltip? Change label
+		if ($this->tooltip){
+			$label .= " (!)";//TODO: Mark label if has tooltip
+		}
+		return $label;
 	}
 
 	/**
