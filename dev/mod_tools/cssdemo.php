@@ -21,9 +21,9 @@ use t2\core\Form;
 use t2\core\Formfield_checkbox;
 use t2\core\Formfield_password;
 use t2\core\Formfield_radio;
+use t2\core\Formfield_radio_option;
 use t2\core\Formfield_text;
 use t2\core\Formfield_textarea;
-use t2\core\Page;
 use t2\dev\Debug;
 use t2\Start;
 
@@ -116,12 +116,16 @@ if(Request::cmd("demo")){
 }
 
 $page->add($form=new Form("demo"));
-$form->add_field(new Formfield_text("text / this is a very long title with many chars in a lot of rows"));
+$form->add_field(new Formfield_text("text","text / this is a very long title with many chars in a lot of rows"));
 $form->add_field(new Formfield_password("password"));
 $form->add_field(new Formfield_textarea("textarea",null,schlauer_spruch()));
 $form->add_field(new Formfield_checkbox("checkbox",null,null,"Label"));
-//TODO: submit uncked checkboxes!
-$form->add_field(new Formfield_radio("radio"));
+//TODO: submit unchecked checkboxes!
+//TODO: submit unchecked radios!
+$form->add_field(new Formfield_radio("radio", array(
+	new Formfield_radio_option("val1", "title1"),
+	new Formfield_radio_option("val2", "title2"),
+)));
 
 $form->add_button(Html::BUTTON("BUTTON","alert('". Strings::escape_value_html2(schlauer_spruch())."');"));
 

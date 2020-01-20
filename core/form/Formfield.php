@@ -111,14 +111,14 @@ abstract class Formfield {
 	 * @param bool $value If set to false, the parameter "value" is skipped.
 	 * @return string String to insert into the HTML code.
 	 */
-	protected function getParams_inner($value = true) {
+	protected function getParams_inner($value = true, $name=true) {
 		$params = $this->more_params;
 
-		if ($this->name) {
+		if ($name && $this->name) {
 			$params["name"] = $this->name;
 		}
-		if ($value) {
-			if ($this->value) $params["value"] = $this->value;
+		if ($value && $this->value) {
+			$params["value"] = $this->value;
 		}
 		if ($this->id) {
 			$params["id"] = $this->id;

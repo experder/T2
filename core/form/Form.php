@@ -20,6 +20,7 @@ require_once ROOT_DIR . '/core/form/Formfield_textarea.php';
 require_once ROOT_DIR . '/core/form/Formfield_password.php';
 require_once ROOT_DIR . '/core/form/Formfield_checkbox.php';
 require_once ROOT_DIR . '/core/form/Formfield_radio.php';
+require_once ROOT_DIR . '/core/form/Formfield_radio_option.php';
 
 
 //TODO(2): Submission of a form on a page called with "?key=val" results in an $_REQUEST array that contains key=val instead of submitted value
