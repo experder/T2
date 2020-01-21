@@ -9,7 +9,7 @@
 require_once ROOT_DIR . '/core/service/Files.php';
  */
 
-namespace service;
+namespace t2\core\service;
 
 require_once ROOT_DIR . '/dev/Debug.php';
 

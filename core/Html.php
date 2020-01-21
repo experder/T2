@@ -110,7 +110,7 @@ class Html {
 	}
 
 	public function __toString() {
-		$params = \service\Html::tag_keyValues($this->params);
+		$params = \t2\core\service\Html::tag_keyValues($this->params);
 		return "<$this->tag$params>$this->content" . implode("", $this->children) . "</$this->tag>";
 	}
 

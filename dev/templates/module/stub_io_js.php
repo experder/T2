@@ -11,7 +11,7 @@ namespace t2\modules\core_template;
 require_once '../../../Start.php';
 require_once ROOT_DIR . '/core/form/Form.php';
 
-use service\Html;
+use t2\core\service\Html;
 use t2\core\Form;
 use t2\core\Formfield_textarea;
 use t2\Start;

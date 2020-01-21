@@ -9,7 +9,7 @@
 require_once ROOT_DIR . '/core/service/Arrays.php';
  */
 
-namespace service;//TODO:check/reorg namespaces
+namespace t2\core\service;
 
 
 class Arrays {

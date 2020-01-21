@@ -12,9 +12,9 @@ require_once ROOT_DIR . '/core/form/Formfield.php';
 
 namespace t2\core;
 
-use service\Config;
-use service\Request;
-use service\Strings;
+use t2\core\service\Config;
+use t2\core\service\Request;
+use t2\core\service\Strings;
 
 require_once ROOT_DIR . '/core/Html.php';
 require_once ROOT_DIR . '/core/service/Html.php';
@@ -100,7 +100,7 @@ abstract class Formfield {
 		$label = $this->title;
 		//Tooltip? Change label
 		if ($this->tooltip){
-			$label .= " (!)";//TODO: Mark label if has tooltip
+			$label .= " (!)";//TODO(3): Mark label if has tooltip
 		}
 		return $label;
 	}
@@ -124,7 +124,7 @@ abstract class Formfield {
 			$params["id"] = $this->id;
 		}
 
-		return \service\Html::tag_keyValues($params);
+		return \t2\core\service\Html::tag_keyValues($params);
 	}
 
 	/**
@@ -137,7 +137,7 @@ abstract class Formfield {
 		if ($this->outer_id) $params["id"] = $this->outer_id;
 		$params["class"] = "form_field ff_".$this->name. ($this->outer_class ? " " . $this->outer_class : "");
 
-		return \service\Html::tag_keyValues($params);
+		return \t2\core\service\Html::tag_keyValues($params);
 	}
 
 }

@@ -20,9 +20,9 @@ require_once ROOT_DIR . '/core/service/Config.php';
 //require_once ROOT_DIR . '/core/service/Files.php';
 //require_once ROOT_DIR . '/core/Error_warn.php';
 
-use admin\Install_wizard;
-use service\Config;
-use service\Files;
+use t2\dev\Install_wizard;
+use t2\core\service\Config;
+use t2\core\service\Files;
 use t2\dev\Debug;
 use t2\Start;
 
@@ -209,7 +209,7 @@ class Page {
 	}
 
 	public function add_p($content, $params=array()) {
-		$this->add(\service\Html::P($content, null, $params));
+		$this->add(\t2\core\service\Html::P($content, null, $params));
 	}
 
 	/**

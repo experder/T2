@@ -13,9 +13,9 @@ namespace t2\core;
 
 require_once ROOT_DIR . '/core/Error_.php';
 
-use admin\Install_wizard;
-use service\Config;
-use service\Strings;
+use t2\dev\Install_wizard;
+use t2\core\service\Config;
+use t2\core\service\Strings;
 use t2\dev\Debug;
 use t2\Start;
 

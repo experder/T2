@@ -11,7 +11,7 @@
 require_once ROOT_DIR . '/core/service/Html.php';
  */
 
-namespace service;
+namespace t2\core\service;
 
 //require_once ROOT_DIR . '/core/service/Strings.php';
 //require_once ROOT_DIR . '/core/Html.php';
@@ -19,7 +19,7 @@ namespace service;
 use t2\core\Page;
 
 /**
- * TODO:Move service\Html to t2\core\Html
+ * TODO(1):Move service\Html to t2\core\Html
  */
 class Html {
 

@@ -6,15 +6,16 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
+//TODO(3):namespace
+
 require_once '../Start.php';
+
 $page = \t2\Start::init("PAGEID_CORE_ADMIN", "Admin");
 
-use t2\core\Html;
+$page->add(\t2\core\service\Html::A_button("Update",\t2\core\service\Html::href_internal("admin/update")));
 
-$page->add(\service\Html::A_button("Update",\service\Html::href_internal("admin/update")));
-
-if(\service\Config::$DEVMODE){
-	$page->add(\service\Html::A_button("Dev area",\service\Html::href_internal("dev/index")));
+if(\t2\core\service\Config::$DEVMODE){
+	$page->add(\t2\core\service\Html::A_button("Dev area",\t2\core\service\Html::href_internal("dev/index")));
 }
 
 $page->send_and_quit();

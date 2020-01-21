@@ -11,7 +11,7 @@
 require_once ROOT_DIR . '/dev/Install_wizard.php';
  */
 
-namespace admin;//TODO: move all namespaces to t2//TODO:check/reorg namespaces
+namespace t2\dev;
 
 require_once ROOT_DIR . '/core/Message.php';
 require_once ROOT_DIR . "/core/mod/Core_database.php";
@@ -19,9 +19,9 @@ require_once ROOT_DIR . '/core/service/Request.php';
 require_once ROOT_DIR . '/core/form/Form.php';
 require_once ROOT_DIR . '/core/service/Templates.php';
 
-use service\Html;
-use service\Request;
-use service\Templates;
+use t2\core\service\Html;
+use t2\core\service\Request;
+use t2\core\service\Templates;
 use t2\core\Database;
 use t2\core\Error_;
 use t2\core\Form;
@@ -31,7 +31,7 @@ use t2\core\Message;
 use t2\core\mod\Core_database;
 use t2\core\Page;
 
-class Install_wizard {//TODO: Prompt all field in one form
+class Install_wizard {//TODO(3): Install wizard: Prompt all field in one form
 
 	public static $prompting_http_root = false;
 
@@ -95,7 +95,7 @@ class Install_wizard {//TODO: Prompt all field in one form
 
 		$message = new Message(Message::TYPE_INFO, $html);
 
-		Database::destroy();//TODO: $prompting_coreUser
+		Database::destroy();//TODO(3)-$prompting_coreUser
 		if(false){
 			Database::destroy();//This would ba a usecase for Database::destroy.
 		}

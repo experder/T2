@@ -11,7 +11,7 @@
 require_once ROOT_DIR . '/core/service/Strings.php';
  */
 
-namespace service;
+namespace t2\core\service;
 
 
 class Strings {

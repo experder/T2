@@ -14,7 +14,7 @@ namespace t2\api;
 require_once ROOT_DIR . '/core/service/Request.php';
 require_once ROOT_DIR . '/api/Service.php';
 
-use service\Request;
+use t2\core\service\Request;
 use t2\core\Error_;
 
 abstract class Ajax {

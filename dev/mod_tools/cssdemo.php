@@ -12,10 +12,10 @@ require_once '../../Start.php';
 require_once ROOT_DIR . '/core/form/Form.php';
 require_once ROOT_DIR . '/core/Message.php';
 
-use service\Config;
-use service\Html;
-use service\Request;
-use service\Strings;
+use t2\core\service\Config;
+use t2\core\service\Html;
+use t2\core\service\Request;
+use t2\core\service\Strings;
 use t2\core\Database;
 use t2\core\Form;
 use t2\core\Formfield_checkbox;
@@ -120,8 +120,8 @@ $form->add_field(new Formfield_text("text","text / this is a very long title wit
 $form->add_field(new Formfield_password("password"));
 $form->add_field(new Formfield_textarea("textarea",null,schlauer_spruch()));
 $form->add_field(new Formfield_checkbox("checkbox",null,null,"Label"));
-//TODO: submit unchecked checkboxes!
-//TODO: submit unchecked radios!
+//TODO(1): submit unchecked checkboxes!
+//TODO(1): submit unchecked radios!
 $form->add_field(new Formfield_radio("radio", array(
 	new Formfield_radio_option("val1", "title1"),
 	new Formfield_radio_option("val2", "title2"),

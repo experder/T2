@@ -13,9 +13,9 @@ use t2\core\Database;
 use t2\core\Error_;
 use t2\core\Html;
 use t2\core\Page;
-use service\Config;
-use admin\Install_wizard;
-use service\User;
+use t2\core\service\Config;
+use t2\dev\Install_wizard;
+use t2\core\service\User;
 
 class Start {
 
@@ -108,7 +108,7 @@ class Start {
 	}
 
 	public static function init_ajax() {
-		//TODO: init rights
+		//TODO(2): init rights
 		self::$type=self::TYPE_AJAX;
 	}
 

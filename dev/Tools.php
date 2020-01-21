@@ -14,8 +14,8 @@ namespace t2\dev;
 require_once ROOT_DIR . '/core/service/Request.php';
 require_once ROOT_DIR . '/core/form/Form.php';
 
-use service\Html;
-use service\Request;
+use t2\core\service\Html;
+use t2\core\service\Request;
 use t2\core\Form;
 use t2\core\Formfield_text;
 use t2\core\Message;
@@ -43,8 +43,8 @@ class Tools {
 
 		$form->add_field(new Formfield_text("module_name", "Module name", "My module"));
 		$form->add_field(new Formfield_text("module_id", "Module ID", "mymod"));
-		$form->add_field(new Formfield_text("path", "Path", self::empty_path));//TODO: register module in Config::$MODULES
-		//TODO:Multiselection: Possible templates
+		$form->add_field(new Formfield_text("path", "Path", self::empty_path));//TODO(2): register module in Config::$MODULES
+		//TODO(F):New module: Multiselection: Possible templates
 
 		$page->add(Html::H1("Create blank module"));
 		$page->add($form);
@@ -59,10 +59,10 @@ class Tools {
 		if($path==self::empty_path){
 			$path=null;
 		}
-		//TODO:Create module id from module name
-		//TODO:Create absolute_path
-		//TODO:Create relative_path
-		//TODO
+		//TODO(2):Create module id from module name
+		//TODO(2):Create absolute_path
+		//TODO(2):Create relative_path
+		//TODO(F):Create new module
 		return new Message(Message::TYPE_CONFIRM, "Module \"$module_name\" created.");
 	}
 

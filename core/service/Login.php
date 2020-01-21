@@ -9,7 +9,7 @@
 /*
 require_once ROOT_DIR . '/core/service/Login.php';
  */
-namespace service;//TODO: move all namespaces to t2
+namespace t2\core\service;
 
 //require_once ROOT_DIR . '/core/form/Form.php';
 //require_once ROOT_DIR . '/core/service/Php7.php';
@@ -22,7 +22,7 @@ use t2\core\Formfield_text;
 use t2\core\Message;
 use t2\core\Page;
 
-class Login {//TODO:Logout
+class Login {//TODO(2):Logout
 
 	private static $session_cookie_name = 'T2_session';
 
@@ -85,7 +85,7 @@ class Login {//TODO:Logout
 			":session_id"=>$session_id,
 		));
 		if($rowcount!==1){
-			//TODO: Warning, not error.
+			//TODO(1): Warning, not error.
 			new Error_("Couldn't update session!");
 		}
 	}

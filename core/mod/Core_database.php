@@ -29,7 +29,7 @@ class Core_database extends Update_database {
 
 		/**
 		 * The table "core_config" is initialized in Install_wizard::init3_db_config().
-		 * @see \admin\Install_wizard::init_db_config()
+		 * @see \t2\dev\Install_wizard::init_db_config()
 		 */
 
 		#$core_config = DB_CORE_PREFIX.'_config';

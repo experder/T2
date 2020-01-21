@@ -15,9 +15,9 @@ require_once ROOT_DIR . '/core/Html.php';
 require_once ROOT_DIR . '/core/service/Html.php';
 require_once ROOT_DIR . '/core/service/Arrays.php';
 
-use service\Arrays;
-use service\Strings;
-use service\User;
+use t2\core\service\Arrays;
+use t2\core\service\Strings;
+use t2\core\service\User;
 use t2\core\Html;
 use t2\core\Page;
 use t2\Start;
@@ -34,6 +34,7 @@ class Debug {
 	public static $queries_corequeries_count = 0;
 
 	public static $core_includes = array(
+		//TODO(F):Autoloader?
 //(Check again with autoloader)
 //		":ROOT_DIR/Start.php",
 //		":ROOT_DIR/core/Page.php",//Start.php:113
@@ -152,7 +153,7 @@ class Debug {
 		}
 		$querie_count = self::$queries_corequeries_count."+<b>".$additional_queries_count. "</b> Queries";
 		$page->add_js_core();
-		$queries=\service\Html::UL(self::$queries);
+		$queries=\t2\core\service\Html::UL(self::$queries);
 		$queries=new Html("pre", $queries, array("style"=>"display:none;", "class"=>"dev_stats_detail", "id"=>"id_dev_stats_queries_detail"));
 		return new Html("div", $querie_count, array(
 				"class" => "dev_stats_queries abutton zoom-in $confirm_class",
@@ -242,7 +243,7 @@ class Debug {
 
 		$unused="";
 		if ($corecount!=$includes_count_core){//We missed to update core includes
-			$unused="Unused:".(self::$core_includes_compiled?\service\Html::UL(self::$core_includes_compiled):" -");
+			$unused="Unused:".(self::$core_includes_compiled?\t2\core\service\Html::UL(self::$core_includes_compiled):" -");
 			$confirm_class="confirm_bad";
 		}
 		if ($additional_includes>=self::TOO_MANY_INCLUDES){
@@ -250,7 +251,7 @@ class Debug {
 		}
 
 		$title=$corecount."+<b>".$additional_includes."</b> Includes";
-		$detail=\service\Html::UL($includes_formatted);
+		$detail=\t2\core\service\Html::UL($includes_formatted);
 
 		$detail.=$unused;
 
@@ -275,8 +276,8 @@ class Debug {
 	}
 
 	/**
-	 * TODO: Trenner nach der ersten Zeile
-	 * TODO: Funktion mit anzeigen
+	 * TODO(3): backtrace: Trenner nach der ersten Zeile
+	 * TODO(3): backtrace: Funktion mit anzeigen
 	 */
 	public static function backtrace($depth = 0, $linebreak = "\n", $multiline = true) {
 		$caller = array();

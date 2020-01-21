@@ -15,14 +15,14 @@ require_once ROOT_DIR . '/core/service/Config.php';
 require_once ROOT_DIR . '/dev/Debug.php';
 require_once ROOT_DIR . '/core/Page.php';
 
-use service\Config;
-use service\User;
+use t2\core\service\Config;
+use t2\core\service\User;
 use t2\dev\Debug;
 use t2\Start;
 
 #echo "<pre>".Debug::backtrace()."</pre>";
 
-//TODO: Error class for admins and developers (-> notify) and Error class for users (warnings, don't notify)
+//TODO(1): Error class for admins and developers (-> notify) and Error class for users (warnings, don't notify)
 class Error_ {
 
 	private static $dev_error_counter=1;
@@ -97,8 +97,8 @@ class Error_ {
 
 	private function get_msg_body($minimalistic=false, $backtrace_depth=0, $htmlentities=true, $backtrace=true){
 		//$minimalistic to prevent recusion
-		if(Config::$DEVMODE/*TODO: OR ADMIN (!$minimalistic)*/){
-			//TODO:i18n(!$minimalistic)
+		if(Config::$DEVMODE/*TODO(3): OR ADMIN (!$minimalistic)*/){
+			//TODO(3):i18n(!$minimalistic)
 			$message_body = #'(' . (self::$dev_error_counter++) . ') ' .
 				'An error occured: ' . $this->get_ref() ."\n". $this->get_msg(true, $backtrace, $htmlentities, $backtrace_depth + 1, $minimalistic);
 		}else if(User::id_(false)){
@@ -114,7 +114,7 @@ class Error_ {
 			$this->plain_abort($backtrace_depth+1);
 		}
 
-		//Write to errorlog-file(TODO):
+		//Write to errorlog-file:TODO(3):Write to errorlog-file
 		$file_body = self::HR_outer
 			.self::meta_info_block()
 			.self::HR
@@ -149,9 +149,9 @@ class Error_ {
 		$timestamp = date("Y-m-d H:i:s", $this->timestamp) . " [#" . $this->timestamp . "]";
 		$ip = (isset($_SERVER) && isset($_SERVER["REMOTE_ADDR"]) && $_SERVER["REMOTE_ADDR"] ? $_SERVER["REMOTE_ADDR"] : "(IP unknonwn)");
 		#$url = (isset($_SERVER["SCRIPT_URI"]) ? ("\n" . $_SERVER["SCRIPT_URI"] . (isset($_SERVER["QUERY_STRING"]) && $_SERVER["QUERY_STRING"] ? ("?" . $_SERVER["QUERY_STRING"]) : "")) : "");
-		//TODO: Was ist mit SCRIPT_URI?
+		//TODO(1): Was ist mit SCRIPT_URI?
 		$url = (isset($_SERVER["SCRIPT_NAME"]) ? ("\n" . $_SERVER["SCRIPT_NAME"] . (isset($_SERVER["QUERY_STRING"]) && $_SERVER["QUERY_STRING"] ? ("?" . $_SERVER["QUERY_STRING"]) : "")) : "");
-		//TODO: Build full request
+		//TODO(3): Build full request
 		$uid=User::id_()?:'';
 		if($uid){
 			$uid="[$uid] ";

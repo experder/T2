@@ -6,10 +6,10 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 /**TPLDOCSTART
- * This template is used by the installer wizard (\admin\Install_wizard::init_config)
+ * This template is used by the installer wizard (\t2\dev\Install_wizard::init_config)
  * to create the configuration file "config_exclude.php"
  * which is called from \t2\Start::init_config
- * @see \admin\Install_wizard::init_config
+ * @see \t2\dev\Install_wizard::init_config
  * @see \t2\Start::init_config
  * TPLDOCEND*/
 

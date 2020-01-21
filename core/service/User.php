@@ -10,7 +10,7 @@
 require_once ROOT_DIR . '/core/service/User.php';
  */
 
-namespace service;
+namespace t2\core\service;
 
 require_once ROOT_DIR . '/core/service/Login.php';//core/service/User.php:25
 

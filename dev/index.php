@@ -10,14 +10,15 @@ require_once '../Start.php';
 
 $page = \t2\Start::init("PAGEID_CORE_DEVAREA", "Dev area");
 
-$page->add(\service\Html::H1("Dev zone"));
+$page->add(\t2\core\service\Html::H1("Dev zone"));
 
-$page->add(\service\Html::A_button("New module",\service\Html::href_internal("dev/new_module")));
-$page->add(\service\Html::A_button("TODOs","https://github.com/experder/T2/blob/dev/dev/notes.md#current-todos",null,array("target"=>"_blank")));
-$page->add(\service\Html::A_button("CSS demo",\service\Html::href_internal("dev/mod_tools/cssdemo")));
+$page->add(\t2\core\service\Html::A_button("New module",\t2\core\service\Html::href_internal("dev/new_module")));
+$page->add(\t2\core\service\Html::A_button("TODOs","https://github.com/experder/T2/blob/dev/dev/notes.md#current-todos",null,array("target"=>"_blank")));
+$page->add(\t2\core\service\Html::A_button("CSS demo",\t2\core\service\Html::href_internal("dev/mod_tools/cssdemo")));
 
-$page->add(\service\Html::H2("Tools"));
-//TODO:href_internal_mod
-$page->add(\service\Html::A_button("Convert TODOs",\service\Html::href_internal("dev/mod_tools/convert_todos")));
+$page->add(\t2\core\service\Html::H2("Tools"));
+//TODO(F):Module dev tools: Format TODOs(DONE), Passwordgenerator (, MD5, Base64)
+//TODO(2):href_internal_mod
+$page->add(\t2\core\service\Html::A_button("Convert TODOs",\t2\core\service\Html::href_internal("dev/mod_tools/convert_todos")));
 
 $page->send_and_quit();

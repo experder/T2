@@ -12,6 +12,6 @@ namespace t2\admin;
 
 use t2\core\Page;
 
-class Admin {//TODO
+class Admin {//TODO(2):Admin features class
 
 }

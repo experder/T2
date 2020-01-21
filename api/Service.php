@@ -8,12 +8,12 @@
 /*
 require_once ROOT_DIR.'/api/Service.php';
  */
-namespace t2\api;//TODO:check/reorg namespaces
+namespace t2\api;
 
 require_once ROOT_DIR . '/core/service/Config.php';
 require_once ROOT_DIR . '/core/Error_.php';
 
-use service\Config;
+use t2\core\service\Config;
 use t2\core\mod\Core_ajax;
 use t2\core\Error_;
 

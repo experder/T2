@@ -9,7 +9,7 @@
 require_once ROOT_DIR . '/core/service/Php7.php';
  */
 
-namespace service;
+namespace t2\core\service;
 
 
 class Php7 {

@@ -10,8 +10,8 @@
 namespace t2\service;
 
 
-use service\Html;
-use service\Strings;
+use t2\core\service\Html;
+use t2\core\service\Strings;
 use t2\core\Page;
 
 class Js {

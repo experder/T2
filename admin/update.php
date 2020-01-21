@@ -12,8 +12,8 @@ require_once '../Start.php';
 require_once ROOT_DIR . "/core/mod/Core_database.php";
 
 use t2\core\mod\Core_database;
-use service\Config;
-use service\Html;
+use t2\core\service\Config;
+use t2\core\service\Html;
 use t2\Start;
 
 $page = Start::init("PAGEID_CORE_UPDATER", "Updater");
@@ -26,7 +26,7 @@ if($platform==Config::PLATFORM_WINDOWS){
 	$result = `cd..&&update.cmd 2>&1`;
 	$result = mb_convert_encoding($result, "utf-8", "cp850");
 }else if($platform==Config::PLATFORM_LINUX){
-	//TODO
+	//TODO(2):Linux updater
 	#$result="";
 }
 $result=htmlentities($result);
@@ -36,7 +36,7 @@ $updater = new Core_database();
 $result.="========= Update_database =========\n";
 $result.=$updater->update()?:"Already up to date.";
 
-//TODO:Get the two outputs by ajax
+//TODO(3):Updater: Get the two outputs by ajax
 $page->add(Html::PRE_console($result, "ID_RESULTS"));
 
 

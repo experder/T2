@@ -12,7 +12,7 @@ require_once ROOT_DIR . "/api/Update_database.php";
 namespace t2\api;
 
 use t2\core\Database;
-use service\Config;
+use t2\core\service\Config;
 
 abstract class Update_database {
 

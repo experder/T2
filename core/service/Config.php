@@ -11,13 +11,12 @@
 require_once ROOT_DIR . '/core/service/Config.php';
  */
 
-namespace service;
+namespace t2\core\service;
 
 require_once ROOT_DIR . '/core/Database.php';
-//require_once ROOT_DIR . '/api/Default_values.php';
 
 use t2\core\mod\Core_values;
-use admin\Install_wizard;
+use t2\dev\Install_wizard;
 use t2\api\Default_values;
 use t2\core\Database;
 use t2\core\Error_;
@@ -56,7 +55,7 @@ class Config {
 		if(self::$MODULES===null){
 			$modules_json = self::get_value('MODULES', null, null, false);
 			if($modules_json!==false && !(self::$MODULES = json_decode($modules_json, true))){
-				//TODO:Warning, not Error.
+				//TODO(1):Warning, not Error.
 				new Error_("Module configuration is invalid JSON. Switching to default.");
 				$modules_json=false;
 			}
@@ -151,7 +150,7 @@ class Config {
 	 * @param int           $backtrace_depth
 	 * @return string
 	 * @see \t2\core\mod\Core_values
-	 * TODO: aufräumen bei get config und default Berechnung für modules, http root und platform
+	 * TODO(1): aufräumen bei get config und default Berechnung für modules, http root und platform
 	 */
 	public static function get_value_core($id, $default_value = true, $user = null, $backtrace_depth=0) {
 		return self::get_value($id, null, $user, $default_value, true, null, $backtrace_depth+1);
@@ -195,7 +194,7 @@ class Config {
 				$msg = new Message(Message::TYPE_CONFIRM, "DB \"".Database::get_singleton()->get_dbname()."\" initialized. ".$report);
 				Page::$compiler_messages[] = $msg;
 			}else{
-				Database::destroy();//Make Page Standalone (TODO: Necessary?)
+				Database::destroy();//Make Page Standalone (TODO(3)-Necessary?)
 				$error->report();
 			}
 		}

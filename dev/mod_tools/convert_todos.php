@@ -5,11 +5,11 @@ namespace t2\dev\tools;
 require_once '../../Start.php';
 require_once ROOT_DIR . '/core/form/Form.php';
 
-use service\Config;
-use service\Html;
-use service\Request;
 use t2\core\Form;
 use t2\core\Formfield_textarea;
+use t2\core\service\Config;
+use t2\core\service\Html;
+use t2\core\service\Request;
 use t2\Start;
 
 $page = Start::init("A", "B");
@@ -38,6 +38,7 @@ function process(){
 		3=>array(),//Low
 		4=>array(),//Deprecated
 		5=>array(),//Unknown(default)
+		6=>array(),//Feature requests
 	);
 
 	$current_file = false;
@@ -65,9 +66,12 @@ function process(){
 						if (preg_match("/^\\(([0-9]{1,4}), [0-9]{1,3}\\) (.+)/", $in, $matches)){//ZEILE
 							$zeile = $matches[1];
 							$todo = $matches[2];
-							$todo_w_prio_regex = "/(\\W)TODO\\(([123])\\)/i";
+							$todo_w_prio_regex = "/(\\W)TODO\\(([123F])\\)/i";
 							if(preg_match($todo_w_prio_regex,$todo,$matches_i)){
 								$prio = $matches_i[2];
+								if ($prio == "F") {
+									$prio = 6;
+								}
 								$todo=preg_replace($todo_w_prio_regex, "$1TODO", $todo);
 							}
 							if(preg_match("/\\(TODO\\:(.*)\\)/i",$todo,$matches_i)
@@ -98,6 +102,10 @@ function process(){
 	}
 
 	$out_html=array();
+	if($output[6]){
+		$out_html[]="### Feature requests\n"
+		. "* ".implode("\n* ", $output[6]);
+	}
 	if($output[1]){
 		$out_html[]="### High\n"
 		. "* ".implode("\n* ", $output[1]);

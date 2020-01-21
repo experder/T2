@@ -10,7 +10,7 @@
 require_once ROOT_DIR . '/core/service/Request.php';
  */
 
-namespace service;
+namespace t2\core\service;
 
 
 class Request {

@@ -10,7 +10,7 @@
 require_once ROOT_DIR . '/core/service/Templates.php';
  */
 
-namespace service;
+namespace t2\core\service;
 
 require_once ROOT_DIR . '/core/service/Strings.php';
 require_once ROOT_DIR . '/core/service/Files.php';
@@ -29,7 +29,7 @@ class Templates {
 	 * @return string
 	 */
 	public static function load($file, $replacements) {
-		//TODO: file_exists($filename, $fatal=true)
+		//TODO(3): file_exists($filename, $fatal=true)
 		if (!file_exists($file)) {
 			Error_::quit("Template file \"$file\" not found!");
 		}
