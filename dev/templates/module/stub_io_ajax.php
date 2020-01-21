@@ -9,7 +9,7 @@
 namespace t2\modules\core_template;
 
 require_once '../../../Start.php';
-require_once ROOT_DIR . "/core/api/Core_database.php";
+require_once ROOT_DIR . "/core/mod/Core_database.php";
 require_once ROOT_DIR . "/core/service/Js.php";
 require_once ROOT_DIR . '/dev/templates/module/Controller.php';
 

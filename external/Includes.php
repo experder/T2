@@ -7,7 +7,7 @@
  GPL*/
 
 
-namespace t2\core;
+namespace t2\core\external;
 
 
 class Includes {//TODO

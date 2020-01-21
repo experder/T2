@@ -6,10 +6,10 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 /*
-require_once ROOT_DIR . '/core/api/Core_ajax.php';
+require_once ROOT_DIR . '/core/mod/Core_ajax.php';
  */
 
-namespace t2\core\api;
+namespace t2\core\mod;
 
 
 use t2\api\Ajax;

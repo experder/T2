@@ -6,13 +6,12 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-namespace t2\core\api;
+namespace t2\core\mod;
 
-require_once ROOT_DIR . '/dev/api/Default_values.php';
+require_once ROOT_DIR . '/api/Default_values.php';
 require_once ROOT_DIR . '/dev/Debug.php';
 
 use t2\api\Default_values;
-use t2\dev\Debug;
 
 #echo "<pre>".Debug::backtrace()."</pre>";
 
@@ -33,7 +32,7 @@ class Core_values extends Default_values {
 			}',
 		"LOGIN_H1"=>"Login",
 		"PROJECT_TITLE"=>"T2",
-		"STYLE"=>"bare",
+		"SKIN"=>"bare",
 		"EXTENSION"=>"php",
 		"SESSION_EXPIRES"=>"86400",//24 hours
 	);

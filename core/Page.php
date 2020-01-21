@@ -303,7 +303,7 @@ class Page {
 //		if($this->standalone && !defined('HTTP_ROOT')){
 //			$this->init_http_root();
 //		}
-		$this->add_javascript("JS_ID_T2CORE", $this->HTTP_ROOT() . "/client/core.js");
+		$this->add_javascript("JS_ID_T2CORE", $this->HTTP_ROOT() . "/js/core.js");
 	}
 
 	private function get_js_html(){
@@ -335,14 +335,14 @@ class Page {
 	}
 
 	public function get_demoskins_stylesheet_print($style){
-		return new Stylesheet($this->HTTP_ROOT()."/style/$style/print.css", Stylesheet::MEDIA_PRINT);
+		return new Stylesheet($this->HTTP_ROOT()."/skins/$style/print.css", Stylesheet::MEDIA_PRINT);
 	}
 
 	private function get_css_html() {
 		$stylesheets = array();
-		$style = Config::get_value_core("STYLE");
+		$style = Config::get_value_core("SKIN");
 		if(in_array($style,array("bare"))){
-			$stylesheets["CSS_ID_ALL"]=new Stylesheet($this->HTTP_ROOT()."/style/$style/all.css");
+			$stylesheets["CSS_ID_ALL"]=new Stylesheet($this->HTTP_ROOT()."/skins/$style/all.css");
 			$stylesheets["CSS_ID_PRINT"]=$this->get_demoskins_stylesheet_print($style);
 		}
 		foreach ($this->stylesheets as $key => $stylesheet){

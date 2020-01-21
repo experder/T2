@@ -14,7 +14,7 @@ require_once ROOT_DIR . '/dev/Install_wizard.php';
 namespace admin;//TODO: move all namespaces to t2//TODO:check/reorg namespaces
 
 require_once ROOT_DIR . '/core/Message.php';
-require_once ROOT_DIR . "/core/api/Core_database.php";
+require_once ROOT_DIR . "/core/mod/Core_database.php";
 require_once ROOT_DIR . '/core/service/Request.php';
 require_once ROOT_DIR . '/core/form/Form.php';
 require_once ROOT_DIR . '/core/service/Templates.php';
@@ -28,6 +28,7 @@ use t2\core\Form;
 use t2\core\Formfield_password;
 use t2\core\Formfield_text;
 use t2\core\Message;
+use t2\core\mod\Core_database;
 use t2\core\Page;
 
 class Install_wizard {//TODO: Prompt all field in one form

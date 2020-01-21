@@ -14,7 +14,7 @@ require_once ROOT_DIR . '/core/service/Config.php';
 require_once ROOT_DIR . '/core/Error_.php';
 
 use service\Config;
-use t2\core\api\Core_ajax;
+use t2\core\mod\Core_ajax;
 use t2\core\Error_;
 
 class Service {
@@ -22,7 +22,7 @@ class Service {
 	public static function get_api_class_core($classname){
 		switch ($classname) {
 			case "Ajax":
-				require_once ROOT_DIR . '/core/api/Core_ajax.php';
+				require_once ROOT_DIR . '/core/mod/Core_ajax.php';
 				return new Core_ajax();
 				break;
 			default:

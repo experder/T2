@@ -44,7 +44,7 @@ $page->add(Html::H1("CSS demo"));
 
 if($print_view){
 	$page->add(Html::A("screen.css", $_SERVER['SCRIPT_NAME']));
-	$style = Config::get_value_core("STYLE");
+	$style = Config::get_value_core("SKIN");
 	$stylesheet = $page->get_demoskins_stylesheet_print($style);
 	$stylesheet->setMedia('all');
 	$page->add_stylesheet("CSS_ID_PRINT",$stylesheet);

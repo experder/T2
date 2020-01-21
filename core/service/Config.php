@@ -14,9 +14,9 @@ require_once ROOT_DIR . '/core/service/Config.php';
 namespace service;
 
 require_once ROOT_DIR . '/core/Database.php';
-//require_once ROOT_DIR . '/dev/api/Default_values.php';
+//require_once ROOT_DIR . '/api/Default_values.php';
 
-use t2\core\api\Core_values;
+use t2\core\mod\Core_values;
 use admin\Install_wizard;
 use t2\api\Default_values;
 use t2\core\Database;
@@ -68,7 +68,7 @@ class Config {
 	}
 
 	private static function set_modules_default(){
-		require_once ROOT_DIR . '/core/api/Core_values.php';
+		require_once ROOT_DIR . '/core/mod/Core_values.php';
 		$dv = new Core_values();
 		$modules_json = $dv->get_default_value("MODULES");
 		if(!(self::$MODULES = json_decode($modules_json, true))){
@@ -131,7 +131,7 @@ class Config {
 	}
 
 	public static function get_default_value($module, $id, $backtrace_depth=0){
-		require_once ROOT_DIR.'/dev/api/Default_values.php';
+		require_once ROOT_DIR.'/api/Default_values.php';
 		$module = $module?:'core';
 		$singleton = Default_values::get_singleton_by_module($module);
 		$value = $singleton->get_default_value($id);
@@ -150,7 +150,7 @@ class Config {
 	 * @param int|null      $user
 	 * @param int           $backtrace_depth
 	 * @return string
-	 * @see \t2\core\api\Core_values
+	 * @see \t2\core\mod\Core_values
 	 * TODO: aufräumen bei get config und default Berechnung für modules, http root und platform
 	 */
 	public static function get_value_core($id, $default_value = true, $user = null, $backtrace_depth=0) {

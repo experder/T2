@@ -6,7 +6,7 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 /*
-require_once ROOT_DIR . "/dev/api/Update_database.php";
+require_once ROOT_DIR . "/api/Update_database.php";
  */
 
 namespace t2\api;

@@ -77,7 +77,7 @@ class Start {
 		Config::load_values(array(
 			"EXTENSION",
 			"PROJECT_TITLE",
-			"STYLE",
+			"SKIN",
 			"HTTP_ROOT",
 			"SESSION_EXPIRES",
 			"MODULES",

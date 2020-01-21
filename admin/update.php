@@ -9,12 +9,11 @@
 namespace t2\admin;
 
 require_once '../Start.php';
-require_once ROOT_DIR . "/core/api/Core_database.php";
+require_once ROOT_DIR . "/core/mod/Core_database.php";
 
-use admin\Core_database;
+use t2\core\mod\Core_database;
 use service\Config;
 use service\Html;
-use t2\core\Error_;
 use t2\Start;
 
 $page = Start::init("PAGEID_CORE_UPDATER", "Updater");
