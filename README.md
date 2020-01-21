@@ -3,40 +3,10 @@
 
 Inspired by: [Tethys-Beta](https://github.com/gitfabian/tethysbeta) (2014) and [Tethys](https://github.com/GitFabian/Tethys) (2018).
 
-## Installation
+[[Content](https://github.com/experder/T2/blob/master/help/folders.md)]
+[[Installation](https://github.com/experder/T2/blob/master/help/install.md)]
 
-### Repository
-
-Create new project:  
-`git init`  
-`git add .`  
-`git commit -m "Initial commit"`
-
-Create submodule in new project:  
-`git submodule add https://github.com/experder/T2.git tethys`  
-`git commit -m "Add T2 as submodule tethys"`
-
-Clone existing project:  
-`git clone --recurse-submodules REPO_URL .`
-
-[[Source](http://gitfabian.github.io/Tethys/install.html)]
-
-### Apache
-
-    #Configure your own extension in T2 (here: .t2)
-    LoadModule rewrite_module modules/mod_rewrite.so
-    RewriteEngine on
-    RewriteRule ^/myproject/(.*)\.t2$ "C:/MyWorkspace/MyProject/$1.php"
-
-#### Windows
-
-    Alias /myproject "C:/MyWorkspace/MyProject"
-    <Directory "C:/MyWorkspace/MyProject">
-        Require all granted
-        AllowOverride All
-    </Directory>
-
-## More
+### More
 
 [[Useful links](https://github.com/experder/T2/blob/master/help/links.md)]
 [[Developers](https://github.com/experder/T2/blob/master/dev/notes.md)]

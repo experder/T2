@@ -35,6 +35,7 @@ function t2_ajax_to_func(query,Funktion){
 }
 
 function t2_ajax_to_id(query,id,add){
+	var func;
 	if(add){
 		func = "$('#"+id+"').append(response);";
 	}else{

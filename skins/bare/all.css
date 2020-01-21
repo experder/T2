@@ -5,9 +5,9 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-*{
-	padding:0;
-	margin:0;
+* {
+	padding: 0;
+	margin: 0;
 }
 
 /*
@@ -19,11 +19,13 @@ pre {
 	tab-size: 4;
 	-moz-tab-size: 4;
 }
-h1,h2,h3,h4{
+
+h1, h2, h3, h4 {
 	color: #2b2b2b;
-	font-weight:bold;
+	font-weight: bold;
 }
-h1{
+
+h1 {
 	font-size: 200%;
 }
 
@@ -31,44 +33,49 @@ h2, div.messages div.message h1 {
 	font-size: 150%;
 }
 
-h3{
-	font-size:117%;
+h3 {
+	font-size: 117%;
 }
-h4{
-	font-size:100%;
+
+h4 {
+	font-size: 100%;
 }
-ul{
-	padding-left:20px;
+
+ul {
+	padding-left: 20px;
 }
+
 pre.console,
-textarea.console{
+textarea.console {
 	font-family: monospace;
 	font-size: 13px;
-	color:white;
-	padding:10px;
-	background:black;
+	color: white;
+	padding: 10px;
+	background: black;
 	border-radius: 5px;
 	box-shadow: 0px 0px 10px white inset;
-	border:1px solid black;
-	height:375px;
-	width:664px;
+	border: 1px solid black;
+	height: 375px;
+	width: 664px;
 	overflow-x: auto;
-	overflow-y:scroll;
+	overflow-y: scroll;
 }
-pre.console div.console_inner{
-	display:table-cell;
-	vertical-align:bottom;
-	height:375px;
+
+pre.console div.console_inner {
+	display: table-cell;
+	vertical-align: bottom;
+	height: 375px;
 }
 
 /*
 ======================== Interaction ===========================
  */
-.zoom-in{
-	cursor:zoom-in;
+.zoom-in {
+	cursor: zoom-in;
 }
-.zoom-out{
-	cursor:zoom-out;
+
+.zoom-out {
+	cursor: zoom-out;
 }
 
 /*
@@ -76,22 +83,25 @@ pre.console div.console_inner{
  */
 
 a.abutton,
-div.abutton{
-	background:lightgray;
-	margin:0 2px;
+div.abutton {
+	background: lightgray;
+	margin: 0 2px;
 	padding: 0 2px;
-	border-radius:5px;
+	border-radius: 5px;
 	transition: .5s;
 }
+
 a.abutton:hover,
-div.abutton:hover{
+div.abutton:hover {
 	background-color: #ffecb8;
 	transition: .5s;
 }
-div.abutton{
-	display:inline-block;
+
+div.abutton {
+	display: inline-block;
 }
-a[target="_blank"]{
+
+a[target="_blank"] {
 	background-image: url('img/Icon_External_Link.svg');
 	background-repeat: no-repeat;
 	background-position-y: 4px;
@@ -99,7 +109,8 @@ a[target="_blank"]{
 	padding-left: 14px;
 	transition: .5s;
 }
-a[target="_blank"]:hover{
+
+a[target="_blank"]:hover {
 	background-position-y: 3px;
 	background-size: 14px;
 	transition: .5s;
@@ -109,76 +120,92 @@ a[target="_blank"]:hover{
 ======================== dev-stuff ===========================
  */
 
-body{
-	margin-bottom:30px;
+body {
+	margin-bottom: 30px;
 }
-pre.dev_error_info{
-	background:url('img/graystripe.png');
+
+pre.dev_error_info {
+	background: url('img/graystripe.png');
 }
-div.dev_stats{
+
+div.dev_stats {
 	background: white;
 	box-shadow: 0px 0px 20px gray;
-	position:fixed;
-	bottom:0;
-	padding:4px;
+	position: fixed;
+	bottom: 0;
+	padding: 4px;
 	border-top-right-radius: 5px;
 }
-div.dev_stats div.abutton{
-	background:white;
+
+div.dev_stats div.abutton {
+	background: white;
 	box-shadow: -1px -1px 3px gray inset;
 }
-div.dev_stats div.confirm_good{
-	background:#EFFFEC;
+
+div.dev_stats div.confirm_good {
+	background: #EFFFEC;
 }
-div.dev_stats div.confirm_bad{
-	background:#FFEDEF;
+
+div.dev_stats div.confirm_bad {
+	background: #FFEDEF;
 }
-div.dev_stats pre.dev_stats_detail{
-	max-height:400px;
+
+div.dev_stats pre.dev_stats_detail {
+	max-height: 400px;
 	overflow: auto;
 }
-#id_dev_stats_queries_detail span.detail_functionSource{
-	color:darkred;
+
+#id_dev_stats_queries_detail span.detail_functionSource {
+	color: darkred;
 }
-#id_dev_stats_queries_detail span.detail_sqlDump{
-	color:slategray;
+
+#id_dev_stats_queries_detail span.detail_sqlDump {
+	color: slategray;
 }
-#id_dev_stats_queries_detail span.detail_functionSource.core_query_class{
+
+#id_dev_stats_queries_detail span.detail_functionSource.core_query_class {
 	color: #a97e7c;
 }
-#id_dev_stats_queries_detail span.detail_sqlDump.core_query_class{
+
+#id_dev_stats_queries_detail span.detail_sqlDump.core_query_class {
 	color: #9eb2c4;
 }
-#id_dev_stats_inc_detail i.core_include_class{
+
+#id_dev_stats_inc_detail i.core_include_class {
 	color: #7a7a7a;
 	font-style: inherit;
 }
-div.dev_stats span.zoom-out{
+
+div.dev_stats span.zoom-out {
 	font-weight: bold;
 }
-div.dev_stats div.zoom-out{
+
+div.dev_stats div.zoom-out {
 	font-weight: bold;
 	box-shadow: 1px 1px 3px gray inset;
 }
-
 
 /*
 ======================== Messages ===========================
  */
 
 div.messages div.message {
-	border:1px solid;border-radius:5px;
+	border: 1px solid;
+	border-radius: 5px;
 }
+
 div.messages div.message.msg_type_error {
-	border-color:red;
+	border-color: red;
 	background-color: #ffe3e3;
 }
+
 div.messages div.message.msg_type_info {
-	border-color:blue;
+	border-color: blue;
 	background-color: #e5dfff;
 }
+
 div.messages div.message.msg_type_confirm {
-	border-color:green;
+	border-color: green;
 	background-color: #d7e5d8;
 }
 
@@ -186,41 +213,42 @@ div.messages div.message.msg_type_confirm {
 ======================== Forms ===========================
  */
 
-form div.buttons{
-	border-top:1px solid black;
+form div.buttons {
+	border-top: 1px solid black;
 }
 
-form div.form_field label{
-	display:inline-block;
-	width:120px;
-	overflow:hidden;
+form div.form_field label {
+	display: inline-block;
+	width: 120px;
+	overflow: hidden;
 	text-overflow: ellipsis;
 	vertical-align: top;
-	position:relative;
-	top:2px;
-x	border:1px solid blue;
+	position: relative;
+	top: 2px;
 }
+
 form div.form_field input[type="text"],
 form div.form_field input[type="password"],
 form div.formfield_inner,
-form div.form_field textarea
-{
-x	border:1px solid red;
+form div.form_field textarea {
 	font-family: inherit;
 	font-size: inherit;
-	vertical-align:bottom;
-	width:300px;
+	vertical-align: bottom;
+	width: 300px;
 }
-form div.formfield_inner{
-	display:inline-block;
+
+form div.formfield_inner {
+	display: inline-block;
 }
-form div.form_field textarea
-{
-	height:50px;
+
+form div.form_field textarea {
+	height: 50px;
 }
-form div.buttons *{
-	margin-right:10px;
+
+form div.buttons * {
+	margin-right: 10px;
 }
-form div.buttons * *{
-	margin-right:0;
+
+form div.buttons * * {
+	margin-right: 0;
 }

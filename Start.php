@@ -11,7 +11,6 @@ namespace t2;
 
 use t2\core\Database;
 use t2\core\Error_;
-use t2\core\Html;
 use t2\core\Page;
 use t2\core\service\Config;
 use t2\dev\Install_wizard;
@@ -108,8 +107,8 @@ class Start {
 	}
 
 	public static function init_ajax() {
-		//TODO(2): init rights
 		self::$type=self::TYPE_AJAX;
+		//TODO(2): init rights
 	}
 
 	public static function check_type($type){

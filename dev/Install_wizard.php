@@ -19,9 +19,6 @@ require_once ROOT_DIR . '/core/service/Request.php';
 require_once ROOT_DIR . '/core/form/Form.php';
 require_once ROOT_DIR . '/core/service/Templates.php';
 
-use t2\core\service\Html;
-use t2\core\service\Request;
-use t2\core\service\Templates;
 use t2\core\Database;
 use t2\core\Error_;
 use t2\core\Form;
@@ -30,14 +27,17 @@ use t2\core\Formfield_text;
 use t2\core\Message;
 use t2\core\mod\Core_database;
 use t2\core\Page;
+use t2\core\service\Html;
+use t2\core\service\Request;
+use t2\core\service\Templates;
 
 class Install_wizard {//TODO(3): Install wizard: Prompt all field in one form
 
 	public static $prompting_http_root = false;
 
 	public static function prompt_http_root() {
-		self::$prompting_http_root=true;
-		Page::$prompting_http_root=true;
+		self::$prompting_http_root = true;
+		Page::$prompting_http_root = true;
 
 		if (Request::cmd("submit_http_root")) {
 			return Request::value('http_root');
@@ -48,7 +48,7 @@ class Install_wizard {//TODO(3): Install wizard: Prompt all field in one form
 		$form = new Form("submit_http_root");
 		$form->add_field(new Formfield_text("http_root", "HTTP_ROOT", $proposal));
 
-		$html=Html::H1("Server configuration")."Please enter your servers alias or path to the T2 root.".$form;
+		$html = Html::H1("Server configuration") . "Please enter your servers alias or path to the T2 root." . $form;
 
 		$message = new Message(Message::TYPE_INFO, $html);
 
@@ -68,7 +68,7 @@ class Install_wizard {//TODO(3): Install wizard: Prompt all field in one form
 		$form->add_field(new Formfield_text("username", "Admin account", "root"));
 		$form->add_field(new Formfield_password("dbpass", "Admin password", ""));
 
-		$html=Html::H1("Database connection")."Please enter sql connection parameters".$form;
+		$html = Html::H1("Database connection") . "Please enter sql connection parameters" . $form;
 
 		$message = new Message(Message::TYPE_INFO, $html);
 
@@ -77,11 +77,11 @@ class Install_wizard {//TODO(3): Install wizard: Prompt all field in one form
 
 	private static function prompt_coreUser() {
 		if (Request::cmd("submit_db_rootUser")) {
-			if (!Request::value('username')){
+			if (!Request::value('username')) {
 				Page::$compiler_messages[] = new Message(Message::TYPE_ERROR, "Username required.");
-			}else if (Request::value('password')!==Request::value('password2')){
+			} else if (Request::value('password') !== Request::value('password2')) {
 				Page::$compiler_messages[] = new Message(Message::TYPE_ERROR, "Passwords doesn't match.");
-			}else{
+			} else {
 				return;
 			}
 		}
@@ -91,12 +91,12 @@ class Install_wizard {//TODO(3): Install wizard: Prompt all field in one form
 		$form->add_field(new Formfield_password("password", "Password", ""));
 		$form->add_field(new Formfield_password("password2", "Repeat password", ""));
 
-		$html=Html::H1("Root user")."Please create first user account.".$form;
+		$html = Html::H1("Root user") . "Please create first user account." . $form;
 
 		$message = new Message(Message::TYPE_INFO, $html);
 
 		Database::destroy();//TODO(3)-$prompting_coreUser
-		if(false){
+		if (false) {
 			Database::destroy();//This would ba a usecase for Database::destroy.
 		}
 		Page::abort("Root user - Installer", array($message), null, "PAGEID_CORE_INSTALLER_PROMPTROOTUSER");
@@ -131,7 +131,7 @@ class Install_wizard {//TODO(3): Install wizard: Prompt all field in one form
 	}
 
 	public static function init_db_config() {
-		$database=Database::get_singleton();
+		$database = Database::get_singleton();
 		self::prompt_coreUser();
 
 		#$core_config = DB_CORE_PREFIX.'_config';
@@ -150,8 +150,8 @@ class Install_wizard {//TODO(3): Install wizard: Prompt all field in one form
 		$root_user = Request::value('username', 'root');
 		$root_pass = Request::value('password', '');
 		$database->insert_assoc('core_user', array(
-			"username"=>$root_user,
-			"pass_hash"=>md5($root_pass),
+			"username" => $root_user,
+			"pass_hash" => md5($root_pass),
 		));
 		Page::$compiler_messages[] = new Message(Message::TYPE_CONFIRM, "User \"$root_user\" created.");
 

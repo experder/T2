@@ -12,8 +12,8 @@ Before merging `dev` to `master`:
 * Check language (translate german to english), comment code
 * Check if there's license note in each file
 * Paste remaining TODOs into this file
-* Is $DEVMODE (tethys/service/Config.php:30) set to FALSE?
-* Update $core_queries (tethys/dev/Debug.php:24)
+* Is $DEVMODE (/core/service/Config.php:28) set to FALSE?
+* Update $core_queries (/dev/Debug.php:27)
 * Write [release note](../release_notes.md)
 * Create tag
 
@@ -55,7 +55,7 @@ Current TODOs
 * Create module id from module name (Tools.php:62)
 * Create absolute_path (Tools.php:63)
 * Create relative_path (Tools.php:64)
-* init rights (Start.php:111)
+* init rights (Start.php:112)
 
 ### Low
 * namespace (index.php:9)

@@ -25,7 +25,7 @@ use t2\Start;
 class Debug {
 
 	public static $core_queries = array(
-		"load_values ( :ROOT_DIR/core/service/Config.php:188 )",
+		"load_values ( :ROOT_DIR/core/service/Config.php:187 )",
 		"check_session ( :ROOT_DIR/core/service/Login.php:54 )",
 		"update_session ( :ROOT_DIR/core/service/Login.php:85 )",
 	);

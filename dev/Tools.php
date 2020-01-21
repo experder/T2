@@ -51,7 +51,7 @@ class Tools {
 
 	}
 
-	private static function create_new_module($module_name, $module_id=null, $path=null){
+	private static function create_new_module($module_name, /** @noinspection PhpUnusedParameterInspection */$module_id=null, $path=null){
 		$module_name=trim($module_name);
 		if(!$module_name){
 			return new Message(Message::TYPE_ERROR, "Please specify module name!");

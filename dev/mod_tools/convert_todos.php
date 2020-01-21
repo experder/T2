@@ -12,7 +12,7 @@ use t2\core\service\Html;
 use t2\core\service\Request;
 use t2\Start;
 
-$page = Start::init("A", "B");
+$page = Start::init("PAGEID_CORE_TOOLBOX_CONVERTTODOS", "Convert TODOs");
 if(!Config::$DEVMODE){
 	$page->add_message_error("Not available.");
 	$page->send_and_quit();
