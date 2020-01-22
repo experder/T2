@@ -17,7 +17,6 @@ require_once ROOT_DIR . '/core/service/Arrays.php';
 
 use t2\core\service\Arrays;
 use t2\core\service\Strings;
-use t2\core\service\User;
 use t2\core\Html;
 use t2\core\Page;
 use t2\Start;
@@ -25,7 +24,7 @@ use t2\Start;
 class Debug {
 
 	public static $core_queries = array(
-		"load_values ( :ROOT_DIR/core/service/Config.php:187 )",
+		"load_values ( :ROOT_DIR/core/service/Config.php:204 )",
 		"check_session ( :ROOT_DIR/core/service/Login.php:54 )",
 		"update_session ( :ROOT_DIR/core/service/Login.php:85 )",
 	);

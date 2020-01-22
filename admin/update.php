@@ -20,7 +20,7 @@ $page = Start::init("PAGEID_CORE_UPDATER", "Updater");
 
 $page->add(Html::H1("Updater"));
 
-$platform = Config::PLATFORM();
+$platform = Config::get_value_core("PLATFORM");
 
 if($platform==Config::PLATFORM_WINDOWS){
 	$result = `cd..&&update.cmd 2>&1`;

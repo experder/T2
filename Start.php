@@ -80,6 +80,7 @@ class Start {
 			"HTTP_ROOT",
 			"SESSION_EXPIRES",
 			"MODULES",
+			"PLATFORM",
 		),null,null,true);
 		define("EXT", Config::get_value_core("EXTENSION"));
 

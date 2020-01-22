@@ -34,22 +34,21 @@ class Config {
 
 	private static $MODULES = null;
 
-	private static $PLATFORM = null;
-
 	const PLATFORM_WINDOWS = 'windows';
 	const PLATFORM_LINUX = 'linux';
 
-	public static function PLATFORM(){
-		if(self::$PLATFORM===null){
-			//TODO(2):Detect platform!
-			#new Error_("Can't detect platform!");
-			self::$PLATFORM=self::PLATFORM_WINDOWS;
-		}
-		return self::$PLATFORM;
+	public static function init_platform(){
+		//TODO(2):Detect platform!
+		#new Error_("Can't detect platform!");
+		$value = self::PLATFORM_WINDOWS;
+		Config::store_val(null, null, 'PLATFORM', $value);
+		return $value;
 	}
 
 	/**
 	 * @return array
+	 * @deprecated \t2\core\service\Config::get_default_value
+	 * @see \t2\core\service\Config::get_default_value
 	 */
 	public static function MODULES(){
 		if(self::$MODULES===null){
@@ -136,6 +135,17 @@ class Config {
 	public static function get_default_value($module, $id, $backtrace_depth = 0) {
 		require_once ROOT_DIR . '/api/Default_values.php';
 		$module = $module ?: 'core';
+		if($module==='core'){
+			if($id=='MODULES'){
+				//TODO:return Config::MODULES();
+			}
+			if($id=='HTTP_ROOT'){
+				//TODO:return Page::HTTP_ROOT_();
+			}
+			if($id=='PLATFORM'){
+				return Config::init_platform();
+			}
+		}
 		$singleton = Default_values::get_singleton_by_module($module);
 		$value = $singleton->get_default_value($id);
 		if ($value === null) {
@@ -158,7 +168,6 @@ class Config {
 	 * @param int           $backtrace_depth
 	 * @return string
 	 * @see \t2\core\mod\Core_values
-	 * TODO(1): aufräumen bei get config und default Berechnung für modules, http root und platform
 	 */
 	public static function get_value_core($id, $default_value = true, $user = null, $backtrace_depth=0) {
 		return self::get_value($id, null, $user, $default_value, true, null, $backtrace_depth+1);

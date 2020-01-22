@@ -140,6 +140,10 @@ class Page {
 		return self::$singleton;
 	}
 
+	/**
+	 * @deprecated \t2\core\service\Config::get_default_value
+	 * @see \t2\core\service\Config::get_default_value
+	 */
 	public function HTTP_ROOT(){
 		if($this->HTTP_ROOT===null){
 			if(!$this->use_database
