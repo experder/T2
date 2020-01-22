@@ -123,8 +123,13 @@ class Html {
 		return $html;
 	}
 
+	private static $extension = null;
+
 	public static function href_internal($relative_page_without_extension){
-		return Page::HTTP_ROOT_() . '/' . $relative_page_without_extension .'.'.EXT;
+		if(self::$extension===null){
+			self::$extension = Config::get_value_core("EXTENSION");
+		}
+		return Page::HTTP_ROOT_() . '/' . $relative_page_without_extension .'.'.self::$extension;
 	}
 
 }

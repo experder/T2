@@ -81,10 +81,7 @@ class Start {
 			"SESSION_EXPIRES",
 			"MODULES",
 			"PLATFORM",
-		),null,null,true);
-		define("EXT", Config::get_value_core("EXTENSION"));
-
-		#Config::$PROJECT_TITLE = Config::get_value_core("PROJECT_TITLE", 'T2');
+		));
 	}
 
 	private static function init_userrights() {

@@ -23,8 +23,8 @@ use t2\Start;
 
 class Debug {
 
-	public static $core_queries = array(
-		"load_values ( :ROOT_DIR/core/service/Config.php:204 )",
+	private static $core_queries = array(
+		"load_values ( :ROOT_DIR/core/service/Config.php:186 )",
 		"check_session ( :ROOT_DIR/core/service/Login.php:54 )",
 		"update_session ( :ROOT_DIR/core/service/Login.php:85 )",
 	);
@@ -96,7 +96,8 @@ class Debug {
 		if (self::$core_queries_compiled === null) {
 			self::$core_queries_compiled = array();
 			foreach (self::$core_queries as $query) {
-				self::$core_queries_compiled[] = str_replace(':ROOT_DIR', ROOT_DIR, $query);
+				$query = str_replace(':ROOT_DIR', ROOT_DIR, $query);
+				self::$core_queries_compiled[] = $query;
 			}
 		}
 		return self::$core_queries_compiled;

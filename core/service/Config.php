@@ -15,7 +15,6 @@ namespace t2\core\service;
 
 require_once ROOT_DIR . '/core/Database.php';
 
-use t2\core\mod\Core_values;
 use t2\dev\Install_wizard;
 use t2\api\Default_values;
 use t2\core\Database;
@@ -27,17 +26,18 @@ class Config {
 
 	public static $DEVMODE = true;
 
-	/**
-	 * @see \t2\Start::init_database()
-	 */
-	#public static $PROJECT_TITLE;
-
-	private static $MODULES = null;
+	private static $cfg_modules = null;
 
 	const PLATFORM_WINDOWS = 'windows';
 	const PLATFORM_LINUX = 'linux';
 
 	public static function init_platform(){
+		if(($value = Config::recall_val(null, null, 'PLATFORM'))!==false){
+			if(Config::$DEVMODE){
+				new Error_("PLATFORM already initialized!");
+			}
+			return $value;
+		}
 		//TODO(2):Detect platform!
 		#new Error_("Can't detect platform!");
 		$value = self::PLATFORM_WINDOWS;
@@ -45,33 +45,16 @@ class Config {
 		return $value;
 	}
 
-	/**
-	 * @return array
-	 * @deprecated \t2\core\service\Config::get_default_value
-	 * @see \t2\core\service\Config::get_default_value
-	 */
 	public static function MODULES(){
-		if(self::$MODULES===null){
-			$modules_json = self::get_value('MODULES', null, null, false);
-			if($modules_json!==false && !(self::$MODULES = json_decode($modules_json, true))){
-				//TODO(1):Warning, not Error.
-				new Error_("Module configuration is invalid JSON. Switching to default.");
-				$modules_json=false;
-			}
-			if($modules_json===false){
-				self::set_modules_default();
+		//TODO(3): Make modules configuration an object!
+		if(self::$cfg_modules===null){
+			$modules_json = self::get_value('MODULES', null, null);
+			self::$cfg_modules = json_decode($modules_json, true);
+			if(self::$cfg_modules===null){
+				new Error_("Module configuration is invalid JSON.");
 			}
 		}
-		return self::$MODULES;
-	}
-
-	private static function set_modules_default(){
-		require_once ROOT_DIR . '/core/mod/Core_values.php';
-		$dv = new Core_values();
-		$modules_json = $dv->get_default_value("MODULES");
-		if(!(self::$MODULES = json_decode($modules_json, true))){
-			Error_::quit("Invalid JSON:\n\\admin\\Core_values->\$default_values:\n$modules_json");
-		}
+		return self::$cfg_modules;
 	}
 
 	/**
@@ -136,11 +119,8 @@ class Config {
 		require_once ROOT_DIR . '/api/Default_values.php';
 		$module = $module ?: 'core';
 		if($module==='core'){
-			if($id=='MODULES'){
-				//TODO:return Config::MODULES();
-			}
 			if($id=='HTTP_ROOT'){
-				//TODO:return Page::HTTP_ROOT_();
+				//TODO:return Page::HTTP_ROOT_(); -> Config::init_http_root
 			}
 			if($id=='PLATFORM'){
 				return Config::init_platform();
@@ -187,11 +167,11 @@ class Config {
 	}
 
 	/**
-	 * @param string[] $ids
-	 * @param string|null   $module
-	 * @param int|null      $user
+	 * @param string[]    $ids
+	 * @param string|null $module
+	 * @param int|null    $user
 	 */
-	public static function load_values($ids, $module = null, $user = null, $init_modules=false) {
+	public static function load_values($ids, $module = null, $user = null) {
 		require_once ROOT_DIR . '/core/service/Strings.php';
 		$ids_sql = Strings::build_sql_collection($ids);
 		#$core_config = DB_CORE_PREFIX.'_config';
@@ -229,11 +209,6 @@ class Config {
 					$values[$val['idstring']] = true;
 				}
 				self::store_val($module, $user, $val['idstring'], $val['content']);
-			}
-			if($init_modules){
-				if(self::recall_val($module, $user, 'MODULES')===false){
-					self::set_modules_default();
-				}
 			}
 			//Default values:
 			foreach ($ids as $id){
