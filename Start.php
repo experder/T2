@@ -13,8 +13,8 @@ use t2\core\Database;
 use t2\core\Error_;
 use t2\core\Page;
 use t2\core\service\Config;
-use t2\dev\Install_wizard;
 use t2\core\service\User;
+use t2\dev\Install_wizard;
 
 class Start {
 
@@ -27,18 +27,18 @@ class Start {
 
 	private static $dev_start_time = null;
 
-	public static function get_type(){
+	public static function get_type() {
 		return self::$type;
 	}
 
-	public static function is_type($type){
-		return self::$type==$type;
+	public static function is_type($type) {
+		return self::$type == $type;
 	}
 
 	public static function init_constants() {
-		if(self::$dev_start_time===null){
+		if (self::$dev_start_time === null) {
 			self::$dev_start_time = microtime(true);
-		}else{
+		} else {
 			require_once ROOT_DIR . '/core/Error_.php';
 			new Error_("Init called twice!", 0, null, 1);
 		}
@@ -66,7 +66,7 @@ class Start {
 		require_once $config_file;
 		//Make the Test:
 		if (Database::get_singleton(false) === false) {
-			new Error_("Local config file seems to be corrupt. Please check.", "ERROR_CONFIG_CORRUPT", "Config file: ".$config_file);
+			new Error_("Local config file seems to be corrupt. Please check.", "ERROR_CONFIG_CORRUPT", "Config file: " . $config_file);
 		}
 		#define('DB_CORE_PREFIX', Database::get_singleton()->core_prefix);
 	}
@@ -96,7 +96,7 @@ class Start {
 	 */
 	public static function init($PAGEID_, $title) {
 		require_once ROOT_DIR . '/core/Page.php';
-		self::$type=self::TYPE_HTML;
+		self::$type = self::TYPE_HTML;
 		Start::init_config();
 		Start::init_database();
 		Start::init_userrights();
@@ -105,20 +105,20 @@ class Start {
 	}
 
 	public static function init_ajax() {
-		self::$type=self::TYPE_AJAX;
+		self::$type = self::TYPE_AJAX;
 		//TODO(2): init rights
 	}
 
-	public static function check_type($type){
-		if(!defined('ROOT_DIR')){
+	public static function check_type($type) {
+		if (!defined('ROOT_DIR')) {
 			self::init_constants();
 		}
 		require_once ROOT_DIR . '/core/Error_.php';
-		if (self::$type==self::TYPE_UNKNOWN){
-			Error_::plain_abort_("Unknown type. T2 has not been initialized. \"Start::init\" should be the very first call.",1);
+		if (self::$type == self::TYPE_UNKNOWN) {
+			Error_::plain_abort_("Unknown type. T2 has not been initialized. \"Start::init\" should be the very first call.", 1);
 		}
-		if (self::$type!=$type){
-			Error_::plain_abort_("Wrong type: ".self::$type.". Please call proper \"Start::init...\".",1);
+		if (self::$type != $type) {
+			Error_::plain_abort_("Wrong type: " . self::$type . ". Please call proper \"Start::init...\".", 1);
 		}
 	}
 

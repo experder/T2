@@ -5,6 +5,7 @@
  * T2 comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
+
 /*
 require_once ROOT_DIR . '/core/Page.php';
  */
@@ -14,15 +15,9 @@ namespace t2\core;
 
 require_once ROOT_DIR . '/core/Stylesheet.php';
 require_once ROOT_DIR . '/core/service/Config.php';
-//require_once ROOT_DIR . '/core/Html.php';
-//require_once ROOT_DIR . '/core/service/User.php';
-//require_once ROOT_DIR . '/dev/Debug.php';
-//require_once ROOT_DIR . '/core/service/Files.php';
-//require_once ROOT_DIR . '/core/Error_warn.php';
 
-use t2\dev\Install_wizard;
 use t2\core\service\Config;
-use t2\core\service\Files;
+use t2\core\service\Html;
 use t2\dev\Debug;
 use t2\Start;
 
@@ -85,19 +80,17 @@ class Page {
 
 	private $html_nodes = array();
 
-	private $HTTP_ROOT = null;
-
 	/**
 	 * @param string $id
 	 * @param string $title
 	 */
-	public function __construct($id, $title, $use_database=true) {
-		if($use_database && Database::get_singleton(false)===false){
-			$use_database=false;
+	public function __construct($id, $title, $use_database = true) {
+		if ($use_database && Database::get_singleton(false) === false) {
+			$use_database = false;
 		}
 		$this->use_database = $use_database;
 		$this->reset($id, $title);
-		if(!$this->use_database){
+		if (!$this->use_database) {
 			Config::init_http_root(true);
 		}
 	}
@@ -107,17 +100,18 @@ class Page {
 		$this->title = $title;
 	}
 
-	public function uses_database(){
+	public function uses_database() {
 		return $this->use_database;
 	}
 
 	/**
+	 * @param bool $halt_on_error
 	 * @return Page|false
 	 */
 	public static function get_singleton($halt_on_error = true) {
 		if (self::$singleton === null) {
 			if ($halt_on_error) {
-				new Error_("Please initialize Page singelton first","NO_PAGE","\$page = \\t2\\core\\Page::init(\"PAGEID_MYMODULE_MYPAGE\", \"My page\");",1);
+				new Error_("Please initialize Page singelton first", "NO_PAGE", "\$page = \\t2\\core\\Page::init(\"PAGEID_MYMODULE_MYPAGE\", \"My page\");", 1);
 			} else {
 				return false;
 			}
@@ -145,11 +139,12 @@ class Page {
 	 * @deprecated TODO: \t2\core\service\Config::get_default_value
 	 * @see \t2\core\service\Config::get_default_value
 	 */
-	public function HTTP_ROOT(){
+	public function HTTP_ROOT() {
 		return Config::get_value_core('HTTP_ROOT');
 	}
-	public static function HTTP_ROOT_($page=null){
-		if($page===null){
+
+	public static function HTTP_ROOT_($page = null) {
+		if ($page === null) {
 			$page = self::get_singleton();
 		}
 		return $page->HTTP_ROOT();
@@ -163,8 +158,8 @@ class Page {
 	 * @param mixed $node must be string or have function __toString()
 	 */
 	public function add($node) {
-		if(is_array($node)){
-			foreach ($node as $n){
+		if (is_array($node)) {
+			foreach ($node as $n) {
 				$this->add($n);
 			}
 			return;
@@ -174,9 +169,9 @@ class Page {
 			&& !method_exists($node, '__toString')
 			&& !is_numeric($node)
 			&& !is_null($node)
-		){
+		) {
 			$hint = "";
-			if(is_bool($node)){
+			if (is_bool($node)) {
 				$hint = "Booleans need to be converted to strings.\n\$page->add(\$ok?'Yes':'No');";
 			}
 			new Error_("Invalid node!", "ERROR_INVALID_NODE", $hint, 1);
@@ -185,8 +180,8 @@ class Page {
 		$this->html_nodes[] = $node;
 	}
 
-	public function add_p($content, $params=array()) {
-		$this->add(\t2\core\service\Html::P($content, null, $params));
+	public function add_p($content, $params = array()) {
+		$this->add(Html::P($content, null, $params));
 	}
 
 	/**
@@ -198,34 +193,40 @@ class Page {
 		return $this;
 	}
 
-	public function add_message_error($message){
+	public function add_message_error($message) {
 		$this->add_message_(new Message(Message::TYPE_ERROR, $message));
 	}
-	public function add_message_info($message){
+
+	public function add_message_info($message) {
 		$this->add_message_(new Message(Message::TYPE_INFO, $message));
 	}
-	public function add_message_confirm($message){
+
+	public function add_message_confirm($message) {
 		$this->add_message_(new Message(Message::TYPE_CONFIRM, $message));
 	}
-	public function add_message_ok($message){
+
+	public function add_message_ok($message) {
 		$this->add_message_confirm($message);
 	}
 
-	public static function add_message_error_($message){
+	public static function add_message_error_($message) {
 		self::get_singleton()->add_message_error_($message);
 	}
-	public static function add_message_info_($message){
+
+	public static function add_message_info_($message) {
 		self::get_singleton()->add_message_info($message);
 	}
-	public static function add_message_confirm_($message){
+
+	public static function add_message_confirm_($message) {
 		self::get_singleton()->add_message_confirm($message);
 	}
-	public static function add_message_ok_($message){
+
+	public static function add_message_ok_($message) {
 		self::add_message_confirm_($message);
 	}
 
 	public function add_inline_js($js) {
-		$this->inline_js.=$js."\n";
+		$this->inline_js .= $js . "\n";
 	}
 
 	/**
@@ -271,11 +272,11 @@ class Page {
 
 	}
 
-	public function add_js_jquery341(){//TODO(3): Move to includes
+	public function add_js_jquery341() {//TODO(3): Move to includes
 		$this->add_javascript("JS_ID_JQUERY", "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js");
 	}
 
-	public function add_js_core(){//TODO(3): Move to includes
+	public function add_js_core() {//TODO(3): Move to includes
 		$this->add_js_jquery341();
 //		if($this->standalone && !defined('HTTP_ROOT')){
 //			$this->init_http_root();
@@ -283,51 +284,51 @@ class Page {
 		$this->add_javascript("JS_ID_T2CORE", $this->HTTP_ROOT() . "/js/core.js");
 	}
 
-	private function get_js_html(){
-		$html="";
+	private function get_js_html() {
+		$html = "";
 
 		/*
 		 * External scriptfiles
 		 */
-		foreach ($this->javascripts as $javascript){
-			$html.="\t<script src=\"$javascript\" type=\"text/javascript\"></script>\n";
+		foreach ($this->javascripts as $javascript) {
+			$html .= "\t<script src=\"$javascript\" type=\"text/javascript\"></script>\n";
 		}
 
 		/*
 		 * Inline script
 		 */
-		if($this->inline_js){
-			$html.="\t<script language='JavaScript'>\n$this->inline_js\t</script>\n";
+		if ($this->inline_js) {
+			$html .= "\t<script language='JavaScript'>\n".$this->inline_js."\t</script>\n";
 		}
 
 		return $html;
 	}
 
-	public function add_stylesheet($id, Stylesheet $stylesheet){
+	public function add_stylesheet($id, Stylesheet $stylesheet) {
 		$this->stylesheets[$id] = $stylesheet;
 	}
 
-	public function add_javascript($id, $url){
+	public function add_javascript($id, $url) {
 		$this->javascripts[$id] = $url;
 	}
 
-	public function get_demoskins_stylesheet_print($style){
-		return new Stylesheet($this->HTTP_ROOT()."/skins/$style/print.css", Stylesheet::MEDIA_PRINT);
+	public function get_demoskins_stylesheet_print($style) {
+		return new Stylesheet($this->HTTP_ROOT() . "/skins/$style/print.css", Stylesheet::MEDIA_PRINT);
 	}
 
 	private function get_css_html() {
 		$stylesheets = array();
 		$style = Config::get_value_core("SKIN");
-		if(in_array($style,array("bare"))){
-			$stylesheets["CSS_ID_ALL"]=new Stylesheet($this->HTTP_ROOT()."/skins/$style/all.css");
-			$stylesheets["CSS_ID_PRINT"]=$this->get_demoskins_stylesheet_print($style);
+		if (in_array($style, array("bare"))) {
+			$stylesheets["CSS_ID_ALL"] = new Stylesheet($this->HTTP_ROOT() . "/skins/$style/all.css");
+			$stylesheets["CSS_ID_PRINT"] = $this->get_demoskins_stylesheet_print($style);
 		}
-		foreach ($this->stylesheets as $key => $stylesheet){
+		foreach ($this->stylesheets as $key => $stylesheet) {
 			$stylesheets[$key] = $stylesheet;
 		}
 		$html = "";
-		foreach ($stylesheets as $stylesheet){
-			$html.="\t<link href=\"".$stylesheet->get_url()."\" rel=\"stylesheet\" type=\"text/css\" media=\"".$stylesheet->get_media()."\"/>\n";;
+		foreach ($stylesheets as $stylesheet) {
+			$html .= "\t<link href=\"" . $stylesheet->get_url() . "\" rel=\"stylesheet\" type=\"text/css\" media=\"" . $stylesheet->get_media() . "\"/>\n";;
 		}
 		return $html;
 	}
@@ -342,7 +343,7 @@ class Page {
 			$css_class = $message->get_type_cssClass();
 			$html .= "\n\t<div class='message $css_class'>" . $message->get_message() . "</div>";
 		}
-		if($html){
+		if ($html) {
 			$html = "<div class='messages noprint'>$html\n</div>\n";
 		}
 		return $html;
@@ -350,7 +351,7 @@ class Page {
 
 	private function get_title() {
 		$project = Config::get_value_core("PROJECT_TITLE");
-		$title = $this->title." - $project";
+		$title = $this->title . " - $project";
 		return $title;
 	}
 
@@ -375,25 +376,25 @@ class Page {
 
 	}
 
-	public static function abort($title, $messages=null, $body=null, $id="PAGEID_CORE_ABORT") {
-		if(!self::$recusion_protection_abort){
+	public static function abort($title, $messages = null, $body = null, $id = "PAGEID_CORE_ABORT") {
+		if (!self::$recusion_protection_abort) {
 			new Error_("(ABORTION OCCURED IN ABORTION)");
 			exit;
 		}
 		self::$recusion_protection_abort = false;
 
-		$page=Page::get_singleton(false);
-		if($page===false){
+		$page = Page::get_singleton(false);
+		if ($page === false) {
 
 			$page = new Page($id, $title);
 
-			if(is_array($messages)){
-				foreach ($messages as $message){
+			if (is_array($messages)) {
+				foreach ($messages as $message) {
 					Page::$compiler_messages[] = $message;
 				}
 			}
 
-			if($body!==null){
+			if ($body !== null) {
 				$page->add($body);
 			}
 

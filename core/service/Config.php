@@ -15,12 +15,12 @@ namespace t2\core\service;
 
 require_once ROOT_DIR . '/core/Database.php';
 
-use t2\dev\Install_wizard;
 use t2\api\Default_values;
 use t2\core\Database;
 use t2\core\Error_;
 use t2\core\Message;
 use t2\core\Page;
+use t2\dev\Install_wizard;
 
 class Config {
 
@@ -31,9 +31,9 @@ class Config {
 	const PLATFORM_WINDOWS = 'windows';
 	const PLATFORM_LINUX = 'linux';
 
-	public static function init_platform(){
-		if(($value = Config::recall_val(null, null, 'PLATFORM'))!==false){
-			if(Config::$DEVMODE){
+	public static function init_platform() {
+		if (($value = Config::recall_val(null, null, 'PLATFORM')) !== false) {
+			if (Config::$DEVMODE) {
 				new Error_("PLATFORM already initialized!");
 			}
 			return $value;
@@ -45,12 +45,12 @@ class Config {
 		return $value;
 	}
 
-	public static function MODULES(){
+	public static function MODULES() {
 		//TODO(3): Make modules configuration an object!
-		if(self::$cfg_modules===null){
+		if (self::$cfg_modules === null) {
 			$modules_json = self::get_value('MODULES', null, null);
 			self::$cfg_modules = json_decode($modules_json, true);
-			if(self::$cfg_modules===null){
+			if (self::$cfg_modules === null) {
 				new Error_("Module configuration is invalid JSON.");
 			}
 		}
@@ -75,20 +75,20 @@ class Config {
 	 * @param int           $backtrace_depth
 	 * @return string
 	 */
-	public static function get_value($id, $module = null, $user = null, $default_value = true, $use_cache = true, $database = null, $backtrace_depth=0) {
+	public static function get_value($id, $module = null, $user = null, $default_value = true, $use_cache = true, $database = null, $backtrace_depth = 0) {
 		if ($database === null) {
 			$database = Database::get_singleton(false);
 		}
 		if ($use_cache) {
 			$value = self::recall_val($module, $user, $id);
-			if($value!==false){
+			if ($value !== false) {
 				return $value;
 			}
 		}
 		$ignore_errors = !Config::$DEVMODE;
-		if($database===false){
-			$data=false;
-		}else{
+		if ($database === false) {
+			$data = false;
+		} else {
 			$data = $database->select_single(
 				"SELECT `content` FROM core_config WHERE `idstring`=:id AND module<=>:module AND userid<=>:userid;",
 				array(
@@ -96,17 +96,17 @@ class Config {
 					"module" => $module,
 					"userid" => $user,
 				)
-				, $backtrace_depth+1, $ignore_errors
+				, $backtrace_depth + 1, $ignore_errors
 			);
 		}
 		if (!$data) {
-			if($default_value===true){
-				$default_value = self::get_default_value($module?:'core', $id, $backtrace_depth+1);
+			if ($default_value === true) {
+				$default_value = self::get_default_value($module ?: 'core', $id, $backtrace_depth + 1);
 			}
 			return $default_value;
 		}
-		if(is_int($data)){
-			new Error_("Config database corrupt!","CONFIG_DATABASE_CORRUPT1","Multiple entries found for \"$id\" (module ".($module?:'core').").");
+		if (is_int($data)) {
+			new Error_("Config database corrupt!", "CONFIG_DATABASE_CORRUPT1", "Multiple entries found for \"$id\" (module " . ($module ?: 'core') . ").");
 		}
 		$value = $data["content"];
 		if ($use_cache) {
@@ -117,7 +117,7 @@ class Config {
 
 	public static $prompting_http_root = false;
 
-	public static function init_http_root($relative = false){
+	public static function init_http_root($relative = false) {
 		if (($value = Config::recall_val(null, null, 'HTTP_ROOT')) !== false) {
 			if (Config::$DEVMODE) {
 				new Error_("HTTP_ROOT already initialized!");
@@ -150,11 +150,11 @@ class Config {
 	public static function get_default_value($module, $id, $backtrace_depth = 0) {
 		require_once ROOT_DIR . '/api/Default_values.php';
 		$module = $module ?: 'core';
-		if($module==='core'){
-			if($id=='HTTP_ROOT'){
+		if ($module === 'core') {
+			if ($id == 'HTTP_ROOT') {
 				return self::init_http_root();
 			}
-			if($id=='PLATFORM'){
+			if ($id == 'PLATFORM') {
 				return Config::init_platform();
 			}
 		}
@@ -171,18 +171,17 @@ class Config {
 	}
 
 
-
 	/**
-	 * @param string        $id
-	 * @param string|true   $default_value
+	 * @param string      $id
+	 * @param string|true $default_value
 	 *                      TRUE: get default value from \admin\Core_values
-	 * @param int|null      $user
-	 * @param int           $backtrace_depth
+	 * @param int|null    $user
+	 * @param int         $backtrace_depth
 	 * @return string
 	 * @see \t2\core\mod\Core_values
 	 */
-	public static function get_value_core($id, $default_value = true, $user = null, $backtrace_depth=0) {
-		return self::get_value($id, null, $user, $default_value, true, null, $backtrace_depth+1);
+	public static function get_value_core($id, $default_value = true, $user = null, $backtrace_depth = 0) {
+		return self::get_value($id, null, $user, $default_value, true, null, $backtrace_depth + 1);
 	}
 
 	public static function set_value($id, $value, $module = null, $user = null, $database = null) {
@@ -217,16 +216,16 @@ class Config {
 				"module" => $module,
 				"userid" => $user,
 			)
-			,false
+			, false
 		);
-		$error=Database::get_singleton()->getError();
-		if($error!==false){
-			if($error->isType(Error_::TYPE_TABLE_NOT_FOUND)){
+		$error = Database::get_singleton()->getError();
+		if ($error !== false) {
+			if ($error->isType(Error_::TYPE_TABLE_NOT_FOUND)) {
 				require_once ROOT_DIR . '/dev/Install_wizard.php';
 				$report = Install_wizard::init_db_config();
-				$msg = new Message(Message::TYPE_CONFIRM, "DB \"".Database::get_singleton()->get_dbname()."\" initialized. ".$report);
+				$msg = new Message(Message::TYPE_CONFIRM, "DB \"" . Database::get_singleton()->get_dbname() . "\" initialized. " . $report);
 				Page::$compiler_messages[] = $msg;
-			}else{
+			} else {
 				Database::destroy();//Make Page Standalone (TODO(3)-Necessary?)
 				$error->report();
 			}
@@ -234,21 +233,21 @@ class Config {
 
 		if ($data) {
 			$ignore_errors = !Config::$DEVMODE;
-			if(!$ignore_errors){
+			if (!$ignore_errors) {
 				$values = array();
 			}
 			foreach ($data as $val) {
-				if(!$ignore_errors){
-					if(isset($values[$val['idstring']])){
-						new Error_("Config database corrupt!","CONFIG_DATABASE_CORRUPT2","Multiple entries found for \"".$val['idstring']."\" (module ".($module?:'core').").");
+				if (!$ignore_errors) {
+					if (isset($values[$val['idstring']])) {
+						new Error_("Config database corrupt!", "CONFIG_DATABASE_CORRUPT2", "Multiple entries found for \"" . $val['idstring'] . "\" (module " . ($module ?: 'core') . ").");
 					}
 					$values[$val['idstring']] = true;
 				}
 				self::store_val($module, $user, $val['idstring'], $val['content']);
 			}
 			//Default values:
-			foreach ($ids as $id){
-				if(self::recall_val($module, $user, $id)===false){
+			foreach ($ids as $id) {
+				if (self::recall_val($module, $user, $id) === false) {
 					$default_value = self::get_default_value($module, $id);
 					self::store_val($module, $user, $id, $default_value);
 				}
@@ -256,16 +255,16 @@ class Config {
 		}
 	}
 
-	private static function store_val($module, $user, $key, $value){
-		$module_index = ($module === null?"core":$module);
-		$user_index = 'u'.$user;
+	private static function store_val($module, $user, $key, $value) {
+		$module_index = ($module === null ? "core" : $module);
+		$user_index = 'u' . $user;
 		self::$config[$module_index][$user_index][$key] = $value;
 	}
 
-	private static function recall_val($module, $user, $key){
-		$module_index = ($module === null?"core":$module);
-		$user_index = 'u'.$user;
-		if(!isset(self::$config[$module_index][$user_index][$key])){
+	private static function recall_val($module, $user, $key) {
+		$module_index = ($module === null ? "core" : $module);
+		$user_index = 'u' . $user;
+		if (!isset(self::$config[$module_index][$user_index][$key])) {
 			return false;
 		}
 		return self::$config[$module_index][$user_index][$key];

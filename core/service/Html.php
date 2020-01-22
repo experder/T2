@@ -40,65 +40,65 @@ class Html {
 		return $html;
 	}
 
-	public static function A($content, $href, $class=null, $params=array()){
-		$params["href"]=$href;
-		$params["class"]=$class;
-		return new \t2\core\Html("a",$content,$params);
+	public static function A($content, $href, $class = null, $params = array()) {
+		$params["href"] = $href;
+		$params["class"] = $class;
+		return new \t2\core\Html("a", $content, $params);
 	}
 
-	public static function H1($content, $id=null){
-		return new \t2\core\Html("h1",$content,array("id"=>$id));
+	public static function H1($content, $id = null) {
+		return new \t2\core\Html("h1", $content, array("id" => $id));
 	}
 
-	public static function H2($content, $id=null){
-		return new \t2\core\Html("h2",$content,array("id"=>$id));
+	public static function H2($content, $id = null) {
+		return new \t2\core\Html("h2", $content, array("id" => $id));
 	}
 
-	public static function H3($content, $id=null){
-		return new \t2\core\Html("h3",$content,array("id"=>$id));
+	public static function H3($content, $id = null) {
+		return new \t2\core\Html("h3", $content, array("id" => $id));
 	}
 
-	public static function H4($content, $id=null){
-		return new \t2\core\Html("h4",$content,array("id"=>$id));
+	public static function H4($content, $id = null) {
+		return new \t2\core\Html("h4", $content, array("id" => $id));
 	}
 
-	public static function BUTTON($value, $js=null, $params=array()){
+	public static function BUTTON($value, $js = null, $params = array()) {
 		$params["type"] = "button";
-		if($js){
+		if ($js) {
 			$params["onclick"] = $js;
 		}
-		return new \t2\core\Html("button",$value,$params);
+		return new \t2\core\Html("button", $value, $params);
 	}
 
-	public static function PRE($content, $classes=array(), $params=array()){
-		$params["class"] = implode(" ",$classes);
-		return new \t2\core\Html("pre",$content,$params);
+	public static function PRE($content, $classes = array(), $params = array()) {
+		$params["class"] = implode(" ", $classes);
+		return new \t2\core\Html("pre", $content, $params);
 	}
 
-	public static function PRE_console($content, $id=null){
-		$params = array("class"=>"console_inner");
-		if($id){
-			$params["id"]=$id;
+	public static function PRE_console($content, $id = null) {
+		$params = array("class" => "console_inner");
+		if ($id) {
+			$params["id"] = $id;
 		}
 		return self::PRE(new \t2\core\Html("div", $content, $params), array("console"));
 	}
 
-	public static function TEXTAREA_console($content, $id=null){
-		$params = array("class"=>"console");
-		if($id){
-			$params["id"]=$id;
+	public static function TEXTAREA_console($content, $id = null) {
+		$params = array("class" => "console");
+		if ($id) {
+			$params["id"] = $id;
 		}
 		return new \t2\core\Html("textarea", $content, $params);
 	}
 
-	public static function UL($children=array(), $params=null){
+	public static function UL($children = array(), $params = null) {
 		return self::list_builder("ul", $children, $params);
 	}
 
-	private static function list_builder($elem, $children, $params){
-		$html = new \t2\core\Html($elem,"",$params);
-		foreach ($children as $child){
-			if(!($child instanceof \t2\core\Html) || strtolower($child->get_tag())!='li'){
+	private static function list_builder($elem, $children, $params) {
+		$html = new \t2\core\Html($elem, "", $params);
+		foreach ($children as $child) {
+			if (!($child instanceof \t2\core\Html) || strtolower($child->get_tag()) != 'li') {
 				$child = new \t2\core\Html("li", null, null, $child);
 			}
 			$html->addChild($child);
@@ -106,30 +106,30 @@ class Html {
 		return $html;
 	}
 
-	public static function A_button($content, $href, $classes=array(), $params=array()){
+	public static function A_button($content, $href, $classes = array(), $params = array()) {
 		$html = self::A($content, $href, "abutton", $params);
 		$html->addClasses($classes);
 		return $html;
 	}
 
-	public static function P($content, $children=null, $params = array()) {
+	public static function P($content, $children = null, $params = array()) {
 		return new \t2\core\Html("p", $content, $params, $children);
 	}
 
-	public static function A_external($content, $href, $params=array()){
-		$params['href']=$href;
-		$params['target']='_blank';
+	public static function A_external($content, $href, $params = array()) {
+		$params['href'] = $href;
+		$params['target'] = '_blank';
 		$html = new \t2\core\Html("a", $content, $params);
 		return $html;
 	}
 
 	private static $extension = null;
 
-	public static function href_internal($relative_page_without_extension){
-		if(self::$extension===null){
+	public static function href_internal($relative_page_without_extension) {
+		if (self::$extension === null) {
 			self::$extension = Config::get_value_core("EXTENSION");
 		}
-		return Page::HTTP_ROOT_() . '/' . $relative_page_without_extension .'.'.self::$extension;
+		return Page::HTTP_ROOT_() . '/' . $relative_page_without_extension . '.' . self::$extension;
 	}
 
 }

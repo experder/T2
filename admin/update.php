@@ -22,18 +22,18 @@ $page->add(Html::H1("Updater"));
 
 $platform = Config::get_value_core("PLATFORM");
 
-if($platform==Config::PLATFORM_WINDOWS){
+if ($platform == Config::PLATFORM_WINDOWS) {
 	$result = `cd..&&update.cmd 2>&1`;
 	$result = mb_convert_encoding($result, "utf-8", "cp850");
-}else if($platform==Config::PLATFORM_LINUX){
+} else if ($platform == Config::PLATFORM_LINUX) {
 	$result = `cd .. && ./update.sh 2>&1`;
 }
-$result=htmlentities($result);
-$result.="\n";
+$result = htmlentities($result);
+$result .= "\n";
 
 $updater = new Core_database();
-$result.="========= Update_database =========\n";
-$result.=$updater->update()?:"Already up to date.";
+$result .= "========= Update_database =========\n";
+$result .= $updater->update() ?: "Already up to date.";
 
 //TODO(3):Updater: Get the (two) outputs by ajax
 $page->add(Html::PRE_console($result, "ID_RESULTS"));
