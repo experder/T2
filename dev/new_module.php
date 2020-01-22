@@ -8,14 +8,13 @@
 
 namespace t2\dev;
 
-require_once '../../tethys/Start.php';
+require_once '../Start.php';
 require_once ROOT_DIR . '/dev/Tools.php';
 
 use t2\Start;
 
 $page = Start::init("PAGEID_ADMIN_NEWMOD", "New module");
 
-//TODO(F): Module Generator
 Tools::prompt_new_module($page);
 
 $page->send_and_quit();

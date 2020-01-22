@@ -182,12 +182,16 @@ class Database {
 	 * @param string     $query
 	 * @param array|null $substitutions
 	 * @param int        $backtrace_depth
-	 * @return array|false
+	 * @param bool       $ignore_following
+	 * @return array|false|int
 	 */
-	public function select_single($query, $substitutions = null, $backtrace_depth = 0) {
+	public function select_single($query, $substitutions = null, $backtrace_depth = 0, $ignore_following = true) {
 		$result = self::iquery($query, $substitutions, self::RETURN_ASSOC, $backtrace_depth + 1);
 		if (!$result) {
 			return false;
+		}
+		if (!$ignore_following && ($c = count($result)) > 1) {
+			return $c;
 		}
 		return $result[0];
 	}

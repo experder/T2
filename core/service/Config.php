@@ -103,6 +103,7 @@ class Config {
 				return $value;
 			}
 		}
+		$ignore_errors = !Config::$DEVMODE;
 		if($database===false){
 			$data=false;
 		}else{
@@ -113,7 +114,7 @@ class Config {
 					"module" => $module,
 					"userid" => $user,
 				)
-				, $backtrace_depth+1
+				, $backtrace_depth+1, $ignore_errors
 			);
 		}
 		if (!$data) {
@@ -122,6 +123,9 @@ class Config {
 			}
 			return $default_value;
 		}
+		if(is_int($data)){
+			new Error_("Config database corrupt!","CONFIG_DATABASE_CORRUPT1","Multiple entries found for \"$id\" (module ".($module?:'core').").");
+		}
 		$value = $data["content"];
 		if ($use_cache) {
 			self::store_val($module, $user, $id, $value);
@@ -129,13 +133,17 @@ class Config {
 		return $value;
 	}
 
-	public static function get_default_value($module, $id, $backtrace_depth=0){
-		require_once ROOT_DIR.'/api/Default_values.php';
-		$module = $module?:'core';
+	public static function get_default_value($module, $id, $backtrace_depth = 0) {
+		require_once ROOT_DIR . '/api/Default_values.php';
+		$module = $module ?: 'core';
 		$singleton = Default_values::get_singleton_by_module($module);
 		$value = $singleton->get_default_value($id);
-		if($value===null){
-			new Error_("No default value provided for: $module|$id",0,"Add here: \\t2\\core\\api\\Core_values", $backtrace_depth+1);
+		if ($value === null) {
+			$hint = "???";//TODO(3): Determine Default_values for given module
+			if ($module === 'core') {
+				$hint = "Add here: \\t2\\core\\mod\\Core_values";
+			}
+			new Error_("No default value provided for: $module|$id", 0, $hint, $backtrace_depth + 1);
 		}
 		return $value;
 	}
@@ -200,7 +208,17 @@ class Config {
 		}
 
 		if ($data) {
+			$ignore_errors = !Config::$DEVMODE;
+			if(!$ignore_errors){
+				$values = array();
+			}
 			foreach ($data as $val) {
+				if(!$ignore_errors){
+					if(isset($values[$val['idstring']])){
+						new Error_("Config database corrupt!","CONFIG_DATABASE_CORRUPT2","Multiple entries found for \"".$val['idstring']."\" (module ".($module?:'core').").");
+					}
+					$values[$val['idstring']] = true;
+				}
 				self::store_val($module, $user, $val['idstring'], $val['content']);
 			}
 			if($init_modules){
