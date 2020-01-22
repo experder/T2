@@ -115,12 +115,44 @@ class Config {
 		return $value;
 	}
 
+	public static $prompting_http_root = false;
+
+	public static function init_http_root($relative = false){
+		if (($value = Config::recall_val(null, null, 'HTTP_ROOT')) !== false) {
+			if (Config::$DEVMODE) {
+				new Error_("HTTP_ROOT already initialized!");
+			}
+			return $value;
+		}
+
+		//Guess HTTP_ROOT:
+		require_once ROOT_DIR . '/core/service/Files.php';
+		$value = Files::relative_path($_SERVER["SCRIPT_FILENAME"], ROOT_DIR);
+
+		if ($relative
+			|| self::$prompting_http_root//We're just prompting for it.
+		) {
+			Config::store_val(null, null, 'HTTP_ROOT', $value);
+			return $value;
+		}
+
+		//Prompt HTTP_ROOT:
+		require_once ROOT_DIR . '/dev/Install_wizard.php';
+		$value = Install_wizard::prompt_http_root();
+		if ($value === false) {
+			new Error_("Could not set HTTP_ROOT.");
+		}
+		Config::set_value('HTTP_ROOT', $value);
+		Page::$compiler_messages[] = new Message(Message::TYPE_CONFIRM, "HTTP_ROOT set to: \"$value\"");
+		return $value;
+	}
+
 	public static function get_default_value($module, $id, $backtrace_depth = 0) {
 		require_once ROOT_DIR . '/api/Default_values.php';
 		$module = $module ?: 'core';
 		if($module==='core'){
 			if($id=='HTTP_ROOT'){
-				//TODO:return Page::HTTP_ROOT_(); -> Config::init_http_root
+				return self::init_http_root();
 			}
 			if($id=='PLATFORM'){
 				return Config::init_platform();
@@ -166,6 +198,9 @@ class Config {
 		self::store_val($module, $user, $id, $value);
 	}
 
+
+	public static $dev_lv_line = 0;
+
 	/**
 	 * @param string[]    $ids
 	 * @param string|null $module
@@ -175,6 +210,7 @@ class Config {
 		require_once ROOT_DIR . '/core/service/Strings.php';
 		$ids_sql = Strings::build_sql_collection($ids);
 		#$core_config = DB_CORE_PREFIX.'_config';
+		self::$dev_lv_line = __LINE__ + 7;
 		$data = Database::select_(
 			"SELECT idstring,`content` FROM core_config WHERE `idstring` in ($ids_sql) AND module<=>:module AND userid <=> :userid;",
 			array(

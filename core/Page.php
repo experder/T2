@@ -36,7 +36,6 @@ class Page {
 
 	protected $use_database;
 	private static $recusion_protection_abort = true;
-	public static $prompting_http_root = false;
 
 	/**
 	 * @var string $id Unique string used to address page in navigation and CSS.
@@ -98,7 +97,9 @@ class Page {
 		}
 		$this->use_database = $use_database;
 		$this->reset($id, $title);
-		$this->HTTP_ROOT();
+		if(!$this->use_database){
+			Config::init_http_root(true);
+		}
 	}
 
 	public function reset($pageId, $title) {
@@ -141,39 +142,11 @@ class Page {
 	}
 
 	/**
-	 * @deprecated \t2\core\service\Config::get_default_value
+	 * @deprecated TODO: \t2\core\service\Config::get_default_value
 	 * @see \t2\core\service\Config::get_default_value
 	 */
 	public function HTTP_ROOT(){
-		if($this->HTTP_ROOT===null){
-			if(!$this->use_database
-				|| self::$prompting_http_root//We're just prompting for it.
-			){
-
-				//Guess HTTP_ROOT:
-
-				require_once ROOT_DIR . '/core/service/Files.php';
-				$this->HTTP_ROOT=Files::relative_path($_SERVER["SCRIPT_FILENAME"], ROOT_DIR);
-			}else{
-
-				//Load HTTP_ROOT:
-
-				$this->HTTP_ROOT = Config::get_value_core("HTTP_ROOT", false);
-				if($this->HTTP_ROOT===false){
-
-					//Prompt HTTP_ROOT:
-
-					require_once ROOT_DIR . '/dev/Install_wizard.php';
-					$this->HTTP_ROOT=Install_wizard::prompt_http_root();
-					if($this->HTTP_ROOT===false){
-						new Error_("Could not set HTTP_ROOT.");
-					}
-					Config::set_value('HTTP_ROOT', $this->HTTP_ROOT);
-					Page::$compiler_messages[]=new Message(Message::TYPE_CONFIRM, "HTTP_ROOT set to: \"$this->HTTP_ROOT\"");
-				}
-			}
-		}
-		return $this->HTTP_ROOT;
+		return Config::get_value_core('HTTP_ROOT');
 	}
 	public static function HTTP_ROOT_($page=null){
 		if($page===null){

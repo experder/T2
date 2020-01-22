@@ -16,6 +16,7 @@ require_once ROOT_DIR . '/core/service/Html.php';
 require_once ROOT_DIR . '/core/service/Arrays.php';
 
 use t2\core\service\Arrays;
+use t2\core\service\Config;
 use t2\core\service\Strings;
 use t2\core\Html;
 use t2\core\Page;
@@ -24,7 +25,7 @@ use t2\Start;
 class Debug {
 
 	private static $core_queries = array(
-		"load_values ( :ROOT_DIR/core/service/Config.php:186 )",
+		"load_values ( :ROOT_DIR/core/service/Config.php::DEV_LVLINE )",
 		"check_session ( :ROOT_DIR/core/service/Login.php:54 )",
 		"update_session ( :ROOT_DIR/core/service/Login.php:85 )",
 	);
@@ -76,6 +77,7 @@ class Debug {
 		$caller=str_replace('\\','/',$caller);//(Windows)
 		$header=substr($caller, strrpos($caller, '/')+1);//(Last part)
 
+		//TODO:Gleiche header werden überschrieben!
 		self::$outputs[$header] = $val;
 
 	}
@@ -97,6 +99,7 @@ class Debug {
 			self::$core_queries_compiled = array();
 			foreach (self::$core_queries as $query) {
 				$query = str_replace(':ROOT_DIR', ROOT_DIR, $query);
+				$query = str_replace(':DEV_LVLINE', Config::$dev_lv_line, $query);
 				self::$core_queries_compiled[] = $query;
 			}
 		}

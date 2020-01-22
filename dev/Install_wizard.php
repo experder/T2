@@ -27,19 +27,18 @@ use t2\core\Formfield_text;
 use t2\core\Message;
 use t2\core\mod\Core_database;
 use t2\core\Page;
+use t2\core\service\Config;
 use t2\core\service\Html;
 use t2\core\service\Request;
 use t2\core\service\Templates;
 
 class Install_wizard {//TODO(3): Install wizard: Prompt all field in one form
 
-	public static $prompting_http_root = false;
-
 	public static function prompt_http_root() {
-		self::$prompting_http_root = true;
-		Page::$prompting_http_root = true;
+		Config::$prompting_http_root = true;
 
 		if (Request::cmd("submit_http_root")) {
+			Config::$prompting_http_root = false;
 			return Request::value('http_root');
 		}
 
