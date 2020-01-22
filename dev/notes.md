@@ -42,7 +42,6 @@ Current TODOs
 
 ### Medium
 * Admin features class (Admin.php:15)
-* Linux updater (update.php:29)
 * Submission of a form on a page called with "?key=val" results in an $_REQUEST array that contains key=val instead of submitted value (Form.php:26)
 * Check, if class already exists (Html.php:73)
 * $page->set_focusFieldId (Page.php:30)
@@ -55,11 +54,11 @@ Current TODOs
 * Create module id from module name (Tools.php:62)
 * Create absolute_path (Tools.php:63)
 * Create relative_path (Tools.php:64)
-* init rights (Start.php:112)
+* init rights (Start.php:111)
 
 ### Low
 * namespace (index.php:9)
-* Updater: Get the two outputs by ajax (update.php:39)
+* Updater: Get the (two) outputs by ajax (update.php:38)
 * subroutines für debug_info und fehler-handling (Database.php:213)
 * OR ADMIN (!$minimalistic) (Error_.php:100)
 * i18n(!$minimalistic) (Error_.php:101)
@@ -80,8 +79,8 @@ Current TODOs
 * Describe regex projectwide (convert_todos.php:64)
 * i18n (Tools.php:26)
 * onclick zoom-in als objekt (core.js:19)
-* Describe caller (update.cmd:10)
 * Describe caller (update_template.cmd:10)
+* Describe caller (update_template.sh:11)
 
 ### Deprecated
 * Use Error Class instead (\t2\core\Database::$exception) (Database.php:55)

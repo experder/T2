@@ -1,7 +1,9 @@
 
-## Installation
+Installation
+============
 
-### Repository
+Repository
+----------
 
 Create new project:  
 `git init`  
@@ -17,17 +19,26 @@ Clone existing project:
 
 [[Source](http://gitfabian.github.io/Tethys/install.html)]
 
-### Apache
+Apache
+------
 
     #Configure your own extension in T2 (here: .t2)
     LoadModule rewrite_module modules/mod_rewrite.so
     RewriteEngine on
     RewriteRule ^/myproject/(.*)\.t2$ "C:/MyWorkspace/MyProject/$1.php"
 
-#### Windows
+### Windows
 
     Alias /myproject "C:/MyWorkspace/MyProject"
     <Directory "C:/MyWorkspace/MyProject">
         Require all granted
         AllowOverride All
     </Directory>
+
+Permissions
+-----------
+
+### Linux
+
+    cp update_template.sh update.sh
+    sudo chmod +x update.sh
