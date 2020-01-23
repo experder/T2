@@ -11,22 +11,35 @@ namespace t2\admin;
 require_once '../Start.php';
 require_once ROOT_DIR . "/core/mod/Core_database.php";
 
+use t2\core\Error_;
 use t2\core\mod\Core_database;
 use t2\core\service\Config;
 use t2\core\service\Html;
+use t2\dev\Install_wizard;
 use t2\Start;
 
 $page = Start::init("PAGEID_CORE_UPDATER", "Updater");
 
 $page->add(Html::H1("Updater"));
 
-$platform = Config::get_value_core("PLATFORM");
+$platform = Config::get_check_platform();
 
 if ($platform == Config::PLATFORM_WINDOWS) {
-	$result = `cd..&&update.cmd 2>&1`;
+	if (!file_exists('../update_exclude.cmd')) {
+		require_once ROOT_DIR . '/dev/Install_wizard.php';
+		Install_wizard::init_updater($platform);
+	}
+	$result = `cd..&&update_exclude.cmd 2>&1`;
 	$result = mb_convert_encoding($result, "utf-8", "cp850");
 } else if ($platform == Config::PLATFORM_LINUX) {
-	$result = `cd .. && ./update.sh 2>&1`;
+	if (!file_exists('../update_exclude.sh')) {
+		require_once ROOT_DIR . '/dev/Install_wizard.php';
+		Install_wizard::init_updater($platform);
+	}
+	$result = `cd .. && ./update_exclude.sh 2>&1`;
+} else {
+	//Should not happen because $platform should be checked already
+	new Error_("Unknown platform.");
 }
 $result = htmlentities($result);
 $result .= "\n";

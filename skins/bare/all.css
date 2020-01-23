@@ -87,6 +87,7 @@ div.abutton {
 	background: lightgray;
 	margin: 0 2px;
 	padding: 0 2px;
+	/*TODO: CSS(bare): Schnickschnack (border-radius) raus!*/
 	border-radius: 5px;
 	transition: .5s;
 }

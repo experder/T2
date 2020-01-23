@@ -45,6 +45,29 @@ class Config {
 		return $value;
 	}
 
+	/**
+	 *
+	 * <code>
+	 * if ($platform_checked == Config::PLATFORM_WINDOWS) {
+	 * } else if ($platform_checked == Config::PLATFORM_LINUX) {
+	 * } else {
+	 *    //Should not happen because $platform_checked should be checked already
+	 *    new Error_("Unknown platform.");
+	 * }
+	 * </code>
+	 *
+	 * @return string
+	 */
+	public static function get_check_platform() {
+		$platform = Config::get_value_core("PLATFORM");
+		if ($platform != self::PLATFORM_WINDOWS
+			&& $platform != self::PLATFORM_LINUX
+		) {
+			new Error_("Unknown platform (\"$platform\")!", 0, "Try this: DELETE FROM `core_config` WHERE (`idstring`='PLATFORM');");
+		}
+		return $platform;
+	}
+
 	public static function MODULES() {
 		//TODO(3): Make modules configuration an object!
 		if (self::$cfg_modules === null) {

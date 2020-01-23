@@ -6,10 +6,15 @@
 # T2 comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
 # certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
 # GPL*/
+#
+# Please set rights and line endings of this file according to:
+# https://github.com/experder/T2/blob/master/help/install.md#linux
+#
 # äöü/**TPLDOCSTART
-# This template is used to create commandline update file "update.sh"
+# This template is used to create commandline update file "update_exclude.sh"
 # TODO(3): Describe caller
 # TPLDOCEND*/
+
 
 echo "========= git pull ========="
 git pull

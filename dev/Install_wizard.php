@@ -129,6 +129,29 @@ class Install_wizard {//TODO(3): Install wizard: Prompt all field in one form
 		return $database;
 	}
 
+	public static function init_updater($platform_checked) {
+		if ($platform_checked == Config::PLATFORM_WINDOWS) {
+			//TODO(1): init_updater (Windows)
+		} else if ($platform_checked == Config::PLATFORM_LINUX) {
+			$target = ROOT_DIR . '/update_exclude.sh';
+			Templates::create_file($target, ROOT_DIR . '/update_template.sh', array(
+				//Set Linux line endings:
+				"\r\n"=>"\n",
+			));
+			Page::$compiler_messages[] = new Message(Message::TYPE_CONFIRM, "Updater file \"$target\" created.");
+
+			//Try to set rights:
+			$result = `chmod 777 "$target" 2>&1`;
+
+			if($result) {
+				Page::$compiler_messages[] = new Message(Message::TYPE_INFO, "Please set appropriate rights [<a href='https://github.com/experder/T2/blob/master/help/install.md#linux' target='_blank'>HELP</a>]! $result");
+			}
+		} else {
+			//Should not happen because $platform_checked should be checked already
+			new Error_("Unknown Platform.");
+		}
+	}
+
 	public static function init_db_config() {
 		$database = Database::get_singleton();
 		self::prompt_coreUser();
