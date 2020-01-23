@@ -112,7 +112,7 @@ $page->add_message_confirm(
 $page->add(Html::H2("Forms", "forms"));
 
 if(Request::cmd("demo")){
-	Debug::out(print_r($_REQUEST,1));
+	Debug::out(print_r($_REQUEST,1),"POST");
 }
 
 $page->add($form=new Form("demo"));

@@ -39,7 +39,6 @@ Current TODOs
 * submit unchecked radios! (cssdemo.php:124)
 
 ### (Unknown)
-* Gleiche header werden überschrieben! (Debug.php:83)
 * CSS(bare): Schnickschnack (border-radius) raus! (all.css:90)
 
 ### Medium
@@ -76,8 +75,8 @@ Current TODOs
 * Determine Default_values for given module (Config.php:187)
 * Database::destroy();//Make Page Standalone (TODO-Necessary?) (Config.php:252)
 * file_exists($filename, $fatal=true) (Templates.php:32)
-* backtrace: Trenner nach der ersten Zeile (Debug.php:285)
-* backtrace: Funktion mit anzeigen (Debug.php:286)
+* backtrace: Trenner nach der ersten Zeile (Debug.php:293)
+* backtrace: Funktion mit anzeigen (Debug.php:294)
 * Install wizard: Prompt all field in one form (Install_wizard.php:35)
 * Database::destroy();//TODO-$prompting_coreUser (Install_wizard.php:97)
 * Describe regex projectwide (convert_todos.php:64)

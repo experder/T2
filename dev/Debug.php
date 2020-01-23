@@ -65,9 +65,10 @@ class Debug {
 	private static $outputs = array();
 
 	/**
-	 * @param mixed $val
+	 * @param mixed       $val
+	 * @param string|null $header
 	 */
-	public static function out($val = null) {
+	public static function out($val = null, $header=null) {
 
 		if ($val !== null) {
 			$val = print_r($val, 1);
@@ -78,9 +79,16 @@ class Debug {
 		//Header:
 		$caller = self::backtrace(1, "", false);
 		$caller = str_replace('\\', '/', $caller);//(Windows)
-		$header = substr($caller, strrpos($caller, '/') + 1);//(Last part)
+		$header0 = $header;
+		if($header===null){
+			$header0 = substr($caller, strrpos($caller, '/') + 1);//(Last part)
+		}
+		$header = $header0;
 
-		//TODO:Gleiche header werden überschrieben!
+		$counter = 2;
+		while (isset(self::$outputs[$header])) {
+			$header = $header0.'/'.($counter++);
+		}
 		self::$outputs[$header] = $val;
 
 	}
