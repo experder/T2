@@ -268,15 +268,12 @@ class Page {
 
 	}
 
-	public function add_js_jquery341() {//TODO(3): Move to includes
+	public function add_js_jquery341() {//TODO(1): Move to includes
 		$this->add_javascript("JS_ID_JQUERY", "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js");
 	}
 
-	public function add_js_core() {//TODO(3): Move to includes
+	public function add_js_core() {
 		$this->add_js_jquery341();
-//		if($this->standalone && !defined('HTTP_ROOT')){
-//			$this->init_http_root();
-//		}
 		$this->add_javascript("JS_ID_T2CORE", Config::get_value_core('HTTP_ROOT') . "/js/core.js");
 	}
 

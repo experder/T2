@@ -10,6 +10,7 @@ use t2\core\Formfield_textarea;
 use t2\core\service\Config;
 use t2\core\service\Html;
 use t2\core\service\Request;
+use t2\core\service\Strings;
 use t2\Start;
 
 $page = Start::init("PAGEID_CORE_TOOLBOX_CONVERTTODOS", "Convert TODOs");
@@ -100,6 +101,16 @@ function process(){
 	if ($current_file!==false && $count_per_file[$current_file]==0){//Letzte Zeile war Überschrift
 		$output[1][] = $current_file;
 	}
+
+	$output_escaped = array();
+	foreach ($output as $key => $value){
+		$array = array();
+		foreach ($value as $val){
+			$array[] = Strings::escape_markdown($val);
+		}
+		$output_escaped[$key] = $array;
+	}
+	$output = $output_escaped;
 
 	$out_html=array();
 	if($output[6]){

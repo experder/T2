@@ -43,6 +43,15 @@ class Strings {
 		));
 	}
 
+	public static function escape_markdown($value) {
+		//TODO(1): https://www.markdownguide.org/basic-syntax/#characters-you-can-escape
+		return self::replace_byArray($value, array(
+			"\\" => "\\\\",
+			"*" => "\\*",
+			"_" => "\\_",
+		));
+	}
+
 	/**
 	 * Other syntax for the str_replace function.
 	 * @param array  $substitutions An associative array containing the substitutions.

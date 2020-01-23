@@ -20,6 +20,16 @@ use t2\core\Page;
 
 class Includes {
 
+	private static $host_includes = true;
+
+	public static function js_jquery341(Page $page){
+		if(self::$host_includes){
+			//TODO:include jquery
+		}else{
+			$page->add_javascript("JS_ID_JQUERY", "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js");
+		}
+	}
+
 	/**
 	 * https://parsedown.org/
 	 * https://github.com/erusev/parsedown
