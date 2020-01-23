@@ -1,0 +1,36 @@
+@import url("../bare/all.css");
+
+/*
+======================== Links ===========================
+ */
+
+a.abutton,
+div.abutton {
+	border-radius: 5px;
+	transition: .5s;
+}
+
+a.abutton:hover,
+div.abutton:hover {
+	background-color: #ffecb8;
+	transition: .5s;
+}
+
+a[target="_blank"] {
+	transition: .5s;
+}
+
+a[target="_blank"]:hover {
+	background-position-y: 3px;
+	background-size: 14px;
+	transition: .5s;
+}
+
+
+/*
+======================== Messages ===========================
+ */
+
+div.messages div.message {
+	border-radius: 5px;
+}

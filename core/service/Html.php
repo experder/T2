@@ -129,7 +129,7 @@ class Html {
 		if (self::$extension === null) {
 			self::$extension = Config::get_value_core("EXTENSION");
 		}
-		return Page::HTTP_ROOT_() . '/' . $relative_page_without_extension . '.' . self::$extension;
+		return Config::get_value_core('HTTP_ROOT') . '/' . $relative_page_without_extension . '.' . self::$extension;
 	}
 
 }
