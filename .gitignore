@@ -1,4 +1,3 @@
-*_exclude.php
+*_exclude.*
+exclude/
 /.idea/
-/update.cmd
-/update.sh

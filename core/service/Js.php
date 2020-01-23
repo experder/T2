@@ -7,7 +7,7 @@
  GPL*/
 
 
-namespace t2\service;
+namespace t2\service;//TODO(1):namespace t2\core\service
 
 
 use t2\core\service\Html;

@@ -131,7 +131,9 @@ class Install_wizard {//TODO(3): Install wizard: Prompt all field in one form
 
 	public static function init_updater($platform_checked) {
 		if ($platform_checked == Config::PLATFORM_WINDOWS) {
-			//TODO(1): init_updater (Windows)
+			$target = ROOT_DIR . '/update_exclude.cmd';
+			Templates::create_file($target, ROOT_DIR . '/update_template.cmd', array());
+			Page::$compiler_messages[] = new Message(Message::TYPE_CONFIRM, "Updater file \"$target\" created.");
 		} else if ($platform_checked == Config::PLATFORM_LINUX) {
 			$target = ROOT_DIR . '/update_exclude.sh';
 			Templates::create_file($target, ROOT_DIR . '/update_template.sh', array(

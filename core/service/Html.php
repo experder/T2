@@ -46,6 +46,11 @@ class Html {
 		return new \t2\core\Html("a", $content, $params);
 	}
 
+	public static function DIV($content, $class = null, $params = array()) {
+		$params["class"] = $class;
+		return new \t2\core\Html("div", $content, $params);
+	}
+
 	public static function H1($content, $id = null) {
 		return new \t2\core\Html("h1", $content, array("id" => $id));
 	}

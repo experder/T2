@@ -13,6 +13,7 @@ $page = \t2\Start::init("PAGEID_CORE_DEVAREA", "Dev area");
 $page->add(\t2\core\service\Html::H1("Dev zone"));
 
 $page->add(\t2\core\service\Html::A_button("New module",\t2\core\service\Html::href_internal("dev/new_module")));
+$page->add(\t2\core\service\Html::A_button("Notes",\t2\core\service\Html::href_internal("dev/notes")));
 $page->add(\t2\core\service\Html::A_button("TODOs","https://github.com/experder/T2/blob/dev/dev/notes.md#current-todos",null,array("target"=>"_blank")));
 $page->add(\t2\core\service\Html::A_button("CSS demo",\t2\core\service\Html::href_internal("dev/mod_tools/cssdemo")));
 

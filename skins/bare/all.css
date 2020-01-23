@@ -67,6 +67,22 @@ pre.console div.console_inner {
 	height: 375px;
 }
 
+code{
+	border:1px solid blue;
+}
+pre code{
+	display:block;
+	border:1px solid darkred;
+}
+/*
+------------------------------ Markdown ----------------------------
+ */
+div.t2markdown p{
+	margin-left:5px;
+	padding-left:5px;
+	border-left:3px double gray;
+}
+
 /*
 ======================== Interaction ===========================
  */
@@ -85,6 +101,8 @@ pre.console div.console_inner {
 a.abutton,
 div.abutton {
 	background: lightgray;
+	margin: 0 2px;
+	padding: 0 2px;
 }
 
 div.abutton {
@@ -108,7 +126,7 @@ body {
 	margin-bottom: 30px;
 }
 
-pre.dev_error_info {
+pre.dev{
 	background: url('img/graystripe.png');
 }
 
@@ -122,8 +140,6 @@ div.dev_stats {
 }
 
 div.dev_stats div.abutton {
-	margin: 0 2px;
-	padding: 0 2px;
 	background: white;
 	border-radius: 5px;
 	box-shadow: -1px -1px 3px gray inset;

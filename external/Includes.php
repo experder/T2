@@ -6,10 +6,27 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
+/**
+require_once ROOT_DIR . '/external/Includes.php';
+ */
 
-namespace t2\core\external;
+namespace t2\external;
 
-//TODO(F):download third party packages (\t2\core\Includes, includes/Includes.php)
-class Includes {//TODO(F)
+//TODO(1):download third party packages (\t2\core\Includes, includes/Includes.php)
+class Includes {
+
+	/**
+	 * https://parsedown.org/
+	 * https://github.com/erusev/parsedown
+	 * https://github.com/erusev/parsedown/releases/tag/1.7.4
+	 * https://github.com/erusev/parsedown/archive/1.7.4.zip
+	 */
+	public static function php_parsedown174(){
+		require_once ROOT_DIR . '/external/exclude/parsedown-1.7.4/Parsedown.php';
+	}
+
+	private static function do_include($id, $file, $download){
+
+	}
 
 }

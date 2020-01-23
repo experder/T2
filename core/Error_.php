@@ -90,7 +90,7 @@ class Error_ {
 			$msg.=self::HR.Debug::backtrace($backtrace_depth + 1);
 		}
 		if($htmlentities){
-			$msg='<pre class="dev_error_info">'.htmlentities($msg).'</pre>';
+			$msg='<pre class="dev dev_error_info">'.htmlentities($msg).'</pre>';
 		}
 		return $msg;
 	}

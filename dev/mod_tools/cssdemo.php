@@ -11,9 +11,11 @@ namespace t2\dev\tools;
 require_once '../../Start.php';
 require_once ROOT_DIR . '/core/form/Form.php';
 require_once ROOT_DIR . '/core/Message.php';
+require_once ROOT_DIR . '/core/service/Markdown.php';
 
 use t2\core\service\Config;
 use t2\core\service\Html;
+use t2\core\service\Markdown;
 use t2\core\service\Request;
 use t2\core\service\Strings;
 use t2\core\Database;
@@ -72,6 +74,22 @@ $page->add(Html::TEXTAREA_console(schlauer_spruch()));
 $page->add(Html::H4("PRE"));
 $page->add(Html::PRE_console(schlauer_spruch()));
 
+$page->add(Html::H2("Markdown", "markdown"));
+$page->add($s=Markdown::string_to_string("
+### \#\#\# Header 3
+[Link](".Html::href_internal('index').")
+No new line
+`inline code` Linebreak:  
+__\_\_bold\_\___ _\_italic\__
+**\*\*bold\*\*** *\*italic\**
+* UL > LI
+
+Paragraph
+
+    code block
+"));
+#$page->add(Html::PRE(htmlentities($s),array('dev')));
+
 /*
 ======================== Links ===========================
  */
@@ -89,7 +107,7 @@ $page->add(Html::A_button('Button, external','http://tethys-framework.de',array(
 $page->add_message_info('<b>NOTE!</b> The following error is not real!');
 
 $page->add_message_error(
-'An error occured: ERROR_TABLE_NOT_FOUND/'.time().'<pre class="dev_error_info">
+'An error occured: ERROR_TABLE_NOT_FOUND/'.time().'<pre class="dev dev_error_info">
 [42S02] Table \''. Database::get_singleton()->get_dbname().'.SPACE\' doesn\'t exist
 ----------------------------------------
 SELECT * FROM SPACE
