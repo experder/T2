@@ -48,6 +48,10 @@ class Start {
 			$dir = str_replace("\\", "/", $dir);
 			define("ROOT_DIR", $dir);
 		}
+
+		//TODO(2): Configure PROJECT_ROOT
+		$propose_project_root=dirname(ROOT_DIR);
+		define('PROJECT_ROOT', $propose_project_root);
 	}
 
 	public static function dev_get_start_time() {

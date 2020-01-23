@@ -12,9 +12,9 @@ require_once ROOT_DIR . '/core/service/Markdown.php';
 
 namespace t2\core\service;
 
-require_once ROOT_DIR . '/external/Includes.php';
+require_once ROOT_DIR . '/core/service/Includes.php';
 
-use t2\external\Includes;
+use t2\core\service\Includes;
 
 class Markdown {
 
