@@ -22,7 +22,6 @@ use t2\Start;
 
 #echo "<pre>".Debug::backtrace()."</pre>";
 
-//TODO(1): Error class for admins and developers (-> notify) and Error class for users (warnings, don't notify)
 class Error_ {
 
 	private static $dev_error_counter=1;
@@ -43,6 +42,8 @@ class Error_ {
 	private $debug_info;
 
 	private static $recusion_protection = true;
+
+	protected $warning = false;
 
 	public function __construct($message, $ERROR_TYPE=self::TYPE_UNKNOWN, $debug_info=null, $backtrace_depth = 0, $report=true) {
 		$this->type = $ERROR_TYPE;
@@ -98,7 +99,6 @@ class Error_ {
 	private function get_msg_body($minimalistic=false, $backtrace_depth=0, $htmlentities=true, $backtrace=true){
 		//$minimalistic to prevent recusion
 		if(Config::$DEVMODE/*TODO(3): OR ADMIN (!$minimalistic)*/){
-			//TODO(3):i18n(!$minimalistic)
 			$message_body = #'(' . (self::$dev_error_counter++) . ') ' .
 				'An error occured: ' . $this->get_ref() ."\n". $this->get_msg(true, $backtrace, $htmlentities, $backtrace_depth + 1, $minimalistic);
 		}else if(User::id_(false)){
@@ -114,7 +114,7 @@ class Error_ {
 			$this->plain_abort($backtrace_depth+1);
 		}
 
-		//Write to errorlog-file:TODO(3):Write to errorlog-file
+		//Write to errorlog-/warnings-file:TODO(3):Write to errorlog-/warnings-file
 		$file_body = self::HR_outer
 			.self::meta_info_block()
 			.self::HR
@@ -123,16 +123,20 @@ class Error_ {
 		;
 		#Page::$compiler_messages[]=new Message(Message::TYPE_INFO, "<pre>".htmlentities($file_body)."</pre>");
 
-		$message_body = $this->get_msg_body(false, $backtrace_depth+1);
+		if(!$this->warning){
 
-		require_once ROOT_DIR . '/core/Message.php';
+			$message_body = $this->get_msg_body(false, $backtrace_depth+1);
 
-		$msg = new Message(Message::TYPE_ERROR, $message_body);
+			require_once ROOT_DIR . '/core/Message.php';
 
-		Page::$compiler_messages[] = $msg;
+			$msg = new Message(Message::TYPE_ERROR, $message_body);
 
-		Page::abort("ERROR", null, null, "PAGEID_CORE_ERRORARBORT");
-		exit;
+			Page::$compiler_messages[] = $msg;
+
+			Page::abort("ERROR", null, null, "PAGEID_CORE_ERRORARBORT");
+			exit;
+
+		}
 	}
 
 	private function report_havarie($backtrace_depth = 0){

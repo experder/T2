@@ -312,7 +312,7 @@ class Page {
 	private function get_css_html() {
 		$stylesheets = array();
 		$style = Config::get_value_core("SKIN");
-		if (in_array($style, array("bare", "play"))) {
+		if (in_array($style, array("bare"))) {
 			$stylesheets["CSS_ID_ALL"] = new Stylesheet(Config::get_value_core('HTTP_ROOT') . "/skins/$style/all.css");
 			$stylesheets["CSS_ID_PRINT"] = $this->get_demoskins_stylesheet_print($style);
 		}

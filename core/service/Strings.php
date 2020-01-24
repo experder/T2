@@ -44,12 +44,10 @@ class Strings {
 	}
 
 	public static function escape_markdown($value) {
-		//TODO(1): https://www.markdownguide.org/basic-syntax/#characters-you-can-escape
-		return self::replace_byArray($value, array(
-			"\\" => "\\\\",
-			"*" => "\\*",
-			"_" => "\\_",
-		));
+		//https://www.markdownguide.org/basic-syntax/#characters-you-can-escape
+		//https://stackoverflow.com/a/1531471
+		$value = preg_replace("/([\\\\`\\*_\\{\\}\\[\\]\\(\\)#\\+\\-\\.\\!\\|])/", "\\\\$1", $value);
+		return $value;
 	}
 
 	/**

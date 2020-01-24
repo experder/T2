@@ -11,8 +11,7 @@ require_once ROOT_DIR . '/core/service/Login.php';
  */
 namespace t2\core\service;
 
-//require_once ROOT_DIR . '/core/form/Form.php';
-//require_once ROOT_DIR . '/core/service/Php7.php';
+require_once ROOT_DIR . '/core/Warning.php';
 
 use t2\core\Database;
 use t2\core\Error_;
@@ -21,6 +20,7 @@ use t2\core\Formfield_password;
 use t2\core\Formfield_text;
 use t2\core\Message;
 use t2\core\Page;
+use t2\core\Warning;
 
 class Login {//TODO(2):Logout
 
@@ -85,8 +85,7 @@ class Login {//TODO(2):Logout
 			":session_id"=>$session_id,
 		));
 		if($rowcount!==1){
-			//TODO(1): Warning, not error.
-			new Error_("Couldn't update session!");
+			new Warning("Couldn't update session!");
 		}
 	}
 

@@ -23,7 +23,7 @@ use t2\core\Page;
 
 class Tools {
 
-	const empty_path = '(Leave empty for default)';//TODO(3):i18n
+	const empty_path = '(Leave empty for default)';
 
 	public static function prompt_new_module(Page $page){
 
