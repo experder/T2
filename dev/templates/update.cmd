@@ -11,5 +11,7 @@ rem by \t2\dev\Install_wizard::init_updater()
 rem TPLDOCEND*/
 
 
+cd ":rel_root"
+
 echo ========= git pull =========
 git pull

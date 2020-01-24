@@ -31,6 +31,7 @@ use t2\core\Message;
 use t2\core\mod\Core_database;
 use t2\core\Page;
 use t2\core\service\Config;
+use t2\core\service\Files;
 use t2\core\service\Html;
 use t2\core\service\Request;
 use t2\core\service\Templates;
@@ -163,13 +164,16 @@ class Install_wizard {//TODO(3): Install wizard: Prompt all field in one form
 	public static function init_updater($platform_checked) {
 		if ($platform_checked == Config::PLATFORM_WINDOWS) {
 			$target = PROJECT_ROOT . '/update.cmd';
-			Templates::create_file($target, ROOT_DIR . '/dev/templates/update.cmd', array());
+			Templates::create_file($target, ROOT_DIR . '/dev/templates/update.cmd', array(
+				":rel_root"=>Files::relative_path(PROJECT_ROOT, ROOT_DIR),
+			));
 			Page::$compiler_messages[] = new Message(Message::TYPE_CONFIRM, "Updater file \"$target\" created.");
 		} else if ($platform_checked == Config::PLATFORM_LINUX) {
 			$target = PROJECT_ROOT . '/update.sh';
 			Templates::create_file($target, ROOT_DIR . '/dev/templates/update.sh', array(
 				//Set Linux line endings:
 				"\r\n"=>"\n",
+				":rel_root"=>Files::relative_path(PROJECT_ROOT, ROOT_DIR),
 			));
 			Page::$compiler_messages[] = new Message(Message::TYPE_CONFIRM, "Updater file \"$target\" created.");
 

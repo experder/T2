@@ -16,5 +16,7 @@
 # TPLDOCEND*/
 
 
+cd ':rel_root'
+
 echo "========= git pull ========="
 git pull
