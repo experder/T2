@@ -13,8 +13,11 @@ require_once ROOT_DIR . '/core/service/Includes.php';
 namespace t2\core\service;
 
 require_once ROOT_DIR . '/core/Message.php';
+require_once ROOT_DIR . '/core/service/Request.php';
+require_once ROOT_DIR . '/core/form/Form.php';
 
 use t2\core\Error_;
+use t2\core\Form;
 use t2\core\Message;
 use t2\core\Page;
 
@@ -24,7 +27,7 @@ class Includes {
 
 	public static function js_jquery341(Page $page){
 		if(self::$host_includes){
-			//TODO:include jquery
+			//TODO(1):include jquery
 		}else{
 			$page->add_javascript("JS_ID_JQUERY", "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js");
 		}
@@ -52,12 +55,38 @@ class Includes {
 			return true;
 		}
 		if($download!==null){
+
+			//Show message while downloading:
+			if (!Request::cmd('doload')) {
+				Page::get_singleton()->add_inline_js("$(function(){
+					document.getElementById(\"id_hiddenformredirect\").submit();
+				})");
+				$form = new Form("doload","",false,"post",array('id'=>'id_hiddenformredirect'));
+				Page::abort("Downloading", array(
+					new Message(Message::TYPE_INFO, "Downloading \"$download\"...".$form),
+				));
+			}
+
 			$filename = basename($download);
 			$extension = pathinfo($download, PATHINFO_EXTENSION);
-			$target = PROJECT_ROOT . '/includes/' . $filename;
+			$target_dir = PROJECT_ROOT . '/includes';
+			$target = $target_dir . '/' . $filename;
 
 			//Download:
-			file_put_contents($target, fopen($download, 'r'));
+			if (!file_exists($target_dir)){
+				$ok = @mkdir($target_dir, 0777, true);
+				if(!$ok){
+					$target_dir_parent = dirname($target_dir);
+					new Error_("Couldn't create includes directory \"$target_dir\"!",0,"Try this: sudo chmod 777 '$target_dir_parent' -R");
+				}
+			}
+			if(!is_dir($target_dir)){
+				new Error_("Includes target is not a directory.");
+			}
+			$ok = @file_put_contents($target, fopen($download, 'r'));
+			if(!$ok){
+				new Error_("Couldn't store \"$target\"!",0,"Try this:\nsudo chmod 777 '$target_dir' -R");
+			}
 
 			//Unzip:
 			if(strtolower($extension)=='zip'){

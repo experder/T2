@@ -51,12 +51,27 @@ class Templates {
 		return $content;
 	}
 
-	public static function create_file($target_file, $template_file, $keyVals) {
+	/**
+	 * @param string  $target_file
+	 * @param string  $template_file
+	 * @param array[] $keyVals
+	 * @param bool    $override
+	 * @param bool    $report_error
+	 * @return int Errornumber
+	 */
+	public static function create_file($target_file, $template_file, $keyVals, $override=false, $report_error = true) {
+		if(!$override && file_exists($target_file)){
+			if($report_error){
+				new Error_("Couldn't store file \"$target_file\". File already exists!");
+			}
+			return -1/*File already exists*/;
+		}
 		$content = self::load($template_file, $keyVals);
 		$success = Files::save($target_file, $content, false, false);
 		if($success===false){
-			new Error_("Couldn't store file \"$target_file\". Please check rights.", 0, "", 1);
+			new Error_("Couldn't store file \"$target_file\". Please check rights.", 0, "Try this:\nsudo chmod 777 '".dirname($target_file)."' -R", 1);
 		}
+		return 0;
 	}
 
 }

@@ -21,6 +21,7 @@ require_once ROOT_DIR . '/core/form/Formfield_password.php';
 require_once ROOT_DIR . '/core/form/Formfield_checkbox.php';
 require_once ROOT_DIR . '/core/form/Formfield_radio.php';
 require_once ROOT_DIR . '/core/form/Formfield_radio_option.php';
+require_once ROOT_DIR . '/core/form/Formfield_header.php';
 
 
 //TODO(2): Submission of a form on a page called with "?key=val" results in an $_REQUEST array that contains key=val instead of submitted value
@@ -37,6 +38,8 @@ class Form {
 	private $buttons = array();
 	private $fields = array();
 
+	private $params;
+
 	/**
 	 * @param string|false $action      An URL that is called on form submission.
 	 *                                  Can be left empty (same page is called).
@@ -44,8 +47,11 @@ class Form {
 	 * @param string|false $submit_text Label of the submit button. FALSE to turn off submit button.
 	 * @param string|null  $CMD_        If set, a hidden key "cmd" is sent on submission.
 	 * @param string|null  $method      ["get"|"post"] Form submission method. The submission method is "post" by default.
+	 * @param array        $params      Associative array width additional params for the HTML form tag.
 	 */
-	public function __construct($CMD_ = null, $action = "", $submit_text = "Send"/*TODO(3):i18n*/, $method = "post") {
+	public function __construct($CMD_ = null, $action = "", $submit_text = "Send"/*TODO(3):i18n*/, $method = "post", $params=array()) {
+
+		$this->params=$params;
 
 		$this->action = $action;
 
@@ -62,6 +68,10 @@ class Form {
 	}
 
 	public function add_field(Formfield $formfield) {
+		//PHP type check does this:
+//		if(!($formfield instanceof Formfield)){
+//			new Error_("Please pass formfields only.");
+//		}
 		$this->fields[] = $formfield;
 	}
 
@@ -82,7 +92,7 @@ class Form {
 		}
 		$fields_html = implode("\n", $this->fields);
 		$action = ($this->action===false?"":(" action=\"$this->action\" method='$this->method'"));
-		return "<form$action>\n$fields_html$buttons\n</form>";
+		return "<form$action ".\t2\core\service\Html::tag_keyValues($this->params).">\n$fields_html$buttons\n</form>";
 	}
 
 }

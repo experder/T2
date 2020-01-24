@@ -8,7 +8,7 @@
 
 namespace t2\dev;
 
-require_once '../../tethys/Start.php';
+require_once '../Start.php';
 require_once ROOT_DIR . '/core/service/Markdown.php';
 
 use t2\core\service\Markdown;

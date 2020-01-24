@@ -11,8 +11,8 @@
 # https://github.com/experder/T2/blob/master/help/install.md#linux
 #
 # äöü/**TPLDOCSTART
-# This template is used to create commandline update file "update_exclude.sh"
-# TODO(3): Describe caller
+# This template is used to create commandline update file "update.sh"
+# by \t2\dev\Install_wizard::init_updater()
 # TPLDOCEND*/
 
 

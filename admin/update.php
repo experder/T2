@@ -23,20 +23,21 @@ $page = Start::init("PAGEID_CORE_UPDATER", "Updater");
 $page->add(Html::H1("Updater"));
 
 $platform = Config::get_check_platform();
+$project_root = PROJECT_ROOT;
 
 if ($platform == Config::PLATFORM_WINDOWS) {
-	if (!file_exists('../update_exclude.cmd')) {
+	if (!file_exists(PROJECT_ROOT . '/update.cmd')) {
 		require_once ROOT_DIR . '/dev/Install_wizard.php';
 		Install_wizard::init_updater($platform);
 	}
-	$result = `cd..&&update_exclude.cmd 2>&1`;
+	$result = `cd "$project_root" && update.cmd 2>&1`;
 	$result = mb_convert_encoding($result, "utf-8", "cp850");
 } else if ($platform == Config::PLATFORM_LINUX) {
-	if (!file_exists('../update_exclude.sh')) {
+	if (!file_exists(PROJECT_ROOT . '/update.sh')) {
 		require_once ROOT_DIR . '/dev/Install_wizard.php';
 		Install_wizard::init_updater($platform);
 	}
-	$result = `cd .. && ./update_exclude.sh 2>&1`;
+	$result = `cd '$project_root' && ./update.sh 2>&1`;
 } else {
 	//Should not happen because $platform should be checked already
 	new Error_("Unknown platform.");

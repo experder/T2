@@ -98,10 +98,7 @@ class Database {
 	public static function get_singleton($quit_on_error = true) {
 		if (self::$singleton === null || !isset(self::$singleton->pdo)) {
 			if ($quit_on_error) {
-				new Error_("Please initialize Database singelton first", "ERROR_DB_NOT_INITIALIZED",
-					"* \\t2\\core\\Database::init(...);"
-					. "\n* require_once ROOT_DIR . '/config_exclude.php';"
-					, 1);
+				new Error_("ERROR_DB_NOT_INITIALIZED");
 			}
 			return false;
 		}

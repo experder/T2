@@ -40,6 +40,9 @@ Permissions
 
 ### Linux
 
-    cp update_template.sh update_exclude.sh
-    sudo chmod 777 update.sh
-* Check line endings of `update_exclude.sh`! (Must be Linux: `\n`)
+    cp dev/templates/update.sh ../update.sh
+* Check line endings of `update.sh`! (Must be Linux: `\n`)
+
+
+    # Set rights for project's root directory:
+    sudo chmod 777 '/var/www/myproject' -R

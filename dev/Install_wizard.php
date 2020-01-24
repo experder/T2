@@ -22,7 +22,10 @@ require_once ROOT_DIR . '/core/service/Templates.php';
 use t2\core\Database;
 use t2\core\Error_;
 use t2\core\Form;
+use t2\core\Formfield_header;
 use t2\core\Formfield_password;
+use t2\core\Formfield_radio;
+use t2\core\Formfield_radio_option;
 use t2\core\Formfield_text;
 use t2\core\Message;
 use t2\core\mod\Core_database;
@@ -62,16 +65,25 @@ class Install_wizard {//TODO(3): Install wizard: Prompt all field in one form
 		}
 
 		$form = new Form("submit_db_credentials");
+		$form->add_field(new Formfield_header(Html::H1("Database connection")));
+		#$form->add_field(new Formfield_header("Please enter sql connection parameters"));
 		$form->add_field(new Formfield_text("server_addr", "Host", "localhost"));
 		$form->add_field(new Formfield_text("tethysdb", "DB name", "tethys"));
 		$form->add_field(new Formfield_text("username", "Admin account", "root"));
 		$form->add_field(new Formfield_password("dbpass", "Admin password", ""));
 
-		$html = Html::H1("Database connection") . "Please enter sql connection parameters" . $form;
+		$form->add_field(new Formfield_header(Html::H1("Project settings")));
+		$form->add_field(new Formfield_text("project_root", "Project root directory", dirname(dirname(__DIR__))));
+		$form->add_field(new Formfield_radio("config_redirect",array(
+			new Formfield_radio_option("project", "Store config in project root"),
+			new Formfield_radio_option("t2", "Store config in submodule t2"),
+		),"", "project"));
+
+		$html = $form;
 
 		$message = new Message(Message::TYPE_INFO, $html);
 
-		Page::abort("Database connection - Installer", array($message), null, "PAGEID_CORE_INSTALLER_PROMPT_DBPARAMS");
+		Page::abort("Basic configuration - Installer", array($message), null, "PAGEID_CORE_INSTALLER_PROMPT_DBPARAMS");
 	}
 
 	private static function prompt_coreUser() {
@@ -102,14 +114,33 @@ class Install_wizard {//TODO(3): Install wizard: Prompt all field in one form
 	}
 
 	private static function init_config() {
-		$target_file = ROOT_DIR . '/config_exclude.php';
-		Templates::create_file($target_file, ROOT_DIR . '/config_template.php', array(
+		$target_file = ROOT_DIR . '/config.php';
+		$store_locally = Request::value('config_redirect')=='t2';
+		$project_root = Request::value("project_root", false);
+		if($project_root===false){
+			new Error_(true);
+		}
+		$message = "";
+		if(!$store_locally){
+			Templates::create_file($target_file, ROOT_DIR . '/dev/templates/config_redirect.php', array(
+				":project_root" => $project_root,
+			));
+			$message.="<br>Redirection has been created: \"$target_file\".";
+			$target_file = $project_root . '/config.php';
+		}
+		$error = Templates::create_file($target_file, ROOT_DIR . '/dev/templates/config.php', array(
 			":server_addr" => Request::value("server_addr", "(please specify)"),
 			":tethysdb" => Request::value("tethysdb", "(please specify)"),
 			":username" => Request::value("username", "(please specify)"),
 			":dbpass" => Request::value("dbpass", "(please specify)"),
-		));
-		return new Message(Message::TYPE_CONFIRM, "Config file \"$target_file\" has been created.");
+			":project_root" => $project_root,
+		),false,false);
+		if($error==-1/*File already exists*/){
+			$message = "Using existing config file \"$target_file\".".$message;
+		}else{
+			$message = "Config file \"$target_file\" has been created.".$message;
+		}
+		return new Message(Message::TYPE_CONFIRM, $message);
 	}
 
 	public static function init_db($host, $dbname, $user, $password) {
@@ -131,12 +162,12 @@ class Install_wizard {//TODO(3): Install wizard: Prompt all field in one form
 
 	public static function init_updater($platform_checked) {
 		if ($platform_checked == Config::PLATFORM_WINDOWS) {
-			$target = ROOT_DIR . '/update_exclude.cmd';
-			Templates::create_file($target, ROOT_DIR . '/update_template.cmd', array());
+			$target = PROJECT_ROOT . '/update.cmd';
+			Templates::create_file($target, ROOT_DIR . '/dev/templates/update.cmd', array());
 			Page::$compiler_messages[] = new Message(Message::TYPE_CONFIRM, "Updater file \"$target\" created.");
 		} else if ($platform_checked == Config::PLATFORM_LINUX) {
-			$target = ROOT_DIR . '/update_exclude.sh';
-			Templates::create_file($target, ROOT_DIR . '/update_template.sh', array(
+			$target = PROJECT_ROOT . '/update.sh';
+			Templates::create_file($target, ROOT_DIR . '/dev/templates/update.sh', array(
 				//Set Linux line endings:
 				"\r\n"=>"\n",
 			));

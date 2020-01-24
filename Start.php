@@ -48,10 +48,6 @@ class Start {
 			$dir = str_replace("\\", "/", $dir);
 			define("ROOT_DIR", $dir);
 		}
-
-		//TODO(2): Configure PROJECT_ROOT
-		$propose_project_root=dirname(ROOT_DIR);
-		define('PROJECT_ROOT', $propose_project_root);
 	}
 
 	public static function dev_get_start_time() {
@@ -61,7 +57,7 @@ class Start {
 	private static function init_config() {
 		require_once ROOT_DIR . '/core/Database.php';
 		require_once ROOT_DIR . '/core/service/Config.php';
-		$config_file = ROOT_DIR . '/config_exclude.php';
+		$config_file = ROOT_DIR . '/config.php';
 		if (!file_exists($config_file)) {
 			require_once ROOT_DIR . '/dev/Install_wizard.php';
 			Install_wizard::prompt_dbParams();
@@ -73,6 +69,13 @@ class Start {
 			new Error_("Local config file seems to be corrupt. Please check.", "ERROR_CONFIG_CORRUPT", "Config file: " . $config_file);
 		}
 		#define('DB_CORE_PREFIX', Database::get_singleton()->core_prefix);
+
+		//TODO(2): Configure PROJECT_ROOT
+		if (!defined("PROJECT_ROOT")) {
+			$propose_project_root=dirname(ROOT_DIR);
+			define('PROJECT_ROOT', $propose_project_root);
+		}
+
 	}
 
 	private static function init_database() {

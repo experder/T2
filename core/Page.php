@@ -376,21 +376,23 @@ class Page {
 		}
 		self::$recusion_protection_abort = false;
 
+		if (is_array($messages)) {
+			foreach ($messages as $message) {
+				Page::$compiler_messages[] = $message;
+			}
+		}
+
 		$page = Page::get_singleton(false);
 		if ($page === false) {
 
 			$page = new Page($id, $title);
 
-			if (is_array($messages)) {
-				foreach ($messages as $message) {
-					Page::$compiler_messages[] = $message;
-				}
-			}
-
 			if ($body !== null) {
 				$page->add($body);
 			}
 
+		}else{
+			$page->reset($id, $title);
 		}
 
 		$page->send_and_quit();

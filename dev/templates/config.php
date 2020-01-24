@@ -7,14 +7,17 @@
  GPL*/
 /**TPLDOCSTART
  * This template is used by the installer wizard (\t2\dev\Install_wizard::init_config)
- * to create the configuration file "config_exclude.php"
- * which is called from \t2\Start::init_config
+ * to create the configuration file "config.php"
+ * which is called from \t2\Start::init_config (maybe via redirection)
  * @see \t2\dev\Install_wizard::init_config
  * @see \t2\Start::init_config
  * TPLDOCEND*/
 
 //Set to TRUE in your development environment, FALSE (default) for production:
 #\service\Config::$DEVMODE = true;
+
+//Where to find your project:
+define('PROJECT_ROOT', ":project_root");
 
 //Initialize database connection:
 \t2\core\Database::init(':server_addr', ':tethysdb', ':username', ':dbpass');
