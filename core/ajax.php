@@ -12,7 +12,6 @@ use t2\api\Ajax;
 use t2\Start;
 
 require_once '../../tethys/Start.php';
-//equire_once ROOT_DIR . '/api/Ajax.php';
 
 Start::init_ajax();
 

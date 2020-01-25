@@ -7,13 +7,9 @@
  GPL*/
 
 
-/*
-//equire_once ROOT_DIR . '/core/service/Config.php';
- */
 
 namespace t2\core\service;
 
-//equire_once ROOT_DIR . '/core/Database.php';
 
 use t2\api\Default_values;
 use t2\core\Database;
@@ -149,7 +145,6 @@ class Config {
 		}
 
 		//Guess HTTP_ROOT:
-		//equire_once ROOT_DIR . '/core/service/Files.php';
 		$value = Files::relative_path($_SERVER["SCRIPT_FILENAME"], ROOT_DIR);
 
 		if ($relative
@@ -160,7 +155,6 @@ class Config {
 		}
 
 		//Prompt HTTP_ROOT:
-		//equire_once ROOT_DIR . '/dev/Install_wizard.php';
 		$value = Install_wizard::prompt_http_root();
 		if ($value === false) {
 			new Error_("Could not set HTTP_ROOT.");
@@ -171,7 +165,6 @@ class Config {
 	}
 
 	public static function get_default_value($module, $id, $backtrace_depth = 0) {
-		//equire_once ROOT_DIR . '/api/Default_values.php';
 		$module = $module ?: 'core';
 		if ($module === 'core') {
 			if ($id == 'HTTP_ROOT') {
@@ -229,7 +222,6 @@ class Config {
 	 * @param int|null    $user
 	 */
 	public static function load_values($ids, $module = null, $user = null) {
-		//equire_once ROOT_DIR . '/core/service/Strings.php';
 		$ids_sql = Strings::build_sql_collection($ids);
 		#$core_config = DB_CORE_PREFIX.'_config';
 		self::$dev_lv_line = __LINE__ + 7;
@@ -244,7 +236,6 @@ class Config {
 		$error = Database::get_singleton()->getError();
 		if ($error !== false) {
 			if ($error->isType(Error_::TYPE_TABLE_NOT_FOUND)) {
-				//equire_once ROOT_DIR . '/dev/Install_wizard.php';
 				$report = Install_wizard::init_db_config();
 				$msg = new Message(Message::TYPE_CONFIRM, "DB \"" . Database::get_singleton()->get_dbname() . "\" initialized. " . $report);
 				Page::$compiler_messages[] = $msg;

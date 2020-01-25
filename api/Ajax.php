@@ -5,14 +5,9 @@
  * T2 comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
-/*
-//equire_once ROOT_DIR . '/api/Ajax.php';
- */
 
 namespace t2\api;
 
-//equire_once ROOT_DIR . '/core/service/Request.php';
-//equire_once ROOT_DIR . '/api/Service.php';
 
 use t2\core\service\Request;
 use t2\core\Error_;

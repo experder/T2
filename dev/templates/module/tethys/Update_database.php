@@ -11,7 +11,6 @@ GPL
  * @see \t2\dev\Tools::prompt_new_module()
 TPLDOCEND*/
 
-//equire_once ROOT_DIR . "/api/Update_database.php";
 
 use t2\api\Update_database;
 

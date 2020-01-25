@@ -8,8 +8,6 @@
 
 namespace t2\core\mod;
 
-//equire_once ROOT_DIR . '/api/Default_values.php';
-//equire_once ROOT_DIR . '/dev/Debug.php';
 
 use t2\api\Default_values;
 

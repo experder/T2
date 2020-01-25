@@ -6,22 +6,9 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-/*
-//equire_once ROOT_DIR . '/core/form/Form.php';
- */
 
 namespace t2\core\form;
 
-//equire_once ROOT_DIR . '/core/Html.php';
-//equire_once ROOT_DIR . '/core/form/Formfield.php';
-//equire_once ROOT_DIR . '/core/form/Formfield_hidden.php';
-//equire_once ROOT_DIR . '/core/form/Formfield_text.php';
-//equire_once ROOT_DIR . '/core/form/Formfield_textarea.php';
-//equire_once ROOT_DIR . '/core/form/Formfield_password.php';
-//equire_once ROOT_DIR . '/core/form/Formfield_checkbox.php';
-//equire_once ROOT_DIR . '/core/form/Formfield_radio.php';
-//equire_once ROOT_DIR . '/core/form/Formfield_radio_option.php';
-//equire_once ROOT_DIR . '/core/form/Formfield_header.php';
 
 
 //TODO(2): Submission of a form on a page called with "?key=val" results in an $_REQUEST array that contains key=val instead of submitted value

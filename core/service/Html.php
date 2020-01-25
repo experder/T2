@@ -19,7 +19,6 @@ class Html {
 	 * @return string
 	 */
 	public static function tag_keyValues($params) {
-		//equire_once ROOT_DIR . '/core/service/Strings.php';
 		if (!is_array($params)) {
 			return "";
 		}

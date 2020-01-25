@@ -9,7 +9,6 @@
 namespace t2\dev;
 
 require_once '../Start.php';
-//equire_once ROOT_DIR . '/core/service/includes/Markdown.php';
 
 use t2\core\service\includes\Markdown;
 use t2\Start;

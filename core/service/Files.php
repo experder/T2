@@ -5,13 +5,9 @@
  * T2 comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
-/*
-//equire_once ROOT_DIR . '/core/service/Files.php';
- */
 
 namespace t2\core\service;
 
-//equire_once ROOT_DIR . '/dev/Debug.php';
 
 #use t2\core\Error;
 

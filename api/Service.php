@@ -5,13 +5,8 @@
  * T2 comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
-/*
-//equire_once ROOT_DIR.'/api/Service.php';
- */
 namespace t2\api;
 
-//equire_once ROOT_DIR . '/core/service/Config.php';
-//equire_once ROOT_DIR . '/core/Error_.php';
 
 use t2\core\service\Config;
 use t2\core\mod\Core_ajax;
@@ -22,7 +17,6 @@ class Service {
 	public static function get_api_class_core($classname){
 		switch ($classname) {
 			case "Ajax":
-				//equire_once ROOT_DIR . '/core/mod/Core_ajax.php';
 				return new Core_ajax();
 				break;
 			default:

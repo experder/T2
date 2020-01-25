@@ -6,15 +6,9 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-/*
-//equire_once ROOT_DIR . '/dev/Debug.php';
- */
 
 namespace t2\dev;
 
-//equire_once ROOT_DIR . '/core/Html.php';
-//equire_once ROOT_DIR . '/core/service/Html.php';
-//equire_once ROOT_DIR . '/core/service/Arrays.php';
 
 use t2\core\Html;
 use t2\core\Page;
@@ -118,7 +112,6 @@ class Debug {
 	}
 
 	public static function mark_core_query_checked($value) {
-		//equire_once ROOT_DIR . '/core/service/Arrays.php';//dev/Debug.php:112
 		self::$core_queries_compiled = Arrays::remove_from_array_by_value(self::get_core_queries(), $value);
 	}
 

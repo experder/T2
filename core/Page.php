@@ -6,16 +6,10 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-/*
-//equire_once ROOT_DIR . '/core/Page.php';
- */
 
 
 namespace t2\core;
 
-//equire_once ROOT_DIR . '/core/Stylesheet.php';
-//equire_once ROOT_DIR . '/core/service/Config.php';
-//equire_once ROOT_DIR . '/core/Message.php';
 
 use t2\core\service\Config;
 use t2\core\service\Html;

@@ -7,17 +7,9 @@
  GPL*/
 
 
-/*
-//equire_once ROOT_DIR . '/dev/Install_wizard.php';
- */
 
 namespace t2\dev;
 
-//equire_once ROOT_DIR . '/core/Message.php';
-//equire_once ROOT_DIR . "/core/mod/Core_database.php";
-//equire_once ROOT_DIR . '/core/service/Request.php';
-//equire_once ROOT_DIR . '/core/form/Form.php';
-//equire_once ROOT_DIR . '/core/service/Templates.php';
 
 use t2\core\Database;
 use t2\core\Error_;

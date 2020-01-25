@@ -6,9 +6,6 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-/*
-//equire_once ROOT_DIR . '/core/form/Formfield.php';
- */
 
 namespace t2\core\form;
 
@@ -16,10 +13,6 @@ use t2\core\service\Config;
 use t2\core\service\Request;
 use t2\core\service\Strings;
 
-//equire_once ROOT_DIR . '/core/Html.php';
-//equire_once ROOT_DIR . '/core/service/Html.php';
-//equire_once ROOT_DIR . '/core/service/Strings.php';
-//equire_once ROOT_DIR . '/core/service/Request.php';
 
 
 /**

@@ -6,13 +6,9 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-/*
-//equire_once ROOT_DIR . '/core/Database.php';
- */
 
 namespace t2\core;
 
-//equire_once ROOT_DIR . '/core/Error_.php';
 
 use t2\core\service\Config;
 use t2\core\service\Strings;
@@ -67,7 +63,6 @@ class Database {
 		} catch (\Exception $e) {
 			$this->exception = $e;
 			if ($quit_on_error) {
-				//equire_once ROOT_DIR . '/core/Error_.php';
 				Error_::from_exception($e);
 			}
 		}
@@ -123,10 +118,8 @@ class Database {
 		$e = self::$singleton->getException();
 
 		if ($e !== false) {
-			//equire_once ROOT_DIR . '/core/Error_.php';
 			if ($e instanceof \PDOException) {
 				if ($e->getCode() === 1049/*Unknown database*/) {
-					//equire_once ROOT_DIR . '/dev/Install_wizard.php';
 					self::$singleton = Install_wizard::init_db($host, $dbname, $user, $password);
 					$e = false;
 				} else if ($e->getCode() === 2002/*php_network_getaddresses: getaddrinfo failed*/) {
@@ -213,8 +206,6 @@ class Database {
 		$ok = @$statement->execute($substitutions);
 		//TODO(3):subroutines für debug_info und fehler-handling
 		if (Config::$DEVMODE) {
-			//equire_once ROOT_DIR . '/dev/Debug.php';
-			//equire_once ROOT_DIR . '/core/Html.php';
 			$backtrace = debug_backtrace();
 
 			ob_flush();
@@ -262,7 +253,6 @@ class Database {
 				$compiled_query = ($debugDump ?: $query);
 			}
 
-			//equire_once ROOT_DIR . '/core/Error_.php';
 			$this->error = new Error_($errorInfo, $errorType, $compiled_query, $backtrace_depth + 1, $halt_on_error);
 
 			return false;

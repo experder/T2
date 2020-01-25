@@ -6,14 +6,9 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-/*
-//equire_once ROOT_DIR . '/core/service/Templates.php';
- */
 
 namespace t2\core\service;
 
-//equire_once ROOT_DIR . '/core/service/Strings.php';
-//equire_once ROOT_DIR . '/core/service/Files.php';
 
 use t2\core\Error_;
 

@@ -7,13 +7,7 @@
  GPL*/
 
 
-/*
-//equire_once ROOT_DIR . '/core/Html.php';
- */
-
 namespace t2\core;
-
-//equire_once ROOT_DIR . '/core/service/Html.php';
 
 
 class Html {

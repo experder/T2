@@ -6,13 +6,9 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-/*
-//equire_once ROOT_DIR . '/core/Warning.php';
- */
 
 namespace t2\core;
 
-//equire_once ROOT_DIR . '/core/Error_.php';
 
 class Warning extends Error_ {
 
