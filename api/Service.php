@@ -6,12 +6,12 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 /*
-require_once ROOT_DIR.'/api/Service.php';
+//equire_once ROOT_DIR.'/api/Service.php';
  */
 namespace t2\api;
 
-require_once ROOT_DIR . '/core/service/Config.php';
-require_once ROOT_DIR . '/core/Error_.php';
+//equire_once ROOT_DIR . '/core/service/Config.php';
+//equire_once ROOT_DIR . '/core/Error_.php';
 
 use t2\core\service\Config;
 use t2\core\mod\Core_ajax;
@@ -22,7 +22,7 @@ class Service {
 	public static function get_api_class_core($classname){
 		switch ($classname) {
 			case "Ajax":
-				require_once ROOT_DIR . '/core/mod/Core_ajax.php';
+				//equire_once ROOT_DIR . '/core/mod/Core_ajax.php';
 				return new Core_ajax();
 				break;
 			default:
@@ -46,7 +46,7 @@ class Service {
 			Error_::quit("Module configuration is corrupt. {\"$module\":{\"$classname\":{\"include\":...}}}:\nFile not found: $include_file");
 		}
 		/** @noinspection PhpIncludeInspection */
-		include_once $include_file;
+		require_once $include_file;
 		$class = $modules[$module][$classname]['class'];
 		if (!class_exists($class)){
 			Error_::quit("Module configuration defines not-existing class: \"$class\" {\"$module\":{\"$classname\":{\"class\":...}}}");

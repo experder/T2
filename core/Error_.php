@@ -6,14 +6,14 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 /*
-require_once ROOT_DIR . '/core/Error_.php';
+//equire_once ROOT_DIR . '/core/Error_.php';
  */
 
 namespace t2\core;
 
-require_once ROOT_DIR . '/core/service/Config.php';
-require_once ROOT_DIR . '/dev/Debug.php';
-require_once ROOT_DIR . '/core/Page.php';
+//equire_once ROOT_DIR . '/core/service/Config.php';
+//equire_once ROOT_DIR . '/dev/Debug.php';
+//equire_once ROOT_DIR . '/core/Page.php';
 
 use t2\core\service\Config;
 use t2\core\service\User;
@@ -82,7 +82,7 @@ class Error_ {
 
 	private function get_msg($debug_info=true, $backtrace=true, $htmlentities=false, $backtrace_depth=0, $minimalistic=false){
 		//$minimalistic to prevent recusion
-		require_once ROOT_DIR . '/dev/Debug.php';
+		//equire_once ROOT_DIR . '/dev/Debug.php';
 		$msg = $this->message;
 		if($debug_info && $this->debug_info){
 			$msg.=self::HR.$this->debug_info;
@@ -127,7 +127,7 @@ class Error_ {
 
 			$message_body = $this->get_msg_body(false, $backtrace_depth+1);
 
-			require_once ROOT_DIR . '/core/Message.php';
+			//equire_once ROOT_DIR . '/core/Message.php';
 
 			$msg = new Message(Message::TYPE_ERROR, $message_body);
 
@@ -149,7 +149,7 @@ class Error_ {
 	}
 
 	private function meta_info_block() {
-		require_once ROOT_DIR . '/core/service/User.php';
+		//equire_once ROOT_DIR . '/core/service/User.php';
 		$timestamp = date("Y-m-d H:i:s", $this->timestamp) . " [#" . $this->timestamp . "]";
 		$ip = (isset($_SERVER) && isset($_SERVER["REMOTE_ADDR"]) && $_SERVER["REMOTE_ADDR"] ? $_SERVER["REMOTE_ADDR"] : "(IP unknonwn)");
 		#$url = (isset($_SERVER["SCRIPT_URI"]) ? ("\n" . $_SERVER["SCRIPT_URI"] . (isset($_SERVER["QUERY_STRING"]) && $_SERVER["QUERY_STRING"] ? ("?" . $_SERVER["QUERY_STRING"]) : "")) : "");

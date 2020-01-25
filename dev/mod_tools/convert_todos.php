@@ -3,7 +3,7 @@
 namespace t2\dev\tools;
 
 require_once '../../Start.php';
-require_once ROOT_DIR . '/core/form/Form.php';
+//equire_once ROOT_DIR . '/core/form/Form.php';
 
 use t2\core\Form;
 use t2\core\Formfield_textarea;

@@ -9,7 +9,7 @@
 namespace t2\admin;
 
 require_once '../Start.php';
-require_once ROOT_DIR . "/core/mod/Core_database.php";
+//equire_once ROOT_DIR . "/core/mod/Core_database.php";
 
 use t2\core\Error_;
 use t2\core\mod\Core_database;
@@ -27,14 +27,14 @@ $project_root = PROJECT_ROOT;
 
 if ($platform == Config::PLATFORM_WINDOWS) {
 	if (!file_exists(PROJECT_ROOT . '/update.cmd')) {
-		require_once ROOT_DIR . '/dev/Install_wizard.php';
+		//equire_once ROOT_DIR . '/dev/Install_wizard.php';
 		Install_wizard::init_updater($platform);
 	}
 	$result = `cd "$project_root" && update.cmd 2>&1`;
 	$result = mb_convert_encoding($result, "utf-8", "cp850");
 } else if ($platform == Config::PLATFORM_LINUX) {
 	if (!file_exists(PROJECT_ROOT . '/update.sh')) {
-		require_once ROOT_DIR . '/dev/Install_wizard.php';
+		//equire_once ROOT_DIR . '/dev/Install_wizard.php';
 		Install_wizard::init_updater($platform);
 	}
 	$result = `cd '$project_root' && ./update.sh 2>&1`;

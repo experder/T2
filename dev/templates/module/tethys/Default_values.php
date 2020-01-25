@@ -11,7 +11,7 @@ GPL
  * @see \t2\dev\Tools::prompt_new_module()
 TPLDOCEND*/
 
-require_once ROOT_DIR . '/api/Default_values.php';
+//equire_once ROOT_DIR . '/api/Default_values.php';
 
 use t2\api\Default_values;
 

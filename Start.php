@@ -40,7 +40,7 @@ class Start {
 		if (self::$dev_start_time === null) {
 			self::$dev_start_time = microtime(true);
 		} else {
-			require_once ROOT_DIR . '/core/Error_.php';
+			//equire_once ROOT_DIR . '/core/Error_.php';
 			new Error_("Init called twice!", 0, null, 1);
 		}
 		if (!defined("ROOT_DIR")) {
@@ -79,7 +79,7 @@ class Start {
 	}
 
 	private static function init_database() {
-		require_once ROOT_DIR . '/core/service/Config.php';
+		//equire_once ROOT_DIR . '/core/service/Config.php';
 		Config::load_values(array(
 			"EXTENSION",
 			"PROJECT_TITLE",
@@ -92,7 +92,7 @@ class Start {
 	}
 
 	private static function init_userrights() {
-		require_once ROOT_DIR . '/core/service/User.php';
+		//equire_once ROOT_DIR . '/core/service/User.php';
 		User::init();
 	}
 
@@ -119,7 +119,7 @@ class Start {
 		if (!defined('ROOT_DIR')) {
 			self::init_constants();
 		}
-		require_once ROOT_DIR . '/core/Error_.php';
+		//equire_once ROOT_DIR . '/core/Error_.php';
 		if (self::$type == self::TYPE_UNKNOWN) {
 			Error_::plain_abort_("Unknown type. T2 has not been initialized. \"Start::init\" should be the very first call.", 1);
 		}

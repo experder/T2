@@ -8,12 +8,12 @@
 
 
 /*
-require_once ROOT_DIR . '/core/Html.php';
+//equire_once ROOT_DIR . '/core/Html.php';
  */
 
 namespace t2\core;
 
-require_once ROOT_DIR . '/core/service/Html.php';
+//equire_once ROOT_DIR . '/core/service/Html.php';
 
 
 class Html {

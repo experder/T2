@@ -6,12 +6,12 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 /*
-require_once ROOT_DIR.'/api/Default_values.php';
+//equire_once ROOT_DIR.'/api/Default_values.php';
  */
 
 namespace t2\api;
 
-require_once ROOT_DIR . '/api/Service.php';
+//equire_once ROOT_DIR . '/api/Service.php';
 
 use t2\core\mod\Core_values;
 
@@ -39,7 +39,7 @@ abstract class Default_values {
 	public static function get_singleton_by_module($module){
 		if(!isset(self::$singleton_by_module[$module])){
 			if($module=='core'){
-				require_once ROOT_DIR . '/core/mod/Core_values.php';
+				//equire_once ROOT_DIR . '/core/mod/Core_values.php';
 				self::$singleton_by_module[$module]=new Core_values();
 			}else{
 				self::$singleton_by_module[$module] = Service::get_api_class($module, "Default_values");

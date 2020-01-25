@@ -9,8 +9,8 @@
 
 namespace t2\modules\core_template\api;
 
-require_once ROOT_DIR . '/dev/templates/module/Controller.php';
-require_once ROOT_DIR . '/api/Ajax.php';
+//equire_once ROOT_DIR . '/dev/templates/module/Controller.php';
+//equire_once ROOT_DIR . '/api/Ajax.php';
 
 use t2\core\service\Arrays;
 use t2\modules\core_template\Controller;

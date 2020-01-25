@@ -7,7 +7,7 @@
  GPL*/
 
 /*
-require_once ROOT_DIR . '/core/Stylesheet.php';
+//equire_once ROOT_DIR . '/core/Stylesheet.php';
  */
 
 namespace t2\core;

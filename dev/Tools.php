@@ -6,13 +6,13 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 /*
-require_once ROOT_DIR . '/dev/Tools.php';
+//equire_once ROOT_DIR . '/dev/Tools.php';
  */
 
 namespace t2\dev;
 
-require_once ROOT_DIR . '/core/service/Request.php';
-require_once ROOT_DIR . '/core/form/Form.php';
+//equire_once ROOT_DIR . '/core/service/Request.php';
+//equire_once ROOT_DIR . '/core/form/Form.php';
 
 use t2\core\service\Html;
 use t2\core\service\Request;

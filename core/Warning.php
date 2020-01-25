@@ -7,12 +7,12 @@
  GPL*/
 
 /*
-require_once ROOT_DIR . '/core/Warning.php';
+//equire_once ROOT_DIR . '/core/Warning.php';
  */
 
 namespace t2\core;
 
-require_once ROOT_DIR . '/core/Error_.php';
+//equire_once ROOT_DIR . '/core/Error_.php';
 
 class Warning extends Error_ {
 

@@ -7,15 +7,15 @@
  GPL*/
 
 /*
-require_once ROOT_DIR . '/core/Page.php';
+//equire_once ROOT_DIR . '/core/Page.php';
  */
 
 
 namespace t2\core;
 
-require_once ROOT_DIR . '/core/Stylesheet.php';
-require_once ROOT_DIR . '/core/service/Config.php';
-require_once ROOT_DIR . '/core/Message.php';
+//equire_once ROOT_DIR . '/core/Stylesheet.php';
+//equire_once ROOT_DIR . '/core/service/Config.php';
+//equire_once ROOT_DIR . '/core/Message.php';
 
 use t2\core\service\Config;
 use t2\core\service\Html;
@@ -230,7 +230,6 @@ class Page {
 	 * Builds and sends the HTML page.
 	 */
 	public function send_and_quit() {
-		#require_once ROOT_DIR . '/core/Error_.php';
 		#new Error_("!","TYPE", "DEBUG-INFO");
 //TODO(2): Der Typ muss PAGE heissen (AJAX kann auch HTML sein)
 		Start::check_type(Start::TYPE_HTML);

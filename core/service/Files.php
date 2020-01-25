@@ -6,12 +6,12 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 /*
-require_once ROOT_DIR . '/core/service/Files.php';
+//equire_once ROOT_DIR . '/core/service/Files.php';
  */
 
 namespace t2\core\service;
 
-require_once ROOT_DIR . '/dev/Debug.php';
+//equire_once ROOT_DIR . '/dev/Debug.php';
 
 #use t2\core\Error;
 

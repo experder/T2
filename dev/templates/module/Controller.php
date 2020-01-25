@@ -6,7 +6,7 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 /*
-require_once ROOT_DIR . '/dev/templates/module/Controller.php';
+//equire_once ROOT_DIR . '/dev/templates/module/Controller.php';
  */
 
 namespace t2\modules\core_template;

@@ -7,14 +7,14 @@
  GPL*/
 
 /**
-require_once ROOT_DIR . '/core/service/includes/Includes.php';
+//equire_once ROOT_DIR . '/core/service/includes/Includes.php';
  */
 
 namespace t2\core\service\includes;
 
-require_once ROOT_DIR . '/core/Message.php';
-require_once ROOT_DIR . '/core/service/Request.php';
-require_once ROOT_DIR . '/core/form/Form.php';
+//equire_once ROOT_DIR . '/core/Message.php';
+//equire_once ROOT_DIR . '/core/service/Request.php';
+//equire_once ROOT_DIR . '/core/form/Form.php';
 
 use t2\core\Error_;
 use t2\core\Form;

@@ -6,13 +6,13 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 /*
-require_once ROOT_DIR . '/api/Ajax.php';
+//equire_once ROOT_DIR . '/api/Ajax.php';
  */
 
 namespace t2\api;
 
-require_once ROOT_DIR . '/core/service/Request.php';
-require_once ROOT_DIR . '/api/Service.php';
+//equire_once ROOT_DIR . '/core/service/Request.php';
+//equire_once ROOT_DIR . '/api/Service.php';
 
 use t2\core\service\Request;
 use t2\core\Error_;

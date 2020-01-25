@@ -7,11 +7,11 @@
  GPL*/
 
 /*
-require_once ROOT_DIR . '/core/service/Login.php';
+//equire_once ROOT_DIR . '/core/service/Login.php';
  */
 namespace t2\core\service;
 
-require_once ROOT_DIR . '/core/Warning.php';
+//equire_once ROOT_DIR . '/core/Warning.php';
 
 use t2\core\Database;
 use t2\core\Error_;
@@ -55,12 +55,12 @@ class Login {//TODO(2):Logout
 				)
 			);
 			if(!$session_data){
-				require_once ROOT_DIR . '/core/Message.php';
+				//equire_once ROOT_DIR . '/core/Message.php';
 				Page::$compiler_messages[] = new Message(Message::TYPE_INFO, "Session not found.");
 			}else{
 				$expires = $session_data["expires"];
 				if($expires<time()){
-					require_once ROOT_DIR . '/core/Message.php';
+					//equire_once ROOT_DIR . '/core/Message.php';
 					Page::$compiler_messages[] = new Message(Message::TYPE_INFO, "Your session has expired.");
 					Database::get_singleton()->update("DELETE FROM `core_sessions` WHERE session_id=:session_id LIMIT 1;",array(
 						":session_id"=>$session_id,
@@ -99,7 +99,7 @@ class Login {//TODO(2):Logout
 	}
 
 	public static function new_session($uid){
-		require_once ROOT_DIR . '/core/service/Php7.php';
+		//equire_once ROOT_DIR . '/core/service/Php7.php';
 
 		$session_id = bin2hex(Php7::random_bytes(10));
 		$expires = self::session_expires();
@@ -124,9 +124,9 @@ class Login {//TODO(2):Logout
 	}
 
 	public static function prompt_credentials(){
-		require_once ROOT_DIR . '/core/service/Request.php';
-		require_once ROOT_DIR . '/core/form/Form.php';
-		require_once ROOT_DIR . '/core/Message.php';
+		//equire_once ROOT_DIR . '/core/service/Request.php';
+		//equire_once ROOT_DIR . '/core/form/Form.php';
+		//equire_once ROOT_DIR . '/core/Message.php';
 
 		$page = new Page("PAGEID_CORE_LOGIN", "Login");
 		$val_from_request = true;

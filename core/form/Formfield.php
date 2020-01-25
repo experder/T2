@@ -7,7 +7,7 @@
  GPL*/
 
 /*
-require_once ROOT_DIR . '/core/form/Formfield.php';
+//equire_once ROOT_DIR . '/core/form/Formfield.php';
  */
 
 namespace t2\core;
@@ -16,10 +16,10 @@ use t2\core\service\Config;
 use t2\core\service\Request;
 use t2\core\service\Strings;
 
-require_once ROOT_DIR . '/core/Html.php';
-require_once ROOT_DIR . '/core/service/Html.php';
-require_once ROOT_DIR . '/core/service/Strings.php';
-require_once ROOT_DIR . '/core/service/Request.php';
+//equire_once ROOT_DIR . '/core/Html.php';
+//equire_once ROOT_DIR . '/core/service/Html.php';
+//equire_once ROOT_DIR . '/core/service/Strings.php';
+//equire_once ROOT_DIR . '/core/service/Request.php';
 
 
 /**

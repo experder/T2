@@ -7,13 +7,13 @@
  GPL*/
 
 /*
-require_once ROOT_DIR . '/core/service/Templates.php';
+//equire_once ROOT_DIR . '/core/service/Templates.php';
  */
 
 namespace t2\core\service;
 
-require_once ROOT_DIR . '/core/service/Strings.php';
-require_once ROOT_DIR . '/core/service/Files.php';
+//equire_once ROOT_DIR . '/core/service/Strings.php';
+//equire_once ROOT_DIR . '/core/service/Files.php';
 
 use t2\core\Error_;
 

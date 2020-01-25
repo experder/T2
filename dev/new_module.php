@@ -9,7 +9,7 @@
 namespace t2\dev;
 
 require_once '../Start.php';
-require_once ROOT_DIR . '/dev/Tools.php';
+//equire_once ROOT_DIR . '/dev/Tools.php';
 
 use t2\Start;
 

@@ -7,14 +7,14 @@
  GPL*/
 
 /*
-require_once ROOT_DIR . '/core/service/includes/Markdown.php';
+//equire_once ROOT_DIR . '/core/service/includes/Markdown.php';
  */
 
 namespace t2\core\service\includes;
 
 use t2\core\service\Html;
 
-require_once ROOT_DIR . '/core/service/includes/Includes.php';
+//equire_once ROOT_DIR . '/core/service/includes/Includes.php';
 
 class Markdown {
 

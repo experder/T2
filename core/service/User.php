@@ -7,12 +7,12 @@
  GPL*/
 
 /*
-require_once ROOT_DIR . '/core/service/User.php';
+//equire_once ROOT_DIR . '/core/service/User.php';
  */
 
 namespace t2\core\service;
 
-require_once ROOT_DIR . '/core/service/Login.php';//core/service/User.php:25
+//equire_once ROOT_DIR . '/core/service/Login.php';//core/service/User.php:25
 
 use t2\core\Error_;
 
