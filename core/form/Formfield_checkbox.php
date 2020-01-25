@@ -23,9 +23,9 @@ class Formfield_checkbox extends Formfield {
 		$label=$this->label?:"&nbsp;";
 		return "<div" . $this->getParams_outer() . ">"
 			. "<label>$label</label>"
-			. "<div class='formfield_inner' " . $this->get_title() . " >"
+			. "<div class='formfield_inner' " . $this->get_title() . " ><label class='radiolabel'><div>"
 			. "<input type='checkbox' " . ($this->value ? " checked" : "") . $this->getParams_inner() . "/>"
-			.$this->get_label()
+			.''.$this->get_label().'</div></label>'
 			. "</div>"
 			. "</div>";
 	}

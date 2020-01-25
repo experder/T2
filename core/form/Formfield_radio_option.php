@@ -9,6 +9,8 @@
 
 namespace t2\core\form;
 
+use t2\core\service\Config;
+
 class Formfield_radio_option {
 
 	private $value;
@@ -26,7 +28,8 @@ class Formfield_radio_option {
 
 	public function to_form_html($name, $checked_val=null) {
 		$checked=($this->value==$checked_val?"checked":"");
-		return "<div class='ff_radiooption'><input type='radio' $checked name='$name' value='$this->value'/>$this->title</div>";
+		$title = Config::$DEVMODE?" title='$this->value'":'';
+		return "<label class='radiolabel' $title><div class='ff_radiooption'><input type='radio' $checked name='$name' value='$this->value'/>$this->title</div></label>";
 	}
 
 }

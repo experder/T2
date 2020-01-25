@@ -1,0 +1,23 @@
+
+form div.form_field {
+	background:yellow;
+	margin-bottom:5px;
+}
+
+form div.form_field > label {
+	border-color: red;
+}
+
+form div.form_field input[type="text"],
+form div.form_field input[type="password"],
+form div.form_field textarea {
+	border:1px solid black;
+}
+
+form div.formfield_inner{
+	border-color: blue;
+}
+
+form div.formfield_inner div.ff_radiooption{
+	box-shadow: 0 0 2px black inset;
+}

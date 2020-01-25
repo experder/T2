@@ -219,14 +219,18 @@ form div.buttons {
 	border-top: 1px solid black;
 }
 
-form div.form_field label {
+form div.form_field > label {
 	display: inline-block;
 	width: 120px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	vertical-align: top;
-	position: relative;
-	top: 2px;
+	border:1px solid transparent;
+	min-height:18px;
+}
+
+form div.form_field label.radiolabel:hover div{
+	box-shadow: 0 0 1px gray inset;
 }
 
 form div.form_field input[type="text"],
@@ -240,6 +244,7 @@ form div.form_field textarea {
 }
 
 form div.formfield_inner {
+	border:1px solid transparent;
 	display: inline-block;
 }
 

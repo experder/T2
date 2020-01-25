@@ -38,15 +38,14 @@ class Tools {
 
 		$form->add_field(new Formfield_text("module_name", "Module name", "My module"));
 		$form->add_field(new Formfield_text("module_id", "Module ID", "mymod"));
-		$form->add_field(new Formfield_text("path", "Path", self::empty_path));//TODO(2): register module in Config::$MODULES
-		//TODO(F):New module: Multiselection: Possible templates
+		$form->add_field(new Formfield_text("path", "Path", self::empty_path));
 
 		$page->add(Html::H1("Create blank module"));
 		$page->add($form);
 
 	}
 
-	private static function create_new_module($module_name, /** @noinspection PhpUnusedParameterInspection */$module_id=null, $path=null){
+	private static function create_new_module($module_name, $module_id=null, $path=null){
 		$module_name=trim($module_name);
 		if(!$module_name){
 			return new Message(Message::TYPE_ERROR, "Please specify module name!");
@@ -54,9 +53,10 @@ class Tools {
 		if($path==self::empty_path){
 			$path=null;
 		}
-		//TODO(2):Create module id from module name
-		//TODO(2):Create absolute_path
-		//TODO(2):Create relative_path
+		if(!$module_id){
+			$module_id = $module_name;
+		}
+		$module_id = preg_replace("/[^a-z0-9_]/","",strtolower($module_id));
 		//TODO(F):Create new module
 		return new Message(Message::TYPE_CONFIRM, "Module \"$module_name\" created.");
 	}
