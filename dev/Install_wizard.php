@@ -21,12 +21,12 @@ namespace t2\dev;
 
 use t2\core\Database;
 use t2\core\Error_;
-use t2\core\Form;
-use t2\core\Formfield_header;
-use t2\core\Formfield_password;
-use t2\core\Formfield_radio;
-use t2\core\Formfield_radio_option;
-use t2\core\Formfield_text;
+use t2\core\form\Form;
+use t2\core\form\Formfield_header;
+use t2\core\form\Formfield_password;
+use t2\core\form\Formfield_radio;
+use t2\core\form\Formfield_radio_option;
+use t2\core\form\Formfield_text;
 use t2\core\Message;
 use t2\core\mod\Core_database;
 use t2\core\Page;

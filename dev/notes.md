@@ -20,7 +20,6 @@ Before merging `dev` to `master`:
 Current TODOs
 -------------
 ### Feature requests
-* Autoloader? \(Debug\.php:38\)
 * Module dev tools: Format TODOs\(DONE\), Passwordgenerator \(, MD5, Base64\) \(index\.php:22\)
 * dev tools: eigenes repo \(index\.php:24\)
 * class D\_example extends DBtable/\*TODO\*/\{ \(D\_example\.php:5\)
@@ -29,10 +28,10 @@ Current TODOs
 
 ### High
 * Was ist mit SCRIPT\_URI? \(Error\_\.php:156\)
-* Accept associative array for options \(Formfield\_radio\.php:21\)
-* Move to includes \(Page\.php:272\)
+* Accept associative array for options \(Formfield\_radio\.php:20\)
+* Move to includes \(Page\.php:271\)
 * Move service\\Html to t2\\core\\Html \(Html\.php:22\)
-* include jquery \(Includes\.php:30\)
+* include jquery \(Includes\.php:31\)
 * namespace t2\\core\\service \(Js\.php:10\)
 * submit unchecked checkboxes\! \(cssdemo\.php:141\)
 * submit unchecked radios\! \(cssdemo\.php:142\)
@@ -42,7 +41,7 @@ Current TODOs
 * Submission of a form on a page called with "?key=val" results in an $\_REQUEST array that contains key=val instead of submitted value \(Form\.php:27\)
 * Check, if class already exists \(Html\.php:73\)
 * $page\->set\_focusFieldId \(Page\.php:26\)
-* Der Typ muss PAGE heissen \(AJAX kann auch HTML sein\) \(Page\.php:235\)
+* Der Typ muss PAGE heissen \(AJAX kann auch HTML sein\) \(Page\.php:234\)
 * Detect platform\! \(Config\.php:41\)
 * AJAX: URL can get too long\! \(Js\.php:30\)
 * Logout \(Login\.php:25\)
@@ -52,7 +51,7 @@ Current TODOs
 * Create absolute\_path \(Tools\.php:63\)
 * Create relative\_path \(Tools\.php:64\)
 * Configure PROJECT\_ROOT \(Start\.php:73\)
-* init rights \(Start\.php:116\)
+* init rights \(Start\.php:115\)
 
 ### Low
 * namespace \(index\.php:9\)

@@ -10,7 +10,7 @@
 //equire_once ROOT_DIR . '/core/form/Form.php';
  */
 
-namespace t2\core;
+namespace t2\core\form;
 
 //equire_once ROOT_DIR . '/core/Html.php';
 //equire_once ROOT_DIR . '/core/form/Formfield.php';
@@ -25,6 +25,8 @@ namespace t2\core;
 
 
 //TODO(2): Submission of a form on a page called with "?key=val" results in an $_REQUEST array that contains key=val instead of submitted value
+use t2\core\Html;
+
 class Form {
 
 	/**

@@ -10,7 +10,7 @@
 //equire_once ROOT_DIR . '/core/form/Formfield.php';
  */
 
-namespace t2\core;
+namespace t2\core\form;
 
 use t2\core\service\Config;
 use t2\core\service\Request;

@@ -5,8 +5,8 @@ namespace t2\dev\tools;
 require_once '../../Start.php';
 //equire_once ROOT_DIR . '/core/form/Form.php';
 
-use t2\core\Form;
-use t2\core\Formfield_textarea;
+use t2\core\form\Form;
+use t2\core\form\Formfield_textarea;
 use t2\core\service\Config;
 use t2\core\service\Html;
 use t2\core\service\Request;

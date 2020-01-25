@@ -7,8 +7,7 @@
  GPL*/
 
 
-namespace t2\core;
-
+namespace t2\core\form;
 
 class Formfield_header extends Formfield {
 

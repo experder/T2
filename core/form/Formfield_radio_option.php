@@ -7,8 +7,7 @@
  GPL*/
 
 
-namespace t2\core;
-
+namespace t2\core\form;
 
 class Formfield_radio_option {
 
@@ -17,8 +16,8 @@ class Formfield_radio_option {
 
 	/**
 	 * Formfield_radio_option constructor.
-	 * @param $name
-	 * @param $title
+	 * @param string $value
+	 * @param string $title
 	 */
 	public function __construct($value, $title) {
 		$this->value = $value;
@@ -26,8 +25,8 @@ class Formfield_radio_option {
 	}
 
 	public function to_form_html($name, $checked_val=null) {
-		$checked=($this->value==$checked_val?" checked":"");
-		return "<div class='ff_radiooption'><input type='radio'$checked name='$name' value='$this->value'/>$this->title</div>";
+		$checked=($this->value==$checked_val?"checked":"");
+		return "<div class='ff_radiooption'><input type='radio' $checked name='$name' value='$this->value'/>$this->title</div>";
 	}
 
 }

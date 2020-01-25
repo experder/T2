@@ -13,8 +13,8 @@ require_once '../../../Start.php';
 
 use t2\core\service\Html;
 use t2\core\service\Request;
-use t2\core\Form;
-use t2\core\Formfield_textarea;
+use t2\core\form\Form;
+use t2\core\form\Formfield_textarea;
 use t2\Start;
 
 $page = Start::init("PAGEID_CORE_TEMPLATE_STUB_IO_PHP", "My page");

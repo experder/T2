@@ -15,9 +15,9 @@ namespace t2\core\service;
 
 use t2\core\Database;
 use t2\core\Error_;
-use t2\core\Form;
-use t2\core\Formfield_password;
-use t2\core\Formfield_text;
+use t2\core\form\Form;
+use t2\core\form\Formfield_password;
+use t2\core\form\Formfield_text;
 use t2\core\Message;
 use t2\core\Page;
 use t2\core\Warning;

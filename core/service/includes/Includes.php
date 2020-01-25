@@ -17,7 +17,7 @@ namespace t2\core\service\includes;
 //equire_once ROOT_DIR . '/core/form/Form.php';
 
 use t2\core\Error_;
-use t2\core\Form;
+use t2\core\form\Form;
 use t2\core\Message;
 use t2\core\Page;
 use t2\core\service\Request;

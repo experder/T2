@@ -35,21 +35,22 @@ class Debug {
 	public static $queries_corequeries_count = 0;
 
 	public static $core_includes = array(
-//(Check again with autoloader)
-//		":ROOT_DIR/Start.php",
-//		":ROOT_DIR/core/Page.php",//Start.php:113
-//		":ROOT_DIR/core/Stylesheet.php",//core/Page.php:299
-//		":ROOT_DIR/core/Database.php",//config_exclude.php:6
-//		":ROOT_DIR/core/Error_.php",
-//		":ROOT_DIR/core/service/Config.php",//Start.php:85
-//		":ROOT_DIR/core/service/Strings.php",//core/service/Config.php:163
-//		":ROOT_DIR/dev/Debug.php",//core/Database.php:250 (DEVMODE)
-//		":ROOT_DIR/core/Html.php",//core/Database.php:257 (DEVMODE)
-//		":ROOT_DIR/core/service/Html.php",//core/Html.php:112 (DEVMODE)
-//		":ROOT_DIR/core/service/Arrays.php",//dev/Debug.php:112 (DEVMODE)
-//		":ROOT_DIR/config_exclude.php",//Start.php:75
-//		":ROOT_DIR/core/service/User.php",//Start.php:99
-//		":ROOT_DIR/core/service/Login.php",//core/service/User.php:25
+		":ROOT_DIR/Start.php",
+		":ROOT_DIR/core/service/Autoloader.php",
+		":ROOT_DIR/config.php",
+		":ROOT_DIR/core/Database.php",
+		":ROOT_DIR/core/service/Config.php",
+		":ROOT_DIR/core/service/Strings.php",
+		":ROOT_DIR/dev/Debug.php",
+		":ROOT_DIR/core/service/Arrays.php",
+		":ROOT_DIR/core/Html.php",
+		":ROOT_DIR/core/service/Html.php",
+		":ROOT_DIR/api/Default_values.php",
+		":ROOT_DIR/core/mod/Core_values.php",
+		":ROOT_DIR/core/service/User.php",
+		":ROOT_DIR/core/service/Login.php",
+		":ROOT_DIR/core/Page.php",
+		":ROOT_DIR/core/Stylesheet.php",
 	);
 	private static $core_includes_compiled = null;
 	public static $includes = array();

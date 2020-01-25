@@ -16,8 +16,8 @@ namespace t2\dev;
 
 use t2\core\service\Html;
 use t2\core\service\Request;
-use t2\core\Form;
-use t2\core\Formfield_text;
+use t2\core\form\Form;
+use t2\core\form\Formfield_text;
 use t2\core\Message;
 use t2\core\Page;
 

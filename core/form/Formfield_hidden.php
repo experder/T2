@@ -7,10 +7,11 @@
  GPL*/
 
 
-namespace t2\core;
+namespace t2\core\form;
 
 //equire_once ROOT_DIR . '/core/form/Formfield.php';
 
+use t2\core\Error_;
 
 class Formfield_hidden extends Formfield {
 
