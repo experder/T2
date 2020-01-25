@@ -11,11 +11,11 @@ namespace t2\dev\tools;
 require_once '../../Start.php';
 require_once ROOT_DIR . '/core/form/Form.php';
 require_once ROOT_DIR . '/core/Message.php';
-require_once ROOT_DIR . '/core/service/Markdown.php';
+require_once ROOT_DIR . '/core/service/includes/Markdown.php';
 
 use t2\core\service\Config;
 use t2\core\service\Html;
-use t2\core\service\Markdown;
+use t2\core\service\includes\Markdown;
 use t2\core\service\Request;
 use t2\core\service\Strings;
 use t2\core\Database;

@@ -7,10 +7,10 @@
  GPL*/
 
 /**
-require_once ROOT_DIR . '/core/service/Includes.php';
+require_once ROOT_DIR . '/core/service/includes/Includes.php';
  */
 
-namespace t2\core\service;
+namespace t2\core\service\includes;
 
 require_once ROOT_DIR . '/core/Message.php';
 require_once ROOT_DIR . '/core/service/Request.php';
@@ -20,6 +20,7 @@ use t2\core\Error_;
 use t2\core\Form;
 use t2\core\Message;
 use t2\core\Page;
+use t2\core\service\Request;
 
 class Includes {
 

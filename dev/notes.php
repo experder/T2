@@ -9,9 +9,9 @@
 namespace t2\dev;
 
 require_once '../Start.php';
-require_once ROOT_DIR . '/core/service/Markdown.php';
+require_once ROOT_DIR . '/core/service/includes/Markdown.php';
 
-use t2\core\service\Markdown;
+use t2\core\service\includes\Markdown;
 use t2\Start;
 
 $page = Start::init("PAGEID_CORE_DEV_NOTES", "Dev notes");
