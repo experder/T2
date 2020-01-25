@@ -15,6 +15,7 @@ namespace t2\core;
 
 require_once ROOT_DIR . '/core/Stylesheet.php';
 require_once ROOT_DIR . '/core/service/Config.php';
+require_once ROOT_DIR . '/core/Message.php';
 
 use t2\core\service\Config;
 use t2\core\service\Html;
