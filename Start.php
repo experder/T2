@@ -15,6 +15,7 @@ use t2\core\Page;
 use t2\core\service\Config;
 use t2\core\service\User;
 use t2\dev\Install_wizard;
+use t2\service\Autoloader;
 
 class Start {
 
@@ -48,6 +49,8 @@ class Start {
 			$dir = str_replace("\\", "/", $dir);
 			define("ROOT_DIR", $dir);
 		}
+		require_once ROOT_DIR . '/core/service/Autoloader.php';
+		Autoloader::register();
 	}
 
 	public static function dev_get_start_time() {
@@ -55,11 +58,8 @@ class Start {
 	}
 
 	private static function init_config() {
-		require_once ROOT_DIR . '/core/Database.php';
-		require_once ROOT_DIR . '/core/service/Config.php';
 		$config_file = ROOT_DIR . '/config.php';
 		if (!file_exists($config_file)) {
-			require_once ROOT_DIR . '/dev/Install_wizard.php';
 			Install_wizard::prompt_dbParams();
 		}
 		/** @noinspection PhpIncludeInspection */
@@ -102,7 +102,6 @@ class Start {
 	 * @return Page
 	 */
 	public static function init($PAGEID_, $title) {
-		require_once ROOT_DIR . '/core/Page.php';
 		self::$type = self::TYPE_HTML;
 		Start::init_config();
 		Start::init_database();

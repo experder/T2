@@ -35,7 +35,6 @@ class Debug {
 	public static $queries_corequeries_count = 0;
 
 	public static $core_includes = array(
-		//TODO(F):Autoloader?
 //(Check again with autoloader)
 //		":ROOT_DIR/Start.php",
 //		":ROOT_DIR/core/Page.php",//Start.php:113
