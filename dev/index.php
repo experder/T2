@@ -8,20 +8,16 @@
 
 require_once '../Start.php';
 
-$page = \t2\Start::init("PAGEID_CORE_DEVAREA", "Dev area");
+$page = \t2\Start::init("PAGEID_CORE_DEVZONE", "Dev zone");
 
 $page->add(\t2\core\service\Html::H1("Dev zone"));
 
 $page->add(\t2\core\service\Html::A_button("New module",\t2\core\service\Html::href_internal("dev/new_module")));
 $page->add(\t2\core\service\Html::A_button("Notes",\t2\core\service\Html::href_internal("dev/notes")));
-$page->add(\t2\core\service\Html::A_button("Pick-A-Todo",\t2\core\service\Html::href_internal("dev/pick-a-todo")));
 $page->add(\t2\core\service\Html::A_button("TODOs","https://github.com/experder/T2/blob/dev/dev/notes.md#current-todos",null,array("target"=>"_blank")));
-$page->add(\t2\core\service\Html::A_button("CSS demo",\t2\core\service\Html::href_internal("dev/mod_tools/cssdemo")));
+$page->add(\t2\core\service\Html::A_button("CSS demo",\t2\core\service\Html::href_internal("dev/cssdemo")));
 
-$page->add(\t2\core\service\Html::H2("Tools"));
-//TODO(F):Module dev tools: Format TODOs(DONE), Passwordgenerator (, MD5, Base64)
-//TODO(2):href_internal_mod
-//TODO(F):dev tools: eigenes repo
-$page->add(\t2\core\service\Html::A_button("Convert TODOs",\t2\core\service\Html::href_internal("dev/mod_tools/convert_todos")));
+//TODO(1): Register modules! (dev_tools)
+#$page->add(\t2\core\service\Html::A_button("Convert TODOs",\t2\core\service\Html::href_internal("dev/mod_tools/convert_todos")));
 
 $page->send_and_quit();

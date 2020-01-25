@@ -6,17 +6,7 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-
-/*
-//equire_once ROOT_DIR . '/core/service/Html.php';
- */
-
 namespace t2\core\service;
-
-////equire_once ROOT_DIR . '/core/service/Strings.php';
-////equire_once ROOT_DIR . '/core/Html.php';
-
-use t2\core\Page;
 
 /**
  * TODO(1):Move service\Html to t2\core\Html
@@ -131,10 +121,14 @@ class Html {
 	private static $extension = null;
 
 	public static function href_internal($relative_page_without_extension) {
+		return Config::get_value_core('HTTP_ROOT') . '/' . self::href_internal_relative($relative_page_without_extension);
+	}
+
+	public static function href_internal_relative($relative_page_without_extension) {
 		if (self::$extension === null) {
 			self::$extension = Config::get_value_core("EXTENSION");
 		}
-		return Config::get_value_core('HTTP_ROOT') . '/' . $relative_page_without_extension . '.' . self::$extension;
+		return $relative_page_without_extension . '.' . self::$extension;
 	}
 
 }
