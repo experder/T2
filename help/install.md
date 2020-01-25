@@ -14,10 +14,17 @@ Repository
 `git submodule add https://github.com/experder/T2.git tethys`  
 `git commit -m "Add T2 as submodule tethys"`
 
-#### Clone existing project:  
+#### When cloning an existing project with submodule(s):
 `git clone --recurse-submodules REPO_URL .`
 
-[[Source](http://gitfabian.github.io/Tethys/install.html)]
+### dev_tools
+
+#### Register dev_tools as a submodule:
+`git submodule add https://github.com/experder/dev_tools.git modules/dev_tools`  
+`git commit -m "Add dev_tools as a submodule"`
+
+#### Clone dev_tools with T2:
+`git clone --recurse-submodules https://github.com/experder/dev_tools.git .`
 
 Apache
 ------

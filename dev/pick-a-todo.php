@@ -57,13 +57,14 @@ foreach ($todos as $cat=>$vals){
 		$c /= 3;
 	}
 	if ($cat == 'Low') {
-		$c /= 4;
+		$c /= 6;
 	}
 	if ($cat == 'Deprecated') {
 		$c = 0;
 	}
 	$values[$cat] = $c;
 }
+Debug::out($values, "Values");
 
 //Find max:
 $max_cat = null;
@@ -74,6 +75,8 @@ foreach ($values as $cat=>$c){
 		$max_val=$c;
 	}
 }
+
+//Roll the dice:
 $winner_array = $todos[$max_cat];
 $random_number = rand(0, count($winner_array)-1);
 $todo = $winner_array[$random_number];
