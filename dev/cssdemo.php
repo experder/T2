@@ -137,8 +137,8 @@ $form->add_field(new Formfield_checkbox("checkbox",null,null,"Label"));
 //TODO(1): submit unchecked checkboxes!
 //TODO(1): submit unchecked radios!
 $form->add_field(new Formfield_radio("radio", array(
-	new Formfield_radio_option("val1", "title1"),
-	new Formfield_radio_option("val2", "title2"),
+	"val1"=>"title1",
+	"val2"=>"title2",
 )));
 
 $form->add_button(Html::BUTTON("BUTTON","alert('". Strings::escape_value_html2(schlauer_spruch())."');"));

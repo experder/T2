@@ -25,7 +25,6 @@ Current TODOs
 * Create new module \(Tools\.php:60\)
 
 ### High
-* Accept associative array for options \(Formfield\_radio\.php:20\)
 * Move to includes \(Page\.php:267\)
 * Move service\\Html to t2\\core\\Html \(Html\.php:12\)
 * include jquery \(Includes\.php:25\)

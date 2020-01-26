@@ -9,17 +9,30 @@
 
 namespace t2\core\form;
 
+use t2\core\Error_;
+
 class Formfield_radio extends Formfield {
 
 	/**
 	 * @var Formfield_radio_option[] $options
 	 */
-	private $options;
+	private $options = false;
 
 	public function __construct($name, $options, $title = null, $value = null, $val_from_request = true, $more_params = array()) {
-		//TODO(1):Accept associative array for options
-		$this->options=$options;
 		parent::__construct($name, $title, $value, $val_from_request, $more_params);
+		if(is_array($options)){
+			if(!(reset($options) instanceof Formfield_radio_option)){
+				$array = array();
+				foreach ($options as $key=>$value){
+					$array[] = new Formfield_radio_option($key, $value);
+				}
+				$options = $array;
+			}
+			$this->options=$options;
+		}
+		if($this->options===false){
+			new Error_("!");
+		}
 	}
 
 	protected function toHtml() {
