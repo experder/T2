@@ -258,6 +258,8 @@ class Page {
 			."</html>";
 		// @formatter:on
 
+		#echo "<pre>";print_r(get_included_files());
+
 		exit;
 
 	}
