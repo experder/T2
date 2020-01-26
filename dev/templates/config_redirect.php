@@ -15,8 +15,10 @@
  * TPLDOCEND*/
 
 //Project configuration file:
-$config = ":project_root/config.php";
-if(!file_exists($config)){
-	new \t2\core\Error_("Configuration file (\"$config\") not found!");
+global $t2_config_file;
+$t2_config_file = ":project_root/config.php";
+if(!file_exists($t2_config_file)){
+	new \t2\core\Error_("Configuration file (\"$t2_config_file\") not found!");
 }
-require_once $config;
+/** @noinspection PhpIncludeInspection */
+require_once $t2_config_file;

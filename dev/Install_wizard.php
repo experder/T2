@@ -113,6 +113,8 @@ class Install_wizard {//TODO(3): Install wizard: Prompt all field in one form
 		if($project_root===false){
 			new Error_(true);
 		}
+		//Windows:
+		$project_root = str_replace('\\','/',$project_root);
 		$message = "";
 		if(!$store_locally){
 			Templates::create_file($target_file, ROOT_DIR . '/dev/templates/config_redirect.php', array(

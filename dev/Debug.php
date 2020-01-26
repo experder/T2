@@ -120,8 +120,16 @@ class Debug {
 			foreach (self::$core_includes as $d) {
 				self::$core_includes_compiled[] = str_replace(':ROOT_DIR', ROOT_DIR, $d);
 			}
+
 			//The script itself:
 			self::$core_includes_compiled[] = $_SERVER['SCRIPT_FILENAME'];
+
+			//Config redirection:
+			global $t2_config_file;
+			if(isset($t2_config_file)){
+				self::$core_includes_compiled[] = $t2_config_file;
+			}
+
 		}
 		return self::$core_includes_compiled;
 	}
