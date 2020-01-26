@@ -15,10 +15,12 @@ use t2\core\Error_;
 class User {
 
 	private static $ID = false;
+	private static $all_info = null;
 	public static $IS_ADMIN = false;
 
 	public static function init(){
-		self::$ID = Login::get_uid();
+		self::$all_info = Login::get_user();
+		self::$ID = self::$all_info['id'];
 	}
 
 	/**
@@ -37,6 +39,13 @@ class User {
 			return false;
 		}
 		return self::$ID;
+	}
+
+	/**
+	 * @return array|null
+	 */
+	public static function info(){
+		return self::$all_info;
 	}
 
 }

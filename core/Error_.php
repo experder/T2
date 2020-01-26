@@ -18,8 +18,6 @@ use t2\Start;
 
 class Error_ {
 
-	private static $dev_error_counter=1;
-
 	const TYPE_UNKNOWN = 0;
 	const TYPE_EXCEPTION = "ERROR_EXCEPTION";
 	const TYPE_SQL = "ERROR_SQL";
@@ -142,18 +140,41 @@ class Error_ {
 	private function meta_info_block() {
 		$timestamp = date("Y-m-d H:i:s", $this->timestamp) . " [#" . $this->timestamp . "]";
 		$ip = (isset($_SERVER) && isset($_SERVER["REMOTE_ADDR"]) && $_SERVER["REMOTE_ADDR"] ? $_SERVER["REMOTE_ADDR"] : "(IP unknonwn)");
-		#$url = (isset($_SERVER["SCRIPT_URI"]) ? ("\n" . $_SERVER["SCRIPT_URI"] . (isset($_SERVER["QUERY_STRING"]) && $_SERVER["QUERY_STRING"] ? ("?" . $_SERVER["QUERY_STRING"]) : "")) : "");
-		//TODO(1): Was ist mit SCRIPT_URI?
-		$url = (isset($_SERVER["SCRIPT_NAME"]) ? ("\n" . $_SERVER["SCRIPT_NAME"] . (isset($_SERVER["QUERY_STRING"]) && $_SERVER["QUERY_STRING"] ? ("?" . $_SERVER["QUERY_STRING"]) : "")) : "");
-		//TODO(3): Build full request
-		$uid=User::id_()?:'';
-		if($uid){
-			$uid="[$uid] ";
-		}
+		$request_string = self::get_request_string();
+		$url = $request_string?"\n".$request_string:"";
+		$user = self::user_info();
 		return $timestamp
-			. " - $uid($ip)"
+			. " - $user ($ip)"
 			. "\n".($this->type?:"ERROR")
 			. $url;
+	}
+
+	private static function user_info(){
+		$user = User::info();
+		if(!$user){
+			return "anonymous";
+		}
+		$name = $user['username'];
+		if($user['display_name']){
+			$name = $user['display_name']." ($name)";
+		}
+		$id = '/'.$user['id'];
+		if($user['ref_id']){
+			$id=$user['ref_id'].$id;
+		}
+		return $name." [#$id]";
+	}
+
+	public static function get_request_string(){
+		if (!isset($_SERVER)
+			|| !isset($_SERVER["REQUEST_SCHEME"])
+			|| !isset($_SERVER["HTTP_HOST"])
+			|| !isset($_SERVER["REQUEST_URI"])
+		) {
+			return false;
+		}
+		$string = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$_SERVER["REQUEST_URI"];
+		return $string;
 	}
 
 	public static function from_exception(\Exception $e){

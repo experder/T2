@@ -21,15 +21,17 @@ use t2\core\Warning;
 class Login {//TODO(2):Logout
 
 	private static $session_cookie_name = 'T2_session';
+	private static $user_fields = 'id,ref_id,username,display_name';
 
-	public static function get_uid(){
+	public static function get_user(){
 
-		$uid = self::check_session();
-		if($uid!==false){
-			return $uid;
+		$user = self::check_session();
+		if($user!==false){
+			return $user;
 		}
 
-		$uid = self::prompt_credentials();
+		$user = self::prompt_credentials();
+		$uid = $user['id'];
 
 		$ok = self::new_session($uid);
 		if(!$ok){
@@ -37,7 +39,7 @@ class Login {//TODO(2):Logout
 		}
 
 		Page::$compiler_messages[]=new Message(Message::TYPE_CONFIRM, "Login successful. Welcome!");
-		return $uid;
+		return $user;
 	}
 
 	private static function check_session(){
@@ -45,7 +47,7 @@ class Login {//TODO(2):Logout
 			$session_id = $_COOKIE[self::$session_cookie_name];
 
 			$session_data = Database::select_single_(
-				"SELECT user, expires FROM core_sessions WHERE session_id=:session_id"
+				"SELECT expires,`user` as ".self::$user_fields." FROM core_sessions LEFT JOIN core_user on `user`=core_user.`id` WHERE session_id=:session_id"
 				, array(
 					"session_id" => $session_id,
 				)
@@ -61,7 +63,8 @@ class Login {//TODO(2):Logout
 					));
 				}else{
 					self::update_session($session_id, $expires);
-					return $session_data["user"];
+					unset($session_data['expires']);
+					return $session_data;
 				}
 			}
 			self::set_cookie('-');
@@ -122,12 +125,12 @@ class Login {//TODO(2):Logout
 		$val_from_request = true;
 
 		if(Request::cmd('t2_dologin')){
-			$uid = self::check_credentials(Request::value('username'), Request::value('password'));
-			if($uid===false){
+			$user = self::check_credentials(Request::value('username'), Request::value('password'));
+			if($user===false){
 				$page->add_message_error("Wrong credentials!");
 				$val_from_request = false;
 			}else{
-				return $uid;
+				return $user;
 			}
 		}
 
@@ -146,7 +149,7 @@ class Login {//TODO(2):Logout
 	public static function check_credentials($username, $password){
 		$password_hash = md5($password);
 
-		$data = Database::select_single_("SELECT id FROM core_user WHERE username=:username AND pass_hash=:password_hash;",array(
+		$data = Database::select_single_("SELECT ".self::$user_fields." FROM core_user WHERE username=:username AND pass_hash=:password_hash;",array(
 			":username"=>$username,
 			":password_hash"=>$password_hash,
 		));
@@ -155,7 +158,7 @@ class Login {//TODO(2):Logout
 			return false;
 		}
 
-		return $data["id"];
+		return $data;
 	}
 
 }

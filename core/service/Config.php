@@ -16,7 +16,6 @@ use t2\core\Database;
 use t2\core\Error_;
 use t2\core\Message;
 use t2\core\Page;
-use t2\dev\Debug;
 use t2\dev\Install_wizard;
 
 class Config {
