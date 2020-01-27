@@ -167,7 +167,7 @@ class Debug {
 		}
 		$querie_count = self::$queries_corequeries_count . "+<b>" . $additional_queries_count . "</b> Queries";
 		$page->add_js_core();
-		$queries = \t2\core\service\Html::UL(self::$queries);
+		$queries = Html::UL(self::$queries);
 		$queries = new Html("pre", $queries, array("style" => "display:none;", "class" => "dev_stats_detail", "id" => "id_dev_stats_queries_detail"));
 		return new Html("div", $querie_count, array(
 				"class" => "dev_stats_queries abutton zoom-in $confirm_class",
@@ -257,7 +257,7 @@ class Debug {
 
 		$unused = "";
 		if ($corecount != $includes_count_core) {//We missed to update core includes
-			$unused = "Unused:" . (self::$core_includes_compiled ? \t2\core\service\Html::UL(self::$core_includes_compiled) : " -");
+			$unused = "Unused:" . (self::$core_includes_compiled ? Html::UL(self::$core_includes_compiled) : " -");
 			$confirm_class = "confirm_bad";
 		}
 		if ($additional_includes >= self::TOO_MANY_INCLUDES) {
@@ -265,7 +265,7 @@ class Debug {
 		}
 
 		$title = $corecount . "+<b>" . $additional_includes . "</b> Includes";
-		$detail = \t2\core\service\Html::UL($includes_formatted);
+		$detail = Html::UL($includes_formatted);
 
 		$detail .= $unused;
 

@@ -81,7 +81,7 @@ class Form {
 		}
 		$fields_html = implode("\n", $this->fields);
 		$action = ($this->action===false?"":(" action=\"$this->action\" method='$this->method'"));
-		return "<form$action ".\t2\core\service\Html::tag_keyValues($this->params).">\n$fields_html$buttons\n</form>";
+		return "<form$action ".Html::tag_keyValues($this->params).">\n$fields_html$buttons\n</form>";
 	}
 
 }

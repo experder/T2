@@ -10,7 +10,7 @@ namespace t2;
 
 require_once 'Start.php';
 
-use t2\core\service\Html;
+use t2\core\Html;
 
 $page = Start::init("PAGEID_CORE_INDEX", "Start");
 

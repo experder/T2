@@ -10,6 +10,9 @@
 namespace t2\core;
 
 
+use t2\core\service\Config;
+use t2\core\service\Strings;
+
 class Html {
 
 	protected $tag;
@@ -20,11 +23,14 @@ class Html {
 	 */
 	private $children = array();
 
+	private static $extension = null;
+
 	/**
 	 * Html constructor.
 	 * @param string     $tag e.g. DIV, P, A, BUTTON
 	 * @param string     $content
 	 * @param array|null $params Key-Value pairs of HTML-Attributes
+	 * @param mixed      $children
 	 */
 	public function __construct($tag, $content, $params = null, $children=null) {
 		$this->tag = $tag;
@@ -104,8 +110,125 @@ class Html {
 	}
 
 	public function __toString() {
-		$params = \t2\core\service\Html::tag_keyValues($this->params);
+		$params = self::tag_keyValues($this->params);
 		return "<$this->tag$params>$this->content" . implode("", $this->children) . "</$this->tag>";
+	}
+
+	//================================== STATIC's ====================================================
+
+	/**
+	 * Creates key-value pairs as used by HTML tags.
+	 * @param array $params
+	 * @return string
+	 */
+	public static function tag_keyValues($params) {
+		if (!is_array($params)) {
+			return "";
+		}
+		$html = "";
+		foreach ($params as $key => $value) {
+			$html .= " $key='" . Strings::escape_value_html($value) . "'";
+		}
+		return $html;
+	}
+
+	public static function A($content, $href, $class = null, $params = array()) {
+		$params["href"] = $href;
+		$params["class"] = $class;
+		return new Html("a", $content, $params);
+	}
+
+	public static function DIV($content, $class = null, $params = array()) {
+		$params["class"] = $class;
+		return new Html("div", $content, $params);
+	}
+
+	public static function H1($content, $id = null) {
+		return new Html("h1", $content, array("id" => $id));
+	}
+
+	public static function H2($content, $id = null) {
+		return new Html("h2", $content, array("id" => $id));
+	}
+
+	public static function H3($content, $id = null) {
+		return new Html("h3", $content, array("id" => $id));
+	}
+
+	public static function H4($content, $id = null) {
+		return new Html("h4", $content, array("id" => $id));
+	}
+
+	public static function BUTTON($value, $js = null, $params = array()) {
+		$params["type"] = "button";
+		if ($js) {
+			$params["onclick"] = $js;
+		}
+		return new Html("button", $value, $params);
+	}
+
+	public static function PRE($content, $classes = array(), $params = array()) {
+		$params["class"] = implode(" ", $classes);
+		return new Html("pre", $content, $params);
+	}
+
+	public static function PRE_console($content, $id = null) {
+		$params = array("class" => "console_inner");
+		if ($id) {
+			$params["id"] = $id;
+		}
+		return self::PRE(new Html("div", $content, $params), array("console"));
+	}
+
+	public static function TEXTAREA_console($content, $id = null) {
+		$params = array("class" => "console");
+		if ($id) {
+			$params["id"] = $id;
+		}
+		return new Html("textarea", $content, $params);
+	}
+
+	public static function UL($children = array(), $params = null) {
+		return self::list_builder("ul", $children, $params);
+	}
+
+	private static function list_builder($elem, $children, $params) {
+		$html = new Html($elem, "", $params);
+		foreach ($children as $child) {
+			if (!($child instanceof Html) || strtolower($child->get_tag()) != 'li') {
+				$child = new Html("li", null, null, $child);
+			}
+			$html->addChild($child);
+		}
+		return $html;
+	}
+
+	public static function A_button($content, $href, $classes = array(), $params = array()) {
+		$html = self::A($content, $href, "abutton", $params);
+		$html->addClasses($classes);
+		return $html;
+	}
+
+	public static function P($content, $children = null, $params = array()) {
+		return new Html("p", $content, $params, $children);
+	}
+
+	public static function A_external($content, $href, $params = array()) {
+		$params['href'] = $href;
+		$params['target'] = '_blank';
+		$html = new Html("a", $content, $params);
+		return $html;
+	}
+
+	public static function href_internal($relative_page_without_extension) {
+		return Config::get_value_core('HTTP_ROOT') . '/' . self::href_internal_relative($relative_page_without_extension);
+	}
+
+	public static function href_internal_relative($relative_page_without_extension) {
+		if (self::$extension === null) {
+			self::$extension = Config::get_value_core("EXTENSION");
+		}
+		return $relative_page_without_extension . '.' . self::$extension;
 	}
 
 }

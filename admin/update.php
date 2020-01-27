@@ -13,7 +13,7 @@ require_once '../Start.php';
 use t2\core\Error_;
 use t2\core\mod\Core_database;
 use t2\core\service\Config;
-use t2\core\service\Html;
+use t2\core\Html;
 use t2\dev\Install_wizard;
 use t2\Start;
 

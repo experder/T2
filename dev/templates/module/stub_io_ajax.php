@@ -10,7 +10,7 @@ namespace t2\modules\core_template;
 
 require_once '../../../Start.php';
 
-use t2\core\service\Html;
+use t2\core\Html;
 use t2\service\Js;
 use t2\Start;
 

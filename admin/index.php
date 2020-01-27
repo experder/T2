@@ -12,10 +12,10 @@ require_once '../Start.php';
 
 $page = \t2\Start::init("PAGEID_CORE_ADMIN", "Admin");
 
-$page->add(\t2\core\service\Html::A_button("Update",\t2\core\service\Html::href_internal("admin/update")));
+$page->add(\t2\core\Html::A_button("Update",\t2\core\Html::href_internal("admin/update")));
 
 if(\t2\core\service\Config::$DEVMODE){
-	$page->add(\t2\core\service\Html::A_button("Dev area",\t2\core\service\Html::href_internal("dev/index")));
+	$page->add(\t2\core\Html::A_button("Dev area",\t2\core\Html::href_internal("dev/index")));
 }
 
 $page->send_and_quit();

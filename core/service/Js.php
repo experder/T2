@@ -10,7 +10,7 @@
 namespace t2\service;//TODO(1):namespace t2\core\service
 
 
-use t2\core\service\Html;
+use t2\core\Html;
 use t2\core\service\Strings;
 use t2\core\Page;
 

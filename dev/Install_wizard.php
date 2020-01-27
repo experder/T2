@@ -24,7 +24,7 @@ use t2\core\mod\Core_database;
 use t2\core\Page;
 use t2\core\service\Config;
 use t2\core\service\Files;
-use t2\core\service\Html;
+use t2\core\Html;
 use t2\core\service\Request;
 use t2\core\service\Templates;
 

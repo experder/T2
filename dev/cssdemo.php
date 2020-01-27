@@ -11,7 +11,7 @@ namespace t2\dev;
 require_once '../Start.php';
 
 use t2\core\service\Config;
-use t2\core\service\Html;
+use t2\core\Html;
 use t2\core\service\includes\Markdown;
 use t2\core\service\Request;
 use t2\core\service\Strings;
@@ -20,7 +20,6 @@ use t2\core\form\Form;
 use t2\core\form\Formfield_checkbox;
 use t2\core\form\Formfield_password;
 use t2\core\form\Formfield_radio;
-use t2\core\form\Formfield_radio_option;
 use t2\core\form\Formfield_text;
 use t2\core\form\Formfield_textarea;
 use t2\Start;
@@ -92,7 +91,7 @@ Paragraph
 
 $page->add(Html::H2("Links", "links")."\n");
 $page->add(Html::A('Index', Html::href_internal('index'))."\n");
-$page->add(Html::A_external('\service\Html::A_external',"https://github.com/experder/T2/blob/99b7c6cfd9173b5150c840a3553ae5c03061ace9/service/Html.php#L82:L87")."\n");
+$page->add(Html::A_external('Html::A_external',"https://github.com/experder/T2/blob/99b7c6cfd9173b5150c840a3553ae5c03061ace9/service/Html.php#L82:L87")."\n");
 $page->add(Html::A_external('External, button','http://tethys-framework.de',array("class"=>"abutton"))."\n");
 $page->add(Html::A_button('Button, external','http://tethys-framework.de',array(),array("target"=>"_blank"))."\n");
 

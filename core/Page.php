@@ -12,7 +12,6 @@ namespace t2\core;
 
 
 use t2\core\service\Config;
-use t2\core\service\Html;
 use t2\dev\Debug;
 use t2\Start;
 

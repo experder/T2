@@ -9,7 +9,7 @@
 namespace t2\dev;
 
 
-use t2\core\service\Html;
+use t2\core\Html;
 use t2\core\service\Request;
 use t2\core\form\Form;
 use t2\core\form\Formfield_text;

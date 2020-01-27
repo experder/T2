@@ -9,7 +9,7 @@
 
 namespace t2\core\service\includes;
 
-use t2\core\service\Html;
+use t2\core\Html;
 
 
 class Markdown {

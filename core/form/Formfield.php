@@ -9,6 +9,7 @@
 
 namespace t2\core\form;
 
+use t2\core\Html;
 use t2\core\service\Config;
 use t2\core\service\Request;
 use t2\core\service\Strings;
@@ -101,7 +102,8 @@ abstract class Formfield {
 	/**
 	 * Every formfield has a name, a value, an id and possibly a list of some other parameters ($more_params).
 	 * This function creates the corresponding HTML-snippet.
-	 * @param bool $value If set to false, the parameter "value" is skipped.
+	 * @param bool $value If set to FALSE, the parameter "value" is skipped.
+	 * @param bool $name If set to FALSE, the parameter "name" is skipped.
 	 * @return string String to insert into the HTML code.
 	 */
 	protected function getParams_inner($value = true, $name=true) {
@@ -117,7 +119,7 @@ abstract class Formfield {
 			$params["id"] = $this->id;
 		}
 
-		return \t2\core\service\Html::tag_keyValues($params);
+		return Html::tag_keyValues($params);
 	}
 
 	/**
@@ -130,7 +132,7 @@ abstract class Formfield {
 		if ($this->outer_id) $params["id"] = $this->outer_id;
 		$params["class"] = "form_field ff_".$this->name. ($this->outer_class ? " " . $this->outer_class : "");
 
-		return \t2\core\service\Html::tag_keyValues($params);
+		return Html::tag_keyValues($params);
 	}
 
 }
