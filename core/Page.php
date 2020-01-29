@@ -79,6 +79,8 @@ class Page {
 
 	private $html_nodes = array();
 
+	public $internal_css = "";
+
 	/**
 	 * @param string $id
 	 * @param string $title
@@ -240,6 +242,8 @@ class Page {
 
 		$js_html = $this->get_js_html();
 
+		$css_internal = $this->internal_css?"\t<style>$this->internal_css</style>\n":"";
+
 		// @formatter:off
 		echo "<!DOCTYPE html>\n"
 			."<html>\n"
@@ -248,6 +252,7 @@ class Page {
 					."\t<title>$title</title>\n"
 					.$css_html
 					.$js_html
+					.$css_internal
 				."</head>\n"
 				."<body id='$this->id'>\n"
 					.$messages

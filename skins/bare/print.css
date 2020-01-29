@@ -18,10 +18,17 @@ a[target="_blank"] {
 	padding-left: 0;
 }
 
+textarea.console,
 pre.console {
 	background: white;
 	color: black;
+}
+pre.console {
+	width:inherit;
 	overflow: inherit;
-	height: inherit;
-	width: inherit;
+	height:inherit;
+}
+pre.console div.console_inner {
+	height:inherit;
+	padding-bottom:0;
 }

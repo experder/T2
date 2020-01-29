@@ -46,6 +46,13 @@ if($print_view){
 	$stylesheet = Page::get_demoskins_stylesheet_print($style);
 	$stylesheet->setMedia('all');
 	$page->add_stylesheet("CSS_ID_PRINT",$stylesheet);
+
+	//A4: b=21cm minus 2x15mm padding = 18cm
+	$page->internal_css.="@media screen {
+		div.body_inner{width:18cm;margin:0 auto;background:white;padding:15mm;}
+		body{margin-bottom:0;background:#D6D8EC;}
+	}";
+
 }else{
 	$page->add(Html::A_button("print.css", "?print"));
 }
