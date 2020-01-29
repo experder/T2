@@ -65,6 +65,7 @@ pre.console div.console_inner {
 	display: table-cell;
 	vertical-align: bottom;
 	height: 375px;
+	padding-bottom:10px;
 }
 
 code{

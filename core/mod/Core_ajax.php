@@ -9,6 +9,7 @@
 namespace t2\core\mod;
 
 
+use t2\admin\Admin;
 use t2\api\Ajax;
 
 class Core_ajax extends Ajax {
@@ -20,13 +21,18 @@ class Core_ajax extends Ajax {
 	 */
 	public function return_by_cmd($cmd, $keyValues) {
 		switch ($cmd){
-			case 'foo':
-//				return Controller::calculate_test2(
-//					Arrays::value_from_array($keyValues, 'Foo')
-//				);
+			case 'update_shell':
+				//TODO: sleep(3);
+				return Admin::update_shell();
+				break;
+			case 'update_db':
+				return Admin::update_dbase();
+				break;
+			case 'update_includes':
+				return Admin::update_includes();
 				break;
 		}
-		$this->unknown_command($cmd, 1);
+		return $this->unknown_command($cmd, 1);
 	}
 
 }

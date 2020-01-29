@@ -172,12 +172,16 @@ class Html {
 		return new Html("pre", $content, $params);
 	}
 
-	public static function PRE_console($content, $id = null) {
+	public static function PRE_console($content, $id = null, $outer_id=null) {
 		$params = array("class" => "console_inner");
 		if ($id) {
 			$params["id"] = $id;
 		}
-		return self::PRE(new Html("div", $content, $params), array("console"));
+		$outer_params = array();
+		if($outer_id){
+			$outer_params["id"] = $outer_id;
+		}
+		return self::PRE(new Html("div", $content, $params), array("console"), $outer_params);
 	}
 
 	public static function TEXTAREA_console($content, $id = null) {

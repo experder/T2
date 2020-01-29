@@ -6,12 +6,70 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-
 namespace t2\admin;
 
-
+use t2\core\Error_;
+use t2\core\mod\Core_database;
 use t2\core\Page;
+use t2\core\service\Config;
+use t2\core\service\includes\Includes;
+use t2\dev\Install_wizard;
 
-class Admin {//TODO(2):Admin features class
+class Admin {
+
+	public static function update_includes(){
+		#Includes::$host_includes=true;
+		$page = new Page("","");
+
+		//List of all includes:
+		Includes::js_jquery341($page);
+		Includes::php_parsedown174();
+
+		$result = $page->get_messages_plain();
+		if(!$result){
+			$result="Already up to date.\n";
+		}
+		$result = "\n========= Download Includes =========\n$result";
+		return $result;
+	}
+
+	public static function update_shell(){
+
+		$platform = Config::get_check_platform();
+		$project_root = PROJECT_ROOT;
+
+		if ($platform == Config::PLATFORM_WINDOWS) {
+			if (!file_exists(PROJECT_ROOT . '/update.cmd')) {
+				Install_wizard::init_updater($platform);
+			}
+			$result = `cd "$project_root" && update.cmd 2>&1`;
+			$result = mb_convert_encoding($result, "utf-8", "cp850");
+
+		} else if ($platform == Config::PLATFORM_LINUX) {
+			if (!file_exists(PROJECT_ROOT . '/update.sh')) {
+				Install_wizard::init_updater($platform);
+			}
+			$result = `cd '$project_root' && ./update.sh 2>&1`;
+
+		} else {
+			//Should not happen because $platform should be checked already
+			new Error_("Unknown platform.");
+		}
+
+		$result = "\n".htmlentities($result);
+
+		return $result;
+	}
+
+	public static function update_dbase(){
+
+		$updater = new Core_database();
+		$result = "\n========= Update_database =========\n";
+		$result .= $updater->update() ?: "Already up to date.";
+		$result .= "\n";
+
+		return $result;
+
+	}
 
 }

@@ -59,13 +59,16 @@ class Start {
 	private static function init_config() {
 		$config_file = ROOT_DIR . '/config.php';
 		if (!file_exists($config_file)) {
+			if(Start::is_type(Start::TYPE_AJAX)){
+				new Error_("Local config file seems to be corrupt. Please check.", "ERROR_CONFIG_CORRUPT/1", "Config file: " . $config_file);
+			}
 			Install_wizard::prompt_dbParams();
 		}
 		/** @noinspection PhpIncludeInspection */
 		require_once $config_file;
 		//Make the Test:
 		if (Database::get_singleton(false) === false) {
-			new Error_("Local config file seems to be corrupt. Please check.", "ERROR_CONFIG_CORRUPT", "Config file: " . $config_file);
+			new Error_("Local config file seems to be corrupt. Please check.", "ERROR_CONFIG_CORRUPT/2", "Config file: " . $config_file);
 		}
 		#define('DB_CORE_PREFIX', Database::get_singleton()->core_prefix);
 
@@ -109,6 +112,7 @@ class Start {
 
 	public static function init_ajax() {
 		self::$type = self::TYPE_AJAX;
+		Start::init_config();
 		//TODO(2): init rights
 	}
 

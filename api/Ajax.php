@@ -43,6 +43,7 @@ abstract class Ajax {
 
 	protected function unknown_command($cmd, $depth=0){
 		new Error_("Unknown command \"$cmd\"!",0,null,$depth+1);
+		return false;
 	}
 
 }

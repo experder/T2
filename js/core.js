@@ -34,12 +34,15 @@ function t2_ajax_to_func(query,Funktion){
 	xmlhttp.send();
 }
 
-function t2_ajax_to_id(query,id,add){
+function t2_ajax_to_id(query,id,add,func_after){
 	var func;
 	if(add){
 		func = "$('#"+id+"').append(response);";
 	}else{
 		func = "document.getElementById('"+id+"').innerHTML=response;";
+	}
+	if(func_after){
+		func = func + func_after;
 	}
 	t2_ajax_to_func(query,func);
 }

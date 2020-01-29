@@ -9,45 +9,70 @@
 namespace t2\admin;
 
 require_once '../Start.php';
+require_once ROOT_DIR . '/core/service/Js.php';//TODO
 
-use t2\core\Error_;
-use t2\core\mod\Core_database;
-use t2\core\service\Config;
 use t2\core\Html;
-use t2\dev\Install_wizard;
+use t2\core\Page;
+use t2\core\service\Config;
+use t2\core\service\Strings;
+use t2\service\Js;
 use t2\Start;
 
 $page = Start::init("PAGEID_CORE_UPDATER", "Updater");
 
+$page->add_stylesheet("CSS_ID_CORE_UPDATER", Page::get_stylesheet("core_admin.css"));
+
 $page->add(Html::H1("Updater"));
 
-$platform = Config::get_check_platform();
-$project_root = PROJECT_ROOT;
+$page->add($div=new Html("div",null,array("class"=>"updater_buttons")));
 
-if ($platform == Config::PLATFORM_WINDOWS) {
-	if (!file_exists(PROJECT_ROOT . '/update.cmd')) {
-		Install_wizard::init_updater($platform);
-	}
-	$result = `cd "$project_root" && update.cmd 2>&1`;
-	$result = mb_convert_encoding($result, "utf-8", "cp850");
-} else if ($platform == Config::PLATFORM_LINUX) {
-	if (!file_exists(PROJECT_ROOT . '/update.sh')) {
-		Install_wizard::init_updater($platform);
-	}
-	$result = `cd '$project_root' && ./update.sh 2>&1`;
-} else {
-	//Should not happen because $platform should be checked already
-	new Error_("Unknown platform.");
+$page->add(Html::PRE_console("", "ID_RESULTS", "ID_RESULTS_outer"));
+
+/*
+ * Shell
+ */
+$div->addChild(Html::BUTTON("Shell", "update_shell();"));
+//TODO:Service Function for ScrollToBottom
+//TODO:Correction of escaping for inner ajax functions!
+//TODO:Use of "//" ends all functions in inner functions
+$page->add_inline_js("function update_shell(){
+	".Js::ajax_to_id("core", "update_shell", array(), "ID_RESULTS", true, Strings::escape_value_inline_js("
+		$(\"#ID_RESULTS_outer\").stop().animate({
+			scrollTop: $(\"#ID_RESULTS_outer\")[0].scrollHeight
+		}, 800);
+//		var objDiv = document.getElementById(\"ID_RESULTS_outer\");
+//		objDiv.scrollTop = objDiv.scrollHeight;
+//		alert(\"!\");
+	"))."
+}");
+
+/*
+ * Database
+ */
+$div->addChild(Html::BUTTON("Database", "update_db();"));
+$page->add_inline_js("function update_db(){
+	".Js::ajax_to_id("core", "update_db", array(), "ID_RESULTS", true, Strings::escape_value_inline_js("
+		$(\"#ID_RESULTS_outer\").stop().animate({
+			scrollTop: $(\"#ID_RESULTS_outer\")[0].scrollHeight
+		}, 800);
+	"))."
+}");
+
+/*
+ * Includes
+ */
+$div->addChild(Html::BUTTON("Includes", "update_includes();"));
+$page->add_inline_js("function update_includes(){
+	".Js::ajax_to_id("core", "update_includes", array(), "ID_RESULTS", true, Strings::escape_value_inline_js("
+		$(\"#ID_RESULTS_outer\").stop().animate({
+			scrollTop: $(\"#ID_RESULTS_outer\")[0].scrollHeight
+		}, 800);
+	"))."
+}");
+
+
+if(Config::$DEVMODE){
+	$div->addChild(Html::BUTTON("Clear", "document.getElementById(\"ID_RESULTS\").innerHTML='';", array("id"=>"dev_btn_clear")));
 }
-$result = htmlentities($result);
-$result .= "\n";
-
-$updater = new Core_database();
-$result .= "========= Update_database =========\n";
-$result .= $updater->update() ?: "Already up to date.";
-
-//TODO(3):Updater: Get the (two) outputs by ajax
-$page->add(Html::PRE_console($result, "ID_RESULTS"));
-
 
 $page->send_and_quit();

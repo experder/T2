@@ -22,6 +22,7 @@ class Strings {
 	 *      '<tag value = "'.escape_value_html($value).'" />'
 	 * @param string $value
 	 * @return string
+	 * //TODO: Better description?
 	 */
 	public static function escape_value_html($value) {
 		return self::replace_byArray($value, array(
@@ -31,12 +32,24 @@ class Strings {
 		));
 	}
 
+	//TODO: Better description?
 	public static function escape_value_html2($value) {
 		return self::replace_byArray($value, array(
 			"\"" => "&quot;",
 			"'" => "&apos;",
 			"\n" => "<br>",
 			"\\" => "\\\\",
+		));
+	}
+
+	//TODO: Better description?
+	public static function escape_value_inline_js($value) {
+		return self::replace_byArray($value, array(
+			"\\" => "\\\\",
+			"\"" => "\\\"",
+			"'" => "\\''",
+			"\r\n" => " ",
+			"\n" => " ",
 		));
 	}
 
@@ -57,6 +70,7 @@ class Strings {
 		return str_replace(array_keys($substitutions), array_values($substitutions), $string);
 	}
 
+	//TODO: Better description?
 	public static function escape_sql($string) {
 		$string = str_replace("\\", "\\\\", $string);
 		$string = str_replace("'", "\\'", $string);

@@ -64,6 +64,16 @@ class Config {
 		return $platform;
 	}
 
+	public static function cfg_http_root() {
+		//TODO:replace everywhere!
+		return self::get_value_core('HTTP_ROOT');
+	}
+
+	public static function cfg_http_project() {
+		return self::cfg_http_root().'/'.Files::relative_path(ROOT_DIR, PROJECT_ROOT);//TODO!!!!!!!!!
+		return self::get_value_core('HTTP_PROJECT');
+	}
+
 	public static function MODULES() {
 		//TODO(3): Make modules configuration an object!
 		if (self::$cfg_modules === null) {

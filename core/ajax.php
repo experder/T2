@@ -11,7 +11,7 @@ namespace t2\core;
 use t2\api\Ajax;
 use t2\Start;
 
-require_once '../../tethys/Start.php';
+require_once '../Start.php';
 
 Start::init_ajax();
 

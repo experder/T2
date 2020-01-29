@@ -21,7 +21,7 @@ class Js {
 		return "$(function(){{$content}});";
 	}
 
-	public static function ajax_to_id($module, $cmd, $keyVals, $id, $add=false){
+	public static function ajax_to_id($module, $cmd, $keyVals, $id, $add=false, $function=null){
 		Page::get_singleton()->add_js_core();
 		$keyVals["module"]=$module;
 		$keyVals["cmd"]=$cmd;
@@ -29,7 +29,7 @@ class Js {
 		/*
 		 * TODO(2): AJAX: URL can get too long!
 		 */
-		return "t2_ajax_to_id('".Html::href_internal('core/ajax').$query."','$id',".($add?'true':'false').");";
+		return "t2_ajax_to_id('".Html::href_internal('core/ajax').$query."','$id',".($add?'true':'false').",".($function?"'$function'":'false').");";
 	}
 
 }

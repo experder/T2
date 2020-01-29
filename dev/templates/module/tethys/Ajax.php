@@ -28,7 +28,7 @@ class Ajax extends \t2\api\Ajax {
 				);
 				break;
 		}
-		$this->unknown_command($cmd, 1);
+		return $this->unknown_command($cmd, 1);
 	}
 
 }

@@ -12,6 +12,8 @@ namespace t2\core;
 
 
 use t2\core\service\Config;
+use t2\core\service\Html;
+use t2\core\service\includes\Includes;
 use t2\dev\Debug;
 use t2\Start;
 
@@ -263,8 +265,12 @@ class Page {
 
 	}
 
-	public function add_js_jquery341() {//TODO(1): Move to includes
-		$this->add_javascript("JS_ID_JQUERY", "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js");
+	/**
+	 * @deprecated TODO Stattdessen: Includes::js_jquery341($page);
+	 */
+	public function add_js_jquery341() {
+		Includes::js_jquery341($this);
+		#$this->add_javascript("JS_ID_JQUERY", "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js");
 	}
 
 	public function add_js_core() {
@@ -300,8 +306,17 @@ class Page {
 		$this->javascripts[$id] = $url;
 	}
 
-	public function get_demoskins_stylesheet_print($style) {
+	public function is_js_set($id) {
+		return isset($this->javascripts[$id]);
+	}
+
+	public static function get_demoskins_stylesheet_print($style) {
 		return new Stylesheet(Config::get_value_core('HTTP_ROOT') . "/skins/$style/print.css", Stylesheet::MEDIA_PRINT);
+	}
+	public static function get_stylesheet($css, $media="all") {
+		$style = Config::get_value_core("SKIN");
+		$root = Config::get_value_core('HTTP_ROOT');
+		return new Stylesheet("$root/skins/$style/$css", $media);
 	}
 
 	private function get_css_html() {
@@ -310,7 +325,7 @@ class Page {
 		if (in_array($style, array("bare"))) {
 			$stylesheets["CSS_ID_ALL"] = new Stylesheet(Config::get_value_core('HTTP_ROOT') . "/skins/$style/all.css");
 			#$stylesheets["CSS_ID_DEV"] = new Stylesheet(Config::get_value_core('HTTP_ROOT') . "/skins/$style/dev.css");
-			$stylesheets["CSS_ID_PRINT"] = $this->get_demoskins_stylesheet_print($style);
+			$stylesheets["CSS_ID_PRINT"] = self::get_demoskins_stylesheet_print($style);
 		}
 		foreach ($this->stylesheets as $key => $stylesheet) {
 			$stylesheets[$key] = $stylesheet;
@@ -372,6 +387,10 @@ class Page {
 		}
 		self::$recusion_protection_abort = false;
 
+		if(Start::is_type(Start::TYPE_AJAX)){
+			new Error_("Can't abort when ajaxing!", 0, null, 1);
+		}
+
 		if (is_array($messages)) {
 			foreach ($messages as $message) {
 				Page::$compiler_messages[] = $message;
@@ -395,6 +414,24 @@ class Page {
 
 		exit;
 		#self::$recusion_protection = true;
+	}
+
+	public function get_messages_plain(){
+		$text = "";
+		foreach (self::$compiler_messages as $msg){
+			$char = '?';
+			$type = $msg->getType();
+			if($type==Message::TYPE_ERROR){
+				$char = 'X';
+			}else if($type==Message::TYPE_INFO){
+				$char = '#';
+			}else if($type==Message::TYPE_CONFIRM){
+				$char = '=';
+			}
+			$line = str_repeat($char, 40);
+			$text .= $line . "\n" . $msg->get_message() . "\n" . $line . "\n";
+		}
+		return $text;
 	}
 
 }
