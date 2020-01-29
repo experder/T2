@@ -21,8 +21,8 @@ class Debug {
 
 	private static $core_queries = array(
 		"load_values ( :ROOT_DIR/core/service/Config.php::DEV_LVLINE )",
-		"check_session ( :ROOT_DIR/core/service/Login.php:52 )",
-		"update_session ( :ROOT_DIR/core/service/Login.php:82 )",
+		"check_session ( :ROOT_DIR/core/service/Login.php:53 )",
+		"update_session ( :ROOT_DIR/core/service/Login.php:83 )",
 	);
 	private static $core_queries_compiled = null;
 	public static $queries = array();
@@ -43,7 +43,8 @@ class Debug {
 		":ROOT_DIR/dev/Debug.php",
 		":ROOT_DIR/core/service/Arrays.php",
 		":ROOT_DIR/core/Html.php",
-		":ROOT_DIR/core/service/Html.php",
+		":ROOT_DIR/core/service/includes/Includes.php",
+		":ROOT_DIR/core/service/Files.php",
 	);
 	private static $core_includes_compiled = null;
 	public static $includes = array();

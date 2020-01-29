@@ -8,10 +8,7 @@
 
 namespace t2\core\service;
 
-
-#use t2\core\Error;
-
-#echo "<pre>".\t2\dev\Debug::backtrace()."</pre>";
+use t2\core\Error_;
 
 class Files {
 

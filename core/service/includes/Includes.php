@@ -6,9 +6,7 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-
 namespace t2\core\service\includes;
-
 
 use t2\core\Error_;
 use t2\core\form\Form;
@@ -61,7 +59,7 @@ class Includes {
 		if($page->is_js_set($id)){
 			return;
 		}
-		if (!self::$host_includes || self::$working) {
+		if (!self::$host_includes || self::$working || !defined('PROJECT_ROOT')) {
 			$page->add_javascript($id, $download);
 			return;
 		}
