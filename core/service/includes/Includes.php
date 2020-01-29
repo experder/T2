@@ -19,7 +19,8 @@ use t2\Start;
 /**
  * Class Includes
  * @package t2\core\service\includes
- * TODO: https://github.com/blueimp/jQuery-File-Upload
+
+ * https://github.com/blueimp/jQuery-File-Upload TODO(F): File upload
  */
 class Includes {
 

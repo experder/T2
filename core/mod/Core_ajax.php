@@ -22,7 +22,8 @@ class Core_ajax extends Ajax {
 	public function return_by_cmd($cmd, $keyValues) {
 		switch ($cmd){
 			case 'update_shell':
-				//TODO: sleep(3);
+				//TODO(2): spinner for ajax buttons
+				//sleep(3);
 				return Admin::update_shell();
 				break;
 			case 'update_db':

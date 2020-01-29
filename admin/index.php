@@ -6,7 +6,7 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-//TODO(3):namespace
+//TODO(3):namespace of admin index
 
 require_once '../Start.php';
 

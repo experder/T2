@@ -9,7 +9,7 @@
 namespace t2\admin;
 
 require_once '../Start.php';
-require_once ROOT_DIR . '/core/service/Js.php';//TODO
+require_once ROOT_DIR . '/core/service/Js.php';//TODO(3)
 
 use t2\core\Html;
 use t2\core\Page;
@@ -32,9 +32,9 @@ $page->add(Html::PRE_console("", "ID_RESULTS", "ID_RESULTS_outer"));
  * Shell
  */
 $div->addChild(Html::BUTTON("Shell", "update_shell();"));
-//TODO:Service Function for ScrollToBottom
-//TODO:Correction of escaping for inner ajax functions!
-//TODO:Use of "//" ends all functions in inner functions
+//TODO(2):Service Function for ScrollToBottom
+//TODO(2):Correction of escaping for inner ajax functions!
+//TODO(2):Use of "//" ends all functions in inner functions
 $page->add_inline_js("function update_shell(){
 	".Js::ajax_to_id("core", "update_shell", array(), "ID_RESULTS", true, Strings::escape_value_inline_js("
 		$(\"#ID_RESULTS_outer\").stop().animate({

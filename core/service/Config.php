@@ -20,7 +20,7 @@ use t2\dev\Install_wizard;
 
 class Config {
 
-	public static $DEVMODE = true;
+	public static $DEVMODE = false;
 
 	private static $cfg_modules = null;
 
@@ -65,12 +65,12 @@ class Config {
 	}
 
 	public static function cfg_http_root() {
-		//TODO:replace everywhere!
+		//TODO(3):replace everywhere!
 		return self::get_value_core('HTTP_ROOT');
 	}
 
 	public static function cfg_http_project() {
-		return self::cfg_http_root().'/'.Files::relative_path(ROOT_DIR, PROJECT_ROOT);//TODO!!!!!!!!!
+		return self::cfg_http_root().'/'.Files::relative_path(ROOT_DIR, PROJECT_ROOT);//TODO(1):Prompt HTTP_PROJECT
 		return self::get_value_core('HTTP_PROJECT');
 	}
 
