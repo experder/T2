@@ -31,10 +31,26 @@ class Admin {
 		return $result;
 	}
 
+	public static function get_update_script_name(){
+		$shellname = "?";
+		$platform = Config::get_check_platform();
+		if ($platform == Config::PLATFORM_WINDOWS) {
+			$shellname = 'update.cmd';
+		} else if ($platform == Config::PLATFORM_LINUX) {
+			$shellname = 'update.sh';
+		} else {
+			//Should not happen because $platform should be checked already
+			new Error_("Unknown platform.");
+		}
+		return $shellname;
+	}
+
 	public static function update_shell(){
 
 		$platform = Config::get_check_platform();
 		$project_root = PROJECT_ROOT;
+
+		#$shellname = Admin::get_update_script_name();
 
 		if ($platform == Config::PLATFORM_WINDOWS) {
 			if (!file_exists(PROJECT_ROOT . '/update.cmd')) {

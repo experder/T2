@@ -31,7 +31,8 @@ $page->add(Html::PRE_console("", "ID_RESULTS", "ID_RESULTS_outer"));
 /*
  * Shell
  */
-$div->addChild(Html::BUTTON("Shell", "update_shell();"));
+$shellname = Admin::get_update_script_name();
+$div->addChild(Html::BUTTON($shellname, "update_shell();"));
 //TODO(2):Service Function for ScrollToBottom
 //TODO(2):Correction of escaping for inner ajax functions!
 //TODO(2):Use of "//" ends all functions in inner functions
