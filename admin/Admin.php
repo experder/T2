@@ -12,7 +12,7 @@ use t2\core\Error_;
 use t2\core\mod\Core_database;
 use t2\core\Page;
 use t2\core\service\Config;
-use t2\core\service\includes\Includes;
+use t2\core\service\Includes;
 use t2\dev\Install_wizard;
 
 class Admin {

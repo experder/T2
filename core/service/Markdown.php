@@ -7,7 +7,7 @@
  GPL*/
 
 
-namespace t2\core\service\includes;
+namespace t2\core\service;
 
 use t2\core\Html;
 

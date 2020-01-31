@@ -6,17 +6,20 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-namespace t2\dev;
+namespace t2\dev\demo;
 
-require_once '../Start.php';
+require_once '../../Start.php';
 
-use t2\core\service\Markdown;
+use t2\core\service\Pdf;
+use t2\core\service\Templates;
 use t2\Start;
 
-$page = Start::init("PAGEID_CORE_DEV_NOTES", "Dev notes");
+$page = Start::init("PAGEID_DEV_PDFDEMO", "PDF demo");
 
-$text = Markdown::file_to_string('notes.md');
+$pdf = new Pdf(Templates::load('pdfdemo_tpl1.html', array()));
 
-$page->add($text);
+#$pdf->send_as_response();
+
+$page->add($pdf->to_html());
 
 $page->send_and_quit();

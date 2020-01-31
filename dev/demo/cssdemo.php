@@ -6,14 +6,14 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-namespace t2\dev;
+namespace t2\dev\demo;
 
-require_once '../Start.php';
+require_once '../../Start.php';
 
 use t2\core\Page;
 use t2\core\service\Config;
 use t2\core\Html;
-use t2\core\service\includes\Markdown;
+use t2\core\service\Markdown;
 use t2\core\service\Request;
 use t2\core\service\Strings;
 use t2\core\Database;
@@ -23,6 +23,7 @@ use t2\core\form\Formfield_password;
 use t2\core\form\Formfield_radio;
 use t2\core\form\Formfield_text;
 use t2\core\form\Formfield_textarea;
+use t2\dev\Debug;
 use t2\Start;
 
 $page = Start::init("PAGEID_DEV_CSSDEMO", "CSS demo");

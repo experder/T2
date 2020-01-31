@@ -6,14 +6,12 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-namespace t2\core\service\includes;
+namespace t2\core\service;
 
 use t2\core\Error_;
 use t2\core\form\Form;
 use t2\core\Message;
 use t2\core\Page;
-use t2\core\service\Config;
-use t2\core\service\Request;
 use t2\Start;
 
 /**
@@ -28,9 +26,14 @@ class Includes {
 
 	public static function load_all_available(Page $page){
 
-		//List of all includes:
+		/*
+		 * List of all includes
+		 */
+
 		Includes::js_jquery341($page);
+
 		Includes::php_parsedown174();
+		Includes::php_tcpdf632();
 
 	}
 
@@ -44,6 +47,24 @@ class Includes {
 		self::do_include_php("id_parsedown174",
 			'parsedown-1.7.4/Parsedown.php',
 			'https://github.com/erusev/parsedown/archive/1.7.4.zip'
+		);
+	}
+
+	/**
+	 * https://tcpdf.org/
+	 * https://github.com/tecnickcom/TCPDF
+	 *
+	 * version 6.3.2 (2019-09-20) / "this version will not receive any additional development or support"
+	 * https://github.com/tecnickcom/TCPDF/tree/9fde7bb9b404b945e7ea88fb7eccd23d9a4e324b
+	 * ( https://github.com/tecnickcom/TCPDF/commit/9fde7bb9b404b945e7ea88fb7eccd23d9a4e324b )
+	 * https://github.com/tecnickcom/TCPDF/archive/9fde7bb9b404b945e7ea88fb7eccd23d9a4e324b.zip
+	 *
+	 * Successor: https://github.com/tecnickcom/tc-lib-pdf
+	 */
+	public static function php_tcpdf632(){
+		self::do_include_php("id_tcpdf632",
+			'TCPDF-9fde7bb9b404b945e7ea88fb7eccd23d9a4e324b/tcpdf.php',
+			'https://github.com/tecnickcom/TCPDF/archive/9fde7bb9b404b945e7ea88fb7eccd23d9a4e324b.zip'
 		);
 	}
 
