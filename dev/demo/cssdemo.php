@@ -23,6 +23,8 @@ use t2\core\form\Formfield_password;
 use t2\core\form\Formfield_radio;
 use t2\core\form\Formfield_text;
 use t2\core\form\Formfield_textarea;
+use t2\core\table\Cell;
+use t2\core\table\Table;
 use t2\dev\Debug;
 use t2\Start;
 
@@ -103,6 +105,35 @@ $page->add(Html::A('Index', Html::href_internal('index'))."\n");
 $page->add(Html::A_external('Html::A_external',"https://github.com/experder/T2/blob/99b7c6cfd9173b5150c840a3553ae5c03061ace9/service/Html.php#L82:L87")."\n");
 $page->add(Html::A_external('External, button','http://tethys-framework.de',array("class"=>"abutton"))."\n");
 $page->add(Html::A_button('Button, external','http://tethys-framework.de',array(),array("target"=>"_blank"))."\n");
+
+/*
+======================== Tables ===========================
+ */
+$page->add(Html::H2("Tables", "tables")."\n");
+$table=new Table(array(
+	array(
+		"Col.1"=>"Foo",
+		"Col.2"=>"Bar",
+		"Col.3"=>"Barbar",
+	),
+	array(
+		"Col.1"=>new Cell("fooFoo!"),
+		"Col.2"=>null,
+		"Col.3"=>"fooBarbar",
+		"Col.4"=>"Nanu?",
+	),
+	array(
+		"",
+		"barBar",
+	),
+));
+$page->add($table->__toString());
+$table->set_headers(array(
+	"Col.1"=>"Col.1",
+	"Col.3"=>"Three",
+	"Col.2"=>"Two",
+));
+$page->add($table);
 
 /*
 ======================== Messages ===========================

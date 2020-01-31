@@ -14,21 +14,21 @@ use t2\core\Html;
 use t2\core\service\Pdf;
 use t2\core\service\Templates;
 use t2\core\Stylesheet;
+use t2\core\table\Table;
 use t2\Start;
 
 $page = Start::init("PAGEID_DEV_PDFDEMO", "PDF demo");
 
-//$table = new Table(array(
-//	array(
-//		"Col1"=>"Foo",
-//		"Col2"=>"Bar",
-//	),
-//	array(
-//		"Col1"=>"FooFoo",
-//		"Col2"=>"FooBar",
-//	),
-//));
-$table = "...";
+$table = new Table(array(
+	array(
+		"Col1"=>"Foo",
+		"Col2"=>"Bar",
+	),
+	array(
+		"Col1"=>"FooFoo",
+		"Col2"=>"FooBar",
+	),
+));
 
 $pdf = new Pdf(Templates::load('pdfdemo_tpl1.html', array(
 	"(:TABLE)"=>$table,

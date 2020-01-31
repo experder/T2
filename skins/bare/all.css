@@ -144,6 +144,7 @@ div.dev_stats div.abutton {
 	background: white;
 	border-radius: 5px;
 	box-shadow: -1px -1px 3px gray inset;
+	padding:0 5px;
 }
 
 div.dev_stats div.confirm_good {
@@ -187,6 +188,25 @@ div.dev_stats span.zoom-out {
 div.dev_stats div.zoom-out {
 	font-weight: bold;
 	box-shadow: 1px 1px 3px gray inset;
+}
+
+/*
+======================== Tables ===========================
+ */
+
+table{
+	border-collapse: collapse;
+}
+table tbody,
+table thead th{
+	border:1px solid black;
+	font-weight:normal;
+}
+table tbody tr:hover td{
+	background: #e6ddbf;
+}
+table tbody td{
+	background: #d2f0f0;
 }
 
 /*

@@ -12,7 +12,6 @@ namespace t2\core;
 
 
 use t2\core\service\Config;
-use t2\core\service\Html;
 use t2\core\service\Includes;
 use t2\dev\Debug;
 use t2\Start;
@@ -235,9 +234,8 @@ class Page {
 		$messages = $this->get_message_html();
 		$css_html = $this->get_css_html();
 
-		$dev_stats = "";
 		if (Config::$DEVMODE) {
-			$dev_stats = Debug::get_stats($this);
+			$this->add_js_core();
 		}
 
 		$js_html = $this->get_js_html();
@@ -259,7 +257,7 @@ class Page {
 					."<div class='body_inner'>\n";
 						$this->get_body(true);
 						echo "\n"
-					."</div>$dev_stats"
+					."</div>".(Config::$DEVMODE?Debug::get_stats($this):"")
 				."</body>\n"
 			."</html>";
 		// @formatter:on

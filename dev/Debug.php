@@ -43,7 +43,7 @@ class Debug {
 		":ROOT_DIR/dev/Debug.php",
 		":ROOT_DIR/core/service/Arrays.php",
 		":ROOT_DIR/core/Html.php",
-		":ROOT_DIR/core/service/includes/Includes.php",
+		":ROOT_DIR/core/service/Includes.php",
 		":ROOT_DIR/core/service/Files.php",
 	);
 	private static $core_includes_compiled = null;
