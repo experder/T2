@@ -78,5 +78,11 @@ class Files {
 //		echo $to."<br>";
 	}
 
+	public static function get_contents($file, $depth=0){
+		if(!file_exists($file)){
+			new Error_("File not found!","T2_FILE_NOT_FOUND","File: $file",$depth+1);
+		}
+		return file_get_contents($file);
+	}
 
 }

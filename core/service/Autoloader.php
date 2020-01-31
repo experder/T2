@@ -39,7 +39,7 @@ class Autoloader {
 		}
 		self::$recursion_protection = false;
 		require_once ROOT_DIR . '/core/Error_.php';
-		new Error_("Can't load \"$class\"!","AUTOLOADER",$file?"Were trying: \"$file\".":null,$depth+1);
+		new Error_("Can't load \"$class\"!","AUTOLOADER",$file?"Was trying: \"$file\".":null,$depth+1);
 	}
 
 }

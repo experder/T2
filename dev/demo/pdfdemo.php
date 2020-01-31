@@ -10,16 +10,39 @@ namespace t2\dev\demo;
 
 require_once '../../Start.php';
 
+use t2\core\Html;
 use t2\core\service\Pdf;
 use t2\core\service\Templates;
+use t2\core\Stylesheet;
 use t2\Start;
 
 $page = Start::init("PAGEID_DEV_PDFDEMO", "PDF demo");
 
-$pdf = new Pdf(Templates::load('pdfdemo_tpl1.html', array()));
+//$table = new Table(array(
+//	array(
+//		"Col1"=>"Foo",
+//		"Col2"=>"Bar",
+//	),
+//	array(
+//		"Col1"=>"FooFoo",
+//		"Col2"=>"FooBar",
+//	),
+//));
+$table = "...";
 
-#$pdf->send_as_response();
+$pdf = new Pdf(Templates::load('pdfdemo_tpl1.html', array(
+	"(:TABLE)"=>$table,
+)), true, "pdfdemo.css");
+#print_r($pdf->get_TCPDF_dev()->getMargins());
+$pdf->set_margins(10,50,150,20);
 
+if(isset($_REQUEST['out'])) {
+	$pdf->send_as_response();
+}
+
+$page->add(Html::A_button("PDF","?out"));
+$page->add("<hr>");
+$page->add_stylesheet('CSS_ID_ALL',new Stylesheet(false));
 $page->add($pdf->to_html());
 
 $page->send_and_quit();

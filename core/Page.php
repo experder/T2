@@ -337,7 +337,10 @@ class Page {
 		}
 		$html = "";
 		foreach ($stylesheets as $stylesheet) {
-			$html .= "\t<link href=\"" . $stylesheet->get_url() . "\" rel=\"stylesheet\" type=\"text/css\" media=\"" . $stylesheet->get_media() . "\"/>\n";;
+			$url = $stylesheet->get_url();
+			if($url){
+				$html .= "\t<link href=\"" . $url . "\" rel=\"stylesheet\" type=\"text/css\" media=\"" . $stylesheet->get_media() . "\"/>\n";;
+			}
 		}
 		return $html;
 	}
