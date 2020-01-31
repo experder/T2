@@ -20,7 +20,7 @@ use t2\dev\Install_wizard;
 
 class Config {
 
-	public static $DEVMODE = false;
+	public static $DEVMODE = true;
 
 	private static $cfg_modules = null;
 

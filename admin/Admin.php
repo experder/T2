@@ -21,9 +21,7 @@ class Admin {
 		#Includes::$host_includes=true;
 		$page = new Page("","");
 
-		//List of all includes:
-		Includes::js_jquery341($page);
-		Includes::php_parsedown174();
+		Includes::load_all_available($page);
 
 		$result = $page->get_messages_plain();
 		if(!$result){

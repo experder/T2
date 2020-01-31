@@ -26,6 +26,14 @@ class Includes {
 
 	private static $host_includes = true;
 
+	public static function load_all_available(Page $page){
+
+		//List of all includes:
+		Includes::js_jquery341($page);
+		Includes::php_parsedown174();
+
+	}
+
 	/**
 	 * https://parsedown.org/
 	 * https://github.com/erusev/parsedown
