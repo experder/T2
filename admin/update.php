@@ -36,10 +36,12 @@ $div->addChild(Html::BUTTON($shellname, "update_shell();"));
 //TODO(2):Correction of escaping for inner ajax functions!
 //TODO(2):Use of "//" ends all functions in inner functions
 $page->add_inline_js("function update_shell(){
+	t2_spinner_start();
 	".Js::ajax_to_id("core", "update_shell", array(), "ID_RESULTS", true, Strings::escape_value_inline_js("
 		$(\"#ID_RESULTS_outer\").stop().animate({
 			scrollTop: $(\"#ID_RESULTS_outer\")[0].scrollHeight
 		}, 800);
+		t2_spinner_stop();
 //		var objDiv = document.getElementById(\"ID_RESULTS_outer\");
 //		objDiv.scrollTop = objDiv.scrollHeight;
 //		alert(\"!\");
@@ -51,10 +53,12 @@ $page->add_inline_js("function update_shell(){
  */
 $div->addChild(Html::BUTTON("Database", "update_db();"));
 $page->add_inline_js("function update_db(){
+	t2_spinner_start();
 	".Js::ajax_to_id("core", "update_db", array(), "ID_RESULTS", true, Strings::escape_value_inline_js("
 		$(\"#ID_RESULTS_outer\").stop().animate({
 			scrollTop: $(\"#ID_RESULTS_outer\")[0].scrollHeight
 		}, 800);
+		t2_spinner_stop();
 	"))."
 }");
 
@@ -63,10 +67,13 @@ $page->add_inline_js("function update_db(){
  */
 $div->addChild(Html::BUTTON("Includes", "update_includes();"));
 $page->add_inline_js("function update_includes(){
+	t2_spinner_start();
 	".Js::ajax_to_id("core", "update_includes", array(), "ID_RESULTS", true, Strings::escape_value_inline_js("
+		if(!response){\$(\"#ID_RESULTS\").append(\"<br>(possibly timed out)<br>\");}
 		$(\"#ID_RESULTS_outer\").stop().animate({
 			scrollTop: $(\"#ID_RESULTS_outer\")[0].scrollHeight
 		}, 800);
+		t2_spinner_stop();
 	"))."
 }");
 
