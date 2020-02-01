@@ -42,6 +42,12 @@ Apache
         AllowOverride All
     </Directory>
 
+PHP
+---
+`php.ini`:
+
+    max_execution_time = 60
+
 Permissions
 -----------
 

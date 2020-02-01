@@ -3,7 +3,6 @@
 
 Inspired by: [Tethys-Beta](https://github.com/gitfabian/tethysbeta) (2014) and [Tethys](https://github.com/GitFabian/Tethys) (2018).
 
-[[Content](https://github.com/experder/T2/blob/master/help/folders.md)]
 [[Installation](https://github.com/experder/T2/blob/master/help/install.md)]
 
 ### More

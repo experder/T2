@@ -26,6 +26,7 @@ use t2\core\form\Formfield_textarea;
 use t2\core\table\Cell;
 use t2\core\table\Table;
 use t2\dev\Debug;
+use t2\core\service\Js;
 use t2\Start;
 
 $page = Start::init("PAGEID_DEV_CSSDEMO", "CSS demo");
@@ -34,6 +35,8 @@ if(!Config::$DEVMODE){
 	$page->add_message_error("Not available.");
 	$page->send_and_quit();
 }
+
+$page->add_js_core();
 
 $print_view = isset($_REQUEST['print']);
 
@@ -181,6 +184,8 @@ $form->add_field(new Formfield_radio("radio", array(
 )));
 
 $form->add_button(Html::BUTTON("BUTTON","alert('". Strings::escape_value_html2(schlauer_spruch())."');"));
+
+$form->add_button(Html::BUTTON("Spin","t2_spinner_start();".Js::run_later("t2_spinner_stop();",3)));
 
 
 $page->send_and_quit();

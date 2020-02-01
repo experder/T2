@@ -258,6 +258,7 @@ class Page {
 						$this->get_body(true);
 						echo "\n"
 					."</div>".(Config::$DEVMODE?Debug::get_stats($this):"")
+					.$this->waitSpinner()
 				."</body>\n"
 			."</html>";
 		// @formatter:on
@@ -266,6 +267,13 @@ class Page {
 
 		exit;
 
+	}
+
+	private function waitSpinner() {
+		$style = Config::get_value_core("SKIN");
+		$root = Config::get_value_core('HTTP_ROOT');
+		$waitSpinner="<div id=\"uploadSpinner\" style='display:none;'><div class=\"spinnerContent\"><img src=\"$root/skins/$style/img/spinner.gif\"><div>Bitte warten...</div></div></div>";
+		return $waitSpinner;
 	}
 
 	/**

@@ -24,7 +24,7 @@ function t2_toggle_detail_zoom(content_id, html_node_toggle_zoom){
 }
 
 function t2_ajax_to_func(query,Funktion){
-	var xmlhttp=new XMLHttpRequest();
+	let xmlhttp=new XMLHttpRequest();
 	xmlhttp.open("GET",query,true);
 	xmlhttp.onreadystatechange=function(){
 		if (xmlhttp.readyState===4 && xmlhttp.status===200){
@@ -35,7 +35,7 @@ function t2_ajax_to_func(query,Funktion){
 }
 
 function t2_ajax_to_id(query,id,add,func_after){
-	var func;
+	let func;
 	if(add){
 		func = "$('#"+id+"').append(response);";
 	}else{
@@ -46,3 +46,29 @@ function t2_ajax_to_id(query,id,add,func_after){
 	}
 	t2_ajax_to_func(query,func);
 }
+
+function t2_spinner_start(){
+	document.getElementById('uploadSpinner').style.display="block";
+	scope_disableKeys = true;
+}
+function t2_spinner_stop(){
+	document.getElementById('uploadSpinner').style.display="none";
+	scope_disableKeys = false;
+}
+
+/*
+https://stackoverflow.com/a/39347750
+ */
+
+let scope_disableKeys = false;
+
+window.addEventListener('keydown', function (event) {
+
+	if (scope_disableKeys === true) {
+		event.preventDefault();
+		return false;
+	}
+});
+
+
+

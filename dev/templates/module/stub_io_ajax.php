@@ -11,7 +11,7 @@ namespace t2\modules\core_template;
 require_once '../../../Start.php';
 
 use t2\core\Html;
-use t2\service\Js;
+use t2\core\service\Js;
 use t2\Start;
 
 $page = Start::init("PAGEID_TEMPLATES_IOAJAX", "My page");

@@ -6,12 +6,9 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-
-namespace t2\service;//TODO(1):namespace t2\core\service
-
+namespace t2\core\service;
 
 use t2\core\Html;
-use t2\core\service\Strings;
 use t2\core\Page;
 
 class Js {
@@ -30,6 +27,15 @@ class Js {
 		 * TODO(2): AJAX: URL can get too long!
 		 */
 		return "t2_ajax_to_id('".Html::href_internal('core/ajax').$query."','$id',".($add?'true':'false').",".($function?"'$function'":'false').");";
+	}
+
+	public static function run_later($code,$delay_seconds,$repeat=false){
+		$delay=$delay_seconds*1000;
+		if ($repeat){
+			return "setInterval(function(){{$code}},$delay);";
+		}else{
+			return "setTimeout(function(){{$code}},$delay);";
+		}
 	}
 
 }
