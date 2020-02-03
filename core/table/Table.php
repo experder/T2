@@ -79,6 +79,9 @@ class Table {
 				$cell->tag='th';
 				$thead->addChild($cell);
 			}else{
+				if($cell===true){
+					$cell=$col;
+				}
 				$thead->addChild(new Html('th',$cell));
 			}
 		}

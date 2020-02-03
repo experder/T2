@@ -132,7 +132,7 @@ $table=new Table(array(
 ));
 $page->add($table->__toString());
 $table->set_headers(array(
-	"Col.1"=>"Col.1",
+	"Col.1"=>true,
 	"Col.3"=>"Three",
 	"Col.2"=>"Two",
 ));
