@@ -286,7 +286,7 @@ class Page {
 
 	public function add_js_core() {
 		$this->add_js_jquery341();
-		$this->add_javascript("JS_ID_T2CORE", Config::get_value_core('HTTP_ROOT') . "/js/core.js");
+		$this->add_javascript("JS_ID_T2CORE", Config::get_value_core('HTTP_ROOT') . "/core/core.js");
 	}
 
 	private function get_js_html() {

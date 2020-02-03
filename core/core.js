@@ -5,6 +5,11 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
+
+/*
+      ONCLICK ZOOM-IN
+ */
+
 /**
  * @deprecated TODO: onclick zoom-in als objekt
  */
@@ -22,6 +27,10 @@ function t2_toggle_detail_zoom(content_id, html_node_toggle_zoom){
 	$('#'+content_id).toggle(500);
 	$(html_node_toggle_zoom).toggleClass('zoom-out');
 }
+
+/*
+       AJAX
+ */
 
 function t2_ajax_to_func(query,Funktion){
 	let xmlhttp=new XMLHttpRequest();
@@ -47,6 +56,9 @@ function t2_ajax_to_id(query,id,add,func_after){
 	t2_ajax_to_func(query,func);
 }
 
+/*
+       WAIT SPINNER
+ */
 function t2_spinner_start(){
 	document.getElementById('uploadSpinner').style.display="block";
 	scope_disableKeys = true;
@@ -55,20 +67,11 @@ function t2_spinner_stop(){
 	document.getElementById('uploadSpinner').style.display="none";
 	scope_disableKeys = false;
 }
-
-/*
-https://stackoverflow.com/a/39347750
- */
-
 let scope_disableKeys = false;
-
 window.addEventListener('keydown', function (event) {
-
 	if (scope_disableKeys === true) {
 		event.preventDefault();
 		return false;
 	}
 });
-
-
 
