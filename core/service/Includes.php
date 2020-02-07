@@ -75,7 +75,7 @@ class Includes {
 	 * https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js
 	 * @param Page $page
 	 */
-	public static function js_jquery341(Page $page){
+	public static function js_jquery341(Page $page=null){
 		self::do_add_js($page, "JS_ID_JQUERY",
 			'jquery.min.js',
 			'https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'
@@ -85,7 +85,10 @@ class Includes {
 
 	private static $working = false;
 
-	protected static function do_add_js(Page $page, $id, $file0, $download, $subdir = null){
+	protected static function do_add_js($page, $id, $file0, $download, $subdir = null){
+		if($page===null){
+			$page = Page::get_singleton();
+		}
 		if($page->is_js_set($id)){
 			return;
 		}

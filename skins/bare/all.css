@@ -127,8 +127,9 @@ body {
 	margin-bottom: 30px;
 }
 
+div.dev,
 pre.dev{
-	background: url('img/graystripe.png');
+	background-image: url('img/graystripe.png');
 }
 
 div.dev_stats {
@@ -188,6 +189,12 @@ div.dev_stats span.zoom-out {
 div.dev_stats div.zoom-out {
 	font-weight: bold;
 	box-shadow: 1px 1px 3px gray inset;
+}
+
+div#t2_messages div.ajax_response{
+	background-color:white;
+	overflow-y:auto;
+	max-height:150px;
 }
 
 /*

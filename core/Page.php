@@ -362,8 +362,9 @@ class Page {
 			$html .= "\n\t<div class='message $css_class'>" . $message->get_message() . "</div>";
 		}
 		if ($html) {
-			$html = "<div class='messages noprint'>$html\n</div>\n";
+			$html.= "\n";
 		}
+		$html = "<div class='messages noprint' id='t2_messages'>$html</div>\n";
 		return $html;
 	}
 

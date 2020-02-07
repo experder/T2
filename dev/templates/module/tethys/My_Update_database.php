@@ -14,7 +14,7 @@ TPLDOCEND*/
 
 use t2\api\Update_database;
 
-class Core_database extends Update_database {//TODO(2): Not "Core_database" but "Update_database" (in respective namespace)
+class My_Update_database extends Update_database {//TODO(2): Not "Core_database" but "Update_database" (in respective namespace)
 
 	protected $module = "(:MODULE_ID_LC)";
 	protected $start_ver = 1;

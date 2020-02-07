@@ -38,4 +38,16 @@ class Js {
 		}
 	}
 
+	public static function ajax_post($module, $cmd, $function, $callback=true){
+		Includes::js_jquery341();
+
+		$url = Html::href_internal('core/ajax');
+		$url.="?t2_module=".$module;
+		$url.="&t2_cmd=".$cmd;
+
+		$Funk = "function( data ){ $function }";
+
+		return "t2_ajax_post('$url', $Funk, ".(Config::$DEVMODE?'true':'false').", ".($callback?'true':'false').");";
+	}
+
 }

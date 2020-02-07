@@ -75,3 +75,43 @@ window.addEventListener('keydown', function (event) {
 	}
 });
 
+function t2_ajax_post(url, Funktion, err_detail, report){
+	$.ajax({
+		type: 'POST',
+		url: url,
+		data: {foo:'bar'},
+		success: function (data) {
+			if(data.ok){
+				Funktion(data);
+			}else{
+				let message;
+				if(err_detail){
+					message="<h1>Ajax returns error #"+data.error_id+"</h1><pre class='dev'>"+url+'<hr>'+data.error_msg+"</pre>";
+				}else{
+					message="An error occured. Please report this reference to your administrator: \"Ajax returned: "+data.error_id+"\"";
+				}
+				t2_error(message);
+			}
+		},
+		error: function (jqXHR, textStatus, errorThrown) {
+			let message;
+			if (jqXHR.readyState == 0) {
+				message="Could not connect to the server. Please check your network connection.";
+			}else if(err_detail){
+				message='<div class="dev"><h1>'+textStatus+'</h1>'+errorThrown+'<pre>'+url+'<br>Status code: '+jqXHR.status+'</pre><div class="dev ajax_response">'+jqXHR.responseText+'</div></div>';
+			}else{
+				if(jqXHR.status===404){
+					textStatus="This ist 404";
+				}
+				message="An error occured. Please report this reference to your administrator: \""+textStatus+"\"";
+			}
+			t2_error(message);
+		},
+		dataType: 'json'
+	});
+}
+
+function t2_error(message){
+	let msg = $('<div>',{'class': 'message msg_type_error'}).html(message);
+	$('#t2_messages').append(msg);
+}

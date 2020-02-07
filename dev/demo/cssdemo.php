@@ -85,12 +85,12 @@ $page->add(Html::PRE_console(schlauer_spruch()));
 
 $page->add(Html::H2("Markdown", "markdown"));
 $page->add($s=Markdown::string_to_string("
-### \#\#\# Header 3
+### \\#\\#\\# Header 3
 [Link](".Html::href_internal('index').")
 No new line
 `inline code` Linebreak:  
-__\_\_bold\_\___ _\_italic\__
-**\*\*bold\*\*** *\*italic\**
+__\\_\\_bold\\_\\___ _\\_italic\\__
+**\\*\\*bold\\*\\*** *\\*italic\\**
 * UL > LI
 
 Paragraph

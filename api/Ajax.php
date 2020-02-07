@@ -9,26 +9,32 @@
 namespace t2\api;
 
 
+use t2\core\Ajax_response;
+use t2\core\Error;
 use t2\core\service\Request;
 use t2\core\Error_;
+use t2\dev\Debug;
 
 abstract class Ajax {
 
 	/**
 	 * @param string $cmd
 	 * @param string[] $keyValues
-	 * @return string JSON or HTML, depending on $cmd
+	 * @return Ajax_response
 	 */
 	abstract public function return_by_cmd($cmd, $keyValues);
 
+	/**
+	 * @return Ajax_response
+	 */
 	public static function ajax_call_from_request(){
-		$module = Request::value_unset("module",false);
+		$module = Request::value_unset("t2_module",false);
 		if($module===false){
-			new Error_("ERROR_NO_MODULE");
+			new Error("AJAX_NO_MODULE","Module not set!", "Please specify t2_module in ajax query string (\"".$_SERVER['QUERY_STRING']."\")");
 		}
-		$cmd = Request::value_unset("cmd",false);
+		$cmd = Request::value_unset("t2_cmd",false);
 		if($cmd===false){
-			new Error_("ERROR_NO_CMD");
+			new Error("AJAX_NO_CMD","Command not set!", "Please specify t2_cmd in ajax query string (\"".$_SERVER['QUERY_STRING']."\")");
 		}
 		return self::ajax_call($module, $cmd, $_REQUEST);
 	}
@@ -42,7 +48,7 @@ abstract class Ajax {
 	}
 
 	protected function unknown_command($cmd, $depth=0){
-		new Error_("Unknown command \"$cmd\"!",0,null,$depth+1);
+		new Error("AJAX_UNKNOWN_CMD","Unknown command \"$cmd\"! (Class ".get_class($this).")",null,$depth+1);
 		return false;
 	}
 

@@ -9,23 +9,26 @@
 
 namespace t2\modules\core_template\api;
 
+require_once ROOT_DIR . '/dev/templates/module/Controller.php';
 
+use t2\core\Ajax_response;
 use t2\core\service\Arrays;
 use t2\modules\core_template\Controller;
 
-class Ajax extends \t2\api\Ajax {
+class My_Ajax extends \t2\api\Ajax {
 
 	/**
 	 * @param string   $cmd
 	 * @param string[] $keyValues
-	 * @return string JSON or HTML, depending on $cmd
+	 * @return Ajax_response|false
 	 */
 	public function return_by_cmd($cmd, $keyValues) {
 		switch ($cmd){
 			case 'test2':
-				return Controller::calculate_test2(
+				$response = Controller::calculate_test2(
 					Arrays::value_from_array($keyValues, 'foo')
 				);
+				return new Ajax_response(Ajax_response::TYPE_HTML, $response, null, false);
 				break;
 		}
 		return $this->unknown_command($cmd, 1);

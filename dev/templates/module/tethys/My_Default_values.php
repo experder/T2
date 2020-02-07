@@ -14,7 +14,7 @@ TPLDOCEND*/
 
 use t2\api\Default_values;
 
-class Core_values extends Default_values {
+class My_Default_values extends Default_values {
 
 	protected $default_values = array(
 		#"KEY"=>"VALUE",

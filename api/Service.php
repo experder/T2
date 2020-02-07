@@ -8,6 +8,7 @@
 namespace t2\api;
 
 
+use t2\core\Error;
 use t2\core\service\Config;
 use t2\core\mod\Core_ajax;
 use t2\core\Error_;
@@ -37,7 +38,7 @@ class Service {
 		}
 		$include_file= str_replace(':ROOT_DIR',ROOT_DIR,$modules[$module][$classname]['include']);
 		if(!file_exists($include_file)){
-			Error_::quit("Module configuration is corrupt. {\"$module\":{\"$classname\":{\"include\":...}}}:\nFile not found: $include_file");
+			new Error("ERROR_CONFIG_CORRUPT", "Module configuration is corrupt. {\"$module\":{\"$classname\":{\"include\":...}}}:\nFile not found: $include_file");
 		}
 		/** @noinspection PhpIncludeInspection */
 		require_once $include_file;

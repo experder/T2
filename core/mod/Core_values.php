@@ -8,10 +8,7 @@
 
 namespace t2\core\mod;
 
-
 use t2\api\Default_values;
-
-#echo "<pre>".Debug::backtrace()."</pre>";
 
 class Core_values extends Default_values {
 
@@ -23,8 +20,8 @@ class Core_values extends Default_values {
 						"class":"\\\t2\\\modules\\\core_template\\\api\\\Core_values"
 					},
 					"Ajax":{
-						"include":":ROOT_DIR\/dev\/templates\/module\/tethys\/Ajax.php",
-						"class":"t2\\\modules\\\core_template\\\api\\\Ajax"
+						"include":":ROOT_DIR\/dev\/templates\/module\/tethys\/My_Ajax.php",
+						"class":"t2\\\modules\\\core_template\\\api\\\My_Ajax"
 					}
 				}
 			}',

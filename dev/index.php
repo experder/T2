@@ -19,6 +19,7 @@ $page->add(\t2\core\Html::A_button("Notes",\t2\core\Html::href_internal("dev/not
 $page->add(\t2\core\Html::A_button("TODOs","https://github.com/experder/T2/blob/dev/dev/notes.md#current-todos",null,array("target"=>"_blank")));
 $page->add(\t2\core\Html::A_button("CSS demo",\t2\core\Html::href_internal("dev/demo/cssdemo")));
 $page->add(\t2\core\Html::A_button("PDF demo",\t2\core\Html::href_internal("dev/demo/pdfdemo")));
+$page->add(\t2\core\Html::A_button("Ajax demo",\t2\core\Html::href_internal("dev/demo/ajaxdemo")));
 
 //TODO(1): Register modules! (dev_tools)
 #$page->add(\t2\core\Html::A_button("Convert TODOs",\t2\core\Html::href_internal("dev/mod_tools/convert_todos")));

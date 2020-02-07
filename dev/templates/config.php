@@ -14,7 +14,7 @@
  * TPLDOCEND*/
 
 //Set to TRUE in your development environment, FALSE (default) for production:
-#\service\Config::$DEVMODE = true;
+#\t2\core\service\Config::$DEVMODE = true;
 
 //Where to find your project:
 define('PROJECT_ROOT', ":project_root");

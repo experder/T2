@@ -15,4 +15,5 @@ require_once '../Start.php';
 
 Start::init_ajax();
 
-echo Ajax::ajax_call_from_request();
+$response = Ajax::ajax_call_from_request();
+$response->compile_and_send();
