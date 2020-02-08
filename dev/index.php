@@ -6,20 +6,23 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-//TODO(3):Namespace of dev index
+namespace t2\dev;
 
 require_once '../Start.php';
 
-$page = \t2\Start::init("PAGEID_CORE_DEVZONE", "Dev zone");
+use t2\core\Html;
+use t2\Start;
 
-$page->add(\t2\core\Html::H1("Dev zone"));
+$page = Start::init_("PAGEID_CORE_DEVZONE");
 
-$page->add(\t2\core\Html::A_button("New module",\t2\core\Html::href_internal("dev/new_module")));
-$page->add(\t2\core\Html::A_button("Notes",\t2\core\Html::href_internal("dev/notes")));
-$page->add(\t2\core\Html::A_button("TODOs","https://github.com/experder/T2/blob/dev/dev/notes.md#current-todos",null,array("target"=>"_blank")));
-$page->add(\t2\core\Html::A_button("CSS demo",\t2\core\Html::href_internal("dev/demo/cssdemo")));
-$page->add(\t2\core\Html::A_button("PDF demo",\t2\core\Html::href_internal("dev/demo/pdfdemo")));
-$page->add(\t2\core\Html::A_button("Ajax demo",\t2\core\Html::href_internal("dev/demo/ajaxdemo")));
+$page->add(Html::H1("Dev zone"));
+
+$page->add(Html::A_button("New module", Html::href_internal_root("dev/new_module")));
+$page->add(Html::A_button("Notes", Html::href_internal_root("dev/notes")));
+$page->add(Html::A_button("TODOs","https://github.com/experder/T2/blob/dev/dev/notes.md#current-todos",null,array("target"=>"_blank")));
+$page->add(Html::A_button("CSS demo", Html::href_internal_root("dev/demo/cssdemo")));
+$page->add(Html::A_button("PDF demo", Html::href_internal_root("dev/demo/pdfdemo")));
+$page->add(Html::A_button("Ajax demo", Html::href_internal_root("dev/demo/ajaxdemo")));
 
 //TODO(1): Register modules! (dev_tools)
 #$page->add(\t2\core\Html::A_button("Convert TODOs",\t2\core\Html::href_internal("dev/mod_tools/convert_todos")));

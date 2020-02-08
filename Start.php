@@ -70,7 +70,7 @@ class Start {
 		if (Database::get_singleton(false) === false) {
 			new Error_("Local config file seems to be corrupt. Please check.", "ERROR_CONFIG_CORRUPT/2", "Config file: " . $config_file);
 		}
-		#define('DB_CORE_PREFIX', Database::get_singleton()->core_prefix);
+		define('DB_CORE_PREFIX', Database::get_singleton()->core_prefix);
 
 		//TODO(2): Configure PROJECT_ROOT
 		if (!defined("PROJECT_ROOT")) {
@@ -97,16 +97,21 @@ class Start {
 	}
 
 	/**
-	 * @param string $PAGEID_
-	 * @param string $title
-	 * @return Page
+	 * @deprecated
 	 */
 	public static function init($PAGEID_, $title) {
+		return self::init_($PAGEID_);
+	}
+	/**
+	 * @param string $PAGEID_
+	 * @return Page
+	 */
+	public static function init_($PAGEID_) {
 		self::$type = self::TYPE_HTML;
 		Start::init_config();
 		Start::init_database();
 		Start::init_userrights();
-		$page = Page::init2($PAGEID_, $title);
+		$page = Page::init2($PAGEID_);
 		return $page;
 	}
 

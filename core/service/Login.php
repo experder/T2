@@ -10,6 +10,7 @@ namespace t2\core\service;
 
 
 use t2\core\Database;
+use t2\core\Error;
 use t2\core\Error_;
 use t2\core\form\Form;
 use t2\core\form\Formfield_password;
@@ -47,8 +48,10 @@ class Login {//TODO(2):Logout
 		if(isset($_COOKIE[self::$session_cookie_name]) && $_COOKIE[self::$session_cookie_name]!=='-'){
 			$session_id = $_COOKIE[self::$session_cookie_name];
 
+			$core_sessions = DB_CORE_PREFIX.'_sessions';
+			$core_user = DB_CORE_PREFIX.'_user';
 			$session_data = Database::select_single_(
-				"SELECT expires,`user` as ".self::$user_fields." FROM core_sessions LEFT JOIN core_user on `user`=core_user.`id` WHERE session_id=:session_id"
+				"SELECT expires,`user` as ".self::$user_fields." FROM $core_sessions LEFT JOIN $core_user on `user`=$core_user.`id` WHERE session_id=:session_id"
 				, array(
 					"session_id" => $session_id,
 				)
@@ -78,7 +81,8 @@ class Login {//TODO(2):Logout
 		if($expires==$session_expires){
 			return;
 		}
-		$rowcount = Database::get_singleton()->update("UPDATE core_sessions SET expires=:expires WHERE session_id=:session_id",array(
+		$core_sessions = DB_CORE_PREFIX.'_sessions';
+		$rowcount = Database::get_singleton()->update("UPDATE $core_sessions SET expires=:expires WHERE session_id=:session_id",array(
 			":expires"=>$expires,
 			":session_id"=>$session_id,
 		));
@@ -100,7 +104,8 @@ class Login {//TODO(2):Logout
 
 		$session_id = bin2hex(Php7::random_bytes(10));
 		$expires = self::session_expires();
-		$ok = Database::insert_assoc_("core_sessions", array(
+		$core_sessions = DB_CORE_PREFIX.'_sessions';
+		$ok = Database::insert_assoc_($core_sessions, array(
 			"user"=>$uid,
 			"session_id"=>$session_id,
 			"expires"=>$expires,
@@ -110,7 +115,7 @@ class Login {//TODO(2):Logout
 			if($ok2){
 				return true;
 			}else{
-				Error_::quit("Internal error.");
+				new Error("Internal_error", "Internal error.");
 			}
 		}
 		return false;
@@ -150,7 +155,8 @@ class Login {//TODO(2):Logout
 	public static function check_credentials($username, $password){
 		$password_hash = md5($password);
 
-		$data = Database::select_single_("SELECT ".self::$user_fields." FROM core_user WHERE username=:username AND pass_hash=:password_hash;",array(
+		$core_user = DB_CORE_PREFIX.'_user';
+		$data = Database::select_single_("SELECT ".self::$user_fields." FROM $core_user WHERE username=:username AND pass_hash=:password_hash;",array(
 			":username"=>$username,
 			":password_hash"=>$password_hash,
 		));

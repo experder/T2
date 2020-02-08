@@ -27,14 +27,15 @@ class Database {
 	const RETURN_LASTINSERTID = 1;
 	/**
 	 * Returns result of the SELECT query in form of an associative array.
-	 * Used by the function select.
+	 * Used by the functions select and its derivates.
 	 * @see select
 	 */
 	const RETURN_ASSOC = 2;
 	/**
 	 * Returns the number of rows affected by the last query.
-	 * Used by the function delete.
+	 * Used by the functions delete and update.
 	 * @see delete
+	 * @see update
 	 */
 	const RETURN_ROWCOUNT = 3;
 
@@ -136,6 +137,9 @@ class Database {
 
 	public static function select_($query, $substitutions = array(), $halt_on_error = true) {
 		return self::get_singleton()->select($query, $substitutions, 1, $halt_on_error);
+	}
+	public static function delete_($query, $substitutions = array()) {
+		return self::get_singleton()->delete($query, $substitutions, 1);
 	}
 
 	/**
@@ -309,6 +313,16 @@ class Database {
 	 * @return int|false
 	 */
 	public function update($query, $substitutions = array(), $stacktrace_depth = 0) {
+		return $this->iquery($query, $substitutions, self::RETURN_ROWCOUNT, $stacktrace_depth + 1);
+	}
+
+	/**
+	 * @param string $query
+	 * @param array  $substitutions
+	 * @param int    $stacktrace_depth
+	 * @return int|false
+	 */
+	public function delete($query, $substitutions = array(), $stacktrace_depth = 0) {
 		return $this->iquery($query, $substitutions, self::RETURN_ROWCOUNT, $stacktrace_depth + 1);
 	}
 

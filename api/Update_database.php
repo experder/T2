@@ -9,6 +9,7 @@
 namespace t2\api;
 
 use t2\core\Database;
+use t2\core\Error;
 use t2\core\service\Config;
 
 abstract class Update_database {
@@ -30,7 +31,7 @@ abstract class Update_database {
 	protected function q($ver, $query) {
 
 		if ($ver != $this->start_ver) {
-			Error_::quit("Order is violated!", 1);
+			new Error("DBUPDATE_ORDER_VIOLATED", "Order is violated!", null, 1);
 		}
 		$this->start_ver++;
 
@@ -38,7 +39,7 @@ abstract class Update_database {
 			$statement = $this->database->get_pdo()->query($query);
 			if ($statement === false) {
 				$errorInfo = $this->database->get_pdo()->errorInfo();
-				Error_::quit("Database update #$ver failed!\n" . $errorInfo[2], 1);
+				new Error("DB_UPDATE_FAILED","Database update #$ver failed!\n" . $errorInfo[2],null,1);
 			}
 			//Update:
 			Config::set_value("DB_VERSION", $ver, $this->module, null, $this->database);

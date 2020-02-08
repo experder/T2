@@ -12,10 +12,10 @@ require_once 'Start.php';
 
 use t2\core\Html;
 
-$page = Start::init("PAGEID_CORE_INDEX", "Start");
+$page = Start::init_("PAGEID_CORE_INDEX");
 
 $page->add("Welcome!");
 
-$page->add(Html::A_button("Admin", Html::href_internal("admin/index")));
+$page->add(Html::A_button("Admin", Html::href_internal_root("admin/index")));
 
 $page->send_and_quit();

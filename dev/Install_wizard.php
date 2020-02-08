@@ -6,10 +6,7 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-
-
 namespace t2\dev;
-
 
 use t2\core\Database;
 use t2\core\Error_;
@@ -187,8 +184,8 @@ class Install_wizard {//TODO(3): Install wizard: Prompt all field in one form
 		$database = Database::get_singleton();
 		self::prompt_coreUser();
 
-		#$core_config = DB_CORE_PREFIX.'_config';
-		$database->get_pdo()->exec("CREATE TABLE IF NOT EXISTS `core_config` (
+		$core_config = DB_CORE_PREFIX.'_config';
+		$database->get_pdo()->exec("CREATE TABLE IF NOT EXISTS `$core_config` (
 			  `id` INT(11) NOT NULL AUTO_INCREMENT,
 			  `idstring` VARCHAR(40) COLLATE utf8_bin NOT NULL,
 			  `module` VARCHAR(40) COLLATE utf8_bin NOT NULL,
@@ -202,7 +199,8 @@ class Install_wizard {//TODO(3): Install wizard: Prompt all field in one form
 
 		$root_user = Request::value('username', 'root');
 		$root_pass = Request::value('password', '');
-		$database->insert_assoc('core_user', array(
+		$core_user = DB_CORE_PREFIX.'_user';
+		$database->insert_assoc($core_user, array(
 			"username" => $root_user,
 			"pass_hash" => md5($root_pass),
 		));

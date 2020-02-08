@@ -46,34 +46,45 @@ $page->add_inline_js(
 
 /*
  * Database
- * TODO(3):ajax_post_to_id
  */
 $div->addChild(Html::BUTTON("Database", "update_db();"));
-$page->add_inline_js("function update_db(){
-	t2_spinner_start();
-	".Js::ajax_to_id("core", "update_db", array(), "ID_RESULTS", true, Strings::escape_value_inline_js("
-		$(\"#ID_RESULTS_outer\").stop().animate({
-			scrollTop: $(\"#ID_RESULTS_outer\")[0].scrollHeight
-		}, 800);
-		t2_spinner_stop();
-	"))."
-}");
+$page->add_inline_js(
+	"function update_db(){"
+	. "t2_spinner_start();"
+	. Js::ajax_post_to_id(
+		'core', 'update_db', "ID_RESULTS",
+		Js::scroll_to_bottom('ID_RESULTS_outer')
+		. "t2_spinner_stop();"
+		, null, true
+	)
+	. "}"
+);
 
 /*
  * Includes
- * TODO(3):ajax_post_to_id
  */
 $div->addChild(Html::BUTTON("Includes", "update_includes();"));
-$page->add_inline_js("function update_includes(){
-	t2_spinner_start();
-	".Js::ajax_to_id("core", "update_includes", array(), "ID_RESULTS", true, Strings::escape_value_inline_js("
-		if(!response){\$(\"#ID_RESULTS\").append(\"<br>(possibly timed out)<br>\");}
-		$(\"#ID_RESULTS_outer\").stop().animate({
-			scrollTop: $(\"#ID_RESULTS_outer\")[0].scrollHeight
-		}, 800);
-		t2_spinner_stop();
-	"))."
-}");
+$page->add_inline_js(
+	"function update_includes(){"
+	. "t2_spinner_start();"
+	. Js::ajax_post_to_id(
+		'core', 'update_includes', "ID_RESULTS",
+		Js::scroll_to_bottom('ID_RESULTS_outer')
+		. "t2_spinner_stop();"
+		, null, true
+	)
+	. "}"
+);
+//$page->add_inline_js("function update_includes(){
+//	t2_spinner_start();
+//	".Js::ajax_to_id("core", "update_includes", array(), "ID_RESULTS", true, Strings::escape_value_inline_js("
+//		if(!response){\$(\"#ID_RESULTS\").append(\"<br>(possibly timed out)<br>\");}
+//		$(\"#ID_RESULTS_outer\").stop().animate({
+//			scrollTop: $(\"#ID_RESULTS_outer\")[0].scrollHeight
+//		}, 800);
+//		t2_spinner_stop();
+//	"))."
+//}");
 
 
 if(Config::$DEVMODE){

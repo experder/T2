@@ -121,14 +121,15 @@ class Page {
 
 	/**
 	 * @param string $id
-	 * @param string $title
 	 * @return Page
 	 */
-	public static function init2($id, $title) {
+	public static function init2($id) {
 
 		if (self::$singleton !== null) {
 			Error_::quit("Page is already initialized!", 1);
 		}
+
+		$title = "$id";//TODO(1):Get title from DB
 
 		self::$singleton = new Page($id, $title);
 

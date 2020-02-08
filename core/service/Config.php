@@ -118,8 +118,9 @@ class Config {
 		if ($database === false) {
 			$data = false;
 		} else {
+			$core_config = DB_CORE_PREFIX.'_config';
 			$data = $database->select_single(
-				"SELECT `content` FROM core_config WHERE `idstring`=:id AND module<=>:module AND userid<=>:userid;",
+				"SELECT `content` FROM $core_config WHERE `idstring`=:id AND module<=>:module AND userid<=>:userid;",
 				array(
 					"id" => $id,
 					"module" => $module,
@@ -220,7 +221,8 @@ class Config {
 			"module" => $module,
 			"userid" => $user
 		);
-		$database->update_or_insert("core_config", $where, array("content" => $value));
+		$core_config = DB_CORE_PREFIX.'_config';
+		$database->update_or_insert($core_config, $where, array("content" => $value));
 		self::store_val($module, $user, $id, $value);
 	}
 
@@ -234,10 +236,10 @@ class Config {
 	 */
 	public static function load_values($ids, $module = null, $user = null) {
 		$ids_sql = Strings::build_sql_collection($ids);
-		#$core_config = DB_CORE_PREFIX.'_config';
+		$core_config = DB_CORE_PREFIX.'_config';
 		self::$dev_lv_line = __LINE__ + 7;
 		$data = Database::select_(
-			"SELECT idstring,`content` FROM core_config WHERE `idstring` in ($ids_sql) AND module<=>:module AND userid <=> :userid;",
+			"SELECT idstring,`content` FROM $core_config WHERE `idstring` in ($ids_sql) AND module<=>:module AND userid <=> :userid;",
 			array(
 				"module" => $module,
 				"userid" => $user,

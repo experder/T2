@@ -5,13 +5,12 @@
  * T2 comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
-namespace t2\api;
 
+namespace t2\api;
 
 use t2\core\Error;
 use t2\core\service\Config;
 use t2\core\mod\Core_ajax;
-use t2\core\Error_;
 
 class Service {
 
@@ -21,16 +20,17 @@ class Service {
 				return new Core_ajax();
 				break;
 			default:
-				new Error_("Unknown classname \"$classname\".", 0, "Please specify class in \"\\t2\\api\\Service::get_api_class_core\".");
+				new Error("Unknown_classname","Unknown classname \"$classname\".", "Please specify class in \"\\t2\\api\\Service::get_api_class_core\".");
 				break;
 		}
+		return false;
 	}
 	public static function get_api_class($module, $classname){
 		if($module=='core'){
 			return self::get_api_class_core($classname);
 		}
 		if(!class_exists($api_classname = "\\t2\\api\\$classname")){
-			Error_::quit("Invalid API-Request (class $api_classname does not exist)", 1);
+			new Error("INVALID_API_REQUEST","Invalid API-Request (class $api_classname does not exist)",null,1);
 		}
 		$modules = Config::MODULES();
 		if(!isset($modules[$module][$classname]['include'])||!isset($modules[$module][$classname]['class'])){
@@ -44,19 +44,20 @@ class Service {
 		require_once $include_file;
 		$class = $modules[$module][$classname]['class'];
 		if (!class_exists($class)){
-			Error_::quit("Module configuration defines not-existing class: \"$class\" {\"$module\":{\"$classname\":{\"class\":...}}}");
+			new Error("ERROR_IN_MOD_CFG","Module configuration defines not-existing class: \"$class\" {\"$module\":{\"$classname\":{\"class\":...}}}");
 		}
 		try {
 			$reflection = new \ReflectionClass($class);
 			$ref_api = new \ReflectionClass($api_classname);
 		} catch (\ReflectionException $e) {
-			Error_::from_exception($e);
+			Error::from_exception($e);
+			exit;
 		}
 		if(!($reflection->isSubclassOf($ref_api))){
-			Error_::quit("Module configuration defines class that is not of type of $classname: \"$class\" {\"$module\":{\"$classname\":{\"class\":...}}}");
+			new Error("MOD_CFG_TYPE_ERROR","Module configuration defines class that is not of type of $classname: \"$class\" {\"$module\":{\"$classname\":{\"class\":...}}}");
 		}
 		if(($constructor=$reflection->getConstructor()) && $constructor->getNumberOfRequiredParameters()!=0){
-			Error_::quit("Module configuration: Constructor of class \"$class\" has the wrong number of required arguments.");
+			new Error("MOD_CFG_CONST_ARGS_ERROR","Module configuration: Constructor of class \"$class\" has the wrong number of required arguments.");
 		}
 		$instance = $reflection->newInstance();
 		return $instance;
