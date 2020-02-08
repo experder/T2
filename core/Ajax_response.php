@@ -49,7 +49,6 @@ class Ajax_response {
 	}
 
 	public function compile_and_send(){
-		echo "X";
 		$response = array(
 			"ok" => $this->ok,
 		);

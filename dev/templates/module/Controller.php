@@ -6,19 +6,13 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-
-/*
-require_once ROOT_DIR . '/dev/templates/module/Controller.php';
- */
-
 namespace t2\modules\core_template;
 
 class Controller {
 
-	public static function calculate_test2($foo){
-		$bar = "foo => $foo";
-		//...
-		return $bar."\n";
+	public static function calculate_whatever($foo){
+		$bar = $foo;
+		return $bar;
 	}
 
 }

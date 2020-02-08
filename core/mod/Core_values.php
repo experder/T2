@@ -14,14 +14,10 @@ class Core_values extends Default_values {
 
 	protected $default_values = array(
 		"MODULES" => '{
-				"core_template":{
-					"Default_values":{
-						"include":":ROOT_DIR\/dev\/templates\/module\/tethys\/Default_values.php",
-						"class":"\\\t2\\\modules\\\core_template\\\api\\\Core_values"
-					},
+				"core_demo":{
 					"Ajax":{
-						"include":":ROOT_DIR\/dev\/templates\/module\/tethys\/My_Ajax.php",
-						"class":"t2\\\modules\\\core_template\\\api\\\My_Ajax"
+						"include":":ROOT_DIR\/dev\/demo\/Ajaxdemo_my.php",
+						"class":"t2\\\modules\\\core_demo\\\Ajaxdemo_my"
 					}
 				}
 			}',

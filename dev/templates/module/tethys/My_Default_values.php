@@ -11,7 +11,6 @@ GPL
  * @see \t2\dev\Tools::prompt_new_module()
 TPLDOCEND*/
 
-
 use t2\api\Default_values;
 
 class My_Default_values extends Default_values {

@@ -11,10 +11,9 @@ GPL
  * @see \t2\dev\Tools::prompt_new_module()
 TPLDOCEND*/
 
-
 use t2\api\Update_database;
 
-class My_Update_database extends Update_database {//TODO(2): Not "Core_database" but "Update_database" (in respective namespace)
+class My_Update_database extends Update_database {
 
 	protected $module = "(:MODULE_ID_LC)";
 	protected $start_ver = 1;
@@ -24,15 +23,7 @@ class My_Update_database extends Update_database {//TODO(2): Not "Core_database"
 	 */
 	protected function do_update() {
 
-//		$this->q(1, "CREATE TABLE `(:MODULE_ID_LC)_(:MODULE_ID_LC)` (
-//			  `id` int(11) NOT NULL AUTO_INCREMENT,
-//			  `uid` int(11) NOT NULL,
-//			  `property1` text NOT NULL,
-//			  PRIMARY KEY (`id`),
-//			  KEY `uid` (`uid`)
-//			) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
-
-		#$this->q(2, "ALTER TABLE `(:MODULE_ID_LC)_(:MODULE_ID_LC)` ADD CONSTRAINT `(:MODULE_ID_LC)_(:MODULE_ID_LC)_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `core_user` (`id`);");
+		#$this->q(1, "");
 
 		#$this->q(, "");
 

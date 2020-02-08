@@ -15,7 +15,7 @@ use t2\core\form\Form;
 use t2\core\form\Formfield_textarea;
 use t2\Start;
 
-$page = Start::init("PAGEID_CORE_TEMPLATE_STUB_IO_JS", "My page");
+$page = Start::init("PAGEID_CORE_TEMPLATE_STUB_IO_JS", "My page");//TODO:jsdemo
 
 $form = new Form(null, false, false);
 $form->add_button(Html::BUTTON("Process","process();"));

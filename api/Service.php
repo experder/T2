@@ -34,11 +34,11 @@ class Service {
 		}
 		$modules = Config::MODULES();
 		if(!isset($modules[$module][$classname]['include'])||!isset($modules[$module][$classname]['class'])){
-			Error_::quit("Module configuration is invalid. Cannot get: {\"$module\":{\"$classname\"}} (must contain \"include\" and \"class\")");
+			new Error("ERROR_CONFIG_CORRUPT/2","Module configuration is invalid. Cannot get: {\"$module\":{\"$classname\"}} (must contain \"include\" and \"class\")");
 		}
 		$include_file= str_replace(':ROOT_DIR',ROOT_DIR,$modules[$module][$classname]['include']);
 		if(!file_exists($include_file)){
-			new Error("ERROR_CONFIG_CORRUPT", "Module configuration is corrupt. {\"$module\":{\"$classname\":{\"include\":...}}}:\nFile not found: $include_file");
+			new Error("ERROR_CONFIG_CORRUPT/3", "Module configuration is corrupt. {\"$module\":{\"$classname\":{\"include\":...}}}:\nFile not found: $include_file");
 		}
 		/** @noinspection PhpIncludeInspection */
 		require_once $include_file;

@@ -75,11 +75,11 @@ window.addEventListener('keydown', function (event) {
 	}
 });
 
-function t2_ajax_post(url, Funktion, err_detail, report){
+function t2_ajax_post(url, Funktion, data_object, err_detail, report){
 	$.ajax({
 		type: 'POST',
 		url: url,
-		data: {foo:'bar'},
+		data: data_object,
 		success: function (data) {
 			if(data.ok){
 				Funktion(data);
@@ -95,7 +95,7 @@ function t2_ajax_post(url, Funktion, err_detail, report){
 		},
 		error: function (jqXHR, textStatus, errorThrown) {
 			let message;
-			if (jqXHR.readyState == 0) {
+			if (jqXHR.readyState === 0) {
 				message="Could not connect to the server. Please check your network connection.";
 			}else if(err_detail){
 				message='<div class="dev"><h1>'+textStatus+'</h1>'+errorThrown+'<pre>'+url+'<br>Status code: '+jqXHR.status+'</pre><div class="dev ajax_response">'+jqXHR.responseText+'</div></div>';

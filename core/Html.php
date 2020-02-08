@@ -17,6 +17,7 @@ class Html {
 
 	protected $tag;
 	private $content;
+	private $void;
 	protected $params;
 	/**
 	 * @var Html[] $children
@@ -31,10 +32,12 @@ class Html {
 	 * @param string     $content
 	 * @param array|null $params Key-Value pairs of HTML-Attributes
 	 * @param mixed      $children
+	 * @param boolean    $void
 	 */
-	public function __construct($tag, $content, $params = null, $children=null) {
+	public function __construct($tag, $content, $params = null, $children=null, $void=false) {
 		$this->tag = $tag;
 		$this->content = $content;
+		$this->void= $void;
 		$this->addParams($params);
 		if($children!==null){
 			self::addChildren($children);
@@ -111,7 +114,13 @@ class Html {
 
 	public function __toString() {
 		$params = self::tag_keyValues($this->params);
-		return "<$this->tag$params>$this->content" . implode("", $this->children) . "</$this->tag>";
+		$html = "<$this->tag$params";
+		if($this->void){
+			$html.=" />".implode("", $this->children);
+		}else{
+			$html.=">".$this->content . implode("", $this->children) . "</$this->tag>";
+		}
+		return $html;
 	}
 
 	//================================== STATIC's ====================================================
