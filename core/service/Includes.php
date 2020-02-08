@@ -93,17 +93,21 @@ class Includes {
 	 * https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js
 	 *
 	 * @param Page|null $page
+	 * @param bool      $start
 	 */
-	public static function js_highlight9181(Page $page=null){
+	public static function js_highlight9181(Page $page=null, $start=true){
 		if($page===null){
 			$page = Page::get_singleton();
 		}
 		self::css_highlight9181($page);
-		self::do_add_js($page, "JS_ID_HIGHLIGHT",
+		$add = self::do_add_js($page, "JS_ID_HIGHLIGHT",
 			'highlight.min.js',
 			'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js'
 			, 'highlight9181'
 		);
+		if($add && $start){
+			self::js_highlight9181_START($page);
+		}
 	}
 	private static function css_highlight9181(Page $page=null){
 		self::do_add_js($page, "CSS_ID_HIGHLIGHT",

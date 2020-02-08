@@ -16,8 +16,6 @@ use t2\core\service\Js;
 use t2\Start;
 
 $page = Start::init("PAGEID_DEV_AJAXDEMO", "Ajax demo");
-Includes::js_highlight9181($page);
-Includes::js_highlight9181_START($page);
 
 $page->add(Html::BUTTON("Update1","update();"));
 $page->add_inline_js("

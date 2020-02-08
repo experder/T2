@@ -13,8 +13,8 @@ require_once '../Start.php';
 use t2\core\Html;
 use t2\core\Page;
 use t2\core\service\Config;
-use t2\core\service\Strings;
 use t2\core\service\Js;
+use t2\core\service\Strings;
 use t2\Start;
 
 $page = Start::init("PAGEID_CORE_UPDATER", "Updater");
@@ -32,21 +32,17 @@ $page->add(Html::PRE_console("", "ID_RESULTS", "ID_RESULTS_outer"));
  */
 $shellname = Admin::get_update_script_name();
 $div->addChild(Html::BUTTON($shellname, "update_shell();"));
-//TODO(2):Service Function for ScrollToBottom
-//TODO(2):Correction of escaping for inner ajax functions!
-//TODO(2):Use of "//" ends all functions in inner functions
-$page->add_inline_js("function update_shell(){
-	t2_spinner_start();
-	".Js::ajax_to_id("core", "update_shell", array(), "ID_RESULTS", true, Strings::escape_value_inline_js("
-		$(\"#ID_RESULTS_outer\").stop().animate({
-			scrollTop: $(\"#ID_RESULTS_outer\")[0].scrollHeight
-		}, 800);
-		t2_spinner_stop();
-//		var objDiv = document.getElementById(\"ID_RESULTS_outer\");
-//		objDiv.scrollTop = objDiv.scrollHeight;
-//		alert(\"!\");
-	"))."
-}");
+$page->add_inline_js(
+	"function update_shell(){"
+	. "t2_spinner_start();"
+	. Js::ajax_post_to_id(
+		'core', 'update_shell', "ID_RESULTS",
+		Js::scroll_to_bottom('ID_RESULTS_outer')
+		. "t2_spinner_stop();"
+		, null, true
+	)
+	. "}"
+);
 
 /*
  * Database

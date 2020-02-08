@@ -42,7 +42,9 @@ class Strings {
 		));
 	}
 
-	//TODO(2): Better description?
+	/**
+	 * @deprecated
+	 */
 	public static function escape_value_inline_js($value) {
 		return self::replace_byArray($value, array(
 			"\\" => "\\\\",

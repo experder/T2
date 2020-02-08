@@ -12,15 +12,13 @@ namespace t2\api;
 use t2\core\Ajax_response;
 use t2\core\Error;
 use t2\core\service\Request;
-use t2\core\Error_;
-use t2\dev\Debug;
 
 abstract class Ajax {
 
 	/**
-	 * @param string $cmd
-	 * @param string[] $keyValues
-	 * @return Ajax_response
+	 * @param string  $cmd
+	 * @param array[] $keyValues
+	 * @return Ajax_response|false
 	 */
 	abstract public function return_by_cmd($cmd, $keyValues);
 

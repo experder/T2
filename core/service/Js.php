@@ -18,6 +18,9 @@ class Js {
 		return "$(function(){{$content}});";
 	}
 
+	/**
+	 * @deprecated
+	 */
 	public static function ajax_to_id($module, $cmd, $keyVals, $id, $add=false, $function=null){
 		Page::get_singleton()->add_js_core();
 		$keyVals["module"]=$module;
@@ -38,7 +41,22 @@ class Js {
 		}
 	}
 
-	public static function ajax_post($module, $cmd, $data, $function, $callback=true){
+	public static function scroll_to_bottom($id, $animate=800){
+		return "$(\"#$id\").stop().animate({
+			scrollTop: $(\"#$id\")[0].scrollHeight
+		}, $animate);";
+	}
+
+	public static function ajax_post_to_id($module, $cmd, $id, $function="", $data=null, $add=false, $response_json_key=false, $report=true){
+		$return_obj = $response_json_key?"data.data.$response_json_key":"data.html";
+		if($add){
+			$return_obj = "$('#$id').html()+$return_obj";
+		}
+		$function = "$('#$id').html($return_obj);".$function;
+		return self::ajax_post($module, $cmd, $data, $function, $report);
+	}
+
+	public static function ajax_post($module, $cmd, $data, $function, $report=true){
 		Page::get_singleton()->add_js_core();
 
 		$url = Html::href_internal('core/ajax');
@@ -47,7 +65,11 @@ class Js {
 
 		$Funk = "function( data ){ $function }";
 
-		return "t2_ajax_post('$url', $Funk, $data, ".(Config::$DEVMODE?'true':'false').", ".($callback?'true':'false').");";
+		if(!$data){
+			$data="{}";
+		}
+
+		return "t2_ajax_post('$url', $Funk, $data, ".(Config::$DEVMODE?'true':'false').", ".($report?'true':'false').");";
 	}
 
 }
