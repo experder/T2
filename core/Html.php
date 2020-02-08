@@ -11,6 +11,7 @@ namespace t2\core;
 
 
 use t2\core\service\Config;
+use t2\core\service\Includes;
 use t2\core\service\Strings;
 
 class Html {
@@ -179,6 +180,14 @@ class Html {
 	public static function PRE($content, $classes = array(), $params = array()) {
 		$params["class"] = implode(" ", $classes);
 		return new Html("pre", $content, $params);
+	}
+
+	public static function PRE_code($content, $params = array(), $highlight=true) {
+		if($highlight){
+			Includes::js_highlight9181();
+		}
+		$code = new Html("code", $content, $params);
+		return new Html("pre", null, null, $code);
 	}
 
 	public static function PRE_console($content, $id = null, $outer_id=null) {

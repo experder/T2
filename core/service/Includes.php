@@ -8,10 +8,11 @@
 
 namespace t2\core\service;
 
-use t2\core\Error_;
+use t2\core\Error;
 use t2\core\form\Form;
 use t2\core\Message;
 use t2\core\Page;
+use t2\dev\Debug;
 use t2\Start;
 
 /**
@@ -30,6 +31,7 @@ class Includes {
 		 * List of all includes
 		 */
 
+		Includes::js_highlight9181($page);
 		Includes::js_jquery341($page);
 
 		Includes::php_parsedown174();
@@ -83,18 +85,59 @@ class Includes {
 		);
 	}
 
-	private static $working = false;
-
-	protected static function do_add_js($page, $id, $file0, $download, $subdir = null){
+	/**
+	 * https://highlightjs.org/
+	 * https://highlightjs.org/download/
+	 *
+	 * https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/default.min.css
+	 * https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js
+	 *
+	 * @param Page|null $page
+	 */
+	public static function js_highlight9181(Page $page=null){
 		if($page===null){
 			$page = Page::get_singleton();
 		}
-		if($page->is_js_set($id)){
-			return;
+		self::css_highlight9181($page);
+		self::do_add_js($page, "JS_ID_HIGHLIGHT",
+			'highlight.min.js',
+			'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js'
+			, 'highlight9181'
+		);
+	}
+	private static function css_highlight9181(Page $page=null){
+		self::do_add_js($page, "CSS_ID_HIGHLIGHT",
+			'default.min.css',
+			'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/default.min.css'
+			, 'highlight9181'
+			, true
+		);
+	}
+	public static function js_highlight9181_START(Page $page=null){
+		if($page===null){
+			$page = Page::get_singleton();
+		}
+		$page->add_inline_js("hljs.initHighlightingOnLoad();");
+	}
+
+	private static $working = false;
+
+	protected static function do_add_js($page, $id, $file0, $download, $subdir = null, $css=false){
+		if($page===null){
+			$page = Page::get_singleton();
+		}
+		if($css){
+			if($page->is_css_set($id)){
+				return false;
+			}
+		}else{
+			if($page->is_js_set($id)){
+				return false;
+			}
 		}
 		if (!self::$host_includes || self::$working || !defined('PROJECT_ROOT')) {
-			$page->add_javascript($id, $download);
-			return;
+			$page->add_javascript($id, $download, $css);
+			return true;
 		}
 		$include_dir = PROJECT_ROOT . '/includes';
 		if($subdir){
@@ -102,19 +145,20 @@ class Includes {
 		}
 		$file = $include_dir.'/'.$file0;
 		if (file_exists($file)){
-			$page->add_javascript($id, Config::cfg_http_project()."/includes/".$file0);
-			return;
+			$page->add_javascript($id, Config::cfg_http_project()."/includes/".$file0, $css);
+			return true;
 		}
 		self::$working = true;
 		self::do_download($id, $download, $page, $subdir);
 		if (file_exists($file)){
 			Page::$compiler_messages[] = new Message(Message::TYPE_CONFIRM, "Installed include \"$file0\".");
-			$page->add_javascript($id, Config::cfg_http_project()."/includes/".$file0);
-			return;
+			$page->add_javascript($id, Config::cfg_http_project()."/includes/".$file0, $css);
+			return true;
 		}
 		Page::abort("Error", array(
 			new Message(Message::TYPE_ERROR, "Couldn't install include \"$file0\" :-("),
 		));
+		return false;
 	}
 
 	protected static function do_include_php($id, $file0, $download=null){
@@ -134,7 +178,7 @@ class Includes {
 			require_once $file;
 			return true;
 		}
-		new Error_("Couldn't install include \"$file0\" :-(");
+		new Error("INCLUDE_FAILED","Couldn't install include \"$file0\" :-(");
 		return false;
 	}
 
@@ -168,15 +212,15 @@ class Includes {
 			$ok = @mkdir($target_dir, 0777, true);
 			if(!$ok){
 				$target_dir_parent = dirname($target_dir);
-				new Error_("Couldn't create includes directory \"$target_dir\"!",0,"Try this: sudo chmod 777 '$target_dir_parent' -R");
+				new Error("ERROR_INCLUDES/1","Couldn't create includes directory \"$target_dir\"!",0,"Try this: sudo chmod 777 '$target_dir_parent' -R");
 			}
 		}
 		if(!is_dir($target_dir)){
-			new Error_("Includes target is not a directory.");
+			new Error("ERROR_INCLUDES/2","Includes target is not a directory.");
 		}
 		$ok = @file_put_contents($target, fopen($download, 'r'));
 		if(!$ok){
-			new Error_("Couldn't store \"$target\"!",0,"Try this:\nsudo chmod 777 '$target_dir' -R");
+			new Error("ERROR_INCLUDES/3","Couldn't store \"$target\"!",0,"Try this:\nsudo chmod 777 '$target_dir' -R");
 		}
 
 		//Unzip:

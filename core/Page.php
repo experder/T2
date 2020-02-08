@@ -313,12 +313,19 @@ class Page {
 		$this->stylesheets[$id] = $stylesheet;
 	}
 
-	public function add_javascript($id, $url) {
-		$this->javascripts[$id] = $url;
+	public function add_javascript($id, $url, $css=false) {
+		if($css){
+			self::add_stylesheet($id, new Stylesheet($url));
+		}else{
+			$this->javascripts[$id] = $url;
+		}
 	}
 
 	public function is_js_set($id) {
 		return isset($this->javascripts[$id]);
+	}
+	public function is_css_set($id) {
+		return isset($this->stylesheets[$id]);
 	}
 
 	public static function get_demoskins_stylesheet_print($style) {
