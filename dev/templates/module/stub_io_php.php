@@ -16,7 +16,7 @@ use t2\core\form\Form;
 use t2\core\form\Formfield_textarea;
 use t2\Start;
 
-$page = Start::init("PAGEID_CORE_TEMPLATE_STUB_IO_PHP", "My page");//TODO:formdemo
+$page = Start::init("PAGEID_CORE_TEMPLATE_STUB_IO_PHP", "My page");//TODO(3):formdemo
 
 $form = new Form("do_process", "", "Process");
 $form->add_field(new Formfield_textarea("input", ""));

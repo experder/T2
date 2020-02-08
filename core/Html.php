@@ -242,7 +242,13 @@ class Html {
 		return $html;
 	}
 
+	/**
+	 * @deprecated
+	 */
 	public static function href_internal($relative_page_without_extension) {
+		return self::href_internal_root($relative_page_without_extension);
+	}
+	public static function href_internal_root($relative_page_without_extension) {
 		return Config::get_value_core('HTTP_ROOT') . '/' . self::href_internal_relative($relative_page_without_extension);
 	}
 

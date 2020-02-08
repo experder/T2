@@ -46,6 +46,7 @@ $page->add_inline_js(
 
 /*
  * Database
+ * TODO(3):ajax_post_to_id
  */
 $div->addChild(Html::BUTTON("Database", "update_db();"));
 $page->add_inline_js("function update_db(){
@@ -60,6 +61,7 @@ $page->add_inline_js("function update_db(){
 
 /*
  * Includes
+ * TODO(3):ajax_post_to_id
  */
 $div->addChild(Html::BUTTON("Includes", "update_includes();"));
 $page->add_inline_js("function update_includes(){
