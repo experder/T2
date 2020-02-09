@@ -11,11 +11,10 @@ namespace t2\modules\core_demo;
 require_once '../../Start.php';
 
 use t2\core\Html;
-use t2\core\service\Includes;
 use t2\core\service\Js;
 use t2\Start;
 
-$page = Start::init("PAGEID_DEV_AJAXDEMO", "Ajax demo");
+$page = Start::init_("PAGEID_DEV_AJAXDEMO");
 
 $page->add(Html::BUTTON("Update1","update();"));
 $page->add_inline_js("
@@ -36,6 +35,6 @@ $page->add(new Html("input","",array("type"=>"text","id"=>"in"),null,true));
 $page->add(new Html("div","...",array("id"=>"target")));
 
 $page->add(Html::PRE_code("\$page->add(Html::BUTTON(\"Update2\",Js::ajax_post('core_demo','test2',\"{
-foo:$(\\\"#in\\\").val()}\",\"$('#target').html(data.html);\")));", array("class"=>"language-php")));
+	foo:$(\\\"#in\\\").val()}\",\"$('#target').html(data.html);\")));", array("class"=>"language-php")));
 
 $page->send_and_quit();

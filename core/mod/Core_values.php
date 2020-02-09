@@ -15,13 +15,23 @@ class Core_values extends Default_values {
 	protected $default_values = array(
 		"MODULES" => '{
 				"core_demo":{
-					"Ajax":{
-						"include":":ROOT_DIR\/dev\/demo\/Ajaxdemo_my.php",
-						"class":"t2\\\modules\\\core_demo\\\Ajaxdemo_my"
+					"custom_apis":{
+						"Ajax":{
+							"include":":ROOT_DIR\/dev\/demo\/Ajaxdemo_my.php",
+							"class":"t2\\\\modules\\\\core_demo\\\\Ajaxdemo_my"
+						},
+						"Navigation":{
+							"include":":ROOT_DIR\/dev\/demo\/My_Navigation.php",
+							"class":"t2\\\\modules\\\\core_demo\\\\My_Navigation"
+						}
 					}
 				}
-			}',
-		"LOGIN_H1"=>"Login",
+				
+			}',//TODO:remove dev_tools!     ,"dev_tools":{}
+		//TODO: Navigation "class" is not necessary! it compiles to the default!
+		"MODULE_ROOT"=>":ROOT_DIR/../modules",
+		"DEFAULT_API_DIR"=>"tethys",
+		"LOGIN_HTML"=>"<h1>Login</h1>",
 		"PROJECT_TITLE"=>"T2",
 		"SKIN"=>"bare",
 		"EXTENSION"=>"php",

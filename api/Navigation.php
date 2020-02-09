@@ -8,45 +8,74 @@
 
 namespace t2\api;
 
+use t2\core\Html;
+
 class Navigation {
 
-	/**
-	 * @var Navigation $parent
-	 */
-	private $parent;
-	/**
-	 * @var Navigation[] $children
-	 */
-	private $children = array();
 	/**
 	 * @var string $id
 	 */
 	private $id;
+
 	/**
-	 * @var string $label
+	 * @var Navigation[] $children
 	 */
-	private $label = null;
+	private $children;
+
 	/**
-	 * @var string $title
+	 * @var Navigation|null $parent
 	 */
-	private $title = null;
-	/**
-	 * @var string $link
-	 */
-	private $link = null;
-	/**
-	 * @var string $icon
-	 */
-	private $icon = null;
+	private $parent = null;
 
 	/**
 	 * Navigation constructor.
-	 * @param Navigation  $parent
-	 * @param string      $id
+	 * @param string       $id
+	 * @param Navigation[] $children
 	 */
-	public function __construct(Navigation $parent, $id) {
-		$this->parent = $parent;
+	public function __construct($id, $children = array()) {
 		$this->id = $id;
+		$this->addChildren($children);
+	}
+
+	/**
+	 * @return Navigation[]
+	 */
+	public function getChildren() {
+		return $this->children;
+	}
+
+	/**
+	 * @param Navigation[] $children
+	 */
+	public function addChildren($children) {
+		foreach ($children as $navi){
+			$navi->parent = $this;
+			$this->children[] = $navi;
+		}
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getId() {
+		return $this->id;
+	}
+
+	public function toHtml(){
+		if($this->id){
+			$html = new Html("div", $this->id);
+		}else{
+			$html="";
+		}
+		$children = $this->getChildren();
+		if($children){
+			$children_html=array();
+			foreach ($children as $subnavi){
+				$children_html[]=$subnavi->toHtml();
+			}
+			$html.=Html::UL($children_html);
+		}
+		return $html;
 	}
 
 }

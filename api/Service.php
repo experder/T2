@@ -30,19 +30,19 @@ class Service {
 			return self::get_api_class_core($classname);
 		}
 		if(!class_exists($api_classname = "\\t2\\api\\$classname")){
-			new Error("INVALID_API_REQUEST","Invalid API-Request (class $api_classname does not exist)",null,1);
+			new Error("INVALID_INTERNAL_API_ACCESS","Invalid API access (class $api_classname does not exist)",null,1);
 		}
 		$modules = Config::MODULES();
-		if(!isset($modules[$module][$classname]['include'])||!isset($modules[$module][$classname]['class'])){
-			new Error("ERROR_CONFIG_CORRUPT/2","Module configuration is invalid. Cannot get: {\"$module\":{\"$classname\"}} (must contain \"include\" and \"class\")");
+		if(!isset($modules[$module]['custom_apis'][$classname]['include'])||!isset($modules[$module]['custom_apis'][$classname]['class'])){
+			new Error("ERROR_CONFIG_CORRUPT/2","Module configuration is invalid. Cannot get: {\"$module\":{\"custom_apis\":{\"$classname\"}}} (must contain \"include\" and \"class\")");
 		}
-		$include_file= str_replace(':ROOT_DIR',ROOT_DIR,$modules[$module][$classname]['include']);
+		$include_file= str_replace(':ROOT_DIR',ROOT_DIR,$modules[$module]['custom_apis'][$classname]['include']);
 		if(!file_exists($include_file)){
 			new Error("ERROR_CONFIG_CORRUPT/3", "Module configuration is corrupt. {\"$module\":{\"$classname\":{\"include\":...}}}:\nFile not found: $include_file");
 		}
 		/** @noinspection PhpIncludeInspection */
 		require_once $include_file;
-		$class = $modules[$module][$classname]['class'];
+		$class = $modules[$module]['custom_apis'][$classname]['class'];
 		if (!class_exists($class)){
 			new Error("ERROR_IN_MOD_CFG","Module configuration defines not-existing class: \"$class\" {\"$module\":{\"$classname\":{\"class\":...}}}");
 		}

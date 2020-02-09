@@ -9,8 +9,11 @@
 
 namespace t2;
 
+use t2\api\Navigation;
 use t2\core\Database;
+use t2\core\Error;
 use t2\core\Error_;
+use t2\core\mod\Core_navigation;
 use t2\core\Page;
 use t2\core\service\Config;
 use t2\core\service\User;
@@ -27,6 +30,28 @@ class Start {
 	private static $type = self::TYPE_UNKNOWN;
 
 	private static $dev_start_time = null;
+
+	/**
+	 * @var Navigation $navigation
+	 */
+	private static $navigation = null;
+
+	/**
+	 * @return Navigation
+	 */
+	public static function getNavigation() {
+		if(self::$navigation===null){
+			new Error("NO_NAVI_INIT", "Please initialize navigation!");
+		}
+		return self::$navigation;
+	}
+
+	/**
+	 * @param Navigation $navigation
+	 */
+	public static function setNavigation($navigation) {
+		self::$navigation = $navigation;
+	}
 
 	public static function get_type() {
 		return self::$type;
@@ -60,16 +85,21 @@ class Start {
 		$config_file = ROOT_DIR . '/config.php';
 		if (!file_exists($config_file)) {
 			if(Start::is_type(Start::TYPE_AJAX)){
-				new Error_("Local config file seems to be corrupt. Please check.", "ERROR_CONFIG_CORRUPT/1", "Config file: " . $config_file);
+				new Error("ERROR_CONFIG_CORRUPT/1", "Local config file seems to be corrupt. Please check.", "Config file: " . $config_file);
 			}
+
 			Install_wizard::prompt_dbParams();
+
 		}
+
 		/** @noinspection PhpIncludeInspection */
 		require_once $config_file;
+
 		//Make the Test:
 		if (Database::get_singleton(false) === false) {
-			new Error_("Local config file seems to be corrupt. Please check.", "ERROR_CONFIG_CORRUPT/2", "Config file: " . $config_file);
+			new Error("ERROR_CONFIG_CORRUPT/2", "Local config file seems to be corrupt. Please check.", "Config file: " . $config_file);
 		}
+
 		define('DB_CORE_PREFIX', Database::get_singleton()->core_prefix);
 
 		//TODO(2): Configure PROJECT_ROOT
@@ -78,6 +108,12 @@ class Start {
 			define('PROJECT_ROOT', $propose_project_root);
 		}
 
+	}
+
+	private static function init_navigation() {
+		if(self::$navigation===null){
+			self::$navigation=Core_navigation::navi_default();
+		}
 	}
 
 	private static function init_database() {
@@ -109,6 +145,7 @@ class Start {
 	public static function init_($PAGEID_) {
 		self::$type = self::TYPE_HTML;
 		Start::init_config();
+		Start::init_navigation();
 		Start::init_database();
 		Start::init_userrights();
 		$page = Page::init2($PAGEID_);

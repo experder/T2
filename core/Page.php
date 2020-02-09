@@ -234,6 +234,7 @@ class Page {
 		$title = $this->get_title();
 		$messages = $this->get_message_html();
 		$css_html = $this->get_css_html();
+		$navigation = Start::getNavigation()->toHtml();
 
 		if (Config::$DEVMODE) {
 			$this->add_js_core();
@@ -254,6 +255,7 @@ class Page {
 					.$css_internal
 				."</head>\n"
 				."<body id='$this->id'>\n"
+					."<nav>$navigation</nav>"
 					.$messages
 					."<div class='body_inner'>\n";
 						$this->get_body(true);

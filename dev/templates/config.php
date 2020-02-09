@@ -21,3 +21,6 @@ define('PROJECT_ROOT', ":project_root");
 
 //Initialize database connection:
 \t2\core\Database::init(':server_addr', ':tethysdb', ':username', ':dbpass');
+
+//Set your own navigation:
+#\t2\Start::setNavigation(new MyNavigation());

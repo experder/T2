@@ -75,7 +75,7 @@ class Config {
 	}
 
 	public static function MODULES() {
-		//TODO(3): Make modules configuration an object!
+		//TODO(1): Make modules configuration an object!
 		if (self::$cfg_modules === null) {
 			$modules_json = self::get_value('MODULES', null, null);
 			self::$cfg_modules = json_decode($modules_json, true);
@@ -295,6 +295,15 @@ class Config {
 			return false;
 		}
 		return self::$config[$module_index][$user_index][$key];
+	}
+
+	public static function get_modules_ids() {
+		$modules = Config::MODULES();
+		$module_ids = array();
+		foreach ($modules as $module_id=>$dummy){
+			$module_ids[] = $module_id;
+		}
+		return $module_ids;
 	}
 
 

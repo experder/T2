@@ -6,20 +6,22 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-namespace t2\admin;
+namespace t2\modules\core_demo;
 
-require_once '../Start.php';
+use t2\api\Navigation;
 
-use t2\core\Html;
-use t2\core\service\Config;
-use t2\Start;
+class My_Navigation extends Navigation {
 
-$page = Start::init_("PAGEID_CORE_ADMIN");
+	public function __construct() {
+		parent::__construct('NAVI_DEMO');
+	}
 
-$page->add(Html::A_button("Update", Html::href_internal_root("admin/update")));
+	public function getChildren() {
+		return array(
+			new Navigation('PAGEID_DEV_AJAXDEMO'),
+			new Navigation('PAGEID_DEV_CSSDEMO'),
+			new Navigation('PAGEID_DEV_PDFDEMO'),
+		);
+	}
 
-if(Config::$DEVMODE){
-	$page->add(Html::A_button("Dev area", Html::href_internal_root("dev/index")));
 }
-
-$page->send_and_quit();
