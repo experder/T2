@@ -34,6 +34,10 @@ class Service {
 		}
 		$modules = Config::MODULES();
 		if(!isset($modules[$module]['custom_apis'][$classname]['include'])){
+			//Default API file name:
+			$module_root = Config::get_value_core('MODULE_ROOT');
+			$api_dir = Config::get_value_core('DEFAULT_API_DIR');
+			//TODO:...
 			new Error("ERROR_CONFIG_CORRUPT/2","Module configuration is invalid. Cannot get: {\"$module\":{\"custom_apis\":{\"$classname\"}}} (must contain \"include\" and \"class\")");
 		}
 		if(!isset($modules[$module]['custom_apis'][$classname]['class'])){

@@ -21,14 +21,14 @@ class Core_values extends Default_values {
 							"class":"t2\\\\modules\\\\core_demo\\\\Ajaxdemo_my"
 						},
 						"Navigation":{
-							"include":":ROOT_DIR\/dev\/demo\/My_Navigation.php",
+							"include":":ROOT_DIR\/dev\/demo\/My_Navigation.php"
 						}
 					}
 				}
-				,"dev_tools":{}
-			}',//TODO:remove dev_tools!
-		"MODULE_ROOT"=>":ROOT_DIR/../modules",//TODO:Not in use yet
-		"DEFAULT_API_DIR"=>"tethys",//TODO:Not in use yet
+				
+			}',//TODO:remove dev_tools!    ,"dev_tools":{"X_api_dir":"api"}
+		"MODULE_ROOT"=>":ROOT_DIR/../modules",
+		"DEFAULT_API_DIR"=>"api",//TODO:tethys
 		"LOGIN_HTML"=>"<h1>Login</h1>",//TODO:renamed! (LOGIN_H1)
 		"PROJECT_TITLE"=>"T2",
 		"SKIN"=>"bare",

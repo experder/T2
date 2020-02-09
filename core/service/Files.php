@@ -36,18 +36,16 @@ class Files {
 
 	public static function relative_path($from, $to){
 
-		//https://www.php.net/manual/de/function.realpath.php#105876
-
-		//https://stackoverflow.com/a/2638272
-		// some compatibility fixes for Windows paths
+		//Insipred by: https://stackoverflow.com/a/2638272
+		//Windows:
 		$from = str_replace('\\', '/', $from);
-		$to   = str_replace('\\', '/', $to);
+		$to = str_replace('\\', '/', $to);
 		$from = is_dir($from) ? rtrim($from, '\/') . '/' : $from;
-		$to   = is_dir($to)   ? rtrim($to, '\/') . '/'   : $to;
+		$to = is_dir($to) ? rtrim($to, '\/') . '/' : $to;
 
-		$from     = explode('/', $from);
-		$to       = explode('/', $to);
-		$relPath  = $to;
+		$from = explode('/', $from);
+		$to = explode('/', $to);
+		$relPath = $to;
 
 		foreach($from as $depth => $dir) {
 			// find first non-matching dir
@@ -68,14 +66,14 @@ class Files {
 			}
 		}
 		$rel = implode('/', $relPath);
-		return rtrim($rel, '\/');
+		$rel = rtrim($rel, '\/');
+		$rel = self::cleanup_relative_path($rel);
+		return $rel;
+	}
 
-//		//Remove everything to the root (Windows: Drive ("C:/"), Linux: root ("/")):
-//		/** Explanation of the RegEx: http://gitfabian.github.io/Tethys/php/regex.html */
-//		$from = preg_replace("/^.*?\\//", "", $from);
-//		$to = preg_replace("/^.*?\\//", "", $to);
-//		echo $from."<br>";
-//		echo $to."<br>";
+	public static function cleanup_relative_path($path){
+		//TODO:cleanup_relative_path
+		return $path;
 	}
 
 	public static function get_contents($file, $depth=0){
