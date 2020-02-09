@@ -53,7 +53,7 @@ class Core_navigation {
 	public static function navi_admin(){
 		return new Navigation('NAVI_ADMIN',array(
 			new Navigation('PAGEID_CORE_ADMIN'
-				/*TODO:Just for demonstration:*/,array(new Navigation('PAGEID_CORE_INDEX'))
+				/*TODO:Just for demonstration:*/,array(new Navigation('A',array(new Navigation('A1'),new Navigation('A2'))),new Navigation('B'))
 			),
 			new Navigation('PAGEID_CORE_DEVZONE'),
 		));

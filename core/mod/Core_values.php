@@ -22,16 +22,14 @@ class Core_values extends Default_values {
 						},
 						"Navigation":{
 							"include":":ROOT_DIR\/dev\/demo\/My_Navigation.php",
-							"class":"t2\\\\modules\\\\core_demo\\\\My_Navigation"
 						}
 					}
 				}
-				
-			}',//TODO:remove dev_tools!     ,"dev_tools":{}
-		//TODO: Navigation "class" is not necessary! it compiles to the default!
-		"MODULE_ROOT"=>":ROOT_DIR/../modules",
-		"DEFAULT_API_DIR"=>"tethys",
-		"LOGIN_HTML"=>"<h1>Login</h1>",
+				,"dev_tools":{}
+			}',//TODO:remove dev_tools!
+		"MODULE_ROOT"=>":ROOT_DIR/../modules",//TODO:Not in use yet
+		"DEFAULT_API_DIR"=>"tethys",//TODO:Not in use yet
+		"LOGIN_HTML"=>"<h1>Login</h1>",//TODO:renamed! (LOGIN_H1)
 		"PROJECT_TITLE"=>"T2",
 		"SKIN"=>"bare",
 		"EXTENSION"=>"php",
