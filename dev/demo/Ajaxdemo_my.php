@@ -33,7 +33,7 @@ class Ajaxdemo_my extends Ajax {
 			case 'md5_json':
 				new Ajax_response(Ajax_response::TYPE_JSON,
 					array(
-						"md5=" => Ajaxdemo_controller::calculate_md5(
+						"md5" => Ajaxdemo_controller::calculate_md5(
 							Arrays::value_from_array($keyValues, 'input_string')
 						)
 					)

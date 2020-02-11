@@ -17,13 +17,9 @@ use t2\Start;
 
 $page = Start::init_("PAGEID_DEV_AJAXDEMO");
 
-$page->add(Html::H1("Examples"));
+$page->add(Html::H1("AJAX Examples"));
 
-/*
- * Ajax class
- */
-
-$page->add(Html::P("The following examples expect these AJAX responses:"));
+$page->add(Html::H2("Ajax class"));
 
 $page->add(Html::PRE_code_html("class Ajaxdemo_my extends Ajax {
 	public function return_by_cmd(\$cmd, \$keyValues) {
@@ -38,7 +34,7 @@ $page->add(Html::PRE_code_html("class Ajaxdemo_my extends Ajax {
 			case 'md5_json':
 				new Ajax_response(Ajax_response::TYPE_JSON,
 					array(
-						\"md5=\" => Ajaxdemo_controller::calculate_md5(
+						\"md5\" => Ajaxdemo_controller::calculate_md5(
 							Arrays::value_from_array(\$keyValues, 'input_string')
 						)
 					)
@@ -56,23 +52,6 @@ $page->add(Html::PRE_code_html("class Ajaxdemo_my extends Ajax {
 
 Ajaxdemo_controller::example_1($page);
 Ajaxdemo_controller::example_2($page);
-Ajaxdemo_controller::example_3($page);
-
-//TODO: Beispiel mit Spinner
-
-/*
- * Example 3
- */
-$page->add(Html::H2("Example 3"));
-
-
-
-
-$page->add(Html::BUTTON("Update4",Js::ajax_post('core_demo','test3',"{foo:'bar'}","$('#target').html(data.html);")));
-
-$page->add(Html::BUTTON("Update5",Js::ajax_post('core_demo','test4',"{foo:$(\"#in\").val()}","$('#target').html('bar='+data.data.bar);")));
-
-
 
 
 $page->send_and_quit();
