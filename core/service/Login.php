@@ -140,9 +140,9 @@ class Login {//TODO(2):Logout
 			}
 		}
 
-		$LOGIN_H1 = Config::get_value_core('LOGIN_H1', true);
+		$LOGIN_HTML = Config::get_value_core('LOGIN_HTML');
 
-		$page->add(Html::H1($LOGIN_H1));
+		$page->add($LOGIN_HTML);
 		$page->add($form = new Form("t2_dologin","","Login"));
 		$form->add_field(new Formfield_text("username", "Username", null, $val_from_request, array("id"=>"id_t2_login_prompt_username")));
 		$page->set_focusFieldId('id_t2_login_prompt_username');

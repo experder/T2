@@ -310,7 +310,7 @@ class Database {
 	 * @param string $query
 	 * @param array  $substitutions
 	 * @param int    $stacktrace_depth
-	 * @return int|false
+	 * @return int|false Number of updated rows or FALSE on error
 	 */
 	public function update($query, $substitutions = array(), $stacktrace_depth = 0) {
 		return $this->iquery($query, $substitutions, self::RETURN_ROWCOUNT, $stacktrace_depth + 1);
@@ -326,6 +326,12 @@ class Database {
 		return $this->iquery($query, $substitutions, self::RETURN_ROWCOUNT, $stacktrace_depth + 1);
 	}
 
+	/**
+	 * @param string $tabelle
+	 * @param string $where
+	 * @param array $data_set
+	 * @return int|false Number of updated rows or FALSE on error
+	 */
 	public function update_assoc($tabelle, $where, $data_set) {
 		$set_sql = array();
 		foreach ($data_set as $key => $value) {

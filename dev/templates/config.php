@@ -23,4 +23,5 @@ define('PROJECT_ROOT', ":project_root");
 \t2\core\Database::init(':server_addr', ':tethysdb', ':username', ':dbpass');
 
 //Set your own navigation:
+#require_once '/var/www/myproject/MyNavigation.php';
 #\t2\Start::setNavigation(new MyNavigation());

@@ -123,8 +123,99 @@ a[target="_blank"] {
  */
 
 nav{
-	border:3px double #1a741a;
+	border:3px double #195519;
+	background: #195519;
+	position:fixed;
+	height:30px;
+	margin-top:-36px;
+	width:100%;
 }
+body{
+	margin-top:36px;
+}
+nav li.nav_NAVI_USER,
+nav li.nav_NAVI_ADMIN
+{
+	float:right;
+}
+nav div.high{
+	color: #c0ff1b;
+}
+nav div.high a{
+	color:yellow;
+}
+nav div{
+	color: #d5ffc2;
+}
+nav div.nolink:hover,
+nav div a:hover{
+	background-color: #323f55;
+}
+nav a{
+	color:white;
+	text-decoration: none;
+	display:block;
+}
+nav ul{
+	list-style:none;
+	padding-left:0;
+}
+/* Ebene 1 */
+nav>ul{
+	/*Ansteuerung für jQuery*/
+}
+nav > ul > li{
+	display:inline-block;
+	vertical-align: top;
+}
+nav > ul > li > div > a{
+	padding:5px;
+}
+nav > ul > li > div.nolink{
+	padding:5px;
+}
+/*Ebene 2*/
+nav > ul > li > ul{
+	position:fixed;
+	display:none;
+	margin-left:-10px;
+	min-width:200px;
+}
+nav > ul > li > ul  li{
+	height:25px;
+}
+nav > ul > li > ul > li{
+	background:#1a741a;
+}
+nav > ul > li > ul > li a{
+}
+nav > ul > li:hover > ul{
+	display:block;
+}
+/*Ebene 3 ff*/
+nav > ul > li > ul > li  ul{
+	position:fixed;
+	display:none;
+	padding:10px 10px 10px 10px;
+	min-width:200px;
+	margin-left:70px;
+	margin-top:-10px;
+}
+/*Ebene 3*/
+nav > ul > li > ul > li > ul > li{
+	background: #1b911b;
+}
+nav > ul > li > ul > li:hover > ul{
+	display:block;
+}
+/*Ebene 4*/
+nav > ul > li > ul > li > ul > li > ul > li{
+	background: #1cb41c;
+}
+nav > ul > li > ul > li > ul > li:hover > ul{
+	display:block;
+}
+
 
 /*
 ======================== dev-stuff ===========================

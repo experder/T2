@@ -9,6 +9,7 @@
 namespace t2\api;
 
 use t2\core\Html;
+use t2\dev\Debug;
 
 class Navigation {
 
@@ -18,22 +19,38 @@ class Navigation {
 	private $id;
 
 	/**
+	 * @var string $link
+	 */
+	private $link;
+
+	/**
+	 * @var string $title
+	 */
+	private $title;
+
+	/**
 	 * @var Navigation[] $children
 	 */
-	private $children;
+	protected $children;
 
 	/**
 	 * @var Navigation|null $parent
 	 */
 	private $parent = null;
 
+	private $highlight = false;
+
 	/**
 	 * Navigation constructor.
 	 * @param string       $id
+	 * @param string       $link
+	 * @param string       $title
 	 * @param Navigation[] $children
 	 */
-	public function __construct($id, $children = array()) {
+	public function __construct($id, $title, $link, $children = null) {
 		$this->id = $id;
+		$this->link = $link;
+		$this->title = $title;
 		$this->addChildren($children);
 	}
 
@@ -48,10 +65,26 @@ class Navigation {
 	 * @param Navigation[] $children
 	 */
 	public function addChildren($children) {
+		if(!$children){
+			return;
+		}
 		foreach ($children as $navi){
 			$navi->parent = $this;
 			$this->children[] = $navi;
 		}
+	}
+
+	public function do_highlight($highlight_id){
+		if($this->id===$highlight_id){
+			$this->highlight=true;
+		}
+		$children = $this->getChildren();
+		if($children){
+			foreach ($children as $child){
+				$this->highlight = $child->do_highlight($highlight_id)||$this->highlight;
+			}
+		}
+		return $this->highlight;
 	}
 
 	/**
@@ -61,9 +94,22 @@ class Navigation {
 		return $this->id;
 	}
 
-	public function toHtml(){
+	public function toHtml($highlight_id=null){
+		if($highlight_id){
+			$this->do_highlight($highlight_id);
+		}
 		if($this->id){
-			$html = new Html("div", $this->id);
+			$classes = array();
+			if($this->highlight){
+				$classes[] = "high";
+			}
+			if(!$this->link){
+				$classes[] = "nolink";
+			}
+			$params=$classes?array("class"=>implode(" ",$classes)):null;
+			$label = $this->title?:$this->id;
+			$item = $this->link?Html::A($label, $this->link):$label;
+			$html = new Html("div", $item, $params);
 		}else{
 			$html="";
 		}
@@ -71,9 +117,9 @@ class Navigation {
 		if($children){
 			$children_html=array();
 			foreach ($children as $subnavi){
-				$children_html[]=$subnavi->toHtml();
+				$children_html[]=new Html('li',$subnavi->toHtml(),array("class"=>"nav_".$subnavi->id));
 			}
-			$html.=Html::UL($children_html);
+			$html.=Html::UL($children_html, null, true);
 		}
 		return $html;
 	}

@@ -9,19 +9,23 @@
 namespace t2\modules\core_demo;
 
 use t2\api\Navigation;
+use t2\core\Html;
 
 class My_Navigation extends Navigation {
 
 	public function __construct() {
-		parent::__construct('NAVI_DEMO');
+		parent::__construct('NAVI_DEMO',"",null,null);
 	}
 
 	public function getChildren() {
-		return array(
-			new Navigation('PAGEID_DEV_AJAXDEMO'),
-			new Navigation('PAGEID_DEV_CSSDEMO'),
-			new Navigation('PAGEID_DEV_PDFDEMO'),
-		);
+		if($this->children===null){
+			$this->children=array(
+				new Navigation('PAGEID_DEV_AJAXDEMO',"Ajax demo",Html::href_internal_root("dev/demo/ajaxdemo")),
+				new Navigation('PAGEID_DEV_CSSDEMO',"CSS demo",Html::href_internal_root("dev/demo/cssdemo")),
+				new Navigation('PAGEID_DEV_PDFDEMO',"",Html::href_internal_root("index")),
+			);
+		}
+		return $this->children;
 	}
 
 }

@@ -212,6 +212,14 @@ class Config {
 		return self::get_value($id, null, $user, $default_value, true, null, $backtrace_depth + 1);
 	}
 
+	/**
+	 * @param string $id
+	 * @param string $value
+	 * @param string|null $module
+	 * @param int|null $user
+	 * @param Database|null $database
+	 * @return int|false Number of modified rows or ID of the inserted data or false in case of any failure
+	 */
 	public static function set_value($id, $value, $module = null, $user = null, $database = null) {
 		if ($database === null) {
 			$database = Database::get_singleton();
@@ -222,8 +230,9 @@ class Config {
 			"userid" => $user
 		);
 		$core_config = DB_CORE_PREFIX.'_config';
-		$database->update_or_insert($core_config, $where, array("content" => $value));
+		$r = $database->update_or_insert($core_config, $where, array("content" => $value));
 		self::store_val($module, $user, $id, $value);
+		return $r;
 	}
 
 

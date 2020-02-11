@@ -19,7 +19,7 @@ $page = Start::init_("PAGEID_CORE_ADMIN");
 $page->add(Html::A_button("Update", Html::href_internal_root("admin/update")));
 
 if(Config::$DEVMODE){
-	$page->add(Html::A_button("Dev area", Html::href_internal_root("dev/index")));
+	$page->add(Html::A_button("Dev zone", Html::href_internal_root("dev/index")));
 }
 
 $page->send_and_quit();

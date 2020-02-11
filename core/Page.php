@@ -11,6 +11,7 @@
 namespace t2\core;
 
 
+use t2\api\Navigation;
 use t2\core\service\Config;
 use t2\core\service\Includes;
 use t2\dev\Debug;
@@ -234,7 +235,7 @@ class Page {
 		$title = $this->get_title();
 		$messages = $this->get_message_html();
 		$css_html = $this->get_css_html();
-		$navigation = Start::getNavigation()->toHtml();
+		$navigation = Start::getNavigation_html($this->id);
 
 		if (Config::$DEVMODE) {
 			$this->add_js_core();
@@ -347,6 +348,8 @@ class Page {
 			$stylesheets["CSS_ID_ALL"] = new Stylesheet(Config::get_value_core('HTTP_ROOT') . "/skins/$style/all.css");
 			#$stylesheets["CSS_ID_DEV"] = new Stylesheet(Config::get_value_core('HTTP_ROOT') . "/skins/$style/dev.css");
 			$stylesheets["CSS_ID_PRINT"] = self::get_demoskins_stylesheet_print($style);
+		}else{
+			$stylesheets["CSS_ID_ALL"] = new Stylesheet("$style/all.css");
 		}
 		foreach ($this->stylesheets as $key => $stylesheet) {
 			$stylesheets[$key] = $stylesheet;

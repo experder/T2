@@ -20,6 +20,7 @@ class Html {
 	private $content;
 	private $void;
 	protected $params;
+	private $beautify;
 	/**
 	 * @var Html[] $children
 	 */
@@ -34,11 +35,13 @@ class Html {
 	 * @param array|null $params Key-Value pairs of HTML-Attributes
 	 * @param mixed      $children
 	 * @param boolean    $void
+	 * @param bool       $beautify
 	 */
-	public function __construct($tag, $content, $params = null, $children=null, $void=false) {
+	public function __construct($tag, $content, $params = null, $children=null, $void=false, $beautify=false) {
 		$this->tag = $tag;
 		$this->content = $content;
 		$this->void= $void;
+		$this->beautify= $beautify;
 		$this->addParams($params);
 		if($children!==null){
 			self::addChildren($children);
@@ -115,13 +118,27 @@ class Html {
 
 	public function __toString() {
 		$params = self::tag_keyValues($this->params);
-		$html = "<$this->tag$params";
+		$html = ($this->beautify?"\n":"")."<" . $this->tag . $params;
 		if($this->void){
-			$html.=" />".implode("", $this->children);
+			$html.=" />"
+				.($this->beautify?"\n":"")
+				.$this->children_to_string();
 		}else{
-			$html.=">".$this->content . implode("", $this->children) . "</$this->tag>";
+			$html.=">"
+				.($this->beautify?"\n":"")
+				.$this->content . $this->children_to_string()
+				. "</$this->tag>"
+			.($this->beautify?"\n":"")
+			;
 		}
 		return $html;
+	}
+
+	private function children_to_string() {
+		if($this->beautify){
+			return "\t".implode("\n\t", $this->children)."\n";
+		}
+		return implode("", $this->children);
 	}
 
 	//================================== STATIC's ====================================================
@@ -144,7 +161,9 @@ class Html {
 
 	public static function A($content, $href, $class = null, $params = array()) {
 		$params["href"] = $href;
-		$params["class"] = $class;
+		if($class){
+			$params["class"] = $class;
+		}
 		return new Html("a", $content, $params);
 	}
 
@@ -210,12 +229,12 @@ class Html {
 		return new Html("textarea", $content, $params);
 	}
 
-	public static function UL($children = array(), $params = null) {
-		return self::list_builder("ul", $children, $params);
+	public static function UL($children = array(), $params = null, $beautify=false) {
+		return self::list_builder("ul", $children, $params, $beautify);
 	}
 
-	private static function list_builder($elem, $children, $params) {
-		$html = new Html($elem, "", $params);
+	private static function list_builder($elem, $children, $params, $beautify) {
+		$html = new Html($elem, "", $params, null, false, $beautify);
 		foreach ($children as $child) {
 			if (!($child instanceof Html) || strtolower($child->get_tag()) != 'li') {
 				$child = new Html("li", null, null, $child);

@@ -12,6 +12,7 @@ namespace t2\service;
 use t2\core\Error_;
 
 class Autoloader {
+	//TODO(1):Autoloader: Look into modules folder
 
 	private static $recursion_protection = true;
 

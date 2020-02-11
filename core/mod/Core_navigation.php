@@ -10,20 +10,21 @@ namespace t2\core\mod;
 
 use t2\api\Navigation;
 use t2\api\Service;
+use t2\core\Html;
 use t2\core\service\Config;
 
 class Core_navigation {
 
 	public static function navi_default(){
 		$subnavis=array(
-			new Navigation("PAGEID_CORE_INDEX"),
+			new Navigation("PAGEID_CORE_INDEX", "Start", Html::href_internal_root("index")),
 			self::navi_user(),
 			self::navi_admin(),
 		);
 		foreach (self::all_modules() as $navi){
 			$subnavis[] = $navi;
 		}
-		return new Navigation(null,$subnavis);
+		return new Navigation(null,"",Html::href_internal_root("index"),$subnavis);
 	}
 
 	/**
@@ -44,18 +45,18 @@ class Core_navigation {
 	}
 
 	public static function navi_user(){
-		return new Navigation('NAVI_USER',array(
-			new Navigation('CORE_USER_SETTINGS'),
-			new Navigation('CORE_USER_LOGOUT'),
+		return new Navigation('NAVI_USER',"",Html::href_internal_root("index"),array(
+			new Navigation('CORE_USER_SETTINGS',"",Html::href_internal_root("index")),
+			new Navigation('CORE_USER_LOGOUT',"",Html::href_internal_root("index")),
 		));
 	}
 
 	public static function navi_admin(){
-		return new Navigation('NAVI_ADMIN',array(
-			new Navigation('PAGEID_CORE_ADMIN'
-				/*TODO:Just for demonstration:*/,array(new Navigation('A',array(new Navigation('A1'),new Navigation('A2'))),new Navigation('B'))
+		return new Navigation('NAVI_ADMIN',"","",array(
+			new Navigation('PAGEID_CORE_ADMIN',"",Html::href_internal_root("index")
+				/*TODO:Just for demonstration:*/,array(new Navigation('A',"",Html::href_internal_root("index"),array(new Navigation('A1',"",""),new Navigation('A2',"",Html::href_internal_root("index")))),new Navigation('B',"",Html::href_internal_root("index")))
 			),
-			new Navigation('PAGEID_CORE_DEVZONE'),
+			new Navigation('PAGEID_CORE_DEVZONE',"",Html::href_internal_root("index")),
 		));
 	}
 

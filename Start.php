@@ -39,11 +39,19 @@ class Start {
 	/**
 	 * @return Navigation
 	 */
-	public static function getNavigation() {
-		if(self::$navigation===null){
+	public static function getNavigation($halt_on_error=true) {
+		if(self::$navigation===null && $halt_on_error){
 			new Error("NO_NAVI_INIT", "Please initialize navigation!");
 		}
 		return self::$navigation;
+	}
+	public static function getNavigation_html($id) {
+		$nav = self::getNavigation(false);
+		if(!$nav){
+			//Blank navigation:
+			$nav = new Navigation("PAGEID_CORE_INDEX","Install-Wizard",Html::href_internal_root("index"));
+		}
+		return $nav->toHtml($id);
 	}
 
 	/**
@@ -145,8 +153,8 @@ class Start {
 	public static function init_($PAGEID_) {
 		self::$type = self::TYPE_HTML;
 		Start::init_config();
-		Start::init_navigation();
 		Start::init_database();
+		Start::init_navigation();
 		Start::init_userrights();
 		$page = Page::init2($PAGEID_);
 		return $page;
