@@ -208,6 +208,10 @@ class Html {
 		$code = new Html("code", $content, $params);
 		return new Html("pre", null, null, $code);
 	}
+	public static function PRE_code_html($content, $params = array(), $highlight=true) {
+		$content = htmlentities($content);
+		return self::PRE_code($content, $params, $highlight);
+	}
 
 	public static function PRE_console($content, $id = null, $outer_id=null) {
 		$params = array("class" => "console_inner");

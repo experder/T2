@@ -23,19 +23,20 @@ class Ajaxdemo_my extends Ajax {
 	 */
 	public function return_by_cmd($cmd, $keyValues) {
 		switch ($cmd){
-			case 'test1':
-				new Ajax_response(Ajax_response::TYPE_HTML,Ajaxdemo_controller::calculate_test1(
-					Arrays::value_from_array($keyValues, 'foo')
-				));
-				break;
-			case 'test2':
-				return Ajaxdemo_controller::calculate_test2(
-					Arrays::value_from_array($keyValues, 'foo')
+			case 'md5_html':
+				new Ajax_response(Ajax_response::TYPE_HTML,
+					"md5=" . Ajaxdemo_controller::calculate_md5(
+						Arrays::value_from_array($keyValues, 'input_string')
+					)
 				);
 				break;
-			case 'test4':
-				return Ajaxdemo_controller::calculate_test4(
-					Arrays::value_from_array($keyValues, 'foo')
+			case 'md5_json':
+				new Ajax_response(Ajax_response::TYPE_JSON,
+					array(
+						"md5=" => Ajaxdemo_controller::calculate_md5(
+							Arrays::value_from_array($keyValues, 'input_string')
+						)
+					)
 				);
 				break;
 		}

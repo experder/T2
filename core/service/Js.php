@@ -59,7 +59,7 @@ class Js {
 	public static function ajax_post($module, $cmd, $data, $function, $report=true){
 		Page::get_singleton()->add_js_core();
 
-		$url = Html::href_internal('core/ajax');
+		$url = Html::href_internal_root('core/ajax');
 		$url.="?t2_module=".$module;
 		$url.="&t2_cmd=".$cmd;
 
