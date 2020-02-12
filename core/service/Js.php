@@ -48,7 +48,7 @@ class Js {
 	}
 
 	public static function ajax_post_to_id($module, $cmd, $id, $function="", $data=null, $add=false, $response_json_key=false, $report=true){
-		$return_obj = $response_json_key?"data.data.$response_json_key":"data.html";
+		$return_obj = $response_json_key?"data.json.$response_json_key":"data.html";
 		if($add){
 			$return_obj = "$('#$id').html()+$return_obj";
 		}

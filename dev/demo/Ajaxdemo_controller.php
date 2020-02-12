@@ -54,7 +54,7 @@ class Ajaxdemo_controller {
 	'core_demo',
 	'md5_json',
 	\"{input_string:$(\\\"#input2\\\").val()}\",
-	\"$('#out_node2').html('md5='+data.data.md5);\"
+	\"$('#out_node2').html('md5='+data.json.md5);\"
 	. \"t2_spinner_stop();\"
 )));
 \$page->add(new Html(\"code\", \"&hellip;\", array(\"id\" => \"out_node2\")));
@@ -67,7 +67,7 @@ class Ajaxdemo_controller {
 			'core_demo',
 			'md5_json',
 			"{input_string:$(\"#input2\").val()}",
-			"$('#out_node2').html('md5='+data.data.md5);"
+			"$('#out_node2').html('md5='+data.json.md5);"
 			. "t2_spinner_stop();"
 		)));
 		$page->add(new Html("code", "&hellip;", array("id" => "out_node2")));

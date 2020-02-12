@@ -54,7 +54,7 @@ class Ajax_response {
 		);
 		if($this->ok){
 			if($this->type==self::TYPE_JSON){
-				$response['data'] = $this->data;
+				$response['json'] = $this->data;
 			}
 			if($this->type==self::TYPE_HTML){
 				$response['html'] = $this->html;
