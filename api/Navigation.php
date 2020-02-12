@@ -119,7 +119,7 @@ class Navigation {
 			foreach ($children as $subnavi){
 				$children_html[]=new Html('li',$subnavi->toHtml(),array("class"=>"nav_".$subnavi->id));
 			}
-			$html.=Html::UL($children_html, null, true);
+			$html.=Html::UL($children_html, null);
 		}
 		return $html;
 	}
