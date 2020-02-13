@@ -421,13 +421,13 @@ class Page {
 
 	public static function abort($title, $messages = null, $body = null, $id = "PAGEID_CORE_ABORT") {
 		if (!self::$recusion_protection_abort) {
-			new Error_("(ABORTION OCCURED IN ABORTION)");
+			new Error("(ABORTION OCCURED IN ABORTION)","(ABORTION OCCURED IN ABORTION)");
 			exit;
 		}
 		self::$recusion_protection_abort = false;
 
 		if(Start::is_type(Start::TYPE_AJAX)){
-			new Error_("Can't abort when ajaxing!", 0, null, 1);
+			new Error("AJAX_ABORT", "Can't abort when ajaxing!", null, 1);
 		}
 
 		if (is_array($messages)) {

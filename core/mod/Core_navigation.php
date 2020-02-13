@@ -24,7 +24,7 @@ class Core_navigation {
 		foreach (self::all_modules() as $navi){
 			$subnavis[] = $navi;
 		}
-		return new Navigation($id,"",Html::href_internal_root("index"),$subnavis);
+		return new Navigation($id,null,null,$subnavis);
 	}
 
 	/**

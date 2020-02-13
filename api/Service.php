@@ -37,8 +37,9 @@ class Service {
 			//Default API file name:
 			$module_root = Config::get_value_core('MODULE_ROOT');
 			$api_dir = Config::get_value_core('DEFAULT_API_DIR');
-			//TODO:...
-			new Error("ERROR_CONFIG_CORRUPT/2","Module configuration is invalid. Cannot get: {\"$module\":{\"custom_apis\":{\"$classname\"}}} (must contain \"include\" and \"class\")");
+			$include_file=$module_root."/$module/".$api_dir."/My_$classname.php";
+		}else{
+			$include_file= $modules[$module]['custom_apis'][$classname]['include'];
 		}
 		if(!isset($modules[$module]['custom_apis'][$classname]['class'])){
 			//Default API class name:
@@ -46,7 +47,7 @@ class Service {
 		}else{
 			$class = $modules[$module]['custom_apis'][$classname]['class'];
 		}
-		$include_file= str_replace(':ROOT_DIR',ROOT_DIR,$modules[$module]['custom_apis'][$classname]['include']);
+		$include_file= str_replace(':ROOT_DIR',ROOT_DIR,$include_file);
 		if(!file_exists($include_file)){
 			new Error("ERROR_CONFIG_CORRUPT/3", "Module configuration is corrupt. {\"$module\":{\"$classname\":{\"include\":...}}}:\nFile not found: $include_file");
 		}

@@ -127,7 +127,7 @@ class Error {
 
 			Page::$compiler_messages[] = $msg;
 
-			Page::abort("ERROR", null, null, "PAGEID_CORE_ERRORARBORT");
+			Page::abort("ERROR", null, null, "PAGEID_CORE_ERRORABORT");
 			exit;
 
 		}

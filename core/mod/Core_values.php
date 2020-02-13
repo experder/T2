@@ -25,9 +25,10 @@ class Core_values extends Default_values {
 						}
 					}
 				}
-				
+				,"dev_tools":{"X_api_dir":"api"}
 			}',//TODO:remove dev_tools!    ,"dev_tools":{"X_api_dir":"api"}
 		"MODULE_ROOT"=>":ROOT_DIR/../modules",
+		"MODULE_PATH"=>":HTTP_ROOT/../modules",
 		"DEFAULT_API_DIR"=>"api",//TODO:tethys
 		"LOGIN_HTML"=>"<h1>Login</h1>",
 		"PROJECT_TITLE"=>"T2",

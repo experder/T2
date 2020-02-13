@@ -286,4 +286,10 @@ class Html {
 		return $relative_page_without_extension . '.' . self::$extension;
 	}
 
+	public static function href_internal_module($module, $relative_page_without_extension) {
+		//TODO:Determine current module
+		$module_root = Config::get_value_core('MODULE_PATH');
+		$module_root = str_replace(":HTTP_ROOT", Config::get_value_core('HTTP_ROOT'), $module_root);
+		return $module_root . "/$module/" . self::href_internal_relative($relative_page_without_extension);
+	}
 }
