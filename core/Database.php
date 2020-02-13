@@ -48,11 +48,6 @@ class Database {
 
 	private $error = false;
 
-	/**
-	 * @deprecated TODO: Use Error Class instead (\t2\core\Database::$exception)
-	 */
-	private $exception = false;
-
 	private $dbname;
 
 	public function __construct($host, $dbname, $user, $password, $stacktrace_depth = 0, $quit_on_error = true, $core_prefix = 'core') {
@@ -62,25 +57,23 @@ class Database {
 			$this->pdo = new \PDO("mysql:host=" . $host . ";dbname=" . $dbname, $user, $password);
 			$this->pdo->query('SET NAMES utf8');
 		} catch (\Exception $e) {
-			$this->exception = $e;
-			if ($quit_on_error) {
-				Error_::from_exception($e);
+			$type = Error::TYPE_EXCEPTION;
+			if ($e instanceof \PDOException) {
+				if ($e->getCode() === 1049/*Unknown database*/) {
+					$type = Error::TYPE_PDO_1049_UNKNOWN_DATABASE;
+				} else if ($e->getCode() === 2002/*php_network_getaddresses: getaddrinfo failed*/) {
+					$type = Error::TYPE_HOST_UNKNOWN;
+				}
 			}
+			$this->error = Error::from_exception($e, $quit_on_error, $type);
 		}
 	}
 
 	/**
-	 * @return Error_|false
+	 * @return Error|false
 	 */
 	public function getError() {
 		return $this->error;
-	}
-
-	/**
-	 * @deprecated TODO: s.o.
-	 */
-	public function getException() {
-		return $this->exception;
 	}
 
 	public function get_dbname() {
@@ -94,7 +87,7 @@ class Database {
 	public static function get_singleton($quit_on_error = true) {
 		if (self::$singleton === null || !isset(self::$singleton->pdo)) {
 			if ($quit_on_error) {
-				new Error_("ERROR_DB_NOT_INITIALIZED");
+				new Error("ERROR_DB_NOT_INITIALIZED","ERROR_DB_NOT_INITIALIZED");
 			}
 			return false;
 		}
@@ -112,23 +105,21 @@ class Database {
 	public static function init($host, $dbname, $user, $password, $core_prefix = 'core') {
 
 		if (self::$singleton !== null) {
-			new Error_("Database is already initialized!", "ERROR_DB_ALREADY_INITIALIZED", null, 1);
+			new Error("ERROR_DB_ALREADY_INITIALIZED", "Database is already initialized!", null, 1);
 		}
 
 		self::$singleton = new Database($host, $dbname, $user, $password, 1, false, $core_prefix);
-		$e = self::$singleton->getException();
+		$err = self::$singleton->getError();
 
-		if ($e !== false) {
-			if ($e instanceof \PDOException) {
-				if ($e->getCode() === 1049/*Unknown database*/) {
-					self::$singleton = Install_wizard::init_db($host, $dbname, $user, $password);
-					$e = false;
-				} else if ($e->getCode() === 2002/*php_network_getaddresses: getaddrinfo failed*/) {
-					new Error_("Database host unknown! Please check config.", Error_::TYPE_HOST_UNKNOWN, null, 1);
-				}
+		if ($err !== false) {
+			if ($err->getType()==Error::TYPE_PDO_1049_UNKNOWN_DATABASE) {
+				self::$singleton = Install_wizard::init_db($host, $dbname, $user, $password);
+				$err = false;
+			} else if ($err->getType()==Error::TYPE_HOST_UNKNOWN) {
+				new Error(Error::TYPE_HOST_UNKNOWN, "Database host unknown! Please check config.", null, 1);
 			}
-			if ($e !== false) {
-				Error_::from_exception($e);
+			if ($err !== false) {
+				$err->report();
 			}
 		}
 
@@ -146,6 +137,7 @@ class Database {
 	 * @param string $query
 	 * @param array  $substitutions
 	 * @param int    $backtrace_depth
+	 * @param bool   $halt_on_error
 	 * @return array|false
 	 */
 	public function select($query, $substitutions = array(), $backtrace_depth = 0, $halt_on_error = true) {
@@ -208,7 +200,53 @@ class Database {
 		/** @var \PDOStatement $statement */
 		$statement = $this->pdo->prepare($query);
 		$ok = @$statement->execute($substitutions);
-		//TODO(3):subroutines für debug_info und fehler-handling
+		$this->debuginfo($statement, $query, $backtrace_depth+1);
+		if (!$ok) {
+			$this->error_handling($statement, $query, $halt_on_error, $backtrace_depth+1);
+			return false;
+		}
+		switch ($return_type) {
+			case self::RETURN_LASTINSERTID:
+				return $this->pdo->lastInsertId();
+				break;
+			case self::RETURN_ASSOC:
+				return $statement->fetchAll(\PDO::FETCH_ASSOC);
+				break;
+			case self::RETURN_ROWCOUNT:
+				return $statement->rowCount();
+				break;
+			default:
+				return null;/*No return type specified*/
+				break;
+		}
+	}
+
+	private function error_handling(\PDOStatement $statement, $query, $halt_on_error, $backtrace_depth=0){
+		$eInfo = $statement->errorInfo();
+		$errorCode = $eInfo[0];
+		$errorInfo = "[$errorCode] " . $eInfo[2];
+		$errorType = Error::TYPE_SQL;
+		if (!$eInfo[2]) {
+			if ($errorCode === 'HY093'/*Invalid parameter number: parameter was not defined*/) {
+				$errorInfo = "Invalid parameter number: parameter was not defined";
+			}
+		}
+		if ($errorCode === "42S02"/*Unknown table*/) {
+			$errorType = Error::TYPE_TABLE_NOT_FOUND;
+		}
+		ob_flush();
+		ob_start();
+		$statement->debugDumpParams();
+		$debugDump = ob_get_clean();
+		$compiled_query = self::get_compiled_query_from_debugDump($debugDump);
+		if (!$compiled_query) {
+			$compiled_query = ($debugDump ?: $query);
+		}
+
+		$this->error = new Error($errorType, $errorInfo, $compiled_query, $backtrace_depth + 1, $halt_on_error);
+	}
+
+	private function debuginfo(\PDOStatement $statement, $query, $backtrace_depth=0){
 		if (Config::$DEVMODE) {
 			$backtrace = debug_backtrace();
 
@@ -234,46 +272,6 @@ class Database {
 			$query_html = (new Html("span", $caller, array("class" => "detail_functionSource$core_query_class")))
 				. "\n" . (new Html("span", $compiled_query, array("class" => "detail_sqlDump$core_query_class")));
 			Debug::$queries[] = $query_html;
-		}
-		if (!$ok) {
-			$eInfo = $statement->errorInfo();
-			$errorCode = $eInfo[0];
-			$errorInfo = "[$errorCode] " . $eInfo[2];
-			$errorType = Error_::TYPE_SQL;
-			if (!$eInfo[2]) {
-				if ($errorCode === 'HY093'/*Invalid parameter number: parameter was not defined*/) {
-					$errorInfo = "Invalid parameter number: parameter was not defined";
-				}
-			}
-			if ($errorCode === "42S02"/*Unknown table*/) {
-				$errorType = Error_::TYPE_TABLE_NOT_FOUND;
-			}
-			ob_flush();
-			ob_start();
-			$statement->debugDumpParams();
-			$debugDump = ob_get_clean();
-			$compiled_query = self::get_compiled_query_from_debugDump($debugDump);
-			if (!$compiled_query) {
-				$compiled_query = ($debugDump ?: $query);
-			}
-
-			$this->error = new Error_($errorInfo, $errorType, $compiled_query, $backtrace_depth + 1, $halt_on_error);
-
-			return false;
-		}
-		switch ($return_type) {
-			case self::RETURN_LASTINSERTID:
-				return $this->pdo->lastInsertId();
-				break;
-			case self::RETURN_ASSOC:
-				return $statement->fetchAll(\PDO::FETCH_ASSOC);
-				break;
-			case self::RETURN_ROWCOUNT:
-				return $statement->rowCount();
-				break;
-			default:
-				return null;/*No return type specified*/
-				break;
 		}
 	}
 
