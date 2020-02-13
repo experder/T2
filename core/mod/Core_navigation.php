@@ -15,7 +15,7 @@ use t2\core\service\Config;
 
 class Core_navigation {
 
-	public static function navi_default(){
+	public static function navi_default($id=null){
 		$subnavis=array(
 			new Navigation("PAGEID_CORE_INDEX", "Start", Html::href_internal_root("index")),
 			self::navi_user(),
@@ -24,7 +24,7 @@ class Core_navigation {
 		foreach (self::all_modules() as $navi){
 			$subnavis[] = $navi;
 		}
-		return new Navigation(null,"",Html::href_internal_root("index"),$subnavis);
+		return new Navigation($id,"",Html::href_internal_root("index"),$subnavis);
 	}
 
 	/**

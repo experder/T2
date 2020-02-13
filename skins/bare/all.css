@@ -180,40 +180,32 @@ nav > ul > li > ul{
 	display:none;
 	margin-left:-10px;
 	min-width:200px;
-}
-nav > ul > li > ul  li{
-	height:25px;
-}
-nav > ul > li > ul > li{
 	background:#1a741a;
+	padding:10px 15px;
 }
-nav > ul > li > ul > li a{
+nav > ul > li.nav_NAVI_USER{
+	min-width:150px;
+	text-align:center;
+}
+nav > ul > li.nav_NAVI_USER ul{
+	min-width:150px;
+	text-align:left;
+}
+nav > ul > li.nav_NAVI_USER > ul{
+	right:5px;
+}
+nav > ul > li > ul > li a,
+nav > ul > li > ul > li div.nolink
+{
+	line-height:25px;
 }
 nav > ul > li:hover > ul{
 	display:block;
 }
 /*Ebene 3 ff*/
-nav > ul > li > ul > li  ul{
-	position:fixed;
-	display:none;
-	padding:10px 10px 10px 10px;
-	min-width:200px;
-	margin-left:70px;
-	margin-top:-10px;
-}
-/*Ebene 3*/
-nav > ul > li > ul > li > ul > li{
-	background: #1b911b;
-}
-nav > ul > li > ul > li:hover > ul{
-	display:block;
-}
-/*Ebene 4*/
-nav > ul > li > ul > li > ul > li > ul > li{
-	background: #1cb41c;
-}
-nav > ul > li > ul > li > ul > li:hover > ul{
-	display:block;
+nav > ul > li > ul > li  ul > li {
+	border-left:2px solid red;
+	padding-left:10px;
 }
 
 
