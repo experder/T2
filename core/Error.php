@@ -14,6 +14,7 @@ class Error {
 
 	const TYPE_HOST_UNKNOWN = "ERROR_HOST_UNKNOWN";//2002/*php_network_getaddresses: getaddrinfo failed*/
 	const TYPE_TABLE_NOT_FOUND = "ERROR_TABLE_NOT_FOUND";//"42S02"/*Unknown table*/
+	const TYPE_PDO_1049_UNKNOWN_DATABASE = "1049_Unknown_database";
 
 	const HR = "\n----------------------------------------\n";
 	const HR_outer = "\n========================================\n";
@@ -70,7 +71,7 @@ class Error {
 		return $this->type==$type;
 	}
 
-	private function get_msg($debug_info=true, $backtrace=true, $htmlentities=false, $backtrace_depth=0, $minimalistic=false){
+	public function get_msg($debug_info=true, $backtrace=true, $htmlentities=false, $backtrace_depth=0, $minimalistic=false){
 		//$minimalistic to prevent recusion
 		$msg = $this->message;
 		if($debug_info && $this->debug_info){
@@ -181,8 +182,8 @@ class Error {
 		return $string;
 	}
 
-	public static function from_exception(\Exception $e){
-		return new Error_("[" . $e->getCode() . "] " . $e->getMessage(), self::TYPE_EXCEPTION, null, 1);
+	public static function from_exception(\Exception $e, $report = true, $type = self::TYPE_EXCEPTION) {
+		return new Error($type, "[" . $e->getCode() . "] " . $e->getMessage(), null, 1, $report);
 	}
 
 	/**

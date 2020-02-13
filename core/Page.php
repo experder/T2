@@ -7,11 +7,9 @@
  GPL*/
 
 
-
 namespace t2\core;
 
-
-use t2\api\Navigation;
+use t2\api\Header;
 use t2\core\service\Config;
 use t2\core\service\Includes;
 use t2\dev\Debug;
@@ -82,6 +80,11 @@ class Page {
 	public $internal_css = "";
 
 	/**
+	 * @var Header $header
+	 */
+	private static $header = null;
+
+	/**
 	 * @param string $id
 	 * @param string $title
 	 */
@@ -99,6 +102,13 @@ class Page {
 	public function reset($pageId, $title) {
 		$this->id = $pageId;
 		$this->title = $title;
+	}
+
+	/**
+	 * @param Header $header
+	 */
+	public static function setHeader($header) {
+		self::$header = $header;
 	}
 
 	public function uses_database() {
@@ -236,6 +246,8 @@ class Page {
 		$messages = $this->get_message_html();
 		$css_html = $this->get_css_html();
 		$navigation = Start::getNavigation_html($this->id);
+		$header = self::$header?self::$header->get_header($this):"";
+		$footer = self::$header?self::$header->get_footer($this):"";
 
 		if (Config::$DEVMODE) {
 			$this->add_js_core();
@@ -257,20 +269,20 @@ class Page {
 				."</head>\n"
 				."<body id='$this->id'>\n"
 					."<nav>$navigation</nav>"
+					.$header
 					.$messages
 					."<div class='body_inner'>\n";
 						$this->get_body(true);
 						echo "\n"
-					."</div>".(Config::$DEVMODE?Debug::get_stats($this):"")
+					."</div>"
+					.$footer
+					.(Config::$DEVMODE?Debug::get_stats($this):"")
 					.$this->waitSpinner()
 				."</body>\n"
 			."</html>";
 		// @formatter:on
 
-		#echo "<pre>";print_r(get_included_files());
-
 		exit;
-
 	}
 
 	private function waitSpinner() {
@@ -405,7 +417,6 @@ class Page {
 		} else {
 			return $body;
 		}
-
 	}
 
 	public static function abort($title, $messages = null, $body = null, $id = "PAGEID_CORE_ABORT") {

@@ -15,6 +15,7 @@
 
 //Set to TRUE in your development environment, FALSE (default) for production:
 #\t2\core\service\Config::$DEVMODE = true;
+#\t2\core\Html::setDevBeautify();
 
 //Where to find your project:
 define('PROJECT_ROOT', ":project_root");
@@ -25,3 +26,7 @@ define('PROJECT_ROOT', ":project_root");
 //Set your own navigation:
 #require_once '/var/www/myproject/MyNavigation.php';
 #\t2\Start::setNavigation(new MyNavigation());
+
+//Set your own header and footer:
+#require_once '/var/www/myproject/MyHeader.php';
+#\t2\core\Page::setHeader(new MyHeader());

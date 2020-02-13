@@ -20,7 +20,7 @@ class Html {
 	private $content;
 	private $void;
 	protected $params;
-	public static $dev_beautify = false;
+	private static $dev_beautify = false;
 	/**
 	 * @var Html[] $children
 	 */
@@ -44,6 +44,10 @@ class Html {
 		if($children!==null){
 			self::addChildren($children);
 		}
+	}
+
+	public static function setDevBeautify() {
+		self::$dev_beautify = Config::$DEVMODE;
 	}
 
 	/**
@@ -165,9 +169,11 @@ class Html {
 		return new Html("a", $content, $params);
 	}
 
-	public static function DIV($content, $class = null, $params = array()) {
-		$params["class"] = $class;
-		return new Html("div", $content, $params);
+	public static function DIV($content, $class = null, $params = array(), $children=null) {
+		if($class){
+			$params["class"] = $class;
+		}
+		return new Html("div", $content, $params, $children);
 	}
 
 	public static function H1($content, $id = null) {
