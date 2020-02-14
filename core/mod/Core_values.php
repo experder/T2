@@ -27,14 +27,14 @@ class Core_values extends Default_values {
 					}
 				}
 			}',
-		"MODULE_ROOT"=>":ROOT_DIR/../modules",
-		"MODULE_PATH"=>":HTTP_ROOT/../modules",
-		"DEFAULT_API_DIR"=>"tethys",
-		"LOGIN_HTML"=>"<h1>Login</h1>",
-		"PROJECT_TITLE"=>"T2",
-		"SKIN"=>"bare",
-		"EXTENSION"=>"php",
-		"SESSION_EXPIRES"=>"86400",//24 hours
+		"MODULE_ROOT" => ":ROOT_DIR/../modules",
+		"MODULE_PATH" => ":HTTP_ROOT/../modules",
+		"DEFAULT_API_DIR" => "tethys",
+		"LOGIN_HTML" => "<h1>Login</h1>",
+		"PROJECT_TITLE" => "T2",
+		"SKIN" => "bare",
+		"EXTENSION" => "php",
+		"SESSION_EXPIRES" => "86400",//24 hours
 	);
 
 }

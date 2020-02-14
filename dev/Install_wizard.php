@@ -9,7 +9,7 @@
 namespace t2\dev;
 
 use t2\core\Database;
-use t2\core\Error_;
+use t2\core\Error;
 use t2\core\form\Form;
 use t2\core\form\Formfield_header;
 use t2\core\form\Formfield_password;
@@ -108,7 +108,7 @@ class Install_wizard {//TODO(3): Install wizard: Prompt all field in one form
 		$store_locally = Request::value('config_redirect')=='t2';
 		$project_root = Request::value("project_root", false);
 		if($project_root===false){
-			new Error_(true);
+			new Error("NO_ROOT","No project root set/found.");
 		}
 		//Windows:
 		$project_root = str_replace('\\','/',$project_root);
@@ -146,28 +146,13 @@ class Install_wizard {//TODO(3): Install wizard: Prompt all field in one form
 		}
 	}
 
-	/**
-	 * @deprecated TODO: NOT IN USE
-	 */
-	public static function api_ini_updater($mod_id, $path){
-		if(Config::$DEVMODE){
-			if(isset($_REQUEST['initialize_ini_updater'])){
-				$msg = Tools::create_new_module($mod_id, $mod_id, $path, array("Update_database.php"));
-				Page::$compiler_messages[] = $msg;
-			}else{
-				Page::get_singleton()->add_message_error(Html::DIV("No updater set for module '$mod_id'! [<a href='?initialize_ini_updater'>Create blank updater</a>]","dev"));
-			}
-		}
-	}
-
 	public static function init_db($host, $dbname, $user, $password) {
 
 		try {
 			$dbh = new \PDO("mysql:host=" . $host, $user, $password);
 			$dbh->exec("CREATE DATABASE `" . $dbname . "`;") or die(print_r($dbh->errorInfo(), true) . "Error65");
-
 		} catch (\PDOException $e) {
-			Error_::from_exception($e);
+			Error::from_exception($e);
 		}
 
 		$database = new Database($host, $dbname, $user, $password);
@@ -201,7 +186,7 @@ class Install_wizard {//TODO(3): Install wizard: Prompt all field in one form
 			}
 		} else {
 			//Should not happen because $platform_checked should be checked already
-			new Error_("Unknown Platform.");
+			new Error("Unknown_Platform","Unknown Platform.");
 		}
 	}
 

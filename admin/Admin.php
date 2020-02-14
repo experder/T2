@@ -11,7 +11,6 @@ namespace t2\admin;
 use t2\api\Service;
 use t2\api\Update_database;
 use t2\core\Error;
-use t2\core\Error_;
 use t2\core\mod\Core_database;
 use t2\core\Page;
 use t2\core\service\Config;
@@ -21,7 +20,6 @@ use t2\dev\Install_wizard;
 class Admin {
 
 	public static function update_includes(){
-		#Includes::$host_includes=true;
 		$page = new Page("","");
 
 		Includes::load_all_available($page);
@@ -43,7 +41,7 @@ class Admin {
 			$shellname = 'update.sh';
 		} else {
 			//Should not happen because $platform should be checked already
-			new Error_("Unknown platform.");
+			new Error("Unknown_platform","Unknown platform.");
 		}
 		return $shellname;
 	}
@@ -70,7 +68,8 @@ class Admin {
 
 		} else {
 			//Should not happen because $platform should be checked already
-			new Error_("Unknown platform.");
+			new Error("Unknown_platform","Unknown platform.");
+			$result="";
 		}
 
 		$result = "\n".htmlentities($result);
