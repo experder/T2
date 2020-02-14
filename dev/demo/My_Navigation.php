@@ -6,7 +6,7 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-namespace t2\modules\core_demo;
+namespace t2\modules\core_demo\api;
 
 use t2\api\Navigation;
 use t2\core\Html;

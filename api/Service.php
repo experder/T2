@@ -14,6 +14,8 @@ use t2\core\mod\Core_ajax;
 
 class Service {
 
+	const API_ERROR_FILE_NOT_FOUND = 1;
+
 	public static function get_api_class_core($classname){
 		switch ($classname) {
 			case "Ajax":
@@ -25,7 +27,7 @@ class Service {
 		}
 		return false;
 	}
-	public static function get_api_class($module, $classname){
+	public static function get_api_class($module, $classname, &$error = false, &$return=null){
 		if($module=='core'){
 			return self::get_api_class_core($classname);
 		}
@@ -43,12 +45,17 @@ class Service {
 		}
 		if(!isset($modules[$module]['custom_apis'][$classname]['class'])){
 			//Default API class name:
-			$class = "t2\\modules\\$module\\My_$classname";
+			$class = "t2\\modules\\$module\\api\\My_$classname";
 		}else{
 			$class = $modules[$module]['custom_apis'][$classname]['class'];
 		}
 		$include_file= str_replace(':ROOT_DIR',ROOT_DIR,$include_file);
 		if(!file_exists($include_file)){
+			if($error!==false){
+				$error = self::API_ERROR_FILE_NOT_FOUND;
+				$return = $include_file;
+				return false;
+			}
 			new Error("ERROR_CONFIG_CORRUPT/3", "Module configuration is corrupt. {\"$module\":{\"$classname\":{\"include\":...}}}:\nFile not found: $include_file");
 		}
 		/** @noinspection PhpIncludeInspection */

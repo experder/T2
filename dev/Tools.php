@@ -8,13 +8,15 @@
 
 namespace t2\dev;
 
-
 use t2\core\Html;
+use t2\core\service\Config;
+use t2\core\service\Files;
 use t2\core\service\Request;
 use t2\core\form\Form;
 use t2\core\form\Formfield_text;
 use t2\core\Message;
 use t2\core\Page;
+use t2\core\service\Templates;
 
 class Tools {
 
@@ -45,7 +47,7 @@ class Tools {
 
 	}
 
-	private static function create_new_module($module_name, $module_id=null, $path=null){
+	public static function create_new_module($module_name, $module_id=null, $path=null, $api_selection=true){
 		$module_name=trim($module_name);
 		if(!$module_name){
 			return new Message(Message::TYPE_ERROR, "Please specify module name!");
@@ -53,11 +55,27 @@ class Tools {
 		if($path==self::empty_path){
 			$path=null;
 		}
+		if($path===null){
+			$path=Config::get_value_core('MODULE_ROOT');
+			$path=str_replace(':ROOT_DIR',ROOT_DIR,$path);//TODO:Function in class Config for that conversion
+		}
+		$path = Files::cleanup_relative_path($path);
 		if(!$module_id){
 			$module_id = $module_name;
 		}
+		if($api_selection===true){
+			$api_selection=array();//TODO:All classes!
+		}
 		$module_id = preg_replace("/[^a-z0-9_]/","",strtolower($module_id));
-		//TODO(F):Create new module
+
+		foreach ($api_selection as $api_class){
+			Templates::create_file($path.'/'.$api_class, ROOT_DIR."/dev/templates/module/tethys/$api_class", array(
+				'namespace t2\modules\core_template\api;//(:moduleIdLc)'=>"namespace t2\\modules\\$module_id\\api;",
+				":moduleIdLc"=>$module_id,
+				":moduleIdUc"=>strtoupper($module_id),
+			));
+		}
+
 		return new Message(Message::TYPE_CONFIRM, "Module \"$module_name\" created.");
 	}
 

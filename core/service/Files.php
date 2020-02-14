@@ -8,7 +8,7 @@
 
 namespace t2\core\service;
 
-use t2\core\Error_;
+use t2\core\Error;
 
 class Files {
 
@@ -29,7 +29,7 @@ class Files {
 			fclose($file);
 		}
 		if ($success === false && $halt_on_error) {
-			Error_::quit("Failure on storing file \"$filename\"!", 1);
+			new Error("Failure_on_storing_file","Failure on storing file \"$filename\"!", null, 1);
 		}
 		return $success;
 	}
@@ -72,13 +72,21 @@ class Files {
 	}
 
 	public static function cleanup_relative_path($path){
-		//TODO:cleanup_relative_path
-		return $path;
+		if(!$path){
+			return false;
+		}
+		$old = "";
+		$new = $path;
+		while ($old !== $new){
+			$old = $new;
+			$new = preg_replace("/\\/[^\\/]*?\\/\\.\\.\\//", "/", $old);
+		}
+		return $new;
 	}
 
 	public static function get_contents($file, $depth=0){
 		if(!file_exists($file)){
-			new Error_("File not found!","T2_FILE_NOT_FOUND","File: $file",$depth+1);
+			new Error("T2_FILE_NOT_FOUND","File not found!","File: $file",$depth+1);
 		}
 		return file_get_contents($file);
 	}

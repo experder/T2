@@ -243,7 +243,6 @@ class Page {
 		Start::check_type(Start::TYPE_HTML);
 
 		$title = $this->get_title();
-		$messages = $this->get_message_html();
 		$css_html = $this->get_css_html();
 		$navigation = Start::getNavigation_html($this->id);
 		$header = self::$header?self::$header->get_header($this):"";
@@ -256,6 +255,8 @@ class Page {
 		$js_html = $this->get_js_html();
 
 		$css_internal = $this->internal_css?"\t<style>$this->internal_css</style>\n":"";
+
+		$messages = $this->get_message_html();
 
 		// @formatter:off
 		echo "<!DOCTYPE html>\n"

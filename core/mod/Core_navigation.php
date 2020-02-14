@@ -11,7 +11,9 @@ namespace t2\core\mod;
 use t2\api\Navigation;
 use t2\api\Service;
 use t2\core\Html;
+use t2\core\Page;
 use t2\core\service\Config;
+use t2\dev\Tools;
 
 class Core_navigation {
 
@@ -34,13 +36,29 @@ class Core_navigation {
 		$navis = array();
 		$modules = Config::get_modules_ids();
 		foreach ($modules as $mod_id){
-			$navis[] = self::navi_by_module($mod_id);
+			$navi = self::navi_by_module($mod_id);
+			if($navi){
+				$navis[] = $navi;
+			}
 		}
 		return $navis;
 	}
 
 	public static function navi_by_module($mod_id) {
-		$navi = Service::get_api_class($mod_id, 'Navigation');
+		$navi = Service::get_api_class($mod_id, 'Navigation', $error, $return);
+		if(!$navi){
+			if($error==Service::API_ERROR_FILE_NOT_FOUND){
+				if(Config::$DEVMODE){
+					if(isset($_REQUEST['initialize_module_navi'])){
+						$msg = Tools::create_new_module($mod_id, $mod_id, dirname($return), array("My_Navigation.php"));
+						Page::$compiler_messages[] = $msg;
+					}else{
+						Page::get_singleton()->add_message_error(Html::DIV("No Navigation set for module '$mod_id'! [<a href='?initialize_module_navi'>Create blank navigation</a>]","dev"));
+					}
+				}
+				return false;
+			}
+		}
 		return $navi;
 	}
 
