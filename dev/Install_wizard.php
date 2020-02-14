@@ -135,6 +135,31 @@ class Install_wizard {//TODO(3): Install wizard: Prompt all field in one form
 		return new Message(Message::TYPE_CONFIRM, $message);
 	}
 
+	public static function api_ini_navi($mod_id, $path){
+		if(Config::$DEVMODE){
+			if(isset($_REQUEST['initialize_module_navi'])){
+				$msg = Tools::create_new_module($mod_id, $mod_id, $path, array("My_Navigation.php"));
+				Page::$compiler_messages[] = $msg;
+			}else{
+				Page::get_singleton()->add_message_error(Html::DIV("No navigation set for module '$mod_id'! [<a href='?initialize_module_navi'>Create blank navigation</a>]","dev"));
+			}
+		}
+	}
+
+	/**
+	 * @deprecated TODO: NOT IN USE
+	 */
+	public static function api_ini_updater($mod_id, $path){
+		if(Config::$DEVMODE){
+			if(isset($_REQUEST['initialize_ini_updater'])){
+				$msg = Tools::create_new_module($mod_id, $mod_id, $path, array("Update_database.php"));
+				Page::$compiler_messages[] = $msg;
+			}else{
+				Page::get_singleton()->add_message_error(Html::DIV("No updater set for module '$mod_id'! [<a href='?initialize_ini_updater'>Create blank updater</a>]","dev"));
+			}
+		}
+	}
+
 	public static function init_db($host, $dbname, $user, $password) {
 
 		try {

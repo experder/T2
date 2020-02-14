@@ -13,6 +13,7 @@ namespace t2\core\service;
 
 use t2\api\Default_values;
 use t2\core\Database;
+use t2\core\Error;
 use t2\core\Error_;
 use t2\core\Message;
 use t2\core\Page;
@@ -136,7 +137,7 @@ class Config {
 			return $default_value;
 		}
 		if (is_int($data)) {
-			new Error_("Config database corrupt!", "CONFIG_DATABASE_CORRUPT1", "Multiple entries found for \"$id\" (module " . ($module ?: 'core') . ").");
+			new Error("CONFIG_DATABASE_CORRUPT1", "Config database corrupt!", "Multiple entries found for \"$id\" (module " . ($module ?: 'core') . ").");
 		}
 		$value = $data["content"];
 		if ($use_cache) {
@@ -150,7 +151,7 @@ class Config {
 	public static function init_http_root($relative = false) {
 		if (($value = Config::recall_val(null, null, 'HTTP_ROOT')) !== false) {
 			if (Config::$DEVMODE) {
-				new Error_("HTTP_ROOT already initialized!");
+				new Error("HTTP_ROOT already initialized!","HTTP_ROOT already initialized!");
 			}
 			return $value;
 		}
@@ -306,6 +307,9 @@ class Config {
 		return self::$config[$module_index][$user_index][$key];
 	}
 
+	/**
+	 * @deprecated TODO: Module as a class!
+	 */
 	public static function get_modules_ids() {
 		$modules = Config::MODULES();
 		$module_ids = array();

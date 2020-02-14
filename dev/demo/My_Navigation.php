@@ -14,7 +14,7 @@ use t2\core\Html;
 class My_Navigation extends Navigation {
 
 	public function __construct() {
-		parent::__construct('NAVI_DEMO',"",null,null);
+		parent::__construct('NAVI_DEMO',"Demo",null,null);
 	}
 
 	public function getChildren() {
@@ -22,7 +22,7 @@ class My_Navigation extends Navigation {
 			$this->children=array(
 				new Navigation('PAGEID_DEV_AJAXDEMO',"Ajax demo",Html::href_internal_root("dev/demo/ajaxdemo")),
 				new Navigation('PAGEID_DEV_CSSDEMO',"CSS demo",Html::href_internal_root("dev/demo/cssdemo")),
-				new Navigation('PAGEID_DEV_PDFDEMO',"",Html::href_internal_root("index")),
+				new Navigation('PAGEID_DEV_PDFDEMO',"PDF demo",Html::href_internal_root("dev/demo/pdfdemo")),
 			);
 		}
 		return $this->children;

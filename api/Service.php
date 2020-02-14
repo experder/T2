@@ -38,7 +38,10 @@ class Service {
 		if(!isset($modules[$module]['custom_apis'][$classname]['include'])){
 			//Default API file name:
 			$module_root = Config::get_value_core('MODULE_ROOT');
-			$api_dir = Config::get_value_core('DEFAULT_API_DIR');
+			$api_dir = Config::get_value('API_DIR', $module, null, false);
+			if(!$api_dir){
+				$api_dir = Config::get_value_core('DEFAULT_API_DIR');
+			}
 			$include_file=$module_root."/$module/".$api_dir."/My_$classname.php";
 		}else{
 			$include_file= $modules[$module]['custom_apis'][$classname]['include'];

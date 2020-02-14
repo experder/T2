@@ -8,6 +8,9 @@
 
 namespace t2\admin;
 
+use t2\api\Service;
+use t2\api\Update_database;
+use t2\core\Error;
 use t2\core\Error_;
 use t2\core\mod\Core_database;
 use t2\core\Page;
@@ -77,9 +80,34 @@ class Admin {
 
 	public static function update_dbase(){
 
+		$results = array();
+
 		$updater = new Core_database();
+		if(($ver=$updater->update())!==false){
+			$results[]="core: ".$ver;
+		}
+
+		$modules = Config::get_modules_ids();
+
+		foreach ($modules as $module){
+			$update = Service::get_api_class($module, "Update_database", $error, $return);
+			if(!($update instanceof Update_database)){
+				if($error==Service::API_ERROR_FILE_NOT_FOUND){
+					if(Config::$DEVMODE){
+						$results[]="NOTE! $module has no updater!";
+					}
+				}else{
+					new Error("API_ERROR_INT", "Unknown error in internal api.");
+				}
+			}else{
+				if(($ver=$update->update())!==false){
+					$results[]=$module.': '.$ver;
+				}
+			}
+		}
+
 		$result = "\n========= Update_database =========\n";
-		$result .= $updater->update() ?: "Already up to date.";
+		$result .= $results?implode("\n",$results): "All up to date.";
 		$result .= "\n";
 
 		return $result;

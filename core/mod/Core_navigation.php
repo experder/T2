@@ -11,9 +11,8 @@ namespace t2\core\mod;
 use t2\api\Navigation;
 use t2\api\Service;
 use t2\core\Html;
-use t2\core\Page;
 use t2\core\service\Config;
-use t2\dev\Tools;
+use t2\dev\Install_wizard;
 
 class Core_navigation {
 
@@ -48,14 +47,7 @@ class Core_navigation {
 		$navi = Service::get_api_class($mod_id, 'Navigation', $error, $return);
 		if(!$navi){
 			if($error==Service::API_ERROR_FILE_NOT_FOUND){
-				if(Config::$DEVMODE){
-					if(isset($_REQUEST['initialize_module_navi'])){
-						$msg = Tools::create_new_module($mod_id, $mod_id, dirname($return), array("My_Navigation.php"));
-						Page::$compiler_messages[] = $msg;
-					}else{
-						Page::get_singleton()->add_message_error(Html::DIV("No Navigation set for module '$mod_id'! [<a href='?initialize_module_navi'>Create blank navigation</a>]","dev"));
-					}
-				}
+				Install_wizard::api_ini_navi($mod_id, dirname($return));
 				return false;
 			}
 		}
@@ -70,11 +62,12 @@ class Core_navigation {
 	}
 
 	public static function navi_admin(){
-		return new Navigation('NAVI_ADMIN',"","",array(
+		return new Navigation('NAVI_ADMIN',"Admin","",array(
 			new Navigation('PAGEID_CORE_ADMIN',"",Html::href_internal_root("index")
 				/*TODO:Just for demonstration:*/,array(new Navigation('A',"",Html::href_internal_root("index"),array(new Navigation('A1',"",""),new Navigation('A2',"",Html::href_internal_root("index")))),new Navigation('B',"",Html::href_internal_root("index")))
 			),
 			new Navigation('PAGEID_CORE_DEVZONE',"",Html::href_internal_root("index")),
+			new Navigation('PAGEID_CORE_UPDATER',"Updater",Html::href_internal_root("admin/update")),
 		));
 	}
 

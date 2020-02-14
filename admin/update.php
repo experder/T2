@@ -14,10 +14,9 @@ use t2\core\Html;
 use t2\core\Page;
 use t2\core\service\Config;
 use t2\core\service\Js;
-use t2\core\service\Strings;
 use t2\Start;
 
-$page = Start::init("PAGEID_CORE_UPDATER", "Updater");
+$page = Start::init_("PAGEID_CORE_UPDATER");
 
 $page->add_stylesheet("CSS_ID_CORE_UPDATER", Page::get_stylesheet("core_admin.css"));
 
