@@ -67,7 +67,7 @@ class Core_navigation {
 				/*TODO:Just for demonstration:*/, array(new Navigation('A', "", Html::href_internal_root("index"), array(new Navigation('A1', "", ""), new Navigation('A2', "", Html::href_internal_root("index")))), new Navigation('B', "", Html::href_internal_root("index")))
 			),
 			new Navigation('PAGEID_CORE_DEVZONE', "", Html::href_internal_root("index")),
-			new Navigation('PAGEID_CORE_UPDATER', "Updater", Html::href_internal_root("admin/update")),
+			new Navigation('PAGEID_CORE_UPDATER', "Updater", Html::href_internal_root("core/mod/update")),
 		));
 	}
 

@@ -6,12 +6,11 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-namespace t2\admin;
+namespace t2\core\mod;
 
 use t2\api\Service;
 use t2\api\Update_database;
 use t2\core\Error;
-use t2\core\mod\Core_database;
 use t2\core\Page;
 use t2\core\service\Config;
 use t2\core\service\Includes;

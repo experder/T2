@@ -8,7 +8,6 @@
 
 namespace t2\core\mod;
 
-use t2\admin\Admin;
 use t2\api\Ajax;
 use t2\core\Ajax_response;
 

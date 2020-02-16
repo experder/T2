@@ -6,9 +6,9 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-namespace t2\admin;
+namespace t2\core\mod;
 
-require_once '../Start.php';
+require_once '../../Start.php';
 
 use t2\core\Html;
 use t2\core\Page;
