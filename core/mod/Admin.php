@@ -11,6 +11,7 @@ namespace t2\core\mod;
 use t2\api\Service;
 use t2\api\Update_database;
 use t2\core\Error;
+use t2\core\form\Form;
 use t2\core\Page;
 use t2\core\service\Config;
 use t2\core\service\Includes;
@@ -110,6 +111,14 @@ class Admin {
 
 		return $result;
 
+	}
+
+	public static function get_config_form() {
+		$form = new Form();
+
+		//TODO:Config form
+
+		return $form;
 	}
 
 }

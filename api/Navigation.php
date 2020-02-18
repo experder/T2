@@ -9,7 +9,6 @@
 namespace t2\api;
 
 use t2\core\Html;
-use t2\dev\Debug;
 
 class Navigation {
 
@@ -39,6 +38,7 @@ class Navigation {
 	private $parent = null;
 
 	private $highlight = false;
+	private $visible = true;
 
 	/**
 	 * Navigation constructor.
@@ -52,6 +52,10 @@ class Navigation {
 		$this->link = $link;
 		$this->title = $title;
 		$this->addChildren($children);
+	}
+
+	public function set_invisible(){
+		$this->visible=false;
 	}
 
 	/**
@@ -97,6 +101,9 @@ class Navigation {
 	public function toHtml($highlight_id=null){
 		if($highlight_id){
 			$this->do_highlight($highlight_id);
+		}
+		if(!$this->visible){
+			return "";
 		}
 		if($this->id){
 			$classes = array();

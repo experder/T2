@@ -127,7 +127,7 @@ class Install_wizard {//TODO(3): Install wizard: Prompt all field in one form
 			":dbpass" => Request::value("dbpass", "(please specify)"),
 			":project_root" => $project_root,
 		),false,false);
-		if($error==-1/*File already exists*/){
+		if($error==Templates::ERROR_FILE_EXISTS){
 			$message = "Using existing config file \"$target_file\".".$message;
 		}else{
 			$message = "Config file \"$target_file\" has been created.".$message;
@@ -141,7 +141,7 @@ class Install_wizard {//TODO(3): Install wizard: Prompt all field in one form
 				$msg = Tools::create_new_module($mod_id, $mod_id, $path, array("My_Navigation.php"));
 				Page::$compiler_messages[] = $msg;
 			}else{
-				Page::get_singleton()->add_message_error(Html::DIV("No navigation set for module '$mod_id'! [<a href='?initialize_module_navi'>Create blank navigation</a>]","dev"));
+				Page::$compiler_messages[] = new Message(Message::TYPE_ERROR,Html::DIV("No navigation set for module '$mod_id'! [<a href='?initialize_module_navi'>Create blank navigation</a>]","dev"));
 			}
 		}
 	}

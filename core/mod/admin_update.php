@@ -18,11 +18,11 @@ use t2\Start;
 
 $page = Start::init_("PAGEID_CORE_UPDATER");
 
-$page->add_stylesheet("CSS_ID_CORE_UPDATER", Page::get_stylesheet("core_admin.css"));
+$page->add_stylesheet("CSS_ID_CORE_ADMIN", Page::get_stylesheet("core_admin.css"));
 
 $page->add(Html::H1("Updater"));
 
-$page->add($div=new Html("div",null,array("class"=>"updater_buttons")));
+$page->add($div = new Html("div", null, array("class" => "updater_buttons")));
 
 $page->add(Html::PRE_console("", "ID_RESULTS", "ID_RESULTS_outer"));
 
@@ -86,8 +86,8 @@ $page->add_inline_js(
 //}");
 
 
-if(Config::$DEVMODE){
-	$div->addChild(Html::BUTTON("Clear", "document.getElementById(\"ID_RESULTS\").innerHTML='';", array("id"=>"dev_btn_clear")));
+if (Config::$DEVMODE) {
+	$div->addChild(Html::BUTTON("Clear", "document.getElementById(\"ID_RESULTS\").innerHTML='';", array("id" => "dev_btn_clear")));
 }
 
 $page->send_and_quit();

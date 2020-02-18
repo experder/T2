@@ -10,11 +10,15 @@ namespace t2\modules\core_demo\api;
 
 use t2\api\Navigation;
 use t2\core\Html;
+use t2\core\service\Config;
 
 class My_Navigation extends Navigation {
 
 	public function __construct() {
 		parent::__construct('NAVI_DEMO',"Demo",null,null);
+		if(!Config::$DEVMODE){
+			$this->set_invisible();
+		}
 	}
 
 	public function getChildren() {
