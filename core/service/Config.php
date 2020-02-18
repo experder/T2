@@ -6,15 +6,11 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-
-
 namespace t2\core\service;
-
 
 use t2\api\Default_values;
 use t2\core\Database;
 use t2\core\Error;
-use t2\core\Error_;
 use t2\core\Message;
 use t2\core\Page;
 use t2\dev\Install_wizard;
@@ -31,7 +27,7 @@ class Config {
 	public static function init_platform() {
 		if (($value = Config::recall_val(null, null, 'PLATFORM')) !== false) {
 			if (Config::$DEVMODE) {
-				new Error_("PLATFORM already initialized!");
+				new Error("PLATFORM_ERROR","PLATFORM already initialized!");
 			}
 			return $value;
 		}
@@ -60,7 +56,7 @@ class Config {
 		if ($platform != self::PLATFORM_WINDOWS
 			&& $platform != self::PLATFORM_LINUX
 		) {
-			new Error_("Unknown platform (\"$platform\")!", 0, "Try this: DELETE FROM `core_config` WHERE (`idstring`='PLATFORM');");
+			new Error("Unknown_platform", "Unknown platform (\"$platform\")!", "Try this: DELETE FROM `core_config` WHERE (`idstring`='PLATFORM');");
 		}
 		return $platform;
 	}
@@ -72,7 +68,7 @@ class Config {
 
 	public static function cfg_http_project() {
 		return self::cfg_http_root().'/'.Files::relative_path(ROOT_DIR, PROJECT_ROOT);//TODO(1):Prompt HTTP_PROJECT
-		return self::get_value_core('HTTP_PROJECT');
+		#return self::get_value_core('HTTP_PROJECT');
 	}
 
 	public static function MODULES() {
@@ -81,7 +77,7 @@ class Config {
 			$modules_json = self::get_value('MODULES', null, null);
 			self::$cfg_modules = json_decode($modules_json, true);
 			if (self::$cfg_modules === null) {
-				new Error_("Module configuration is invalid JSON.");
+				new Error("MODULE_CFG_INVALID_JSON","Module configuration is invalid JSON.");
 			}
 		}
 		return self::$cfg_modules;
@@ -169,7 +165,7 @@ class Config {
 		//Prompt HTTP_ROOT:
 		$value = Install_wizard::prompt_http_root();
 		if ($value === false) {
-			new Error_("Could not set HTTP_ROOT.");
+			new Error("SET_HTTP_ROOT","Could not set HTTP_ROOT.");
 		}
 		Config::set_value('HTTP_ROOT', $value);
 		Page::$compiler_messages[] = new Message(Message::TYPE_CONFIRM, "HTTP_ROOT set to: \"$value\"");
@@ -190,11 +186,11 @@ class Config {
 		$singleton = Default_values::get_singleton_by_module($module);
 		$value = $singleton->get_default_value($id);
 		if ($value === null) {
-			$hint = "???";//TODO(3): Determine Default_values for given module
+			$hint = "???(TODO)190";//TODO(3): Determine Default_values for given module
 			if ($module === 'core') {
-				$hint = "Add here: \\t2\\core\\mod\\Core_values";
+				$hint = "Add here: core\\mod\\Core_values";
 			}
-			new Error_("No default value provided for: $module|$id", 0, $hint, $backtrace_depth + 1);
+			new Error("NO_DEFAULT_VALUE","No default value provided for: $module|$id", $hint, $backtrace_depth + 1);
 		}
 		return $value;
 	}
@@ -258,7 +254,7 @@ class Config {
 		);
 		$error = Database::get_singleton()->getError();
 		if ($error !== false) {
-			if ($error->isType(Error_::TYPE_TABLE_NOT_FOUND)) {
+			if ($error->isType(Error::TYPE_TABLE_NOT_FOUND)) {
 				$report = Install_wizard::init_db_config();
 				$msg = new Message(Message::TYPE_CONFIRM, "DB \"" . Database::get_singleton()->get_dbname() . "\" initialized. " . $report);
 				Page::$compiler_messages[] = $msg;
@@ -276,7 +272,7 @@ class Config {
 			foreach ($data as $val) {
 				if (!$ignore_errors) {
 					if (isset($values[$val['idstring']])) {
-						new Error_("Config database corrupt!", "CONFIG_DATABASE_CORRUPT2", "Multiple entries found for \"" . $val['idstring'] . "\" (module " . ($module ?: 'core') . ").");
+						new Error("CONFIG_DATABASE_CORRUPT2","Config database corrupt!", "Multiple entries found for \"" . $val['idstring'] . "\" (module " . ($module ?: 'core') . ").");
 					}
 					$values[$val['idstring']] = true;
 				}

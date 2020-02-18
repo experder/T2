@@ -8,8 +8,7 @@
 
 namespace t2\core\service;
 
-use t2\core\Error_;
-use t2\core\Pdf_adapter;
+use t2\core\Error;
 
 class Pdf {
 
@@ -69,7 +68,7 @@ class Pdf {
 
 	private function get_TCPDF($depth=0){
 		if($this->TCPDF===null){
-			new Error_("PDF not initialized!",0,null,$depth+1);
+			new Error("NO_PDF","PDF not initialized!",null,$depth+1);
 		}
 		return $this->TCPDF;
 	}
@@ -96,7 +95,7 @@ class Pdf {
 		padding: $margins_css;
 	}
 </style>";
-		$html.= "<div class='pdf_preview_outer'><div class='pdf_preview'>$this->html_buffer</div></div>";
+		$html .= "<div class='pdf_preview_outer'><div class='pdf_preview'>$this->html_buffer</div></div>";
 		return $html;
 	}
 

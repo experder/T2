@@ -6,10 +6,9 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-
 namespace t2\service;
 
-use t2\core\Error_;
+use t2\core\Error;
 
 class Autoloader {
 	//TODO(1):Autoloader: Look into modules folder
@@ -40,7 +39,7 @@ class Autoloader {
 		}
 		self::$recursion_protection = false;
 		require_once ROOT_DIR . '/core/Error_.php';
-		new Error_("Can't load \"$class\"!","AUTOLOADER",$file?"Was trying: \"$file\".":null,$depth+1);
+		new Error("AUTOLOADER","Can't load \"$class\"!",$file?"Was trying: \"$file\".":null,$depth+1);
 	}
 
 }

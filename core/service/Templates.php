@@ -6,14 +6,13 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-
 namespace t2\core\service;
 
-
-use t2\core\Error_;
-
+use t2\core\Error;
 
 class Templates {
+
+	const ERROR_FILE_EXISTS = -1;
 
 	/**
 	 * Loads a template file, fills in the values and returns the content as a string.
@@ -26,21 +25,21 @@ class Templates {
 	public static function load($file, $replacements) {
 		//TODO(3): file_exists($filename, $fatal=true)
 		if (!file_exists($file)) {
-			Error_::quit("Template file \"$file\" not found!");
+			new Error("TPL_FILE_NOT_FOUND", "Template file \"$file\" not found!");
 		}
 
 		//Read template file:
 		$content = file_get_contents($file);
 
 		if ($content === false) {
-			Error_::quit("Template file \"$file\" could not be loaded.");
+			new Error("TPL_FILE_ACCESS", "Template file \"$file\" could not be loaded.");
 		}
 
 		//Replacements:
 		$content = Strings::replace_byArray($content, $replacements);
 
 		//Remove TPLDOC:
-		/** Explanation of the RegEx: http://gitfabian.github.io/Tethys/php/regex.html */
+		/** https://github.com/experder/T2/blob/master/help/dev_regex.md */
 		$content = preg_replace("/\\/\\*\\*TPLDOCSTART.*?TPLDOCEND\\*\\/\\R?/s", "", $content);
 
 		return $content;
@@ -57,14 +56,14 @@ class Templates {
 	public static function create_file($target_file, $template_file, $keyVals, $override=false, $report_error = true) {
 		if(!$override && file_exists($target_file)){
 			if($report_error){
-				new Error_("Couldn't store file \"$target_file\". File already exists!");
+				new Error("FILE_EXISTS", "Couldn't store file \"$target_file\". File already exists!");
 			}
-			return -1/*File already exists*/;
+			return self::ERROR_FILE_EXISTS;
 		}
 		$content = self::load($template_file, $keyVals);
 		$success = Files::save($target_file, $content, false, false);
 		if($success===false){
-			new Error_("Couldn't store file \"$target_file\". Please check rights.", 0, "Try this:\nsudo chmod 777 '".dirname($target_file)."' -R", 1);
+			new Error("FILE_SAVE_ERROR", "Couldn't store file \"$target_file\". Please check rights.", "Try this:\nsudo chmod 777 '".dirname($target_file)."' -R", 1);
 		}
 		return 0;
 	}

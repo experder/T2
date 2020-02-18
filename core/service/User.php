@@ -6,11 +6,9 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-
 namespace t2\core\service;
 
-
-use t2\core\Error_;
+use t2\core\Error;
 
 class User {
 
@@ -34,7 +32,7 @@ class User {
 	public static function id_($halt_on_error=false){
 		if (self::$ID===false){
 			if($halt_on_error){
-				new Error_("Please init User first", "ERROR_USER_INIT", "( \\service\\User::init() )", 1);
+				new Error("ERROR_USER_INIT", "Please init User first", "( \\service\\User::init() )", 1);
 			}
 			return false;
 		}
