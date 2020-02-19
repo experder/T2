@@ -289,7 +289,7 @@ class Database {
 	 * @param string $tabelle
 	 * @param array  $data_set
 	 * @param int    $backtrace_depth
-	 * @return false|int
+	 * @return false|int Inserted ID or false
 	 */
 	public function insert_assoc($tabelle, $data_set, $backtrace_depth = 0) {
 		$keys_sql = array();
@@ -348,7 +348,7 @@ class Database {
 	 * @param array  $data_where
 	 * @param array  $data_set
 	 * @param int    $backtrace_depth
-	 * @return int|false Number of modified rows or ID of the inserted data or false in case of any failure
+	 * @return int|false Number of modified rows or ID (*-1) of the inserted data or false in case of any failure
 	 */
 	public function update_or_insert($tabelle, $data_where, $data_set, $backtrace_depth = 0) {
 		if (empty($data_where) && empty($data_set)) return false;
@@ -372,7 +372,8 @@ class Database {
 		} else {
 			//Data didn't exist: INSERT
 			$data_alltogehter = array_merge($data_where, $data_set);
-			return $this->insert_assoc($tabelle, $data_alltogehter);
+			$id = $this->insert_assoc($tabelle, $data_alltogehter);
+			return $id?-$id:false;
 		}
 	}
 

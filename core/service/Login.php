@@ -13,7 +13,6 @@ use t2\core\Error;
 use t2\core\form\Form;
 use t2\core\form\Formfield_password;
 use t2\core\form\Formfield_text;
-use t2\core\Html;
 use t2\core\Message;
 use t2\core\Page;
 use t2\core\Warning;

@@ -126,6 +126,10 @@ class Start {
 	}
 
 	private static function init_database() {
+		/**
+		 * @see Core_values::$default_values
+		 * @see Admin::get_config_form()
+		 */
 		Config::load_values(array(
 			"EXTENSION",
 			"PROJECT_TITLE",
@@ -133,7 +137,6 @@ class Start {
 			"HTTP_ROOT",
 			"SESSION_EXPIRES",
 			"MODULES",
-			"PLATFORM",
 		));
 	}
 

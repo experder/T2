@@ -13,6 +13,7 @@ use t2\core\Database;
 use t2\core\Error;
 use t2\core\Message;
 use t2\core\Page;
+use t2\core\Warning;
 use t2\dev\Install_wizard;
 
 class Config {
@@ -61,13 +62,18 @@ class Config {
 		return $platform;
 	}
 
+	/**
+	 * @deprecated TODO
+	 */
 	public static function cfg_http_root() {
-		//TODO(3):replace everywhere!
 		return self::get_value_core('HTTP_ROOT');
 	}
 
+	/**
+	 * @deprecated
+	 */
 	public static function cfg_http_project() {
-		return self::cfg_http_root().'/'.Files::relative_path(ROOT_DIR, PROJECT_ROOT);//TODO(1):Prompt HTTP_PROJECT
+		return self::get_value_core('HTTP_ROOT').'/'.Files::relative_path(ROOT_DIR, PROJECT_ROOT);//TODO(1):Prompt HTTP_PROJECT
 		#return self::get_value_core('HTTP_PROJECT');
 	}
 
@@ -133,7 +139,7 @@ class Config {
 			return $default_value;
 		}
 		if (is_int($data)) {
-			new Error("CONFIG_DATABASE_CORRUPT1", "Config database corrupt!", "Multiple entries found for \"$id\" (module " . ($module ?: 'core') . ").");
+			new Warning("CONFIG_DATABASE_CORRUPT1", "Config database corrupt!", "Multiple entries found for \"$id\" (module " . ($module ?: 'core') . ").");
 		}
 		$value = $data["content"];
 		if ($use_cache) {
@@ -147,7 +153,7 @@ class Config {
 	public static function init_http_root($relative = false) {
 		if (($value = Config::recall_val(null, null, 'HTTP_ROOT')) !== false) {
 			if (Config::$DEVMODE) {
-				new Error("HTTP_ROOT already initialized!","HTTP_ROOT already initialized!");
+				new Warning("HTTP_ROOT already initialized!","HTTP_ROOT already initialized!");
 			}
 			return $value;
 		}
@@ -228,6 +234,11 @@ class Config {
 		);
 		$core_config = DB_CORE_PREFIX.'_config';
 		$r = $database->update_or_insert($core_config, $where, array("content" => $value));
+//		if(Config::$DEVMODE){
+//			if ($r && $r>1){
+//				new Warning("CONFIG_CORRUPT", "Redundant config values found.", ($module?:'core').'|'.$id);
+//			}
+//		}
 		self::store_val($module, $user, $id, $value);
 		return $r;
 	}

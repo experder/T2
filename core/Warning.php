@@ -6,11 +6,10 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-
 namespace t2\core;
 
-
-class Warning extends Error_ {
+class Warning extends Error {
+	//TODO: Look for errors that should be warnings
 
 	protected $warning = true;
 

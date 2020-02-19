@@ -12,10 +12,16 @@ use t2\api\Service;
 use t2\api\Update_database;
 use t2\core\Error;
 use t2\core\form\Form;
+use t2\core\form\Formfield_header;
+use t2\core\form\Formfield_text;
+use t2\core\form\Formfield_textarea;
+use t2\core\Message;
 use t2\core\Page;
 use t2\core\service\Config;
 use t2\core\service\Includes;
+use t2\core\service\Request;
 use t2\dev\Install_wizard;
+use t2\Start;
 
 class Admin {
 
@@ -113,10 +119,77 @@ class Admin {
 
 	}
 
-	public static function get_config_form() {
-		$form = new Form();
+	private static function save_config() {
+		$updated = array();
+		foreach ($_POST as $key=>$value){
+			$ok = self::save_config_value($key, $value);
+			if($ok){
+				$updated[] = $key;
+			}
+		}
+		if($updated){
+			Page::$compiler_messages[] = new Message(Message::TYPE_CONFIRM, "Updated: ".implode(", ",$updated));
+		}else{
+			Page::$compiler_messages[] = new Message(Message::TYPE_INFO, "(Nothing updated)");
+		}
+	}
 
-		//TODO:Config form
+	private static function cleanup_key($key, $maxlen=0, $chars_regex='0-9a-z_') {
+		if($maxlen!==0){
+			$key = mb_substr($key, 0, $maxlen);
+		}
+		$key = preg_replace("/[^$chars_regex]/i", "", $key);
+		return $key;
+	}
+
+	private static function save_config_value($key, $value, $module=null) {
+		if(!$key){
+			new Error("!", "!");
+			return false;
+		}
+		$key_clean = self::cleanup_key($key, 99, '0-9a-z_');
+		if(!$key_clean){
+			new Error("!", "!");
+			return false;
+		}
+		if($key_clean!==$key){
+			new Error("INVALID_KEY", "Invalid key!", "'$key' (=> '$key_clean' )");
+			return false;
+		}
+		$ok = Config::set_value($key_clean, $value, $module);
+		return $ok;
+	}
+
+	public static function get_config_form() {
+
+		if(Request::cmd('t2_update_cfg')){
+			unset($_POST['cmd']);
+			self::save_config();
+		}
+
+		$form = new Form('t2_update_cfg');
+
+		/**
+		 * @see Start::init_database()
+		 * @see Core_values::$default_values
+		 */
+
+		$form->add_field(new Formfield_header("<h2>Admin stuff</h2>"));
+		$form->add_field(new Formfield_text('PROJECT_TITLE',null,Config::get_value('PROJECT_TITLE')));
+		$form->add_field(new Formfield_text('SKIN',null,Config::get_value('SKIN')));
+		$form->add_field(new Formfield_textarea('MODULES',null,Config::get_value('MODULES')));
+
+		$form->add_field(new Formfield_textarea('LOGIN_HTML',null,Config::get_value('LOGIN_HTML')));
+
+		$form->add_field(new Formfield_header("<h2>Developer stuff</h2>"));
+		$form->add_field(new Formfield_text('EXTENSION',null,Config::get_value('EXTENSION')));
+		$form->add_field(new Formfield_text('HTTP_ROOT',null,Config::get_value('HTTP_ROOT')));
+		$form->add_field(new Formfield_text('SESSION_EXPIRES',null,Config::get_value('SESSION_EXPIRES')));
+
+		$form->add_field(new Formfield_text('PLATFORM',null,Config::get_value('PLATFORM')));
+		$form->add_field(new Formfield_text('MODULE_ROOT',null,Config::get_value('MODULE_ROOT')));//TODO: Tooltip!
+		$form->add_field(new Formfield_text('MODULE_PATH',null,Config::get_value('MODULE_PATH')));
+		$form->add_field(new Formfield_text('DEFAULT_API_DIR',null,Config::get_value('DEFAULT_API_DIR')));
 
 		return $form;
 	}

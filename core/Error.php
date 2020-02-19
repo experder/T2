@@ -119,6 +119,16 @@ class Error {
 		;
 		#Page::$compiler_messages[]=new Message(Message::TYPE_INFO, "<pre>".htmlentities($file_body)."</pre>");
 
+		if(Config::$DEVMODE){
+			if($this->warning){
+				//As long as Warnings are not implemented:
+				$this->type = "DEV_WARNING_".$this->type;
+				$message_body = $this->get_msg_body(false, $backtrace_depth+1);
+				$msg = new Message(Message::TYPE_ERROR, $message_body);
+				Page::$compiler_messages[] = $msg;
+			}
+		}
+
 		if(!$this->warning){
 
 			$message_body = $this->get_msg_body(false, $backtrace_depth+1);
