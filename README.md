@@ -3,10 +3,10 @@
 
 Inspired by: [Tethys-Beta](https://github.com/gitfabian/tethysbeta) (2014) and [Tethys](https://github.com/GitFabian/Tethys) (2018).
 
-[[Installation](https://github.com/experder/T2/blob/master/help/install.md)]
+[[Installation](help/install.md)]
 
 ### More
 
-[[Useful links](https://github.com/experder/T2/blob/master/help/links.md)]
-[[Developers](https://github.com/experder/T2/blob/master/dev/notes.md)]
-[[Release notes](https://github.com/experder/T2/blob/master/release_notes.md)]
+[[Useful links](help/links.md)]
+[[Developers](dev/notes.md)]
+[[Release notes](release_notes.md)]

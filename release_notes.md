@@ -1,6 +1,6 @@
 ## Release notes
 
-[[Coming features](https://github.com/experder/T2/blob/master/dev/notes.md#current-todos)]
+[[Coming features](dev/notes.md#current-todos)]
 
 ### v0.2
 **Release date:** 2020-01-29  

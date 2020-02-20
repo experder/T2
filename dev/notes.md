@@ -1,7 +1,7 @@
 Developers
 ==========
 
-[[Regex](https://github.com/experder/T2/blob/master/help/dev_regex.md)]
+[[Regex](../help/dev_regex.md)]
 
 Release
 -------

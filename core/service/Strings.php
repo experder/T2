@@ -70,7 +70,6 @@ class Strings {
 	 */
 	public static function replace_byArray($string, $substitutions) {
 		//TODO:- template replace: abfangen:":dev"=>"a",":dev1"=>"b"
-		//TODO:- make github links relative
 		return str_replace(array_keys($substitutions), array_values($substitutions), $string);
 	}
 

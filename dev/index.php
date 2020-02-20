@@ -11,6 +11,7 @@ namespace t2\dev;
 require_once '../Start.php';
 
 use t2\core\Html;
+use t2\core\service\Config;
 use t2\Start;
 
 $page = Start::init_("PAGEID_CORE_DEVZONE");
@@ -19,7 +20,7 @@ $page->add(Html::H1("Dev zone"));
 
 $page->add(Html::A_button("New module", Html::href_internal_root("dev/new_module")));
 $page->add(Html::A_button("Notes", Html::href_internal_root("dev/notes")));
-$page->add(Html::A_button("TODOs","https://github.com/experder/T2/blob/dev/dev/notes.md#current-todos",null,array("target"=>"_blank")));
+$page->add(Html::A_button("TODOs",Config::get_value('HTTP_ROOT')."/dev/notes.md#current-todos",null,array("target"=>"_blank")));
 $page->add(Html::A_button("CSS demo", Html::href_internal_root("dev/demo/cssdemo")));
 $page->add(Html::A_button("PDF demo", Html::href_internal_root("dev/demo/pdfdemo")));
 $page->add(Html::A_button("Ajax demo", Html::href_internal_root("dev/demo/ajaxdemo")));

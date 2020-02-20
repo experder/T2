@@ -182,7 +182,7 @@ class Install_wizard {//TODO(3): Install wizard: Prompt all field in one form
 			$result = `chmod 777 "$target" 2>&1`;
 
 			if($result) {
-				Page::$compiler_messages[] = new Message(Message::TYPE_INFO, "Please set appropriate rights [<a href='https://github.com/experder/T2/blob/master/help/install.md#linux' target='_blank'>HELP</a>]! $result");
+				Page::$compiler_messages[] = new Message(Message::TYPE_INFO, "Please set appropriate rights [<a href='".Config::get_value('HTTP_ROOT')."/help/install.md#linux' target='_blank'>HELP</a>]! $result");
 			}
 		} else {
 			//Should not happen because $platform_checked should be checked already

@@ -8,7 +8,7 @@
 # GPL*/
 #
 # Please set rights and line endings of this file according to:
-# https://github.com/experder/T2/blob/master/help/install.md#linux
+# help/install.md#linux
 #
 # äöü/**TPLDOCSTART
 # This template is used to create commandline update file "update.sh"
