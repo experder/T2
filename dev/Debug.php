@@ -6,9 +6,7 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-
 namespace t2\dev;
-
 
 use t2\core\Html;
 use t2\core\Page;
@@ -21,8 +19,8 @@ class Debug {
 
 	private static $core_queries = array(
 		"load_values ( :ROOT_DIR/core/service/Config.php::DEV_LVLINE )",
-		"check_session ( :ROOT_DIR/core/service/Login.php:54 )",
-		"update_session ( :ROOT_DIR/core/service/Login.php:85 )",
+		"check_session ( :ROOT_DIR/core/service/Login.php:53 )",
+		"update_session ( :ROOT_DIR/core/service/Login.php:84 )",
 	);
 	private static $core_queries_compiled = null;
 	public static $queries = array();
@@ -47,6 +45,7 @@ class Debug {
 		":ROOT_DIR/core/Html.php",
 		":ROOT_DIR/core/service/Includes.php",
 		":ROOT_DIR/core/service/Files.php",
+		//TODO: $core_includes: Plus navigation of each module
 	);
 	private static $core_includes_compiled = null;
 	public static $includes = array();

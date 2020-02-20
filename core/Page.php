@@ -43,7 +43,7 @@ class Page {
 	 * @var Message[] $messages
 	 * @deprecated TODO: Use only $compiler_messages
 	 */
-	private $messages = array();
+	public $messages = array();
 
 	/**
 	 * @var Message[] $compiler_messages pre-init messages
@@ -137,7 +137,7 @@ class Page {
 	public static function init2($id) {
 
 		if (self::$singleton !== null) {
-			Error_::quit("Page is already initialized!", 1);
+			new Error("DOUBLE_INIT", "Page is already initialized!", null, 1);
 		}
 
 		$title = "$id";//TODO(1):Get title from DB
@@ -420,9 +420,9 @@ class Page {
 		}
 	}
 
-	public static function abort($title, $messages = null, $body = null, $id = "PAGEID_CORE_ABORT") {
+	public static function abort($title, $messages = null, $id = "PAGEID_CORE_ABORT") {
 		if (!self::$recusion_protection_abort) {
-			new Error("(ABORTION OCCURED IN ABORTION)","(ABORTION OCCURED IN ABORTION)");
+			new Error("(ABORTION OCCURED IN ABORTION)");
 			exit;
 		}
 		self::$recusion_protection_abort = false;
@@ -437,18 +437,26 @@ class Page {
 			}
 		}
 
-		$page = Page::get_singleton(false);
-		if ($page === false) {
-
-			$page = new Page($id, $title);
-
-			if ($body !== null) {
-				$page->add($body);
+		//Can be removed if all messages are moved to static array:
+		if($page = Page::get_singleton(false)){
+			foreach ($page->messages as $message){
+				Page::$compiler_messages[] = $message;
 			}
-
-		}else{
-			$page->reset($id, $title);
 		}
+
+		$page = new Page($id, $title);
+//		$page = Page::get_singleton(false);
+//		if ($page === false) {
+//
+//			$page = new Page($id, $title);
+//
+//			if ($body !== null) {
+//				$page->add($body);
+//			}
+//
+//		}else{
+//			$page->reset($id, $title);
+//		}
 
 		$page->send_and_quit();
 

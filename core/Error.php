@@ -1,4 +1,10 @@
 <?php
+/*GPL
+ * This file is part of the T2 toolbox;
+ * Copyright (C) 2014-2020 Fabian Perder (t2@qnote.de) and contributors
+ * T2 comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
+ * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
+ GPL*/
 
 namespace t2\core;
 
@@ -36,9 +42,9 @@ class Error {
 	 * @param int    $backtrace_depth
 	 * @param bool   $report
 	 */
-	public function __construct($ERROR_TYPE, $message, $debug_info=null, $backtrace_depth = 0, $report=true) {
-		$this->type = $ERROR_TYPE;
-		$this->message = $message?:"(Please enter error message)";
+	public function __construct($ERROR_TYPE, $message=null, $debug_info=null, $backtrace_depth = 0, $report=true) {
+		$this->type = $ERROR_TYPE ?: "(Please enter error type)";
+		$this->message = $message;
 		$this->timestamp = time();
 		$this->debug_info = $debug_info;
 
@@ -71,26 +77,28 @@ class Error {
 		return $this->type==$type;
 	}
 
-	public function get_msg($debug_info=true, $backtrace=true, $htmlentities=false, $backtrace_depth=0, $minimalistic=false){
-		//$minimalistic to prevent recusion
-		$msg = $this->message;
-		if($debug_info && $this->debug_info){
-			$msg.=self::HR.$this->debug_info;
+	private function get_msg($debug_info=true, $backtrace=true, $htmlentities=false, $backtrace_depth=0){
+		$msg = array();
+		if ($this->message) {
+			$msg[] = $this->message;
 		}
-		if($backtrace){
-			$msg.=self::HR.Debug::backtrace($backtrace_depth + 1);
+		if ($debug_info && $this->debug_info) {
+			$msg[] = $this->debug_info;
 		}
-		if($htmlentities){
-			$msg='<pre class="dev dev_error_info">'.htmlentities($msg).'</pre>';
+		if ($backtrace) {
+			$msg[] = Debug::backtrace($backtrace_depth + 1);
+		}
+		$msg = implode(self::HR, $msg);
+		if ($htmlentities) {
+			$msg = '<pre class="dev dev_error_info">' . htmlentities($msg) . '</pre>';
 		}
 		return $msg;
 	}
 
-	private function get_msg_body($minimalistic=false, $backtrace_depth=0, $htmlentities=true, $backtrace=true){
-		//$minimalistic to prevent recusion
-		if(Config::$DEVMODE/*TODO(3): OR ADMIN (!$minimalistic)*/){
-			$message_body = #'(' . (self::$dev_error_counter++) . ') ' .
-				'An error occured: ' . $this->get_ref() ."\n". $this->get_msg(true, $backtrace, $htmlentities, $backtrace_depth + 1, $minimalistic);
+	private function get_msg_body_($backtrace_depth=0, $htmlentities=true, $backtrace=true){
+		if(Config::$DEVMODE){
+			$intro = $this->warning ? 'Warning!' : 'An error occured: ';
+			$message_body = $intro . $this->get_ref() ."\n". $this->get_msg(true, $backtrace, $htmlentities, $backtrace_depth + 1);
 		}else if(User::id_(false)){
 			$message_body='An error occured. Please report this reference to your administrator: '.$this->get_ref();
 		}else{
@@ -101,16 +109,14 @@ class Error {
 
 	public function report($backtrace_depth = 0){
 		if(Start::is_type(Start::TYPE_AJAX)){
-			$msg = $this->get_msg_body(true, $backtrace_depth+1, false, true);
+			$msg = $this->get_msg_body_($backtrace_depth+1, false, true);
 			$type=$this->getType();
-			if(!$type){
-				$msg="(Please specify Error Type!)\n".$msg;
-			}
 			new Ajax_response(Ajax_response::TYPE_ERROR, $msg, $type);
 			exit;
 		}
 
 		//Write to errorlog-/warnings-file:TODO(3):Write to errorlog-/warnings-file
+		/** @noinspection PhpUnusedLocalVariableInspection */
 		$file_body = self::HR_outer
 			.self::meta_info_block()
 			.self::HR
@@ -119,33 +125,31 @@ class Error {
 		;
 		#Page::$compiler_messages[]=new Message(Message::TYPE_INFO, "<pre>".htmlentities($file_body)."</pre>");
 
-		if(Config::$DEVMODE){
-			if($this->warning){
-				//As long as Warnings are not implemented:
-				$this->type = "DEV_WARNING_".$this->type;
-				$message_body = $this->get_msg_body(false, $backtrace_depth+1);
-				$msg = new Message(Message::TYPE_ERROR, $message_body);
+		$message_body = $this->get_msg_body_($backtrace_depth+1);
+
+		$msg = new Message(Message::TYPE_ERROR, $message_body);
+
+		if($this->warning){
+
+			if(Config::$DEVMODE){
+
 				Page::$compiler_messages[] = $msg;
+
 			}
-		}
 
-		if(!$this->warning){
-
-			$message_body = $this->get_msg_body(false, $backtrace_depth+1);
-
-			$msg = new Message(Message::TYPE_ERROR, $message_body);
+		}else{
 
 			Page::$compiler_messages[] = $msg;
 
-			Page::abort("ERROR", null, null, "PAGEID_CORE_ERRORABORT");
+			Page::abort("ERROR", null, "PAGEID_CORE_ERRORABORT");
 			exit;
 
 		}
 	}
 
-	private function report_havarie($backtrace_depth = 0){
-		echo "(ERROR OCCURED IN ERROR HANDLING)<br>";
-		echo $this->get_msg_body(true, $backtrace_depth+1);
+	private function report_havarie(/** @noinspection PhpUnusedParameterInspection */$backtrace_depth = 0){
+		echo "(AN ERROR OCCURED IN ERROR HANDLING)";
+		#echo "<br>".$this->get_msg_body_($backtrace_depth+1);
 		foreach (Page::$compiler_messages as $msg){
 			echo "<hr>".$msg->get_message();
 		}
@@ -196,23 +200,6 @@ class Error {
 		return new Error($type, "[" . $e->getCode() . "] " . $e->getMessage(), null, 1, $report);
 	}
 
-	/**
-	 * @deprecated TODO: Replace "Error_quit" with "new Error()"
-	 */
-	public static function quit($message, $backtrace_depth = 0) {
-		new Error_($message, 0, "", $backtrace_depth+1);
-	}
-
-	private function plain_abort($backtrace_depth=0, $minimalistic=false){
-		echo $this->get_msg_body($minimalistic, $backtrace_depth+1, false, false);
-		echo self::HR;
-		echo Debug::backtrace($backtrace_depth+1);
-		exit;
-	}
-
-	/**
-	 * TODO(3): make private? (catch recursion?)
-	 */
 	public static function plain_abort_($message, $backtrace_depth=0){
 		echo $message;
 		echo self::HR;

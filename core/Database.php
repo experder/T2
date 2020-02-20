@@ -6,16 +6,12 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-
 namespace t2\core;
-
 
 use t2\core\service\Config;
 use t2\core\service\Strings;
 use t2\dev\Debug;
 use t2\dev\Install_wizard;
-
-#Debug::out();
 
 class Database {
 
@@ -87,7 +83,7 @@ class Database {
 	public static function get_singleton($quit_on_error = true) {
 		if (self::$singleton === null || !isset(self::$singleton->pdo)) {
 			if ($quit_on_error) {
-				new Error("ERROR_DB_NOT_INITIALIZED","ERROR_DB_NOT_INITIALIZED");
+				new Error("ERROR_DB_NOT_INITIALIZED", "ERROR_DB_NOT_INITIALIZED");
 			}
 			return false;
 		}
@@ -112,10 +108,10 @@ class Database {
 		$err = self::$singleton->getError();
 
 		if ($err !== false) {
-			if ($err->getType()==Error::TYPE_PDO_1049_UNKNOWN_DATABASE) {
+			if ($err->getType() == Error::TYPE_PDO_1049_UNKNOWN_DATABASE) {
 				self::$singleton = Install_wizard::init_db($host, $dbname, $user, $password);
 				$err = false;
-			} else if ($err->getType()==Error::TYPE_HOST_UNKNOWN) {
+			} else if ($err->getType() == Error::TYPE_HOST_UNKNOWN) {
 				new Error(Error::TYPE_HOST_UNKNOWN, "Database host unknown! Please check config.", null, 1);
 			}
 			if ($err !== false) {
@@ -129,6 +125,7 @@ class Database {
 	public static function select_($query, $substitutions = array(), $halt_on_error = true) {
 		return self::get_singleton()->select($query, $substitutions, 1, $halt_on_error);
 	}
+
 	public static function delete_($query, $substitutions = array()) {
 		return self::get_singleton()->delete($query, $substitutions, 1);
 	}
@@ -200,9 +197,9 @@ class Database {
 		/** @var \PDOStatement $statement */
 		$statement = $this->pdo->prepare($query);
 		$ok = @$statement->execute($substitutions);
-		$this->debuginfo($statement, $query, $backtrace_depth+1);
+		$this->debuginfo($statement, $query, $backtrace_depth + 1);
 		if (!$ok) {
-			$this->error_handling($statement, $query, $halt_on_error, $backtrace_depth+1);
+			$this->error_handling($statement, $query, $halt_on_error, $backtrace_depth + 1);
 			return false;
 		}
 		switch ($return_type) {
@@ -221,7 +218,7 @@ class Database {
 		}
 	}
 
-	private function error_handling(\PDOStatement $statement, $query, $halt_on_error, $backtrace_depth=0){
+	private function error_handling(\PDOStatement $statement, $query, $halt_on_error, $backtrace_depth = 0) {
 		$eInfo = $statement->errorInfo();
 		$errorCode = $eInfo[0];
 		$errorInfo = "[$errorCode] " . $eInfo[2];
@@ -246,7 +243,7 @@ class Database {
 		$this->error = new Error($errorType, $errorInfo, $compiled_query, $backtrace_depth + 1, $halt_on_error);
 	}
 
-	private function debuginfo(\PDOStatement $statement, $query, $backtrace_depth=0){
+	private function debuginfo(\PDOStatement $statement, $query, $backtrace_depth = 0) {
 		if (Config::$DEVMODE) {
 			$backtrace = debug_backtrace();
 
@@ -270,7 +267,7 @@ class Database {
 			}
 
 			$query_html = (new Html("span", $caller, array("class" => "detail_functionSource$core_query_class")))
-				. "\n" . (new Html("span", $compiled_query, array("class" => "detail_sqlDump$core_query_class")));
+				. "\n" . (new Html("span", htmlentities($compiled_query), array("class" => "detail_sqlDump$core_query_class")));
 			Debug::$queries[] = $query_html;
 		}
 	}
@@ -327,7 +324,7 @@ class Database {
 	/**
 	 * @param string $tabelle
 	 * @param string $where
-	 * @param array $data_set
+	 * @param array  $data_set
 	 * @return int|false Number of updated rows or FALSE on error
 	 */
 	public function update_assoc($tabelle, $where, $data_set) {
@@ -373,7 +370,7 @@ class Database {
 			//Data didn't exist: INSERT
 			$data_alltogehter = array_merge($data_where, $data_set);
 			$id = $this->insert_assoc($tabelle, $data_alltogehter);
-			return $id?-$id:false;
+			return $id ? -$id : false;
 		}
 	}
 

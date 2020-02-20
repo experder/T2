@@ -175,10 +175,10 @@ class Start {
 			self::init_constants();
 		}
 		if (self::$type == self::TYPE_UNKNOWN) {
-			Error_::plain_abort_("Unknown type. T2 has not been initialized. \"Start::init\" should be the very first call.", 1);
+			Error::plain_abort_("Unknown type. T2 has not been initialized. \"Start::init\" should be the very first call.", 1);
 		}
 		if (self::$type != $type) {
-			Error_::plain_abort_("Wrong type: " . self::$type . ". Please call proper \"Start::init...\".", 1);
+			Error::plain_abort_("Wrong type: " . self::$type . ". Please call proper \"Start::init...\".", 1);
 		}
 	}
 

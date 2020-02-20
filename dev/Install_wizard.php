@@ -44,7 +44,7 @@ class Install_wizard {//TODO(3): Install wizard: Prompt all field in one form
 
 		$message = new Message(Message::TYPE_INFO, $html);
 
-		Page::abort("Server configuration - Installer", array($message), null, "PAGEID_CORE_INSTALLER_PROMPT_HTTPROOT");
+		Page::abort("Server configuration - Installer", array($message), "PAGEID_CORE_INSTALLER_PROMPT_HTTPROOT");
 		return false;
 	}
 
@@ -73,7 +73,7 @@ class Install_wizard {//TODO(3): Install wizard: Prompt all field in one form
 
 		$message = new Message(Message::TYPE_INFO, $html);
 
-		Page::abort("Basic configuration - Installer", array($message), null, "PAGEID_CORE_INSTALLER_PROMPT_DBPARAMS");
+		Page::abort("Basic configuration - Installer", array($message), "PAGEID_CORE_INSTALLER_PROMPT_DBPARAMS");
 	}
 
 	private static function prompt_coreUser() {
@@ -100,7 +100,7 @@ class Install_wizard {//TODO(3): Install wizard: Prompt all field in one form
 		if (false) {
 			Database::destroy();//This would ba a usecase for Database::destroy.
 		}
-		Page::abort("Root user - Installer", array($message), null, "PAGEID_CORE_INSTALLER_PROMPTROOTUSER");
+		Page::abort("Root user - Installer", array($message), "PAGEID_CORE_INSTALLER_PROMPTROOTUSER");
 	}
 
 	private static function init_config() {
