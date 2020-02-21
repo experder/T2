@@ -12,7 +12,6 @@ require_once '../../Start.php';
 require_once 'Ajaxdemo_controller.php';
 
 use t2\core\Html;
-use t2\core\service\Js;
 use t2\Start;
 
 $page = Start::init_("PAGEID_DEV_AJAXDEMO");
@@ -45,13 +44,11 @@ $page->add(Html::PRE_code_html("class Ajaxdemo_my extends Ajax {
 	}
 }", array("class" => "language-php")));
 
-
 /*
  * Examples
  */
 
 Ajaxdemo_controller::example_1($page);
 Ajaxdemo_controller::example_2($page);
-
 
 $page->send_and_quit();

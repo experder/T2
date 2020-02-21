@@ -69,6 +69,15 @@ class Config {
 		return self::get_value_core('HTTP_ROOT');
 	}
 
+	public static function cfg_skin_dir() {
+		$skin_dir = Config::get_value_core("SKIN");
+		if($skin_dir=='bare'){
+			$root = Config::get_value_core('HTTP_ROOT');
+			$skin_dir = "$root/skins/$skin_dir";
+		}
+		return $skin_dir;
+	}
+
 	/**
 	 * @deprecated
 	 */

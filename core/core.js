@@ -114,4 +114,12 @@ function t2_ajax_post(url, Funktion, data_object, err_detail, report){
 function t2_error(message){
 	let msg = $('<div>',{'class': 'message msg_type_error'}).html(message);
 	$('#t2_messages').append(msg);
+	t2_spinner_stop();
+	t2_scroll_to("#t2_messages");
+}
+
+function t2_scroll_to(selector, millis=400){
+	$('html, body').animate({
+		scrollTop:$(selector).offset().top
+	},millis);
 }

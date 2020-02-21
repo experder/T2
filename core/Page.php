@@ -287,9 +287,8 @@ class Page {
 	}
 
 	private function waitSpinner() {
-		$style = Config::get_value_core("SKIN");
-		$root = Config::get_value_core('HTTP_ROOT');
-		$waitSpinner="<div id=\"uploadSpinner\" style='display:none;'><div class=\"spinnerContent\"><img src=\"$root/skins/$style/img/spinner.gif\"><div>Bitte warten...</div></div></div>";
+		$skin_dir = Config::cfg_skin_dir();
+		$waitSpinner="<div id=\"uploadSpinner\" style='display:none;'><div class=\"spinnerContent\"><img src=\"$skin_dir/img/spinner.gif\"><div>Bitte warten...</div></div></div>";
 		return $waitSpinner;
 	}
 
@@ -349,9 +348,8 @@ class Page {
 		return new Stylesheet(Config::get_value_core('HTTP_ROOT') . "/skins/$style/print.css", Stylesheet::MEDIA_PRINT);
 	}
 	public static function get_stylesheet($css, $media="all") {
-		$style = Config::get_value_core("SKIN");
-		$root = Config::get_value_core('HTTP_ROOT');
-		return new Stylesheet("$root/skins/$style/$css", $media);
+		$skindir = Config::cfg_skin_dir();
+		return new Stylesheet("$skindir/$css", $media);
 	}
 
 	private function get_css_html() {

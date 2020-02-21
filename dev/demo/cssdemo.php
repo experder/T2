@@ -29,7 +29,7 @@ use t2\dev\Debug;
 use t2\core\service\Js;
 use t2\Start;
 
-$page = Start::init("PAGEID_DEV_CSSDEMO", "CSS demo");
+$page = Start::init_("PAGEID_DEV_CSSDEMO");
 
 if(!Config::$DEVMODE){
 	$page->add_message_error("Not available.");
@@ -86,7 +86,7 @@ $page->add(Html::PRE_console(schlauer_spruch()));
 $page->add(Html::H2("Markdown", "markdown"));
 $page->add($s=Markdown::string_to_string("
 ### \\#\\#\\# Header 3
-[Link](".Html::href_internal('index').")
+[Link](".Html::href_internal_root('index').")
 No new line
 `inline code` Linebreak:  
 __\\_\\_bold\\_\\___ _\\_italic\\__
@@ -104,7 +104,7 @@ Paragraph
  */
 
 $page->add(Html::H2("Links", "links")."\n");
-$page->add(Html::A('Index', Html::href_internal('index'))."\n");
+$page->add(Html::A('Index', Html::href_internal_root('index'))."\n");
 $page->add(Html::A_external('Html::A_external',"https://github.com/experder/T2/blob/99b7c6cfd9173b5150c840a3553ae5c03061ace9/service/Html.php#L82:L87")."\n");
 $page->add(Html::A_external('External, button','http://tethys-framework.de',array("class"=>"abutton"))."\n");
 $page->add(Html::A_button('Button, external','http://tethys-framework.de',array(),array("target"=>"_blank"))."\n");
@@ -186,7 +186,6 @@ $form->add_field(new Formfield_radio("radio", array(
 $form->add_button(Html::BUTTON("BUTTON","alert('". Strings::escape_value_html2(schlauer_spruch())."');"));
 
 $form->add_button(Html::BUTTON("Spin","t2_spinner_start();".Js::run_later("t2_spinner_stop();",3)));
-
 
 $page->send_and_quit();
 //==================================================================================================

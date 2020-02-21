@@ -14,7 +14,7 @@ use t2\core\Page;
 class Js {
 
 	public static function jquery_onload($content){
-		Page::get_singleton()->add_js_jquery341();
+		Includes::js_jquery341(Page::get_singleton());
 		return "$(function(){{$content}});";
 	}
 
@@ -29,7 +29,7 @@ class Js {
 		/*
 		 * TODO(2): AJAX: URL can get too long!
 		 */
-		return "t2_ajax_to_id('".Html::href_internal('core/ajax').$query."','$id',".($add?'true':'false').",".($function?"'$function'":'false').");";
+		return "t2_ajax_to_id('".Html::href_internal_root('core/ajax').$query."','$id',".($add?'true':'false').",".($function?"'$function'":'false').");";
 	}
 
 	public static function run_later($code,$delay_seconds,$repeat=false){
