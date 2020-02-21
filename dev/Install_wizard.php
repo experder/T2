@@ -64,6 +64,7 @@ class Install_wizard {//TODO(3): Install wizard: Prompt all field in one form
 
 		$form->add_field(new Formfield_header(Html::H1("Project settings")));
 		$form->add_field(new Formfield_text("project_root", "Project root directory", dirname(dirname(__DIR__))));
+		//TODO: Should ALWAYS be the redirect option. User should store the config in his repo. (except the password) (see config layer concept)
 		$form->add_field(new Formfield_radio("config_redirect",array(
 			new Formfield_radio_option("project", "Store config in project root"),
 			new Formfield_radio_option("t2", "Store config in submodule t2"),

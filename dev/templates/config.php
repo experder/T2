@@ -13,15 +13,8 @@
  * @see \t2\Start::init_config
  * TPLDOCEND*/
 
-//Set to TRUE in your development environment, FALSE (default) for production:
-#\t2\core\service\Config::$DEVMODE = true;    TODO: Prompt for devmode in installer
-#\t2\core\Html::setDevBeautify();
+//TODO: call config_server_exclude
 
-//Where to find your project:
-define('PROJECT_ROOT', ":project_root");
-
-//Initialize database connection:
-\t2\core\Database::init(':server_addr', ':tethysdb', ':username', ':dbpass');
 
 //Set your own navigation:
 #require_once '/var/www/myproject/MyNavigation.php';
@@ -30,3 +23,5 @@ define('PROJECT_ROOT', ":project_root");
 //Set your own header and footer:
 #require_once '/var/www/myproject/MyHeader.php';
 #\t2\core\Page::setHeader(new MyHeader());
+
+//TODO: Module configuration
