@@ -158,8 +158,8 @@ class Start {
 		self::$type = self::TYPE_HTML;
 		Start::init_config();
 		Start::init_database();
-		Start::init_navigation();
 		Start::init_userrights();
+		Start::init_navigation();
 		$page = Page::init2($PAGEID_);
 		return $page;
 	}

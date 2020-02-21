@@ -73,7 +73,9 @@ class Strings {
 		return str_replace(array_keys($substitutions), array_values($substitutions), $string);
 	}
 
-	//TODO(2): Better description?
+	/**
+	 * @deprecated TODO
+	 */
 	public static function escape_sql($string) {
 		$string = str_replace("\\", "\\\\", $string);
 		$string = str_replace("'", "\\'", $string);
@@ -82,6 +84,9 @@ class Strings {
 		return $string;
 	}
 
+	/**
+	 * @deprecated TODO
+	 */
 	public static function build_sql_collection($values) {
 		$sql_prepare = array();
 		foreach ($values as $val) {
@@ -89,6 +94,14 @@ class Strings {
 		}
 		$sql = implode(",", $sql_prepare);
 		return $sql;
+	}
+
+	public static function build_collection($values, $prefix = ':', $suffix = ':', $separator = ',') {
+		$resulting_strings = array();
+		foreach ($values as $string) {
+			$resulting_strings[] = $prefix . $string . $suffix;
+		}
+		return implode($separator, $resulting_strings);
 	}
 
 	/**

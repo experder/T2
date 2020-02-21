@@ -12,6 +12,7 @@ use t2\api\Navigation;
 use t2\api\Service;
 use t2\core\Html;
 use t2\core\service\Config;
+use t2\core\service\User;
 use t2\dev\Install_wizard;
 
 class Core_navigation {
@@ -55,10 +56,15 @@ class Core_navigation {
 	}
 
 	public static function navi_user() {
-		return new Navigation('NAVI_USER', "", Html::href_internal_root("index"), array(
-			new Navigation('CORE_USER_SETTINGS', "", Html::href_internal_root("index")),
+		$user_info = User::info();
+		$navigation = new Navigation('NAVI_USER', $user_info['display_name']?:"User", "", array(
+			new Navigation('PAGEID_CORE_USER_CFG', "Config", Html::href_internal_root("core/mod/user_config")),
 			new Navigation('CORE_USER_LOGOUT', "", Html::href_internal_root("index")),
 		));
+		if(!$user_info){
+			#$navigation->set_invisible();
+		}
+		return $navigation;
 	}
 
 	public static function navi_admin() {

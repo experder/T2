@@ -25,4 +25,12 @@ class Arrays {
 		return $default_value;
 	}
 
+	public static function prefix_values($prefix, $values, $suffix = '') {
+		$resulting = array();
+		foreach ($values as $val) {
+			$resulting[] = $prefix . $val . $suffix;
+		}
+		return $resulting;
+	}
+
 }
