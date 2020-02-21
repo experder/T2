@@ -126,8 +126,9 @@ nav{
 	border:3px double #195519;
 	background: #195519;
 	position:fixed;
+	top:0;
+	left:0;
 	height:30px;
-	margin-top:-36px;
 	width:100%;
 }
 body{

@@ -19,7 +19,6 @@ class Core_navigation {
 
 	public static function navi_default($id = null) {
 		$subnavis = array(
-			new Navigation("PAGEID_CORE_INDEX", "Start", Html::href_internal_root("index")),
 			self::navi_user(),
 			self::navi_admin(),
 		);

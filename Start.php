@@ -50,7 +50,7 @@ class Start {
 		$nav = self::getNavigation(false);
 		if(!$nav){
 			//Blank navigation:
-			$nav = new Navigation(null,null,null,array(new Navigation("PAGEID_CORE_INDEX","Start",Html::href_internal_root("index"))));
+			$nav = new Navigation(null,null,null);
 		}
 		return $nav->toHtml($id);
 	}

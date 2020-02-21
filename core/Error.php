@@ -97,7 +97,7 @@ class Error {
 
 	private function get_msg_body_($backtrace_depth=0, $htmlentities=true, $backtrace=true){
 		if(Config::$DEVMODE){
-			$intro = $this->warning ? 'Warning!' : 'An error occured: ';
+			$intro = $this->warning ? 'Warning! ' : 'An error occured: ';
 			$message_body = $intro . $this->get_ref() ."\n". $this->get_msg(true, $backtrace, $htmlentities, $backtrace_depth + 1);
 		}else if(User::id_(false)){
 			$message_body='An error occured. Please report this reference to your administrator: '.$this->get_ref();

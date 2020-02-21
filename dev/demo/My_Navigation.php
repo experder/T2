@@ -24,6 +24,7 @@ class My_Navigation extends Navigation {
 	public function getChildren() {
 		if($this->children===null){
 			$this->children=array(
+				new Navigation('PAGEID_DEV_BLANK',"Blank page",Html::href_internal_root("dev/demo/blank")),
 				new Navigation('PAGEID_DEV_AJAXDEMO',"Ajax demo",Html::href_internal_root("dev/demo/ajaxdemo")),
 				new Navigation('PAGEID_DEV_CSSDEMO',"CSS demo",Html::href_internal_root("dev/demo/cssdemo")),
 				new Navigation('PAGEID_DEV_PDFDEMO',"PDF demo",Html::href_internal_root("dev/demo/pdfdemo")),

@@ -14,7 +14,7 @@
  * TPLDOCEND*/
 
 //Set to TRUE in your development environment, FALSE (default) for production:
-#\t2\core\service\Config::$DEVMODE = true;
+#\t2\core\service\Config::$DEVMODE = true;    TODO: Prompt for devmode in installer
 #\t2\core\Html::setDevBeautify();
 
 //Where to find your project:

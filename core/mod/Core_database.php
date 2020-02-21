@@ -23,7 +23,6 @@ class Core_database extends Update_database {
 		$core_config = DB_CORE_PREFIX.'_config';
 		$core_user = DB_CORE_PREFIX.'_user';
 		$core_sessions = DB_CORE_PREFIX.'_sessions';
-		$core_toc = DB_CORE_PREFIX.'_toc';
 
 		/**
 		 * The table "core_config" is initialized in Install_wizard::init3_db_config().
@@ -53,17 +52,6 @@ class Core_database extends Update_database {
 
 		$this->q(4,"ALTER TABLE `$core_sessions`
 			  ADD CONSTRAINT `{$core_sessions}_ibfk_1` FOREIGN KEY (`user`) REFERENCES `$core_user` (`id`);");
-
-		$this->q(5,"CREATE TABLE IF NOT EXISTS `$core_toc` (
-			  `id` int(11) NOT NULL AUTO_INCREMENT,
-			  `module` varchar(40) NOT NULL,
-			  `idstring` varchar(40) NOT NULL,
-			  `title` varchar(200) NOT NULL,
-			  `hint` text,
-			  `file` text NOT NULL,
-			  `icon` text,
-			  PRIMARY KEY (`id`)
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
 
 		#$this->q(,"");
 

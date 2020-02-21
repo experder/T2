@@ -123,6 +123,9 @@ class Database {
 		return self::$singleton;
 	}
 
+	/**
+	 * @deprecated TODO: Use Database_Service instead.
+	 */
 	public static function select_($query, $substitutions = array(), $halt_on_error = true) {
 		return self::get_singleton()->select($query, $substitutions, 1, $halt_on_error);
 	}
@@ -136,10 +139,10 @@ class Database {
 	 * @param array  $substitutions
 	 * @param int    $backtrace_depth
 	 * @param bool   $halt_on_error
-	 * @return array|false
+	 * @return array|false Result of the SELECT query in form of an associative array
 	 */
 	public function select($query, $substitutions = array(), $backtrace_depth = 0, $halt_on_error = true) {
-		return self::iquery($query, $substitutions, self::RETURN_ASSOC, $backtrace_depth + 1, $halt_on_error);
+		return $this->iquery($query, $substitutions, self::RETURN_ASSOC, $backtrace_depth + 1, $halt_on_error);
 	}
 
 	/**
