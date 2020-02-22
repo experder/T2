@@ -10,10 +10,10 @@ Before merging `dev` to `master`:
 * Check for out commented and unused code
 * Check code format
 * Check language (translate german to english), comment code
-* Check if there's license note in each file
+* Check license notes
 * Paste remaining TODOs into this file
-* Update $core_queries (/dev/Debug.php:22) and $core_includes (/dev/Debug.php:31)
-* Is $DEVMODE (/core/service/Config.php:23) set to FALSE?
+* Update $core_queries (/dev/Debug.php:20) and $core_includes (/dev/Debug.php:29)
+* Is $DEVMODE (/core/service/Config.php:22) set to FALSE?
 * Write [release note](../release_notes.md)
 * Create tag
 
@@ -60,9 +60,6 @@ Current TODOs
 * The directory pointing to T2 is PROJECT SPECIFIC relative to this root\. See HDDPATH\_T2 in config\.php \(config\_server\_exclude\.php:31\)
 * extension, http\_root, platform \(config\_server\_exclude\.php:37\)
 
-### (Unknown)
-* dev\.css? \*/ \(dev\.css:1\)
-
 ### Medium
 * Move more functions here \(Database\_Service\.php:12\)
 * add css class: Check, if class already exists \(Html\.php:80\)
@@ -74,11 +71,11 @@ Current TODOs
 
 ### Low
 * Mark label if has tooltip \(Formfield\.php:94\)
-* Just for demonstration: \(Core\_navigation\.php:88\)
 * set table name with core prefix overriding getter\-method get\_table\_name \(D\_User\.php:15\)
 * Determine Default\_values for given module \(Config\.php:196\)
 * replace t2 specific path variablesFunction in class Config for that conversion \(Tools\.php:60\)
 * create new module: copy all api classes \(Tools\.php:67\)
+* dev\.css? \*/ \(dev\.css:1\)
 
 ### Deprecated
 * onclick zoom\-in als objekt \(core\.js:14\)

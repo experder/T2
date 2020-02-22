@@ -12,7 +12,7 @@ require_once '../Start.php';
 
 use t2\Start;
 
-$page = Start::init("PAGEID_ADMIN_NEWMOD", "New module");
+$page = Start::init_("PAGEID_ADMIN_NEWMOD");
 
 Tools::prompt_new_module($page);
 

@@ -13,7 +13,7 @@ require_once '../Start.php';
 use t2\core\service\Markdown;
 use t2\Start;
 
-$page = Start::init("PAGEID_CORE_DEV_NOTES", "Dev notes");
+$page = Start::init_("PAGEID_CORE_DEV_NOTES");
 
 $text = Markdown::file_to_string('notes.md');
 

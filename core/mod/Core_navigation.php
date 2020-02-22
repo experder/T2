@@ -66,14 +66,27 @@ class Core_navigation {
 		return $navigation;
 	}
 
-	public static function navi_admin() {
-		return new Navigation('NAVI_ADMIN', "Admin", "", array(
-			new Navigation('PAGEID_CORE_ADMIN', "", Html::href_internal_root("index")
-				/*TODO(3):Just for demonstration:*/, array(new Navigation('A', "", Html::href_internal_root("index"), array(new Navigation('A1', "", ""), new Navigation('A2', "", Html::href_internal_root("index")))), new Navigation('B', "", Html::href_internal_root("index")))
-			),
-			new Navigation('PAGEID_CORE_CONFIGGUI', "Config", Html::href_internal_root("core/mod/admin_config")),
-			new Navigation('PAGEID_CORE_UPDATER', "Updater", Html::href_internal_root("core/mod/admin_update")),
+	public static function navi_dev() {
+		$navigation = new Navigation('NAVI_DEV', "Dev", "", array(
+			new Navigation('PAGEID_ADMIN_NEWMOD', "New module", Html::href_internal_root("dev/new_module")),
+			new Navigation('PAGEID_CORE_DEV_NOTES', "Notes / TODOs", Html::href_internal_root("dev/notes")),
 		));
+		return $navigation;
+	}
+
+	public static function navi_admin() {
+		$navi = array();
+		if(Config::$DEVMODE){
+			$navi[] = self::navi_dev();
+		}
+//		$navi[] =
+//			new Navigation('PAGEID_CORE_ADMIN', "", Html::href_internal_root("index"), array(
+//				new Navigation('A', "", Html::href_internal_root("index"), array(new Navigation('A1', "", ""), new Navigation('A2', "", Html::href_internal_root("index")))), new Navigation('B', "", Html::href_internal_root("index"))
+//			));
+		$navi[] = new Navigation('PAGEID_CORE_CONFIGGUI', "Config", Html::href_internal_root("core/mod/admin_config"));
+		$navi[] = new Navigation('PAGEID_CORE_UPDATER', "Updater", Html::href_internal_root("core/mod/admin_update"));
+
+		return new Navigation('NAVI_ADMIN', "Admin", "", $navi);
 	}
 
 }
