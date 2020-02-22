@@ -15,31 +15,32 @@ class Autoloader {
 
 	private static $recursion_protection = true;
 
-	public static function register(){
+	public static function register() {
 		spl_autoload_register(function ($class_name) {
 
 			$ok = preg_match("/^t2\\\\(.*)/", $class_name, $matches);
-			if(!$ok){
-				Autoloader::not_found($class_name." (doesn't match ^t2\\)",null,2);
+			if (!$ok) {
+				Autoloader::not_found($class_name . " (doesn't match ^t2\\)", null, 2);
 			}
 			$name = $matches[1];
-			$file = ROOT_DIR . '/' . str_replace('\\','/',$name) . '.php';
-			if(!file_exists($file)){
-				Autoloader::not_found($class_name,$file,2);
-			}else{
+			$file = ROOT_DIR . '/' . str_replace('\\', '/', $name) . '.php';
+			if (!file_exists($file)) {
+				Autoloader::not_found($class_name, $file, 2);
+			} else {
 				/** @noinspection PhpIncludeInspection */
 				require_once $file;
 			}
 		});
 	}
 
-	private static function not_found($class, $file=null, $depth=0){
-		if(!self::$recursion_protection){
-			echo ":-(39";exit;
+	private static function not_found($class, $file = null, $depth = 0) {
+		if (!self::$recursion_protection) {
+			echo ":-(39";
+			exit;
 		}
 		self::$recursion_protection = false;
 		require_once ROOT_DIR . '/core/Error_.php';
-		new Error("AUTOLOADER","Can't load \"$class\"!",$file?"Was trying: \"$file\".":null,$depth+1);
+		new Error("AUTOLOADER", "Can't load \"$class\"!", $file ? "Was trying: \"$file\"." : null, $depth + 1);
 	}
 
 }

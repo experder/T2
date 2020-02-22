@@ -29,7 +29,7 @@ class Config {
 	public static function init_platform() {
 		if (($value = Config::recall_val(null, null, 'PLATFORM')) !== false) {
 			if (Config::$DEVMODE) {
-				new Error("PLATFORM_ERROR","PLATFORM already initialized!");
+				new Error("PLATFORM_ERROR", "PLATFORM already initialized!");
 			}
 			return $value;
 		}
@@ -74,7 +74,7 @@ class Config {
 	 * @deprecated
 	 */
 	public static function cfg_http_project() {
-		return self::get_value_core('HTTP_ROOT').'/'.Files::relative_path(ROOT_DIR, PROJECT_ROOT);//TODO(F):Feature: Wizard: Prompt HTTP_PROJECT
+		return self::get_value_core('HTTP_ROOT') . '/' . Files::relative_path(ROOT_DIR, PROJECT_ROOT);//TODO(F):Feature: Wizard: Prompt HTTP_PROJECT
 		#return self::get_value_core('HTTP_PROJECT');
 	}
 
@@ -84,7 +84,7 @@ class Config {
 			$modules_json = self::get_value('MODULES', null, null);
 			self::$cfg_modules = json_decode($modules_json, true);
 			if (self::$cfg_modules === null) {
-				new Error("MODULE_CFG_INVALID_JSON","Module configuration is invalid JSON.");
+				new Error("MODULE_CFG_INVALID_JSON", "Module configuration is invalid JSON.");
 			}
 		}
 		return self::$cfg_modules;
@@ -122,7 +122,7 @@ class Config {
 		if ($database === false) {
 			$data = false;
 		} else {
-			$core_config = DB_CORE_PREFIX.'_config';
+			$core_config = DB_CORE_PREFIX . '_config';
 			$data = $database->select_single(
 				"SELECT `content` FROM $core_config WHERE `idstring`=:id AND module<=>:module AND userid<=>:userid;",
 				array(
@@ -154,7 +154,7 @@ class Config {
 	public static function init_http_root($relative = false) {
 		if (($value = Config::recall_val(null, null, 'HTTP_ROOT')) !== false) {
 			if (Config::$DEVMODE) {
-				new Warning("HTTP_ROOT already initialized!","HTTP_ROOT already initialized!");
+				new Warning("HTTP_ROOT already initialized!", "HTTP_ROOT already initialized!");
 			}
 			return $value;
 		}
@@ -172,7 +172,7 @@ class Config {
 		//Prompt HTTP_ROOT:
 		$value = Install_wizard::prompt_http_root();
 		if ($value === false) {
-			new Error("SET_HTTP_ROOT","Could not set HTTP_ROOT.");
+			new Error("SET_HTTP_ROOT", "Could not set HTTP_ROOT.");
 		}
 		Config::set_value('HTTP_ROOT', $value);
 		Page::$compiler_messages[] = new Message(Message::TYPE_CONFIRM, "HTTP_ROOT set to: \"$value\"");
@@ -197,7 +197,7 @@ class Config {
 			if ($module === 'core') {
 				$hint = "Add here: core\\mod\\Core_values";
 			}
-			new Error("NO_DEFAULT_VALUE","No default value provided for: $module|$id", $hint, $backtrace_depth + 1);
+			new Error("NO_DEFAULT_VALUE", "No default value provided for: $module|$id", $hint, $backtrace_depth + 1);
 		}
 		return $value;
 	}
@@ -217,10 +217,10 @@ class Config {
 	}
 
 	/**
-	 * @param string $id
-	 * @param string $value
-	 * @param string|null $module
-	 * @param int|null $user
+	 * @param string        $id
+	 * @param string        $value
+	 * @param string|null   $module
+	 * @param int|null      $user
 	 * @param Database|null $database
 	 * @return int|false Number of modified rows or ID of the inserted data or false in case of any failure
 	 */
@@ -233,7 +233,7 @@ class Config {
 			"module" => $module,
 			"userid" => $user
 		);
-		$core_config = DB_CORE_PREFIX.'_config';
+		$core_config = DB_CORE_PREFIX . '_config';
 		$r = $database->update_or_insert($core_config, $where, array("content" => $value));
 //		if(Config::$DEVMODE){
 //			if ($r && $r>1){
@@ -266,11 +266,11 @@ class Config {
 		}
 		$ids_sql = implode(',', $ids_keys);
 
-		$substitutions['module']=$module;
-		$substitutions['userid']=$user;
+		$substitutions['module'] = $module;
+		$substitutions['userid'] = $user;
 
-		$core_config = DB_CORE_PREFIX.'_config';
-		self::$dev_lv_line = __LINE__ + 7;
+		$core_config = DB_CORE_PREFIX . '_config';
+		self::$dev_lv_line = __LINE__ + 3;
 		$data = Database_Service::select(
 			"SELECT idstring,`content` FROM $core_config WHERE `idstring` in ($ids_sql) AND module<=>:module AND userid <=> :userid;",
 			$substitutions, 0, false
@@ -295,7 +295,7 @@ class Config {
 			foreach ($data as $val) {
 				if (!$ignore_errors) {
 					if (isset($values[$val['idstring']])) {
-						new Error("CONFIG_DATABASE_CORRUPT2","Config database corrupt!", "Multiple entries found for \"" . $val['idstring'] . "\" (module " . ($module ?: 'core') . ").");
+						new Error("CONFIG_DATABASE_CORRUPT2", "Config database corrupt!", "Multiple entries found for \"" . $val['idstring'] . "\" (module " . ($module ?: 'core') . ").");
 					}
 					$values[$val['idstring']] = true;
 				}
@@ -332,7 +332,7 @@ class Config {
 	public static function get_modules_ids() {
 		$modules = Config::MODULES();
 		$module_ids = array();
-		foreach ($modules as $module_id=>$dummy){
+		foreach ($modules as $module_id => $dummy) {
 			$module_ids[] = $module_id;
 		}
 		return $module_ids;

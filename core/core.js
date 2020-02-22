@@ -75,7 +75,7 @@ window.addEventListener('keydown', function (event) {
 	}
 });
 
-function t2_ajax_post(url, Funktion, data_object, err_detail, report){
+function t2_ajax_post(url, Funktion, data_object, err_detail, report){//TODO(F): Reporting for client-side errors
 	$.ajax({
 		type: 'POST',
 		url: url,

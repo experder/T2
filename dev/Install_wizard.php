@@ -16,12 +16,12 @@ use t2\core\form\Formfield_password;
 use t2\core\form\Formfield_radio;
 use t2\core\form\Formfield_radio_option;
 use t2\core\form\Formfield_text;
+use t2\core\Html;
 use t2\core\Message;
 use t2\core\mod\Core_database;
 use t2\core\Page;
 use t2\core\service\Config;
 use t2\core\service\Files;
-use t2\core\Html;
 use t2\core\service\Request;
 use t2\core\service\Templates;
 
@@ -65,10 +65,10 @@ class Install_wizard {//TODO(F): Install wizard: Prompt all field in one form
 		$form->add_field(new Formfield_header(Html::H1("Project settings")));
 		$form->add_field(new Formfield_text("project_root", "Project root directory", dirname(dirname(__DIR__))));
 		//TODO(1): Should ALWAYS be the redirect option. User should store the config in his repo. (except the password) (see config layer concept)
-		$form->add_field(new Formfield_radio("config_redirect",array(
+		$form->add_field(new Formfield_radio("config_redirect", array(
 			new Formfield_radio_option("project", "Store config in project root"),
 			new Formfield_radio_option("t2", "Store config in submodule t2"),
-		),"", "project"));
+		), "", "project"));
 
 		$html = $form;
 
@@ -106,19 +106,19 @@ class Install_wizard {//TODO(F): Install wizard: Prompt all field in one form
 
 	private static function init_config() {
 		$target_file = ROOT_DIR . '/config.php';
-		$store_locally = Request::value('config_redirect')=='t2';
+		$store_locally = Request::value('config_redirect') == 't2';
 		$project_root = Request::value("project_root", false);
-		if($project_root===false){
-			new Error("NO_ROOT","No project root set/found.");
+		if ($project_root === false) {
+			new Error("NO_ROOT", "No project root set/found.");
 		}
 		//Windows:
-		$project_root = str_replace('\\','/',$project_root);
+		$project_root = str_replace('\\', '/', $project_root);
 		$message = "";
-		if(!$store_locally){
+		if (!$store_locally) {
 			Templates::create_file($target_file, ROOT_DIR . '/dev/templates/config_redirect.php', array(
 				":project_root" => $project_root,
 			));
-			$message.="<br>Redirection has been created: \"$target_file\".";
+			$message .= "<br>Redirection has been created: \"$target_file\".";
 			$target_file = $project_root . '/config.php';
 		}
 		$error = Templates::create_file($target_file, ROOT_DIR . '/dev/templates/config.php', array(
@@ -127,22 +127,22 @@ class Install_wizard {//TODO(F): Install wizard: Prompt all field in one form
 			":username" => Request::value("username", "(please specify)"),
 			":dbpass" => Request::value("dbpass", "(please specify)"),
 			":project_root" => $project_root,
-		),false,false);
-		if($error==Templates::ERROR_FILE_EXISTS){
-			$message = "Using existing config file \"$target_file\".".$message;
-		}else{
-			$message = "Config file \"$target_file\" has been created.".$message;
+		), false, false);
+		if ($error == Templates::ERROR_FILE_EXISTS) {
+			$message = "Using existing config file \"$target_file\"." . $message;
+		} else {
+			$message = "Config file \"$target_file\" has been created." . $message;
 		}
 		return new Message(Message::TYPE_CONFIRM, $message);
 	}
 
-	public static function api_ini_navi($mod_id, $path){
-		if(Config::$DEVMODE){
-			if(isset($_REQUEST['initialize_module_navi'])){
+	public static function api_ini_navi($mod_id, $path) {
+		if (Config::$DEVMODE) {
+			if (isset($_REQUEST['initialize_module_navi'])) {
 				$msg = Tools::create_new_module($mod_id, $mod_id, $path, array("My_Navigation.php"));
 				Page::$compiler_messages[] = $msg;
-			}else{
-				Page::$compiler_messages[] = new Message(Message::TYPE_ERROR,Html::DIV("No navigation set for module '$mod_id'! [<a href='?initialize_module_navi'>Create blank navigation</a>]","dev"));
+			} else {
+				Page::$compiler_messages[] = new Message(Message::TYPE_ERROR, Html::DIV("No navigation set for module '$mod_id'! [<a href='?initialize_module_navi'>Create blank navigation</a>]", "dev"));
 			}
 		}
 	}
@@ -167,27 +167,27 @@ class Install_wizard {//TODO(F): Install wizard: Prompt all field in one form
 		if ($platform_checked == Config::PLATFORM_WINDOWS) {
 			$target = PROJECT_ROOT . '/update.cmd';
 			Templates::create_file($target, ROOT_DIR . '/dev/templates/update.cmd', array(
-				":rel_root"=>Files::relative_path(PROJECT_ROOT, ROOT_DIR),
+				":rel_root" => Files::relative_path(PROJECT_ROOT, ROOT_DIR),
 			));
 			Page::$compiler_messages[] = new Message(Message::TYPE_CONFIRM, "Updater file \"$target\" created.");
 		} else if ($platform_checked == Config::PLATFORM_LINUX) {
 			$target = PROJECT_ROOT . '/update.sh';
 			Templates::create_file($target, ROOT_DIR . '/dev/templates/update.sh', array(
 				//Set Linux line endings:
-				"\r\n"=>"\n",
-				":rel_root"=>Files::relative_path(PROJECT_ROOT, ROOT_DIR),
+				"\r\n" => "\n",
+				":rel_root" => Files::relative_path(PROJECT_ROOT, ROOT_DIR),
 			));
 			Page::$compiler_messages[] = new Message(Message::TYPE_CONFIRM, "Updater file \"$target\" created.");
 
 			//Try to set rights:
 			$result = `chmod 777 "$target" 2>&1`;
 
-			if($result) {
-				Page::$compiler_messages[] = new Message(Message::TYPE_INFO, "Please set appropriate rights [<a href='".Config::get_value('HTTP_ROOT')."/help/install.md#linux' target='_blank'>HELP</a>]! $result");
+			if ($result) {
+				Page::$compiler_messages[] = new Message(Message::TYPE_INFO, "Please set appropriate rights [<a href='" . Config::get_value('HTTP_ROOT') . "/help/install.md#linux' target='_blank'>HELP</a>]! $result");
 			}
 		} else {
 			//Should not happen because $platform_checked should be checked already
-			new Error("Unknown_Platform","Unknown Platform.");
+			new Error("Unknown_Platform", "Unknown Platform.");
 		}
 	}
 
@@ -195,7 +195,7 @@ class Install_wizard {//TODO(F): Install wizard: Prompt all field in one form
 		$database = Database::get_singleton();
 		self::prompt_coreUser();
 
-		$core_config = DB_CORE_PREFIX.'_config';
+		$core_config = DB_CORE_PREFIX . '_config';
 		$database->get_pdo()->exec("CREATE TABLE IF NOT EXISTS `$core_config` (
 			  `id` INT(11) NOT NULL AUTO_INCREMENT,
 			  `idstring` VARCHAR(40) COLLATE utf8_bin NOT NULL,
@@ -210,7 +210,7 @@ class Install_wizard {//TODO(F): Install wizard: Prompt all field in one form
 
 		$root_user = Request::value('username', 'root');
 		$root_pass = Request::value('password', '');
-		$core_user = DB_CORE_PREFIX.'_user';
+		$core_user = DB_CORE_PREFIX . '_user';
 		$database->insert_assoc($core_user, array(
 			"username" => $root_user,
 			"pass_hash" => md5($root_pass),

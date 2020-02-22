@@ -6,9 +6,7 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-
 namespace t2\core;
-
 
 use t2\core\service\Config;
 use t2\core\service\Includes;
@@ -36,12 +34,12 @@ class Html {
 	 * @param mixed      $children
 	 * @param boolean    $void
 	 */
-	public function __construct($tag, $content, $params = null, $children=null, $void=false) {
+	public function __construct($tag, $content, $params = null, $children = null, $void = false) {
 		$this->tag = $tag;
 		$this->content = $content;
-		$this->void= $void;
+		$this->void = $void;
 		$this->addParams($params);
-		if($children!==null){
+		if ($children !== null) {
 			self::addChildren($children);
 		}
 	}
@@ -61,7 +59,7 @@ class Html {
 	 * @param array $childs
 	 */
 	public function addChildren($childs) {
-		if(!is_array($childs)){
+		if (!is_array($childs)) {
 			/** @noinspection PhpParamsInspection */
 			self::addChild($childs);
 			return;
@@ -72,19 +70,19 @@ class Html {
 	}
 
 	public function addClasses($classes) {
-		if(is_array($classes)){
-			foreach ($classes as $class){
+		if (is_array($classes)) {
+			foreach ($classes as $class) {
 				$this->addClass($class);
 			}
 		}
 	}
 
-	public function addClass($class) {//TODO(2): Check, if class already exists
+	public function addClass($class) {//TODO(2): add css class: Check, if class already exists
 		if ($class === null) {
 			return;
 		}
 		if (isset($this->params["class"])) {
-			$this->params["class"] .= ' '.$class;
+			$this->params["class"] .= ' ' . $class;
 		} else {
 			$this->params["class"] = $class;
 		}
@@ -121,24 +119,23 @@ class Html {
 	public function __toString() {
 		$params = self::tag_keyValues($this->params);
 		$html = "<" . $this->tag . $params;
-		if($this->void){
-			$html.=" />"
-				.$this->children_to_string();
-		}else{
-			$html.=">"
-				.$this->content . $this->children_to_string()
-				. "</$this->tag>"
-			;
+		if ($this->void) {
+			$html .= " />"
+				. $this->children_to_string();
+		} else {
+			$html .= ">"
+				. $this->content . $this->children_to_string()
+				. "</$this->tag>";
 		}
-		if(self::$dev_beautify){
-			$html.="\n";
+		if (self::$dev_beautify) {
+			$html .= "\n";
 		}
 		return $html;
 	}
 
 	private function children_to_string() {
-		if(self::$dev_beautify && $this->children){
-			return "\n\t".implode("\t", $this->children);
+		if (self::$dev_beautify && $this->children) {
+			return "\n\t" . implode("\t", $this->children);
 		}
 		return implode("", $this->children);
 	}
@@ -163,14 +160,14 @@ class Html {
 
 	public static function A($content, $href, $class = null, $params = array()) {
 		$params["href"] = $href;
-		if($class){
+		if ($class) {
 			$params["class"] = $class;
 		}
 		return new Html("a", $content, $params);
 	}
 
-	public static function DIV($content, $class = null, $params = array(), $children=null) {
-		if($class){
+	public static function DIV($content, $class = null, $params = array(), $children = null) {
+		if ($class) {
 			$params["class"] = $class;
 		}
 		return new Html("div", $content, $params, $children);
@@ -205,25 +202,26 @@ class Html {
 		return new Html("pre", $content, $params);
 	}
 
-	public static function PRE_code($content, $params = array(), $highlight=true) {
-		if($highlight){
+	public static function PRE_code($content, $params = array(), $highlight = true) {
+		if ($highlight) {
 			Includes::js_highlight9181();
 		}
 		$code = new Html("code", $content, $params);
 		return new Html("pre", null, null, $code);
 	}
-	public static function PRE_code_html($content, $params = array(), $highlight=true) {
+
+	public static function PRE_code_html($content, $params = array(), $highlight = true) {
 		$content = htmlentities($content);
 		return self::PRE_code($content, $params, $highlight);
 	}
 
-	public static function PRE_console($content, $id = null, $outer_id=null) {
+	public static function PRE_console($content, $id = null, $outer_id = null) {
 		$params = array("class" => "console_inner");
 		if ($id) {
 			$params["id"] = $id;
 		}
 		$outer_params = array();
-		if($outer_id){
+		if ($outer_id) {
 			$outer_params["id"] = $outer_id;
 		}
 		return self::PRE(new Html("div", $content, $params), array("console"), $outer_params);
@@ -275,6 +273,7 @@ class Html {
 	public static function href_internal($relative_page_without_extension) {
 		return self::href_internal_root($relative_page_without_extension);
 	}
+
 	public static function href_internal_root($relative_page_without_extension) {
 		return Config::get_value_core('HTTP_ROOT') . '/' . self::href_internal_relative($relative_page_without_extension);
 	}
@@ -287,7 +286,7 @@ class Html {
 	}
 
 	public static function href_internal_module($module, $relative_page_without_extension) {
-		//TODO:Determine current module
+		//TODO(2):Determine current module
 		$module_root = Config::get_value_core('MODULE_PATH');
 		$module_root = str_replace(":HTTP_ROOT", Config::get_value_core('HTTP_ROOT'), $module_root);
 		return $module_root . "/$module/" . self::href_internal_relative($relative_page_without_extension);

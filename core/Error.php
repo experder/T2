@@ -42,27 +42,27 @@ class Error {
 	 * @param int    $backtrace_depth
 	 * @param bool   $report
 	 */
-	public function __construct($ERROR_TYPE, $message=null, $debug_info=null, $backtrace_depth = 0, $report=true) {
+	public function __construct($ERROR_TYPE, $message = null, $debug_info = null, $backtrace_depth = 0, $report = true) {
 		$this->type = $ERROR_TYPE ?: "(Please enter error type)";
 		$this->message = $message;
 		$this->timestamp = time();
 		$this->debug_info = $debug_info;
 
 		if (!self::$recusion_protection) {
-			self::report_havarie($backtrace_depth+1);
+			self::report_havarie($backtrace_depth + 1);
 			exit;
 		}
 
 		self::$recusion_protection = false;
 
-		if($report){
-			$this->report($backtrace_depth+1);
+		if ($report) {
+			$this->report($backtrace_depth + 1);
 		}
 
 		self::$recusion_protection = true;
 	}
 
-	private function get_ref(){
+	private function get_ref() {
 		return ($this->type ? $this->type . '/' : '#') . $this->timestamp;
 	}
 
@@ -74,10 +74,10 @@ class Error {
 	}
 
 	public function isType($type) {
-		return $this->type==$type;
+		return $this->type == $type;
 	}
 
-	private function get_msg($debug_info=true, $backtrace=true, $htmlentities=false, $backtrace_depth=0){
+	private function get_msg($debug_info = true, $backtrace = true, $htmlentities = false, $backtrace_depth = 0) {
 		$msg = array();
 		if ($this->message) {
 			$msg[] = $this->message;
@@ -95,22 +95,22 @@ class Error {
 		return $msg;
 	}
 
-	private function get_msg_body_($backtrace_depth=0, $htmlentities=true, $backtrace=true){
-		if(Config::$DEVMODE){
+	private function get_msg_body_($backtrace_depth = 0, $htmlentities = true, $backtrace = true) {
+		if (Config::$DEVMODE) {
 			$intro = $this->warning ? 'Warning! ' : 'An error occured: ';
-			$message_body = $intro . $this->get_ref() ."\n". $this->get_msg(true, $backtrace, $htmlentities, $backtrace_depth + 1);
-		}else if(User::id_(false)){
-			$message_body='An error occured. Please report this reference to your administrator: '.$this->get_ref();
-		}else{
-			$message_body='This site is currently under maintenance. Please try again later.';
+			$message_body = $intro . $this->get_ref() . "\n" . $this->get_msg(true, $backtrace, $htmlentities, $backtrace_depth + 1);
+		} else if (User::id_(false)) {
+			$message_body = 'An error occured. Please report this reference to your administrator: ' . $this->get_ref();
+		} else {
+			$message_body = 'This site is currently under maintenance. Please try again later.';
 		}
 		return $message_body;
 	}
 
-	public function report($backtrace_depth = 0){
-		if(Start::is_type(Start::TYPE_AJAX)){
-			$msg = $this->get_msg_body_($backtrace_depth+1, false, true);
-			$type=$this->getType();
+	public function report($backtrace_depth = 0) {
+		if (Start::is_type(Start::TYPE_AJAX)) {
+			$msg = $this->get_msg_body_($backtrace_depth + 1, false, true);
+			$type = $this->getType();
 			new Ajax_response(Ajax_response::TYPE_ERROR, $msg, $type);
 			exit;
 		}
@@ -118,26 +118,25 @@ class Error {
 		//Write to errorlog-/warnings-file (TODO(F))
 		/** @noinspection PhpUnusedLocalVariableInspection */
 		$file_body = self::HR_outer
-			.self::meta_info_block()
-			.self::HR
-			.$this->get_msg(true, true, false, $backtrace_depth+1)
-			.self::HR_outer
-		;
+			. self::meta_info_block()
+			. self::HR
+			. $this->get_msg(true, true, false, $backtrace_depth + 1)
+			. self::HR_outer;
 		#Page::$compiler_messages[]=new Message(Message::TYPE_INFO, "<pre>".htmlentities($file_body)."</pre>");
 
-		$message_body = $this->get_msg_body_($backtrace_depth+1);
+		$message_body = $this->get_msg_body_($backtrace_depth + 1);
 
 		$msg = new Message(Message::TYPE_ERROR, $message_body);
 
-		if($this->warning){
+		if ($this->warning) {
 
-			if(Config::$DEVMODE){
+			if (Config::$DEVMODE) {
 
 				Page::$compiler_messages[] = $msg;
 
 			}
 
-		}else{
+		} else {
 
 			Page::$compiler_messages[] = $msg;
 
@@ -147,11 +146,12 @@ class Error {
 		}
 	}
 
-	private function report_havarie(/** @noinspection PhpUnusedParameterInspection */$backtrace_depth = 0){
+	private function report_havarie(/** @noinspection PhpUnusedParameterInspection */
+		$backtrace_depth = 0) {
 		echo "(AN ERROR OCCURED IN ERROR HANDLING)";
 		#echo "<br>".$this->get_msg_body_($backtrace_depth+1);
-		foreach (Page::$compiler_messages as $msg){
-			echo "<hr>".$msg->get_message();
+		foreach (Page::$compiler_messages as $msg) {
+			echo "<hr>" . $msg->get_message();
 		}
 		exit;
 	}
@@ -160,31 +160,31 @@ class Error {
 		$timestamp = date("Y-m-d H:i:s", $this->timestamp) . " [#" . $this->timestamp . "]";
 		$ip = (isset($_SERVER) && isset($_SERVER["REMOTE_ADDR"]) && $_SERVER["REMOTE_ADDR"] ? $_SERVER["REMOTE_ADDR"] : "(IP unknonwn)");
 		$request_string = self::get_request_string();
-		$url = $request_string?"\n".$request_string:"";
+		$url = $request_string ? "\n" . $request_string : "";
 		$user = self::user_info();
 		return $timestamp
 			. " - $user ($ip)"
-			. "\n".($this->type?:"ERROR")
+			. "\n" . ($this->type ?: "ERROR")
 			. $url;
 	}
 
-	private static function user_info(){
+	private static function user_info() {
 		$user = User::info();
-		if(!$user){
+		if (!$user) {
 			return "anonymous";
 		}
 		$name = $user['username'];
-		if($user['display_name']){
-			$name = $user['display_name']." ($name)";
+		if ($user['display_name']) {
+			$name = $user['display_name'] . " ($name)";
 		}
-		$id = '/'.$user['id'];
-		if($user['ref_id']){
-			$id=$user['ref_id'].$id;
+		$id = '/' . $user['id'];
+		if ($user['ref_id']) {
+			$id = $user['ref_id'] . $id;
 		}
-		return $name." [#$id]";
+		return $name . " [#$id]";
 	}
 
-	public static function get_request_string(){
+	public static function get_request_string() {
 		if (!isset($_SERVER)
 			|| !isset($_SERVER["REQUEST_SCHEME"])
 			|| !isset($_SERVER["HTTP_HOST"])
@@ -192,7 +192,7 @@ class Error {
 		) {
 			return false;
 		}
-		$string = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$_SERVER["REQUEST_URI"];
+		$string = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER["REQUEST_URI"];
 		return $string;
 	}
 
@@ -200,10 +200,10 @@ class Error {
 		return new Error($type, "[" . $e->getCode() . "] " . $e->getMessage(), null, 1, $report);
 	}
 
-	public static function plain_abort_($message, $backtrace_depth=0){
+	public static function plain_abort_($message, $backtrace_depth = 0) {
 		echo $message;
 		echo self::HR;
-		echo Debug::backtrace($backtrace_depth+1);
+		echo Debug::backtrace($backtrace_depth + 1);
 		exit;
 	}
 

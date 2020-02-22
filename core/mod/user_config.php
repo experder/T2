@@ -17,11 +17,11 @@ use t2\Start;
 $page = Start::init_("PAGEID_CORE_USER_CFG");
 
 $user = new D_User(array(
-	"id"=>rand(2,999),
-	"ref_id"=>"2",
-	"username"=>"a".rand(2,999),
-	"pass_hash"=>"b",
-	"display_name"=>"ö",
+	"id" => rand(2, 999),
+	"ref_id" => "2",
+	"username" => "a" . rand(2, 999),
+	"pass_hash" => "b",
+	"display_name" => "ö",
 ));
 
 $user->q_insert_all();

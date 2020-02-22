@@ -8,7 +8,6 @@
 
 namespace t2\core;
 
-
 class Message {
 
 	const TYPE_ERROR = 1;

@@ -12,7 +12,7 @@ use t2\core\DBTable;
 
 class D_User extends DBTable {
 
-	protected $_t2_table_name='mycore_user';//TODO(3): set table name with core prefix overriding getter-method get_table_name
+	protected $_t2_table_name = 'mycore_user';//TODO(3): set table name with core prefix overriding getter-method get_table_name
 
 	protected $id;
 	protected $ref_id;

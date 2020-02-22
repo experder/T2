@@ -2,7 +2,6 @@
 
 namespace t2\core;
 
-
 class Ajax_response {
 
 	const TYPE_JSON = 1;
@@ -23,10 +22,10 @@ class Ajax_response {
 	 * @param bool         $compile_and_send
 	 * @param string       $error_id
 	 */
-	public function __construct($type, $data, $error_id=null, $compile_and_send=true) {
+	public function __construct($type, $data, $error_id = null, $compile_and_send = true) {
 		$this->type = $type;
 
-		switch ($type){
+		switch ($type) {
 			case self::TYPE_JSON:
 				$this->ok = true;
 				$this->data = $data;
@@ -43,23 +42,23 @@ class Ajax_response {
 			default:
 				break;
 		}
-		if($compile_and_send){
+		if ($compile_and_send) {
 			$this->compile_and_send();
 		}
 	}
 
-	public function compile_and_send(){
+	public function compile_and_send() {
 		$response = array(
 			"ok" => $this->ok,
 		);
-		if($this->ok){
-			if($this->type==self::TYPE_JSON){
+		if ($this->ok) {
+			if ($this->type == self::TYPE_JSON) {
 				$response['json'] = $this->data;
 			}
-			if($this->type==self::TYPE_HTML){
+			if ($this->type == self::TYPE_HTML) {
 				$response['html'] = $this->html;
 			}
-		}else{
+		} else {
 			$response['error_id'] = $this->error_id;
 			$response['error_msg'] = $this->error_msg;
 		}

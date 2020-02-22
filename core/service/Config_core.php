@@ -12,7 +12,7 @@ class Config_core {
 //TODO(1): Class config_core with getters for every cfg-value
 	public static function skin_dir() {
 		$skin_dir = Config::get_value_core("SKIN");
-		if($skin_dir=='bare'){
+		if ($skin_dir == 'bare') {
 			$root = Config::get_value_core('HTTP_ROOT');
 			$skin_dir = "$root/skins/$skin_dir";
 		}

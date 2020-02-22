@@ -8,12 +8,11 @@
 
 namespace t2\core\table;
 
-
 use t2\core\Html;
 
 class Cell {
 
-	public $tag='td';
+	public $tag = 'td';
 	private $data;
 
 	/**

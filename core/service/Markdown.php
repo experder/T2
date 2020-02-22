@@ -6,11 +6,9 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-
 namespace t2\core\service;
 
 use t2\core\Html;
-
 
 class Markdown {
 

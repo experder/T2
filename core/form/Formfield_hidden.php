@@ -6,11 +6,9 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-
 namespace t2\core\form;
 
-
-use t2\core\Error_;
+use t2\core\Error;
 
 class Formfield_hidden extends Formfield {
 
@@ -24,7 +22,7 @@ class Formfield_hidden extends Formfield {
 
 	/** Not in use. */
 	protected function inner_html() {
-		new Error_("Should never be called");
+		new Error("NEVER_CALLED", "Should never be called");
 		return "NOT IN USE";
 	}
 }

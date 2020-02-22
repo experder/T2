@@ -13,7 +13,7 @@ use t2\core\Page;
 
 class Js {
 
-	public static function jquery_onload($content){
+	public static function jquery_onload($content) {
 		Includes::js_jquery341(Page::get_singleton());
 		return "$(function(){{$content}});";
 	}
@@ -21,55 +21,52 @@ class Js {
 	/**
 	 * @deprecated
 	 */
-	public static function ajax_to_id($module, $cmd, $keyVals, $id, $add=false, $function=null){
+	public static function ajax_to_id($module, $cmd, $keyVals, $id, $add = false, $function = null) {
 		Page::get_singleton()->add_js_core();
-		$keyVals["module"]=$module;
-		$keyVals["cmd"]=$cmd;
+		$keyVals["module"] = $module;
+		$keyVals["cmd"] = $cmd;
 		$query = Strings::build_query_string($keyVals);
-		/*
-		 * TODO(2): AJAX: URL can get too long!
-		 */
-		return "t2_ajax_to_id('".Html::href_internal_root('core/ajax').$query."','$id',".($add?'true':'false').",".($function?"'$function'":'false').");";
+		return "t2_ajax_to_id('" . Html::href_internal_root('core/ajax') . $query . "','$id'," . ($add ? 'true' : 'false') . "," . ($function ? "'$function'" : 'false') . ");";
 	}
 
-	public static function run_later($code,$delay_seconds,$repeat=false){
-		$delay=$delay_seconds*1000;
-		if ($repeat){
+	public static function run_later($code, $delay_seconds, $repeat = false) {
+		$delay = $delay_seconds * 1000;
+		if ($repeat) {
 			return "setInterval(function(){{$code}},$delay);";
-		}else{
+		} else {
 			return "setTimeout(function(){{$code}},$delay);";
 		}
 	}
 
-	public static function scroll_to_bottom($id, $animate=800){
+	public static function scroll_to_bottom($id, $animate = 800) {
 		return "$(\"#$id\").stop().animate({
 			scrollTop: $(\"#$id\")[0].scrollHeight
 		}, $animate);";
 	}
 
-	public static function ajax_post_to_id($module, $cmd, $id, $function="", $data=null, $add=false, $response_json_key=false, $report=true){
-		$return_obj = $response_json_key?"data.json.$response_json_key":"data.html";
-		if($add){
+	public static function ajax_post_to_id($module, $cmd, $id, $function = "", $data = null, $add = false, $response_json_key = false, $report = true) {
+		$return_obj = $response_json_key ? "data.json.$response_json_key" : "data.html";
+		if ($add) {
 			$return_obj = "$('#$id').html()+$return_obj";
 		}
-		$function = "$('#$id').html($return_obj);".$function;
+		$function = "$('#$id').html($return_obj);" . $function;
 		return self::ajax_post($module, $cmd, $data, $function, $report);
 	}
 
-	public static function ajax_post($module, $cmd, $data, $function, $report=true){
+	public static function ajax_post($module, $cmd, $data, $function, $report = true) {
 		Page::get_singleton()->add_js_core();
 
 		$url = Html::href_internal_root('core/ajax');
-		$url.="?t2_module=".$module;
-		$url.="&t2_cmd=".$cmd;
+		$url .= "?t2_module=" . $module;
+		$url .= "&t2_cmd=" . $cmd;
 
 		$Funk = "function( data ){ $function }";
 
-		if(!$data){
-			$data="{}";
+		if (!$data) {
+			$data = "{}";
 		}
 
-		return "t2_ajax_post('$url', $Funk, $data, ".(Config::$DEVMODE?'true':'false').", ".($report?'true':'false').");";
+		return "t2_ajax_post('$url', $Funk, $data, " . (Config::$DEVMODE ? 'true' : 'false') . ", " . ($report ? 'true' : 'false') . ");";
 	}
 
 }

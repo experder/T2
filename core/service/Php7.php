@@ -8,13 +8,12 @@
 
 namespace t2\core\service;
 
-
 class Php7 {
 
-	public static function random_bytes ( $length ){
+	public static function random_bytes($length) {
 		$string = "";
-		for ($i=0; $i<$length; $i++){
-			$string.=chr(rand(0, 255));
+		for ($i = 0; $i < $length; $i++) {
+			$string .= chr(rand(0, 255));
 		}
 		return $string;
 	}

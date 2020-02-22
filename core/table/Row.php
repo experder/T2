@@ -8,7 +8,6 @@
 
 namespace t2\core\table;
 
-
 use t2\core\Html;
 
 class Row {
@@ -22,7 +21,7 @@ class Row {
 	 * Row constructor.
 	 * @param array $cells
 	 */
-	public function __construct($cells=array()) {
+	public function __construct($cells = array()) {
 		$this->add_cells($cells);
 	}
 
@@ -33,8 +32,8 @@ class Row {
 		return $this->cells;
 	}
 
-	public function add_cell($id, $cell){
-		if($cell instanceof Cell){
+	public function add_cell($id, $cell) {
+		if ($cell instanceof Cell) {
 			$this->cells[$id] = $cell;
 			return true;
 		}
@@ -42,15 +41,15 @@ class Row {
 		return true;
 	}
 
-	public function add_cells($cells){
-		if(!$cells){
+	public function add_cells($cells) {
+		if (!$cells) {
 			return false;
 		}
-		if(is_array($cells)){
-			$ok=true;
-			foreach ($cells as $col => $cell){
-				if(!$this->add_cell($col, $cell)){
-					$ok=false;
+		if (is_array($cells)) {
+			$ok = true;
+			foreach ($cells as $col => $cell) {
+				if (!$this->add_cell($col, $cell)) {
+					$ok = false;
 				}
 			}
 			return $ok;
@@ -58,23 +57,23 @@ class Row {
 		return false;
 	}
 
-	public function toHtml($header=null) {
+	public function toHtml($header = null) {
 		$cells = array();
-		if($header){
-			foreach ($header as $col => $dummy){
-				if(isset($this->cells[$col])){
+		if ($header) {
+			foreach ($header as $col => $dummy) {
+				if (isset($this->cells[$col])) {
 					$cell = $this->cells[$col];
-				}else{
-					$cell = new Html('td',null);
+				} else {
+					$cell = new Html('td', null);
 				}
 				$cells[] = $cell;
 			}
-		}else{
-			foreach ($this->cells as $cell){
+		} else {
+			foreach ($this->cells as $cell) {
 				$cells[] = $cell;
 			}
 		}
-		$tr = new Html('tr',null,null,$cells);
+		$tr = new Html('tr', null, null, $cells);
 		return $tr;
 	}
 

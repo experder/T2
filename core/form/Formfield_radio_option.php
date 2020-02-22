@@ -6,7 +6,6 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-
 namespace t2\core\form;
 
 use t2\core\service\Config;
@@ -26,9 +25,9 @@ class Formfield_radio_option {
 		$this->title = $title;
 	}
 
-	public function to_form_html($name, $checked_val=null) {
-		$checked=($this->value==$checked_val?"checked":"");
-		$title = Config::$DEVMODE?" title='$this->value'":'';
+	public function to_form_html($name, $checked_val = null) {
+		$checked = ($this->value == $checked_val ? "checked" : "");
+		$title = Config::$DEVMODE ? " title='$this->value'" : '';
 		return "<label class='radiolabel' $title><div class='ff_radiooption'><input type='radio' $checked name='$name' value='$this->value'/>$this->title</div></label>";
 	}
 

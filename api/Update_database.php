@@ -39,7 +39,7 @@ abstract class Update_database {
 			$statement = $this->database->get_pdo()->query($query);
 			if ($statement === false) {
 				$errorInfo = $this->database->get_pdo()->errorInfo();
-				new Error("DB_UPDATE_FAILED","Database update #$ver failed!\n" . $errorInfo[2],null,1);
+				new Error("DB_UPDATE_FAILED", "Database update #$ver failed!\n" . $errorInfo[2], null, 1);
 			}
 			//Update:
 			Config::set_value("DB_VERSION", $ver, $this->module, null, $this->database);

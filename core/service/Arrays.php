@@ -10,15 +10,15 @@ namespace t2\core\service;
 
 class Arrays {
 
-	public static function remove_from_array_by_value($array, $key){
+	public static function remove_from_array_by_value($array, $key) {
 		if (($key = array_search($key, $array)) !== false) {
 			unset($array[$key]);
 		}
 		return $array;
 	}
 
-	public static function value_from_array($array, $key, $default_value=null){
-		if(isset($array[$key])){
+	public static function value_from_array($array, $key, $default_value = null) {
+		if (isset($array[$key])) {
 			return $array[$key];
 		}
 		return $default_value;
@@ -31,13 +31,5 @@ class Arrays {
 		}
 		return $resulting;
 	}
-
-//	public static function prefix_keys($prefix, $array, $suffix = '') {
-//		$resulting = array();
-//		foreach ($values as $val) {
-//
-//		}
-//		return $resulting;
-//	}
 
 }

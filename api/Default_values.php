@@ -8,9 +8,7 @@
 
 namespace t2\api;
 
-
 use t2\core\mod\Core_values;
-
 
 abstract class Default_values {
 
@@ -21,8 +19,8 @@ abstract class Default_values {
 	 */
 	private static $singleton_by_module = array();
 
-	public function get_default_value($key){
-		if(!isset($this->default_values[$key])){
+	public function get_default_value($key) {
+		if (!isset($this->default_values[$key])) {
 			return null;
 		}
 		return $this->default_values[$key];
@@ -30,13 +28,14 @@ abstract class Default_values {
 	}
 
 	/**
+	 * @param string $module
 	 * @return Default_values
 	 */
-	public static function get_singleton_by_module($module){
-		if(!isset(self::$singleton_by_module[$module])){
-			if($module=='core'){
-				self::$singleton_by_module[$module]=new Core_values();
-			}else{
+	public static function get_singleton_by_module($module) {
+		if (!isset(self::$singleton_by_module[$module])) {
+			if ($module == 'core') {
+				self::$singleton_by_module[$module] = new Core_values();
+			} else {
 				self::$singleton_by_module[$module] = Service::get_api_class($module, "Default_values");
 			}
 		}

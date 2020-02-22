@@ -16,7 +16,7 @@ class User {
 	private static $all_info = null;
 	public static $IS_ADMIN = false;
 
-	public static function init(){
+	public static function init() {
 		self::$all_info = Login::get_user();
 		self::$ID = self::$all_info['id'];
 	}
@@ -29,9 +29,9 @@ class User {
 	 * @param bool $halt_on_error
 	 * @return int|false
 	 */
-	public static function id_($halt_on_error=false){
-		if (self::$ID===false){
-			if($halt_on_error){
+	public static function id_($halt_on_error = false) {
+		if (self::$ID === false) {
+			if ($halt_on_error) {
 				new Error("ERROR_USER_INIT", "Please init User first", "( \\service\\User::init() )", 1);
 			}
 			return false;
@@ -42,7 +42,7 @@ class User {
 	/**
 	 * @return array|null
 	 */
-	public static function info(){
+	public static function info() {
 		return self::$all_info;
 	}
 

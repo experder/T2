@@ -25,20 +25,20 @@ use t2\Start;
 
 class Admin {
 
-	public static function update_includes(){
-		$page = new Page("","");
+	public static function update_includes() {
+		$page = new Page("", "");
 
 		Includes::load_all_available($page);
 
 		$result = $page->get_messages_plain();
-		if(!$result){
-			$result="Already up to date.\n";
+		if (!$result) {
+			$result = "Already up to date.\n";
 		}
 		$result = "\n========= Download Includes =========\n$result";
 		return $result;
 	}
 
-	public static function get_update_script_name(){
+	public static function get_update_script_name() {
 		$shellname = "?";
 		$platform = Config::get_check_platform();
 		if ($platform == Config::PLATFORM_WINDOWS) {
@@ -47,12 +47,12 @@ class Admin {
 			$shellname = 'update.sh';
 		} else {
 			//Should not happen because $platform should be checked already
-			new Error("Unknown_platform","Unknown platform.");
+			new Error("Unknown_platform", "Unknown platform.");
 		}
 		return $shellname;
 	}
 
-	public static function update_shell(){
+	public static function update_shell() {
 
 		$platform = Config::get_check_platform();
 		$project_root = PROJECT_ROOT;
@@ -74,45 +74,45 @@ class Admin {
 
 		} else {
 			//Should not happen because $platform should be checked already
-			new Error("Unknown_platform","Unknown platform.");
-			$result="";
+			new Error("Unknown_platform", "Unknown platform.");
+			$result = "";
 		}
 
-		$result = "\n".htmlentities($result);
+		$result = "\n" . htmlentities($result);
 
 		return $result;
 	}
 
-	public static function update_dbase(){
+	public static function update_dbase() {
 
 		$results = array();
 
 		$updater = new Core_database();
-		if(($ver=$updater->update())!==false){
-			$results[]="core: ".$ver;
+		if (($ver = $updater->update()) !== false) {
+			$results[] = "core: " . $ver;
 		}
 
 		$modules = Config::get_modules_ids();
 
-		foreach ($modules as $module){
+		foreach ($modules as $module) {
 			$update = Service::get_api_class($module, "Update_database", $error, $return);
-			if(!($update instanceof Update_database)){
-				if($error==Service::API_ERROR_FILE_NOT_FOUND){
-					if(Config::$DEVMODE){
-						$results[]="NOTE! $module has no updater!";
+			if (!($update instanceof Update_database)) {
+				if ($error == Service::API_ERROR_FILE_NOT_FOUND) {
+					if (Config::$DEVMODE) {
+						$results[] = "NOTE! $module has no updater!";
 					}
-				}else{
+				} else {
 					new Error("API_ERROR_INT", "Unknown error in internal api.");
 				}
-			}else{
-				if(($ver=$update->update())!==false){
-					$results[]=$module.': '.$ver;
+			} else {
+				if (($ver = $update->update()) !== false) {
+					$results[] = $module . ': ' . $ver;
 				}
 			}
 		}
 
 		$result = "\n========= Update_database =========\n";
-		$result .= $results?implode("\n",$results): "All up to date.";
+		$result .= $results ? implode("\n", $results) : "All up to date.";
 		$result .= "\n";
 
 		return $result;
@@ -121,38 +121,38 @@ class Admin {
 
 	private static function save_config() {
 		$updated = array();
-		foreach ($_POST as $key=>$value){
+		foreach ($_POST as $key => $value) {
 			$ok = self::save_config_value($key, $value);
-			if($ok){
+			if ($ok) {
 				$updated[] = $key;
 			}
 		}
-		if($updated){
-			Page::$compiler_messages[] = new Message(Message::TYPE_CONFIRM, "Updated: ".implode(", ",$updated));
-		}else{
+		if ($updated) {
+			Page::$compiler_messages[] = new Message(Message::TYPE_CONFIRM, "Updated: " . implode(", ", $updated));
+		} else {
 			Page::$compiler_messages[] = new Message(Message::TYPE_INFO, "(Nothing updated)");
 		}
 	}
 
-	private static function cleanup_key($key, $maxlen=0, $chars_regex='0-9a-z_') {
-		if($maxlen!==0){
+	private static function cleanup_key($key, $maxlen = 0, $chars_regex = '0-9a-z_') {
+		if ($maxlen !== 0) {
 			$key = mb_substr($key, 0, $maxlen);
 		}
 		$key = preg_replace("/[^$chars_regex]/i", "", $key);
 		return $key;
 	}
 
-	private static function save_config_value($key, $value, $module=null) {
-		if(!$key){
+	private static function save_config_value($key, $value, $module = null) {
+		if (!$key) {
 			new Error("!", "!");
 			return false;
 		}
 		$key_clean = self::cleanup_key($key, 99, '0-9a-z_');
-		if(!$key_clean){
+		if (!$key_clean) {
 			new Error("!", "!");
 			return false;
 		}
-		if($key_clean!==$key){
+		if ($key_clean !== $key) {
 			new Error("INVALID_KEY", "Invalid key!", "'$key' (=> '$key_clean' )");
 			return false;
 		}
@@ -162,7 +162,7 @@ class Admin {
 
 	public static function get_config_form() {
 
-		if(Request::cmd('t2_update_cfg')){
+		if (Request::cmd('t2_update_cfg')) {
 			unset($_POST['cmd']);
 			self::save_config();
 		}
@@ -176,19 +176,19 @@ class Admin {
 
 		//TODO(1): It's all deprecated/going to config FILES. Database shall only store db-specific configuration
 		$form->add_field(new Formfield_header("<h2>Admin stuff</h2>"));
-		$form->add_field(new Formfield_text('PROJECT_TITLE',null,Config::get_value('PROJECT_TITLE')));
-		$form->add_field(new Formfield_text('SKIN',null,Config::get_value('SKIN')));
-		$form->add_field(new Formfield_textarea('MODULES',null,Config::get_value('MODULES')));
-		$form->add_field(new Formfield_textarea('LOGIN_HTML',null,Config::get_value('LOGIN_HTML')));
-		$form->add_field(new Formfield_text('SESSION_EXPIRES',null,Config::get_value('SESSION_EXPIRES')));
+		$form->add_field(new Formfield_text('PROJECT_TITLE', null, Config::get_value('PROJECT_TITLE')));
+		$form->add_field(new Formfield_text('SKIN', null, Config::get_value('SKIN')));
+		$form->add_field(new Formfield_textarea('MODULES', null, Config::get_value('MODULES')));
+		$form->add_field(new Formfield_textarea('LOGIN_HTML', null, Config::get_value('LOGIN_HTML')));
+		$form->add_field(new Formfield_text('SESSION_EXPIRES', null, Config::get_value('SESSION_EXPIRES')));
 
 		$form->add_field(new Formfield_header("<h2>Developer stuff</h2>"));
-		$form->add_field(new Formfield_text('EXTENSION',null,Config::get_value('EXTENSION')));
-		$form->add_field(new Formfield_text('HTTP_ROOT',null,Config::get_value('HTTP_ROOT')));
-		$form->add_field(new Formfield_text('PLATFORM',null,Config::get_value('PLATFORM')));
-		$form->add_field(new Formfield_text('MODULE_ROOT',null,Config::get_value('MODULE_ROOT')));
-		$form->add_field(new Formfield_text('MODULE_PATH',null,Config::get_value('MODULE_PATH')));
-		$form->add_field(new Formfield_text('DEFAULT_API_DIR',null,Config::get_value('DEFAULT_API_DIR')));
+		$form->add_field(new Formfield_text('EXTENSION', null, Config::get_value('EXTENSION')));
+		$form->add_field(new Formfield_text('HTTP_ROOT', null, Config::get_value('HTTP_ROOT')));
+		$form->add_field(new Formfield_text('PLATFORM', null, Config::get_value('PLATFORM')));
+		$form->add_field(new Formfield_text('MODULE_ROOT', null, Config::get_value('MODULE_ROOT')));
+		$form->add_field(new Formfield_text('MODULE_PATH', null, Config::get_value('MODULE_PATH')));
+		$form->add_field(new Formfield_text('DEFAULT_API_DIR', null, Config::get_value('DEFAULT_API_DIR')));
 
 		return $form;
 	}

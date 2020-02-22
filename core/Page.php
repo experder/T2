@@ -245,8 +245,8 @@ class Page {
 		$title = $this->get_title();
 		$css_html = $this->get_css_html();
 		$navigation = Start::getNavigation_html($this->id);
-		$header = self::$header?self::$header->get_header($this):"";
-		$footer = self::$header?self::$header->get_footer($this):"";
+		$header = self::$header ? self::$header->get_header($this) : "";
+		$footer = self::$header ? self::$header->get_footer($this) : "";
 
 		if (Config::$DEVMODE) {
 			$this->add_js_core();
@@ -254,7 +254,7 @@ class Page {
 
 		$js_html = $this->get_js_html();
 
-		$css_internal = $this->internal_css?"\t<style>$this->internal_css</style>\n":"";
+		$css_internal = $this->internal_css ? "\t<style>$this->internal_css</style>\n" : "";
 
 		$messages = $this->get_message_html();
 
@@ -288,7 +288,7 @@ class Page {
 
 	private function waitSpinner() {
 		$skin_dir = Config_core::skin_dir();
-		$waitSpinner="<div id=\"uploadSpinner\" style='display:none;'><div class=\"spinnerContent\"><img src=\"$skin_dir/img/spinner.gif\"><div>Bitte warten...</div></div></div>";
+		$waitSpinner = "<div id=\"uploadSpinner\" style='display:none;'><div class=\"spinnerContent\"><img src=\"$skin_dir/img/spinner.gif\"><div>Bitte warten...</div></div></div>";
 		return $waitSpinner;
 	}
 
@@ -319,7 +319,7 @@ class Page {
 		 * Inline script
 		 */
 		if ($this->inline_js) {
-			$html .= "\t<script language='JavaScript'>\n".$this->inline_js."\t</script>\n";
+			$html .= "\t<script language='JavaScript'>\n" . $this->inline_js . "\t</script>\n";
 		}
 
 		return $html;
@@ -329,10 +329,10 @@ class Page {
 		$this->stylesheets[$id] = $stylesheet;
 	}
 
-	public function add_javascript($id, $url, $css=false) {
-		if($css){
+	public function add_javascript($id, $url, $css = false) {
+		if ($css) {
 			self::add_stylesheet($id, new Stylesheet($url));
-		}else{
+		} else {
 			$this->javascripts[$id] = $url;
 		}
 	}
@@ -340,6 +340,7 @@ class Page {
 	public function is_js_set($id) {
 		return isset($this->javascripts[$id]);
 	}
+
 	public function is_css_set($id) {
 		return isset($this->stylesheets[$id]);
 	}
@@ -347,7 +348,8 @@ class Page {
 	public static function get_demoskins_stylesheet_print($style) {
 		return new Stylesheet(Config::get_value_core('HTTP_ROOT') . "/skins/$style/print.css", Stylesheet::MEDIA_PRINT);
 	}
-	public static function get_stylesheet($css, $media="all") {
+
+	public static function get_stylesheet($css, $media = "all") {
 		$skindir = Config_core::skin_dir();
 		return new Stylesheet("$skindir/$css", $media);
 	}
@@ -359,7 +361,7 @@ class Page {
 			$stylesheets["CSS_ID_ALL"] = new Stylesheet(Config::get_value_core('HTTP_ROOT') . "/skins/$style/all.css");
 			#$stylesheets["CSS_ID_DEV"] = new Stylesheet(Config::get_value_core('HTTP_ROOT') . "/skins/$style/dev.css");
 			$stylesheets["CSS_ID_PRINT"] = self::get_demoskins_stylesheet_print($style);
-		}else{
+		} else {
 			$stylesheets["CSS_ID_ALL"] = new Stylesheet("$style/all.css");
 		}
 		foreach ($this->stylesheets as $key => $stylesheet) {
@@ -368,7 +370,7 @@ class Page {
 		$html = "";
 		foreach ($stylesheets as $stylesheet) {
 			$url = $stylesheet->get_url();
-			if($url){
+			if ($url) {
 				$html .= "\t<link href=\"" . $url . "\" rel=\"stylesheet\" type=\"text/css\" media=\"" . $stylesheet->get_media() . "\"/>\n";;
 			}
 		}
@@ -386,7 +388,7 @@ class Page {
 			$html .= "\n\t<div class='message $css_class'>" . $message->get_message() . "</div>";
 		}
 		if ($html) {
-			$html.= "\n";
+			$html .= "\n";
 		}
 		$html = "<div class='messages noprint' id='t2_messages'>$html</div>\n";
 		return $html;
@@ -425,7 +427,7 @@ class Page {
 		}
 		self::$recusion_protection_abort = false;
 
-		if(Start::is_type(Start::TYPE_AJAX)){
+		if (Start::is_type(Start::TYPE_AJAX)) {
 			new Error("AJAX_ABORT", "Can't abort when ajaxing!", null, 1);
 		}
 
@@ -436,8 +438,8 @@ class Page {
 		}
 
 		//Can be removed if all messages are moved to static array:
-		if($page = Page::get_singleton(false)){
-			foreach ($page->messages as $message){
+		if ($page = Page::get_singleton(false)) {
+			foreach ($page->messages as $message) {
 				Page::$compiler_messages[] = $message;
 			}
 		}
@@ -462,16 +464,16 @@ class Page {
 		#self::$recusion_protection = true;
 	}
 
-	public function get_messages_plain(){
+	public function get_messages_plain() {
 		$text = "";
-		foreach (self::$compiler_messages as $msg){
+		foreach (self::$compiler_messages as $msg) {
 			$char = '?';
 			$type = $msg->getType();
-			if($type==Message::TYPE_ERROR){
+			if ($type == Message::TYPE_ERROR) {
 				$char = 'X';
-			}else if($type==Message::TYPE_INFO){
+			} else if ($type == Message::TYPE_INFO) {
 				$char = '#';
-			}else if($type==Message::TYPE_CONFIRM){
+			} else if ($type == Message::TYPE_CONFIRM) {
 				$char = '=';
 			}
 			$line = str_repeat($char, 40);

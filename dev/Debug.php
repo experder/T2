@@ -31,6 +31,7 @@ class Debug {
 		":ROOT_DIR/core/service/Autoloader.php",
 		":ROOT_DIR/config.php",
 		":ROOT_DIR/core/Database.php",
+		":ROOT_DIR/core/Database_Service.php",
 		":ROOT_DIR/core/service/Config.php",
 		":ROOT_DIR/core/service/Strings.php",
 		":ROOT_DIR/core/service/User.php",
@@ -63,7 +64,7 @@ class Debug {
 	 * @param mixed       $val
 	 * @param string|null $header
 	 */
-	public static function out($val = null, $header=null) {
+	public static function out($val = null, $header = null) {
 
 		if ($val !== null) {
 			$val = print_r($val, 1);
@@ -75,14 +76,14 @@ class Debug {
 		$caller = self::backtrace(1, "", false);
 		$caller = str_replace('\\', '/', $caller);//(Windows)
 		$header0 = $header;
-		if($header===null){
+		if ($header === null) {
 			$header0 = substr($caller, strrpos($caller, '/') + 1);//(Last part)
 		}
 		$header = $header0;
 
 		$counter = 2;
 		while (isset(self::$outputs[$header])) {
-			$header = $header0.'/'.($counter++);
+			$header = $header0 . '/' . ($counter++);
 		}
 		self::$outputs[$header] = $val;
 
@@ -128,7 +129,7 @@ class Debug {
 
 			//Config redirection:
 			global $t2_config_file;
-			if(isset($t2_config_file)){
+			if (isset($t2_config_file)) {
 				self::$core_includes_compiled[] = $t2_config_file;
 			}
 

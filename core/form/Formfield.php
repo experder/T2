@@ -6,15 +6,12 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-
 namespace t2\core\form;
 
 use t2\core\Html;
 use t2\core\service\Config;
 use t2\core\service\Request;
 use t2\core\service\Strings;
-
-
 
 /**
  * Class Formfield
@@ -75,12 +72,12 @@ abstract class Formfield {
 
 	protected function toHtml() {
 		return "<div" . $this->getParams_outer() . ">"
-			. "<label".$this->get_title().">".$this->get_label()."</label>"
+			. "<label" . $this->get_title() . ">" . $this->get_label() . "</label>"
 			. $this->inner_html()
 			. "</div>";
 	}
 
-	protected function get_title(){
+	protected function get_title() {
 		$tooltip = $this->tooltip;
 
 		//Developers see the fieldname
@@ -90,10 +87,10 @@ abstract class Formfield {
 		return $title;
 	}
 
-	protected function get_label(){
+	protected function get_label() {
 		$label = $this->title;
 		//Tooltip? Change label
-		if ($this->tooltip){
+		if ($this->tooltip) {
 			$label .= " (!)";//TODO(3): Mark label if has tooltip
 		}
 		return $label;
@@ -106,7 +103,7 @@ abstract class Formfield {
 	 * @param bool $name If set to FALSE, the parameter "name" is skipped.
 	 * @return string String to insert into the HTML code.
 	 */
-	protected function getParams_inner($value = true, $name=true) {
+	protected function getParams_inner($value = true, $name = true) {
 		$params = $this->more_params;
 
 		if ($name && $this->name) {
@@ -130,7 +127,7 @@ abstract class Formfield {
 		$params = $this->outer_more_params;
 
 		if ($this->outer_id) $params["id"] = $this->outer_id;
-		$params["class"] = "form_field ff_".$this->name. ($this->outer_class ? " " . $this->outer_class : "");
+		$params["class"] = "form_field ff_" . $this->name . ($this->outer_class ? " " . $this->outer_class : "");
 
 		return Html::tag_keyValues($params);
 	}

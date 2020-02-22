@@ -21,7 +21,7 @@ class Stylesheet {
 	 * @param string $url
 	 * @see https://www.w3schools.com/tags/att_link_media.asp
 	 */
-	public function __construct($url, $media="all") {
+	public function __construct($url, $media = "all") {
 		$this->media = $media;
 		$this->url = $url;
 	}

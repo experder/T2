@@ -12,7 +12,7 @@ class Database_Service {
 	//TODO(2):Move more functions here
 
 	public static function select($query, $substitutions = array(), $backtrace_depth = 0, $halt_on_error = true) {
-		return Database::get_singleton()->select($query, $substitutions, $backtrace_depth+1, $halt_on_error);
+		return Database::get_singleton()->select($query, $substitutions, $backtrace_depth + 1, $halt_on_error);
 	}
 
 }

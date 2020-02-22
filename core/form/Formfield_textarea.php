@@ -6,13 +6,12 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-
 namespace t2\core\form;
 
 class Formfield_textarea extends Formfield {
 
 	public function inner_html() {
-		return "<textarea " . $this->getParams_inner(false) . " >".$this->value."</textarea>";
+		return "<textarea " . $this->getParams_inner(false) . " >" . $this->value . "</textarea>";
 	}
 
 }

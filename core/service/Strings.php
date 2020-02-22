@@ -6,10 +6,7 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-
-
 namespace t2\core\service;
-
 
 class Strings {
 
@@ -110,7 +107,7 @@ class Strings {
 	 * @return string
 	 */
 	public static function format_memory($bytes) {
-		$string = self::magnitude($bytes, array(' Byte',' kB',' MB',' GB',' TB',' PB',' EB'));
+		$string = self::magnitude($bytes, array(' Byte', ' kB', ' MB', ' GB', ' TB', ' PB', ' EB'));
 		#$string = $bytes." &rarr; ".$string;
 		return $string;
 	}
@@ -120,25 +117,25 @@ class Strings {
 	 * @return string
 	 */
 	public static function format_memory_binary($bytes) {
-		$string = self::magnitude($bytes, array(' Byte',' KB',' MiB',' GiB',' TiB',' PiB',' EiB'), 1024);
+		$string = self::magnitude($bytes, array(' Byte', ' KB', ' MiB', ' GiB', ' TiB', ' PiB', ' EiB'), 1024);
 		#$string = $bytes." &rarr; ".$string;
 		return $string;
 	}
 
-	private static function magnitude($number, $units, $steps=1000, $precision=2, $cycles=0) {
-		$quotient = $number/$steps;
-		if($quotient<1){
-			return round($number, $precision).(isset($units[$cycles])?$units[$cycles]:"*$steps^$cycles".$units[0]);
+	private static function magnitude($number, $units, $steps = 1000, $precision = 2, $cycles = 0) {
+		$quotient = $number / $steps;
+		if ($quotient < 1) {
+			return round($number, $precision) . (isset($units[$cycles]) ? $units[$cycles] : "*$steps^$cycles" . $units[0]);
 		}
-		return self::magnitude($quotient, $units, $steps, $precision, $cycles+1);
+		return self::magnitude($quotient, $units, $steps, $precision, $cycles + 1);
 	}
 
-	public static function build_query_string($keyVals){
-		$pairs=array();
-		foreach ($keyVals as $key=>$value) {
+	public static function build_query_string($keyVals) {
+		$pairs = array();
+		foreach ($keyVals as $key => $value) {
 			$pairs[] = urlencode($key) . '=' . urlencode($value);
 		}
-		return "?".implode("&", $pairs);
+		return "?" . implode("&", $pairs);
 	}
 
 }

@@ -54,8 +54,8 @@ class Navigation {
 		$this->addChildren($children);
 	}
 
-	public function set_invisible(){
-		$this->visible=false;
+	public function set_invisible() {
+		$this->visible = false;
 	}
 
 	/**
@@ -69,23 +69,23 @@ class Navigation {
 	 * @param Navigation[] $children
 	 */
 	public function addChildren($children) {
-		if(!$children){
+		if (!$children) {
 			return;
 		}
-		foreach ($children as $navi){
+		foreach ($children as $navi) {
 			$navi->parent = $this;
 			$this->children[] = $navi;
 		}
 	}
 
-	public function do_highlight($highlight_id){
-		if($this->id===$highlight_id){
-			$this->highlight=true;
+	public function do_highlight($highlight_id) {
+		if ($this->id === $highlight_id) {
+			$this->highlight = true;
 		}
 		$children = $this->getChildren();
-		if($children){
-			foreach ($children as $child){
-				$this->highlight = $child->do_highlight($highlight_id)||$this->highlight;
+		if ($children) {
+			foreach ($children as $child) {
+				$this->highlight = $child->do_highlight($highlight_id) || $this->highlight;
 			}
 		}
 		return $this->highlight;
@@ -98,35 +98,35 @@ class Navigation {
 		return $this->id;
 	}
 
-	public function toHtml($highlight_id=null){
-		if($highlight_id){
+	public function toHtml($highlight_id = null) {
+		if ($highlight_id) {
 			$this->do_highlight($highlight_id);
 		}
-		if(!$this->visible){
+		if (!$this->visible) {
 			return "";
 		}
-		if($this->id){
+		if ($this->id) {
 			$classes = array();
-			if($this->highlight){
+			if ($this->highlight) {
 				$classes[] = "high";
 			}
-			if(!$this->link){
+			if (!$this->link) {
 				$classes[] = "nolink";
 			}
-			$params=$classes?array("class"=>implode(" ",$classes)):null;
-			$label = $this->title?:$this->id;
-			$item = $this->link?Html::A($label, $this->link):$label;
+			$params = $classes ? array("class" => implode(" ", $classes)) : null;
+			$label = $this->title ?: $this->id;
+			$item = $this->link ? Html::A($label, $this->link) : $label;
 			$html = new Html("div", $item, $params);
-		}else{
-			$html="";
+		} else {
+			$html = "";
 		}
 		$children = $this->getChildren();
-		if($children){
-			$children_html=array();
-			foreach ($children as $subnavi){
-				$children_html[]=new Html('li',$subnavi->toHtml(),array("class"=>"nav_".$subnavi->id));
+		if ($children) {
+			$children_html = array();
+			foreach ($children as $subnavi) {
+				$children_html[] = new Html('li', $subnavi->toHtml(), array("class" => "nav_" . $subnavi->id));
 			}
-			$html.=Html::UL($children_html, null);
+			$html .= Html::UL($children_html, null);
 		}
 		return $html;
 	}

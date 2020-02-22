@@ -6,7 +6,6 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-
 namespace t2\core\form;
 
 class Formfield_header extends Formfield {
@@ -17,8 +16,8 @@ class Formfield_header extends Formfield {
 
 	protected function toHtml() {
 		return "<div" . $this->getParams_outer() . ">\n"
-			. "\t<div class='formfield_inne2' ".$this->getParams_inner(false, false).">"
-			.$this->value
+			. "\t<div class='formfield_inne2' " . $this->getParams_inner(false, false) . ">"
+			. $this->value
 			. "</div>\n"
 			. "</div>";
 	}

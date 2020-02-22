@@ -12,20 +12,17 @@ use t2\core\Error;
 use t2\core\form\Form;
 use t2\core\Message;
 use t2\core\Page;
-use t2\dev\Debug;
 use t2\Start;
 
 /**
  * Class Includes
- * @package t2\core\service\includes
-
- * https://github.com/blueimp/jQuery-File-Upload TODO(F): File upload
+ * @package t2\core\service
  */
 class Includes {
 
 	private static $host_includes = true;
 
-	public static function load_all_available(Page $page){
+	public static function load_all_available(Page $page) {
 
 		/*
 		 * List of all includes
@@ -45,7 +42,7 @@ class Includes {
 	 * https://github.com/erusev/parsedown/releases/tag/1.7.4
 	 * https://github.com/erusev/parsedown/archive/1.7.4.zip
 	 */
-	public static function php_parsedown174(){
+	public static function php_parsedown174() {
 		self::do_include_php("id_parsedown174",
 			'parsedown-1.7.4/Parsedown.php',
 			'https://github.com/erusev/parsedown/archive/1.7.4.zip'
@@ -63,7 +60,7 @@ class Includes {
 	 *
 	 * Successor: https://github.com/tecnickcom/tc-lib-pdf
 	 */
-	public static function php_tcpdf632(){
+	public static function php_tcpdf632() {
 		self::do_include_php("id_tcpdf632",
 			'TCPDF-9fde7bb9b404b945e7ea88fb7eccd23d9a4e324b/tcpdf.php',
 			'https://github.com/tecnickcom/TCPDF/archive/9fde7bb9b404b945e7ea88fb7eccd23d9a4e324b.zip'
@@ -77,7 +74,7 @@ class Includes {
 	 * https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js
 	 * @param Page $page
 	 */
-	public static function js_jquery341(Page $page=null){
+	public static function js_jquery341(Page $page = null) {
 		self::do_add_js($page, "JS_ID_JQUERY",
 			'jquery.min.js',
 			'https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'
@@ -95,8 +92,8 @@ class Includes {
 	 * @param Page|null $page
 	 * @param bool      $start
 	 */
-	public static function js_highlight9181(Page $page=null, $start=true){
-		if($page===null){
+	public static function js_highlight9181(Page $page = null, $start = true) {
+		if ($page === null) {
 			$page = Page::get_singleton();
 		}
 		self::css_highlight9181($page);
@@ -105,11 +102,12 @@ class Includes {
 			'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js'
 			, 'highlight9181'
 		);
-		if($add && $start){
+		if ($add && $start) {
 			self::js_highlight9181_START($page);
 		}
 	}
-	private static function css_highlight9181(Page $page=null){
+
+	private static function css_highlight9181(Page $page = null) {
 		self::do_add_js($page, "CSS_ID_HIGHLIGHT",
 			'default.min.css',
 			'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/default.min.css'
@@ -117,8 +115,9 @@ class Includes {
 			, true
 		);
 	}
-	public static function js_highlight9181_START(Page $page=null){
-		if($page===null){
+
+	public static function js_highlight9181_START(Page $page = null) {
+		if ($page === null) {
 			$page = Page::get_singleton();
 		}
 		$page->add_inline_js("hljs.initHighlightingOnLoad();");
@@ -126,16 +125,16 @@ class Includes {
 
 	private static $working = false;
 
-	protected static function do_add_js($page, $id, $file0, $download, $subdir = null, $css=false){
-		if($page===null){
+	protected static function do_add_js($page, $id, $file0, $download, $subdir = null, $css = false) {
+		if ($page === null) {
 			$page = Page::get_singleton();
 		}
-		if($css){
-			if($page->is_css_set($id)){
+		if ($css) {
+			if ($page->is_css_set($id)) {
 				return false;
 			}
-		}else{
-			if($page->is_js_set($id)){
+		} else {
+			if ($page->is_js_set($id)) {
 				return false;
 			}
 		}
@@ -144,19 +143,19 @@ class Includes {
 			return true;
 		}
 		$include_dir = PROJECT_ROOT . '/includes';
-		if($subdir){
-			$file0 = $subdir.'/'.$file0;
+		if ($subdir) {
+			$file0 = $subdir . '/' . $file0;
 		}
-		$file = $include_dir.'/'.$file0;
-		if (file_exists($file)){
-			$page->add_javascript($id, Config::cfg_http_project()."/includes/".$file0, $css);
+		$file = $include_dir . '/' . $file0;
+		if (file_exists($file)) {
+			$page->add_javascript($id, Config::cfg_http_project() . "/includes/" . $file0, $css);
 			return true;
 		}
 		self::$working = true;
 		self::do_download($id, $download, $page, $subdir);
-		if (file_exists($file)){
+		if (file_exists($file)) {
 			Page::$compiler_messages[] = new Message(Message::TYPE_CONFIRM, "Installed include \"$file0\".");
-			$page->add_javascript($id, Config::cfg_http_project()."/includes/".$file0, $css);
+			$page->add_javascript($id, Config::cfg_http_project() . "/includes/" . $file0, $css);
 			return true;
 		}
 		Page::abort("Error", array(
@@ -165,76 +164,76 @@ class Includes {
 		return false;
 	}
 
-	protected static function do_include_php($id, $file0, $download=null){
+	protected static function do_include_php($id, $file0, $download = null) {
 		$include_dir = PROJECT_ROOT . '/includes';
-		$file = $include_dir.'/'.$file0;
-		if (file_exists($file)){
+		$file = $include_dir . '/' . $file0;
+		if (file_exists($file)) {
 			/** @noinspection PhpIncludeInspection */
 			require_once $file;
 			return true;
 		}
-		if($download!==null){
+		if ($download !== null) {
 			self::do_download($id, $download);
 		}
-		if (file_exists($file)){
+		if (file_exists($file)) {
 			Page::$compiler_messages[] = new Message(Message::TYPE_CONFIRM, "Installed include \"$file0\".");
 			/** @noinspection PhpIncludeInspection */
 			require_once $file;
 			return true;
 		}
-		new Error("INCLUDE_FAILED","Couldn't install include \"$file0\" :-(");
+		new Error("INCLUDE_FAILED", "Couldn't install include \"$file0\" :-(");
 		return false;
 	}
 
-	protected static function do_download($id, $download, $page=null, $subdir = null){
+	protected static function do_download($id, $download, $page = null, $subdir = null) {
 
 		//Show message while downloading:
 		if (!Request::cmd("doload_$id") && !Start::is_type(Start::TYPE_AJAX)) {
-			if($page===null){
-				$page=Page::get_singleton();
+			if ($page === null) {
+				$page = Page::get_singleton();
 			}
 			self::js_jquery341($page);
 			$page->add_inline_js("$(function(){
 				document.getElementById(\"id_hiddenformredirect\").submit();
 			})");
-			$form = new Form("doload_$id","",false,"post",array('id'=>'id_hiddenformredirect'));
+			$form = new Form("doload_$id", "", false, "post", array('id' => 'id_hiddenformredirect'));
 			Page::abort("Downloading...", array(
-				new Message(Message::TYPE_INFO, "Downloading \"$download\"...".$form),
+				new Message(Message::TYPE_INFO, "Downloading \"$download\"..." . $form),
 			));
 		}
 
 		$filename = basename($download);
 		$extension = pathinfo($download, PATHINFO_EXTENSION);
 		$target_dir = PROJECT_ROOT . '/includes';
-		if($subdir){
+		if ($subdir) {
 			$target_dir .= '/' . $subdir;
 		}
 		$target = $target_dir . '/' . $filename;
 
 		//Download:
-		if (!file_exists($target_dir)){
+		if (!file_exists($target_dir)) {
 			$ok = @mkdir($target_dir, 0777, true);
-			if(!$ok){
+			if (!$ok) {
 				$target_dir_parent = dirname($target_dir);
-				new Error("ERROR_INCLUDES/1","Couldn't create includes directory \"$target_dir\"!",0,"Try this: sudo chmod 777 '$target_dir_parent' -R");
+				new Error("ERROR_INCLUDES/1", "Couldn't create includes directory \"$target_dir\"!", 0, "Try this: sudo chmod 777 '$target_dir_parent' -R");
 			}
 		}
-		if(!is_dir($target_dir)){
-			new Error("ERROR_INCLUDES/2","Includes target is not a directory.");
+		if (!is_dir($target_dir)) {
+			new Error("ERROR_INCLUDES/2", "Includes target is not a directory.");
 		}
 		$ok = @file_put_contents($target, fopen($download, 'r'));
-		if(!$ok){
-			new Error("ERROR_INCLUDES/3","Couldn't store \"$target\"!",0,"Try this:\nsudo chmod 777 '$target_dir' -R");
+		if (!$ok) {
+			new Error("ERROR_INCLUDES/3", "Couldn't store \"$target\"!", 0, "Try this:\nsudo chmod 777 '$target_dir' -R");
 		}
 
 		//Unzip:
-		if(strtolower($extension)=='zip'){
+		if (strtolower($extension) == 'zip') {
 			$zip = new \ZipArchive();
 			$res = $zip->open($target);
-			if($res===true){
+			if ($res === true) {
 				$ok = $zip->extractTo(PROJECT_ROOT . '/includes');
 				$zip->close();
-				if ($ok){
+				if ($ok) {
 					unlink($target);
 				}
 			}

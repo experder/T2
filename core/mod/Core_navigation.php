@@ -56,11 +56,11 @@ class Core_navigation {
 
 	public static function navi_user() {
 		$user_info = User::info();
-		$navigation = new Navigation('NAVI_USER', $user_info['display_name']?:"User", "", array(
+		$navigation = new Navigation('NAVI_USER', $user_info['display_name'] ?: "User", "", array(
 			new Navigation('PAGEID_CORE_USER_CFG', "Config", Html::href_internal_root("core/mod/user_config")),
 			new Navigation('CORE_USER_LOGOUT', "", Html::href_internal_root("index")),
 		));
-		if(!$user_info){
+		if (!$user_info) {
 			#$navigation->set_invisible();
 		}
 		return $navigation;
