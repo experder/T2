@@ -39,6 +39,7 @@ class Navigation {
 
 	private $highlight = false;
 	private $visible = true;
+	private $external = false;
 
 	/**
 	 * Navigation constructor.
@@ -56,6 +57,10 @@ class Navigation {
 
 	public function set_invisible() {
 		$this->visible = false;
+	}
+
+	public function set_external() {
+		$this->external = true;
 	}
 
 	/**
@@ -115,7 +120,8 @@ class Navigation {
 			}
 			$params = $classes ? array("class" => implode(" ", $classes)) : null;
 			$label = $this->title ?: $this->id;
-			$item = $this->link ? Html::A($label, $this->link) : $label;
+			$link_params = $this->external ? array("target" => "_blank") : array();
+			$item = $this->link ? Html::A($label, $this->link, null, $link_params) : $label;
 			$html = new Html("div", $item, $params);
 		} else {
 			$html = "";

@@ -6,14 +6,12 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-
 namespace t2;
 
 use t2\api\Navigation;
 use t2\core\Database;
 use t2\core\Error;
 use t2\core\Error_;
-use t2\core\Html;
 use t2\core\mod\Core_navigation;
 use t2\core\Page;
 use t2\core\service\Config;
@@ -44,17 +42,18 @@ class Start {
 	/**
 	 * @return Navigation
 	 */
-	public static function getNavigation($halt_on_error=true) {
-		if(self::$navigation===null && $halt_on_error){
+	public static function getNavigation($halt_on_error = true) {
+		if (self::$navigation === null && $halt_on_error) {
 			new Error("NO_NAVI_INIT", "Please initialize navigation!");
 		}
 		return self::$navigation;
 	}
+
 	public static function getNavigation_html($id) {
 		$nav = self::getNavigation(false);
-		if(!$nav){
+		if (!$nav) {
 			//Blank navigation:
-			$nav = new Navigation(null,null,null);
+			$nav = new Navigation(null, null, null);
 		}
 		return $nav->toHtml($id);
 	}
@@ -97,7 +96,7 @@ class Start {
 	private static function init_config() {
 		$config_file = ROOT_DIR . '/config.php';
 		if (!file_exists($config_file)) {
-			if(Start::is_type(Start::TYPE_AJAX)){
+			if (Start::is_type(Start::TYPE_AJAX)) {
 				new Error("ERROR_CONFIG_CORRUPT/1", "Local config file seems to be corrupt. Please check.", "Config file: " . $config_file);
 			}
 
@@ -117,15 +116,15 @@ class Start {
 
 		//TODO(F):  Feature: Install wizard: Configure PROJECT_ROOT
 		if (!defined("PROJECT_ROOT")) {
-			$propose_project_root=dirname(ROOT_DIR);
+			$propose_project_root = dirname(ROOT_DIR);
 			define('PROJECT_ROOT', $propose_project_root);
 		}
 
 	}
 
 	private static function init_navigation() {
-		if(self::$navigation===null){
-			self::$navigation=Core_navigation::navi_default();
+		if (self::$navigation === null) {
+			self::$navigation = Core_navigation::navi_default();
 		}
 	}
 
@@ -154,6 +153,7 @@ class Start {
 	public static function init($PAGEID_, $title) {
 		return self::init_($PAGEID_);
 	}
+
 	/**
 	 * @param string $PAGEID_
 	 * @return Page

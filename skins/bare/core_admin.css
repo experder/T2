@@ -1,16 +1,17 @@
-body#PAGEID_CORE_UPDATER div.updater_buttons{
-	width:686px;
-}
-body#PAGEID_CORE_UPDATER div.updater_buttons button{
-	margin-right:10px;
-	min-width:95px;
-	text-align:left;
-	padding-left:5px;
+body#PAGEID_CORE_UPDATER div.updater_buttons {
+	width: 686px;
 }
 
-body#PAGEID_CORE_UPDATER div.updater_buttons button#dev_btn_clear{
-	min-width:inherit;
-	padding-right:5px;
-	float:right;
-	margin-right:0;
+body#PAGEID_CORE_UPDATER div.updater_buttons button {
+	margin-right: 10px;
+	min-width: 95px;
+	text-align: left;
+	padding-left: 5px;
+}
+
+body#PAGEID_CORE_UPDATER div.updater_buttons button#dev_btn_clear {
+	min-width: inherit;
+	padding-right: 5px;
+	float: right;
+	margin-right: 0;
 }

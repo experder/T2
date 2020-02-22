@@ -65,23 +65,25 @@ pre.console div.console_inner {
 	display: table-cell;
 	vertical-align: bottom;
 	height: 375px;
-	padding-bottom:10px;
+	padding-bottom: 10px;
 }
 
-code{
-	border:1px solid blue;
+code {
+	border: 1px solid blue;
 }
-pre code{
-	display:block;
-	border:1px solid darkred;
+
+pre code {
+	display: block;
+	border: 1px solid darkred;
 }
+
 /*
 ------------------------------ Markdown ----------------------------
  */
-div.t2markdown p{
-	margin-left:5px;
-	padding-left:5px;
-	border-left:3px double gray;
+div.t2markdown p {
+	margin-left: 5px;
+	padding-left: 5px;
+	border-left: 3px double gray;
 }
 
 /*
@@ -122,93 +124,109 @@ a[target="_blank"] {
 ======================== NAVIGATION ===========================
  */
 
-nav{
-	border:3px double #195519;
+nav {
+	border: 3px double #195519;
 	background: #195519;
-	position:fixed;
-	top:0;
-	left:0;
-	height:30px;
-	width:100%;
-}
-body{
-	margin-top:36px;
-}
-nav li.nav_NAVI_USER,
-nav li.nav_NAVI_ADMIN
-{
-	float:right;
-}
-nav div.high{
-	color: #c0ff1b;
-}
-nav div.high a{
-	color:yellow;
-}
-nav div{
-	color: #d5ffc2;
-}
-nav div.nolink:hover,
-nav div a:hover{
-	background-color: #323f55;
-}
-nav a{
-	color:white;
-	text-decoration: none;
-	display:block;
-}
-nav ul{
-	list-style:none;
-	padding-left:0;
-}
-/* Ebene 1 */
-nav>ul{
-	/*Ansteuerung für jQuery*/
-}
-nav > ul > li{
-	display:inline-block;
-	vertical-align: top;
-}
-nav > ul > li > div > a{
-	padding:5px;
-}
-nav > ul > li > div.nolink{
-	padding:5px;
-}
-/*Ebene 2*/
-nav > ul > li > ul{
-	position:fixed;
-	display:none;
-	margin-left:-10px;
-	min-width:200px;
-	background:#1a741a;
-	padding:10px 15px;
-}
-nav > ul > li.nav_NAVI_USER{
-	min-width:150px;
-	text-align:center;
-}
-nav > ul > li.nav_NAVI_USER ul{
-	min-width:150px;
-	text-align:left;
-}
-nav > ul > li.nav_NAVI_USER > ul{
-	right:5px;
-}
-nav > ul > li > ul > li a,
-nav > ul > li > ul > li div.nolink
-{
-	line-height:25px;
-}
-nav > ul > li:hover > ul{
-	display:block;
-}
-/*Ebene 3 ff*/
-nav > ul > li > ul > li  ul > li {
-	border-left:2px solid red;
-	padding-left:10px;
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 30px;
+	width: 100%;
 }
 
+body {
+	margin-top: 36px;
+}
+
+nav li.nav_NAVI_USER,
+nav li.nav_NAVI_ADMIN {
+	float: right;
+}
+
+nav div.high {
+	color: #c0ff1b;
+}
+
+nav div.high a {
+	color: yellow;
+}
+
+nav div {
+	color: #d5ffc2;
+}
+
+nav div.nolink:hover,
+nav div a:hover {
+	background-color: #323f55;
+}
+
+nav a {
+	color: white;
+	text-decoration: none;
+	display: block;
+}
+
+nav ul {
+	list-style: none;
+	padding-left: 0;
+}
+
+/* Ebene 1 */
+nav > ul {
+	/*Ansteuerung für jQuery*/
+}
+
+nav > ul > li {
+	display: inline-block;
+	vertical-align: top;
+}
+
+nav > ul > li > div > a {
+	padding: 5px;
+}
+
+nav > ul > li > div.nolink {
+	padding: 5px;
+}
+
+/*Ebene 2*/
+nav > ul > li > ul {
+	position: fixed;
+	display: none;
+	margin-left: -10px;
+	min-width: 200px;
+	background: #1a741a;
+	padding: 10px 15px;
+}
+
+nav > ul > li.nav_NAVI_USER {
+	min-width: 150px;
+	text-align: center;
+}
+
+nav > ul > li.nav_NAVI_USER ul {
+	min-width: 150px;
+	text-align: left;
+}
+
+nav > ul > li.nav_NAVI_USER > ul {
+	right: 5px;
+}
+
+nav > ul > li > ul > li a,
+nav > ul > li > ul > li div.nolink {
+	line-height: 25px;
+}
+
+nav > ul > li:hover > ul {
+	display: block;
+}
+
+/*Ebene 3 ff*/
+nav > ul > li > ul > li ul > li {
+	border-left: 2px solid red;
+	padding-left: 10px;
+}
 
 /*
 ======================== dev-stuff ===========================
@@ -219,7 +237,7 @@ body {
 }
 
 div.dev,
-pre.dev{
+pre.dev {
 	background-image: url('img/graystripe.png');
 }
 
@@ -236,7 +254,7 @@ div.dev_stats div.abutton {
 	background: white;
 	border-radius: 5px;
 	box-shadow: -1px -1px 3px gray inset;
-	padding:0 5px;
+	padding: 0 5px;
 }
 
 div.dev_stats div.confirm_good {
@@ -282,28 +300,31 @@ div.dev_stats div.zoom-out {
 	box-shadow: 1px 1px 3px gray inset;
 }
 
-div#t2_messages div.ajax_response{
-	background-color:white;
-	overflow-y:auto;
-	max-height:150px;
+div#t2_messages div.ajax_response {
+	background-color: white;
+	overflow-y: auto;
+	max-height: 150px;
 }
 
 /*
 ======================== Tables ===========================
  */
 
-table{
+table {
 	border-collapse: collapse;
 }
+
 table tbody,
-table thead th{
-	border:1px solid black;
-	font-weight:normal;
+table thead th {
+	border: 1px solid black;
+	font-weight: normal;
 }
-table tbody tr:hover td{
+
+table tbody tr:hover td {
 	background: #e6ddbf;
 }
-table tbody td{
+
+table tbody td {
 	background: #d2f0f0;
 }
 
@@ -344,11 +365,11 @@ form div.form_field > label {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	vertical-align: top;
-	border:1px solid transparent;
-	min-height:18px;
+	border: 1px solid transparent;
+	min-height: 18px;
 }
 
-form div.form_field label.radiolabel:hover div{
+form div.form_field label.radiolabel:hover div {
 	box-shadow: 0 0 1px gray inset;
 }
 
@@ -363,7 +384,7 @@ form div.form_field textarea {
 }
 
 form div.formfield_inner {
-	border:1px solid transparent;
+	border: 1px solid transparent;
 	display: inline-block;
 }
 
@@ -383,25 +404,26 @@ form div.buttons * * {
     WAIT SPINNER
 ==================================================================*/
 
-div#uploadSpinner{
-	position:fixed;
-	top:0px;
-	left:0px;
-	background-color:rgba(0,0,0,.5);
-	z-index:99;
-	width:100%;
-	height:100%;
-	display:none;
+div#uploadSpinner {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	background-color: rgba(0, 0, 0, .5);
+	z-index: 99;
+	width: 100%;
+	height: 100%;
+	display: none;
 }
-div.spinnerContent{
-	width:400px;
-	height:100px;
-	position:fixed;
-	left:50%;
-	margin-left:-200px;
-	top:50%;
-	margin-top:-50px;
-	color:white;
-	font-weight:bold;
-	text-align:center;
+
+div.spinnerContent {
+	width: 400px;
+	height: 100px;
+	position: fixed;
+	left: 50%;
+	margin-left: -200px;
+	top: 50%;
+	margin-top: -50px;
+	color: white;
+	font-weight: bold;
+	text-align: center;
 }

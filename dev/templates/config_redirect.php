@@ -11,14 +11,15 @@
  * which is called from \t2\Start::init_config
  * @see \t2\dev\Install_wizard::init_config
  * @see \t2\Start::init_config
-*/if(true)exit;/*
+ */
+if (true) exit;/*
  * TPLDOCEND*/
 
 //Project configuration file:
 global $t2_config_file;
 $t2_config_file = ":project_root/config.php";
-if(!file_exists($t2_config_file)){
-	new \t2\core\Error_("Configuration file (\"$t2_config_file\") not found!");
+if (!file_exists($t2_config_file)) {
+	new \t2\core\Error("CFG_FILE_NOT_FOUND", "Configuration file (\"$t2_config_file\") not found!");
 }
 /** @noinspection PhpIncludeInspection */
 require_once $t2_config_file;

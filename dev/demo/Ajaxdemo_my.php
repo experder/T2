@@ -22,7 +22,7 @@ class Ajaxdemo_my extends Ajax {
 	 * @return Ajax_response|false
 	 */
 	public function return_by_cmd($cmd, $keyValues) {
-		switch ($cmd){
+		switch ($cmd) {
 			case 'md5_html':
 				new Ajax_response(Ajax_response::TYPE_HTML,
 					"md5=" . Ajaxdemo_controller::calculate_md5(

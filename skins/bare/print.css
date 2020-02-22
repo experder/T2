@@ -23,12 +23,14 @@ pre.console {
 	background: white;
 	color: black;
 }
+
 pre.console {
-	width:inherit;
+	width: inherit;
 	overflow: inherit;
-	height:inherit;
+	height: inherit;
 }
+
 pre.console div.console_inner {
-	height:inherit;
-	padding-bottom:0;
+	height: inherit;
+	padding-bottom: 0;
 }

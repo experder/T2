@@ -1,13 +1,15 @@
-body{
-	color:red;
+body {
+	color: red;
 }
-h1{
-	color:red;
-	margin-top:0;
-	padding-top:0;
+
+h1 {
+	color: red;
+	margin-top: 0;
+	padding-top: 0;
 }
-div.page{
-	border:1px solid black;
-	background-color:yellow;
-	color:blue;
+
+div.page {
+	border: 1px solid black;
+	background-color: yellow;
+	color: blue;
 }

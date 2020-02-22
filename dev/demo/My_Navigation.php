@@ -15,20 +15,21 @@ use t2\core\service\Config;
 class My_Navigation extends Navigation {
 
 	public function __construct() {
-		parent::__construct('NAVI_DEMO',"Demo",null,null);
-		if(!Config::$DEVMODE){
+		parent::__construct('NAVI_DEMO', "Demo", null, null);
+		if (!Config::$DEVMODE) {
 			$this->set_invisible();
 		}
 	}
 
 	public function getChildren() {
-		if($this->children===null){
-			$this->children=array(
-				new Navigation('PAGEID_DEV_BLANK',"Blank page",Html::href_internal_root("dev/demo/blank")),
-				new Navigation('PAGEID_DEV_AJAXDEMO',"Ajax demo",Html::href_internal_root("dev/demo/ajaxdemo")),
-				new Navigation('PAGEID_DEV_CSSDEMO',"CSS demo",Html::href_internal_root("dev/demo/cssdemo")),
-				new Navigation('PAGEID_DEV_PDFDEMO',"PDF demo",Html::href_internal_root("dev/demo/pdfdemo")),
+		if ($this->children === null) {
+			$this->children = array(
+				new Navigation('PAGEID_DEV_BLANK', "Blank page", Html::href_internal_root("dev/demo/blank")),
+				new Navigation('PAGEID_DEV_AJAXDEMO', "Ajax demo", Html::href_internal_root("dev/demo/ajaxdemo")),
+				new Navigation('PAGEID_DEV_CSSDEMO', "CSS demo", Html::href_internal_root("dev/demo/cssdemo")),
+				$n3 = new Navigation('PAGEID_DEV_PDFDEMO', "PDF demo", Html::href_internal_root("dev/demo/pdfdemo")),
 			);
+			$n3->set_external();
 		}
 		return $this->children;
 	}

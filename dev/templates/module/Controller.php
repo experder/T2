@@ -10,7 +10,7 @@ namespace t2\modules\core_template;
 
 class Controller {
 
-	public static function calculate_whatever($foo){
+	public static function calculate_whatever($foo) {
 		$bar = $foo;
 		return $bar;
 	}
