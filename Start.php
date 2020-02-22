@@ -24,9 +24,13 @@ use t2\service\Autoloader;
 class Start {
 
 	const TYPE_UNKNOWN = 0;
+	/**
+	 * @deprecated
+	 */
 	const TYPE_HTML = 1;
-	const TYPE_AJAX = 2;
-	const TYPE_CLI = 3;
+	const TYPE_PAGE = 1;//Returns HTML
+	const TYPE_AJAX = 2;//Returns JSON
+	const TYPE_CLI = 3;//Echoes plain text
 
 	private static $type = self::TYPE_UNKNOWN;
 
@@ -111,7 +115,7 @@ class Start {
 
 		define('DB_CORE_PREFIX', Database::get_singleton()->core_prefix);
 
-		//TODO(2): Configure PROJECT_ROOT
+		//TODO(F):  Feature: Install wizard: Configure PROJECT_ROOT
 		if (!defined("PROJECT_ROOT")) {
 			$propose_project_root=dirname(ROOT_DIR);
 			define('PROJECT_ROOT', $propose_project_root);
@@ -167,7 +171,7 @@ class Start {
 	public static function init_ajax() {
 		self::$type = self::TYPE_AJAX;
 		Start::init_config();
-		//TODO(2): init rights
+		//TODO(F): init rights
 	}
 
 	public static function check_type($type) {

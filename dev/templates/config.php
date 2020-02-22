@@ -13,7 +13,7 @@
  * @see \t2\Start::init_config
  * TPLDOCEND*/
 
-//TODO: call config_server_exclude
+//TODO(1): call config_server_exclude
 
 define('HDDPATH_T2', ':t2_subdir');//    Default: '/tethys'
 
@@ -25,6 +25,6 @@ define('HDDPATH_T2', ':t2_subdir');//    Default: '/tethys'
 #require_once '/var/www/myproject/MyHeader.php';
 #\t2\core\Page::setHeader(new MyHeader());
 
-//TODO: project title, skin, modules, login_html, session expires
+//TODO(1): project title, skin, modules, login_html, session expires
 
-//TODO: module_root, module_path, default_api
+//TODO(1): module_root, module_path, default_api

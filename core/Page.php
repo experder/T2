@@ -6,17 +6,17 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-
 namespace t2\core;
 
 use t2\api\Header;
 use t2\core\service\Config;
+use t2\core\service\Config_core;
 use t2\core\service\Includes;
 use t2\dev\Debug;
 use t2\Start;
 
 /**
- * TODO(2): $page->set_focusFieldId
+ * TODO(F): $page->set_focusFieldId
  */
 class Page {
 
@@ -47,7 +47,7 @@ class Page {
 
 	/**
 	 * @var Message[] $compiler_messages pre-init messages
-	 * TODO(3): Make private (\t2\core\Page::$compiler_messages)
+	 * TODO(1): Make private (\t2\core\Page::$compiler_messages)
 	 */
 	public static $compiler_messages = array();
 
@@ -140,7 +140,7 @@ class Page {
 			new Error("DOUBLE_INIT", "Page is already initialized!", null, 1);
 		}
 
-		$title = "$id";//TODO(1):Get title from DB
+		$title = "$id";//TODO(1):Get title from navigation
 
 		self::$singleton = new Page($id, $title);
 
@@ -239,7 +239,7 @@ class Page {
 	 */
 	public function send_and_quit() {
 		#new Error_("!","TYPE", "DEBUG-INFO");
-//TODO(2): Der Typ muss PAGE heissen (AJAX kann auch HTML sein)
+//TODO(1): Der Typ muss PAGE heissen (AJAX kann auch HTML sein)
 		Start::check_type(Start::TYPE_HTML);
 
 		$title = $this->get_title();
@@ -287,7 +287,7 @@ class Page {
 	}
 
 	private function waitSpinner() {
-		$skin_dir = Config::cfg_skin_dir();
+		$skin_dir = Config_core::skin_dir();
 		$waitSpinner="<div id=\"uploadSpinner\" style='display:none;'><div class=\"spinnerContent\"><img src=\"$skin_dir/img/spinner.gif\"><div>Bitte warten...</div></div></div>";
 		return $waitSpinner;
 	}
@@ -348,7 +348,7 @@ class Page {
 		return new Stylesheet(Config::get_value_core('HTTP_ROOT') . "/skins/$style/print.css", Stylesheet::MEDIA_PRINT);
 	}
 	public static function get_stylesheet($css, $media="all") {
-		$skindir = Config::cfg_skin_dir();
+		$skindir = Config_core::skin_dir();
 		return new Stylesheet("$skindir/$css", $media);
 	}
 

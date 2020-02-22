@@ -115,7 +115,7 @@ class Error {
 			exit;
 		}
 
-		//Write to errorlog-/warnings-file:TODO(3):Write to errorlog-/warnings-file
+		//Write to errorlog-/warnings-file (TODO(F))
 		/** @noinspection PhpUnusedLocalVariableInspection */
 		$file_body = self::HR_outer
 			.self::meta_info_block()

@@ -14,25 +14,25 @@
  */if(true)exit;/*
  * TPLDOCEND*/
 
-//TODO: Wizard to create this file if it doesn't exist
+//TODO(1): Wizard to create this file if it doesn't exist
 
 //Server-specific configuration
-//TODO:Server-specific configuration
+//TODO(1):Server-specific configuration
 
 //Set to TRUE in your development environment, FALSE (default) for production:
-#\t2\core\service\Config::$DEVMODE = true;    TODO: Prompt for devmode in installer
+#\t2\core\service\Config::$DEVMODE = true;    TODO(2): Prompt for devmode in installer
 #\t2\core\Html::setDevBeautify();
 
 //Where to find your project:
 define('PROJECT_ROOT', ":project_root");
 
-//TODO: T2 is a SUBmodule, so the first root is the parent project's root
+//TODO(1): T2 is a SUBmodule, so the first root is the parent project's root
 define('HDDROOT_PROJECT', ':parent_root');
-//TODO: The directory pointing to T2 is PROJECT SPECIFIC relative to this root. See HDDPATH_T2 in config.php
+//TODO(1): The directory pointing to T2 is PROJECT SPECIFIC relative to this root. See HDDPATH_T2 in config.php
 
 
 //Initialize database connection:
 \t2\core\Database::init(':server_addr', ':tethysdb', ':username', ':dbpass');
 
-//TODO: extension, http_root, platform
+//TODO(1): extension, http_root, platform
 

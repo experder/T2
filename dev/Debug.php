@@ -45,7 +45,7 @@ class Debug {
 		":ROOT_DIR/core/Html.php",
 		":ROOT_DIR/core/service/Includes.php",
 		":ROOT_DIR/core/service/Files.php",
-		//TODO: $core_includes: Plus navigation of each module
+		//TODO(1): $core_includes: Plus navigation of each module
 	);
 	private static $core_includes_compiled = null;
 	public static $includes = array();
@@ -292,8 +292,8 @@ class Debug {
 	}
 
 	/**
-	 * TODO(3): backtrace: Trenner nach der ersten Zeile
-	 * TODO(3): backtrace: Funktion mit anzeigen
+	 * TODO(F): backtrace: Trenner nach der ersten Zeile/highlight passed depth
+	 * TODO(F): backtrace: Funktion mit anzeigen
 	 * @param int    $depth
 	 * @param string $linebreak
 	 * @param bool   $multiline

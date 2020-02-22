@@ -6,13 +6,17 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-namespace t2\core;
+namespace t2\core\service;
 
-class Database_Service {
-	//TODO(2):Move more functions here
-
-	public static function select($query, $substitutions = array(), $backtrace_depth = 0, $halt_on_error = true) {
-		return Database::get_singleton()->select($query, $substitutions, $backtrace_depth+1, $halt_on_error);
+class Config_core {
+//TODO(1): Class config_core with getters for every cfg-value
+	public static function skin_dir() {
+		$skin_dir = Config::get_value_core("SKIN");
+		if($skin_dir=='bare'){
+			$root = Config::get_value_core('HTTP_ROOT');
+			$skin_dir = "$root/skins/$skin_dir";
+		}
+		return $skin_dir;
 	}
 
 }

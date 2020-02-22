@@ -10,6 +10,7 @@ namespace t2\core\service;
 
 use t2\api\Default_values;
 use t2\core\Database;
+use t2\core\Database_Service;
 use t2\core\Error;
 use t2\core\Message;
 use t2\core\Page;
@@ -69,25 +70,16 @@ class Config {
 		return self::get_value_core('HTTP_ROOT');
 	}
 
-	public static function cfg_skin_dir() {
-		$skin_dir = Config::get_value_core("SKIN");
-		if($skin_dir=='bare'){
-			$root = Config::get_value_core('HTTP_ROOT');
-			$skin_dir = "$root/skins/$skin_dir";
-		}
-		return $skin_dir;
-	}
-
 	/**
 	 * @deprecated
 	 */
 	public static function cfg_http_project() {
-		return self::get_value_core('HTTP_ROOT').'/'.Files::relative_path(ROOT_DIR, PROJECT_ROOT);//TODO(1):Prompt HTTP_PROJECT
+		return self::get_value_core('HTTP_ROOT').'/'.Files::relative_path(ROOT_DIR, PROJECT_ROOT);//TODO(F):Feature: Wizard: Prompt HTTP_PROJECT
 		#return self::get_value_core('HTTP_PROJECT');
 	}
 
 	public static function MODULES() {
-		//TODO(1): Make modules configuration an object!
+		//TODO(F): Make modules configuration an object?
 		if (self::$cfg_modules === null) {
 			$modules_json = self::get_value('MODULES', null, null);
 			self::$cfg_modules = json_decode($modules_json, true);
@@ -261,16 +253,27 @@ class Config {
 	 * @param int|null    $user
 	 */
 	public static function load_values($ids, $module = null, $user = null) {
-		$ids_sql = Strings::build_sql_collection($ids);
+		#$ids_sql = Strings::build_sql_collection($ids);
+		#$ids_sql = Strings::build_collection($ids);
+
+		$substitutions = array();
+		$ids_keys = array();
+		$i = 1;
+		foreach ($ids as $id) {
+			$key = ':key' . ($i++);
+			$ids_keys[] = $key;
+			$substitutions[$key] = $id;
+		}
+		$ids_sql = implode(',', $ids_keys);
+
+		$substitutions['module']=$module;
+		$substitutions['userid']=$user;
+
 		$core_config = DB_CORE_PREFIX.'_config';
 		self::$dev_lv_line = __LINE__ + 7;
-		$data = Database::select_(
+		$data = Database_Service::select(
 			"SELECT idstring,`content` FROM $core_config WHERE `idstring` in ($ids_sql) AND module<=>:module AND userid <=> :userid;",
-			array(
-				"module" => $module,
-				"userid" => $user,
-			)
-			, false
+			$substitutions, 0, false
 		);
 		$error = Database::get_singleton()->getError();
 		if ($error !== false) {
@@ -279,7 +282,7 @@ class Config {
 				$msg = new Message(Message::TYPE_CONFIRM, "DB \"" . Database::get_singleton()->get_dbname() . "\" initialized. " . $report);
 				Page::$compiler_messages[] = $msg;
 			} else {
-				Database::destroy();//Make Page Standalone (TODO(3)-Necessary?)
+				Database::destroy();//Make Page Standalone (TODO(1)-check out!)
 				$error->report();
 			}
 		}

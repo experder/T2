@@ -13,7 +13,7 @@ use t2\api\Default_values;
 class Core_values extends Default_values {
 
 	protected $default_values = array(
-		//TODO:move to custom_apis to module specific config (db)
+		//TODO(1):move to custom_apis to module specific config
 		"MODULES" => '{
 				"core_demo":{
 					"custom_apis":{

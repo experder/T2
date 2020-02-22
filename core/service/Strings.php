@@ -22,7 +22,7 @@ class Strings {
 	 *      '<tag value = "'.escape_value_html($value).'" />'
 	 * @param string $value
 	 * @return string
-	 * //TODO(2): Better description?
+	 * //TODO(2): There must be native functions!
 	 */
 	public static function escape_value_html($value) {
 		return self::replace_byArray($value, array(
@@ -32,7 +32,7 @@ class Strings {
 		));
 	}
 
-	//TODO(2): Better description?
+	//TODO(2): There must be native functions!
 	public static function escape_value_html2($value) {
 		return self::replace_byArray($value, array(
 			"\"" => "&quot;",
@@ -69,7 +69,7 @@ class Strings {
 	 * @return mixed
 	 */
 	public static function replace_byArray($string, $substitutions) {
-		//TODO:- template replace: abfangen:":dev"=>"a",":dev1"=>"b"
+		//TODO(1):- template replace: abfangen:":dev"=>"a",":dev1"=>"b"
 		return str_replace(array_keys($substitutions), array_values($substitutions), $string);
 	}
 
@@ -96,7 +96,7 @@ class Strings {
 		return $sql;
 	}
 
-	public static function build_collection($values, $prefix = ':', $suffix = ':', $separator = ',') {
+	public static function build_collection($values, $prefix = ':', $suffix = '', $separator = ',') {
 		$resulting_strings = array();
 		foreach ($values as $string) {
 			$resulting_strings[] = $prefix . $string . $suffix;

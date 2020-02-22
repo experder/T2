@@ -8,7 +8,6 @@
 
 namespace t2\core\service;
 
-
 class Arrays {
 
 	public static function remove_from_array_by_value($array, $key){
@@ -32,5 +31,13 @@ class Arrays {
 		}
 		return $resulting;
 	}
+
+//	public static function prefix_keys($prefix, $array, $suffix = '') {
+//		$resulting = array();
+//		foreach ($values as $val) {
+//
+//		}
+//		return $resulting;
+//	}
 
 }

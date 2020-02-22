@@ -6,17 +6,12 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-
 namespace t2\core;
-
 
 class Stylesheet {
 
 	const MEDIA_PRINT = "print";
 
-	/**
-	 * @deprecated TODO: Include media queries in global file
-	 */
 	private $media;
 	private $url;
 
@@ -25,7 +20,6 @@ class Stylesheet {
 	 * @param string $media https://www.w3schools.com/tags/att_link_media.asp
 	 * @param string $url
 	 * @see https://www.w3schools.com/tags/att_link_media.asp
-	 * @deprecated TODO: Kann weg, es bleibt nur die URL
 	 */
 	public function __construct($url, $media="all") {
 		$this->media = $media;

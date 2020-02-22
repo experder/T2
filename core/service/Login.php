@@ -17,7 +17,7 @@ use t2\core\Message;
 use t2\core\Page;
 use t2\core\Warning;
 
-class Login {//TODO(2):Logout
+class Login {//TODO(F):Logout
 
 	private static $session_cookie_name = 'T2_session';
 	private static $user_fields = 'id,ref_id,username,display_name';

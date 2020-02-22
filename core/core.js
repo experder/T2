@@ -21,7 +21,7 @@ function show_dev_stat_queries(html_node_toggle_zoom){
 }
 
 /**
- * TODO(3): onclick zoom-in als objekt
+ * TODO(F): onclick zoom-in als objekt
  */
 function t2_toggle_detail_zoom(content_id, html_node_toggle_zoom){
 	$('#'+content_id).toggle(500);

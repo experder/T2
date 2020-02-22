@@ -23,7 +23,7 @@ class Templates {
 	 * @return string
 	 */
 	public static function load($file, $replacements) {
-		//TODO(3): file_exists($filename, $fatal=true)
+		//TODO(F): file_exists($filename, $fatal=true)
 		if (!file_exists($file)) {
 			new Error("TPL_FILE_NOT_FOUND", "Template file \"$file\" not found!");
 		}

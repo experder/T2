@@ -25,7 +25,7 @@ use t2\core\Html;
 use t2\core\service\Request;
 use t2\core\service\Templates;
 
-class Install_wizard {//TODO(3): Install wizard: Prompt all field in one form
+class Install_wizard {//TODO(F): Install wizard: Prompt all field in one form
 
 	public static function prompt_http_root() {
 		Config::$prompting_http_root = true;
@@ -64,7 +64,7 @@ class Install_wizard {//TODO(3): Install wizard: Prompt all field in one form
 
 		$form->add_field(new Formfield_header(Html::H1("Project settings")));
 		$form->add_field(new Formfield_text("project_root", "Project root directory", dirname(dirname(__DIR__))));
-		//TODO: Should ALWAYS be the redirect option. User should store the config in his repo. (except the password) (see config layer concept)
+		//TODO(1): Should ALWAYS be the redirect option. User should store the config in his repo. (except the password) (see config layer concept)
 		$form->add_field(new Formfield_radio("config_redirect",array(
 			new Formfield_radio_option("project", "Store config in project root"),
 			new Formfield_radio_option("t2", "Store config in submodule t2"),
@@ -97,7 +97,7 @@ class Install_wizard {//TODO(3): Install wizard: Prompt all field in one form
 
 		$message = new Message(Message::TYPE_INFO, $html);
 
-		Database::destroy();//TODO(3)-$prompting_coreUser
+		Database::destroy();//TODO(1)-check out! $prompting_coreUser
 		if (false) {
 			Database::destroy();//This would ba a usecase for Database::destroy.
 		}
