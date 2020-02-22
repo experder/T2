@@ -174,18 +174,17 @@ class Admin {
 		 * @see Core_values::$default_values
 		 */
 
+		//TODO: It's all deprecated/going to config FILES. Database shall only store db-specific configuration
 		$form->add_field(new Formfield_header("<h2>Admin stuff</h2>"));
 		$form->add_field(new Formfield_text('PROJECT_TITLE',null,Config::get_value('PROJECT_TITLE')));
 		$form->add_field(new Formfield_text('SKIN',null,Config::get_value('SKIN')));
 		$form->add_field(new Formfield_textarea('MODULES',null,Config::get_value('MODULES')));
-
 		$form->add_field(new Formfield_textarea('LOGIN_HTML',null,Config::get_value('LOGIN_HTML')));
+		$form->add_field(new Formfield_text('SESSION_EXPIRES',null,Config::get_value('SESSION_EXPIRES')));
 
 		$form->add_field(new Formfield_header("<h2>Developer stuff</h2>"));
 		$form->add_field(new Formfield_text('EXTENSION',null,Config::get_value('EXTENSION')));
 		$form->add_field(new Formfield_text('HTTP_ROOT',null,Config::get_value('HTTP_ROOT')));
-		$form->add_field(new Formfield_text('SESSION_EXPIRES',null,Config::get_value('SESSION_EXPIRES')));
-
 		$form->add_field(new Formfield_text('PLATFORM',null,Config::get_value('PLATFORM')));
 		$form->add_field(new Formfield_text('MODULE_ROOT',null,Config::get_value('MODULE_ROOT')));//TODO: Tooltip!
 		$form->add_field(new Formfield_text('MODULE_PATH',null,Config::get_value('MODULE_PATH')));

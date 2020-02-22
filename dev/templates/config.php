@@ -15,6 +15,7 @@
 
 //TODO: call config_server_exclude
 
+define('HDDPATH_T2', ':t2_subdir');//    Default: '/tethys'
 
 //Set your own navigation:
 #require_once '/var/www/myproject/MyNavigation.php';
@@ -24,4 +25,6 @@
 #require_once '/var/www/myproject/MyHeader.php';
 #\t2\core\Page::setHeader(new MyHeader());
 
-//TODO: Module configuration
+//TODO: project title, skin, modules, login_html, session expires
+
+//TODO: module_root, module_path, default_api

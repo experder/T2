@@ -26,8 +26,13 @@
 //Where to find your project:
 define('PROJECT_ROOT', ":project_root");
 
+//TODO: T2 is a SUBmodule, so the first root is the parent project's root
+define('HDDROOT_PROJECT', ':parent_root');
+//TODO: The directory pointing to T2 is PROJECT SPECIFIC relative to this root. See HDDPATH_T2 in config.php
+
 
 //Initialize database connection:
 \t2\core\Database::init(':server_addr', ':tethysdb', ':username', ':dbpass');
 
-//TODO: Root Path
+//TODO: extension, http_root, platform
+
