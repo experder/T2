@@ -22,6 +22,7 @@
 //Set to TRUE in your development environment, FALSE (default) for production:
 #\t2\core\service\Config::$DEVMODE = true;    TODO(2): Prompt for devmode in installer
 #\t2\core\Html::setDevBeautify();
+#ini_set('display_errors', 'On');
 
 //Where to find your project:
 define('PROJECT_ROOT', ":project_root");
