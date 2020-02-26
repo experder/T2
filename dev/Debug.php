@@ -8,6 +8,7 @@
 
 namespace t2\dev;
 
+use t2\core\Database;
 use t2\core\Html;
 use t2\core\Page;
 use t2\core\service\Arrays;
@@ -156,7 +157,7 @@ class Debug {
 
 	private static function stats_db(Page $page) {
 		$confirm_class = "confirm_good";
-		if (!$page->uses_database()) {
+		if (Database::get_singleton(false) === false) {
 			return new Html("div", "<del>DB</del>", array(
 				"class" => "dev_stats_queries abutton $confirm_class",
 			));

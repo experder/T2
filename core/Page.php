@@ -23,10 +23,6 @@ class Page {
 	/** @var Page $singleton */
 	private static $singleton = null;
 
-	/**
-	 * @deprecated TODO
-	 */
-	protected $use_database;
 	private static $recusion_protection_abort = true;
 
 	/**
@@ -74,13 +70,9 @@ class Page {
 	 * @param string $id
 	 * @param string $title
 	 */
-	public function __construct($id, $title, $use_database = true) {
-		if ($use_database && Database::get_singleton(false) === false) {
-			$use_database = false;
-		}
-		$this->use_database = $use_database;
+	public function __construct($id, $title) {
 		$this->reset($id, $title);
-		if (!$this->use_database) {
+		if (Database::get_singleton(false) === false) {
 			Config::init_http_root(true);
 		}
 	}
@@ -104,10 +96,6 @@ class Page {
 		self::$header = $header;
 	}
 
-	public function uses_database() {
-		return $this->use_database;
-	}
-
 	/**
 	 * @param bool $halt_on_error
 	 * @return Page|false
@@ -115,7 +103,7 @@ class Page {
 	public static function get_singleton($halt_on_error = true) {
 		if (self::$singleton === null) {
 			if ($halt_on_error) {
-				new Error_("Please initialize Page singelton first", "NO_PAGE", "\$page = \\t2\\core\\Page::init(\"PAGEID_MYMODULE_MYPAGE\", \"My page\");", 1);
+				new Error("NO_PAGE", "Please initialize Page singelton first", "\$page = \\t2\\core\\Page::init(\"PAGEID_MYMODULE_MYPAGE\", \"My page\");", 1);
 			} else {
 				return false;
 			}
