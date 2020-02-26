@@ -50,7 +50,8 @@ class Install_wizard {//TODO(F): Install wizard: Prompt all field in one form
 
 	public static function prompt_dbParams() {
 		if (Request::cmd("submit_db_credentials")) {
-			Page::$compiler_messages[] = self::init_config();
+			$feedback = self::init_config();
+			Page::add_message($feedback);
 			return;
 		}
 
@@ -80,9 +81,9 @@ class Install_wizard {//TODO(F): Install wizard: Prompt all field in one form
 	private static function prompt_coreUser() {
 		if (Request::cmd("submit_db_rootUser")) {
 			if (!Request::value('username')) {
-				Page::$compiler_messages[] = new Message(Message::TYPE_ERROR, "Username required.");
+				Page::add_message_error_("Username required.");
 			} else if (Request::value('password') !== Request::value('password2')) {
-				Page::$compiler_messages[] = new Message(Message::TYPE_ERROR, "Passwords doesn't match.");
+				Page::add_message_error_("Passwords doesn't match.");
 			} else {
 				return;
 			}
@@ -140,9 +141,9 @@ class Install_wizard {//TODO(F): Install wizard: Prompt all field in one form
 		if (Config::$DEVMODE) {
 			if (isset($_REQUEST['initialize_module_navi'])) {
 				$msg = Tools::create_new_module($mod_id, $mod_id, $path, array("My_Navigation.php"));
-				Page::$compiler_messages[] = $msg;
+				Page::add_message($msg);
 			} else {
-				Page::$compiler_messages[] = new Message(Message::TYPE_ERROR, Html::DIV("No navigation set for module '$mod_id'! [<a href='?initialize_module_navi'>Create blank navigation</a>]", "dev"));
+				Page::add_message_error_(Html::DIV("No navigation set for module '$mod_id'! [<a href='?initialize_module_navi'>Create blank navigation</a>]", "dev"));
 			}
 		}
 	}
@@ -158,7 +159,7 @@ class Install_wizard {//TODO(F): Install wizard: Prompt all field in one form
 
 		$database = new Database($host, $dbname, $user, $password);
 
-		Page::$compiler_messages[] = new Message(Message::TYPE_CONFIRM, "Database \"$dbname\" created.");
+		Page::add_message_confirm_("Database \"$dbname\" created.");
 
 		return $database;
 	}
@@ -169,7 +170,7 @@ class Install_wizard {//TODO(F): Install wizard: Prompt all field in one form
 			Templates::create_file($target, ROOT_DIR . '/dev/templates/update.cmd', array(
 				":rel_root" => Files::relative_path(PROJECT_ROOT, ROOT_DIR),
 			));
-			Page::$compiler_messages[] = new Message(Message::TYPE_CONFIRM, "Updater file \"$target\" created.");
+			Page::add_message_confirm_("Updater file \"$target\" created.");
 		} else if ($platform_checked == Config::PLATFORM_LINUX) {
 			$target = PROJECT_ROOT . '/update.sh';
 			Templates::create_file($target, ROOT_DIR . '/dev/templates/update.sh', array(
@@ -177,13 +178,13 @@ class Install_wizard {//TODO(F): Install wizard: Prompt all field in one form
 				"\r\n" => "\n",
 				":rel_root" => Files::relative_path(PROJECT_ROOT, ROOT_DIR),
 			));
-			Page::$compiler_messages[] = new Message(Message::TYPE_CONFIRM, "Updater file \"$target\" created.");
+			Page::add_message_confirm_("Updater file \"$target\" created.");
 
 			//Try to set rights:
 			$result = `chmod 777 "$target" 2>&1`;
 
 			if ($result) {
-				Page::$compiler_messages[] = new Message(Message::TYPE_INFO, "Please set appropriate rights [<a href='" . Config::get_value('HTTP_ROOT') . "/help/install.md#linux' target='_blank'>HELP</a>]! $result");
+				Page::add_message_info_("Please set appropriate rights [<a href='" . Config::get_value('HTTP_ROOT') . "/help/install.md#linux' target='_blank'>HELP</a>]! $result");
 			}
 		} else {
 			//Should not happen because $platform_checked should be checked already
@@ -211,11 +212,11 @@ class Install_wizard {//TODO(F): Install wizard: Prompt all field in one form
 		$root_user = Request::value('username', 'root');
 		$root_pass = Request::value('password', '');
 		$core_user = DB_CORE_PREFIX . '_user';
-		$database->insert_assoc($core_user, array(
+		$database->insert_assoc2($core_user, array(
 			"username" => $root_user,
 			"pass_hash" => md5($root_pass),
 		));
-		Page::$compiler_messages[] = new Message(Message::TYPE_CONFIRM, "User \"$root_user\" created.");
+		Page::add_message_confirm_("User \"$root_user\" created.");
 
 		return $msg;
 	}

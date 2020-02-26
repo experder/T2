@@ -154,7 +154,7 @@ class Includes {
 		self::$working = true;
 		self::do_download($id, $download, $page, $subdir);
 		if (file_exists($file)) {
-			Page::$compiler_messages[] = new Message(Message::TYPE_CONFIRM, "Installed include \"$file0\".");
+			Page::add_message_confirm_("Installed include \"$file0\".");
 			$page->add_javascript($id, Config::cfg_http_project() . "/includes/" . $file0, $css);
 			return true;
 		}
@@ -176,7 +176,7 @@ class Includes {
 			self::do_download($id, $download);
 		}
 		if (file_exists($file)) {
-			Page::$compiler_messages[] = new Message(Message::TYPE_CONFIRM, "Installed include \"$file0\".");
+			Page::add_message_confirm_("Installed include \"$file0\".");
 			/** @noinspection PhpIncludeInspection */
 			require_once $file;
 			return true;

@@ -21,10 +21,10 @@ use t2\Start;
 class Page {
 
 	/** @var Page $singleton */
-	static private $singleton = null;
+	private static $singleton = null;
 
 	/**
-	 * @deprecated
+	 * @deprecated TODO
 	 */
 	protected $use_database;
 	private static $recusion_protection_abort = true;
@@ -41,15 +41,8 @@ class Page {
 
 	/**
 	 * @var Message[] $messages
-	 * @deprecated TODO: Use only $compiler_messages
 	 */
-	public $messages = array();
-
-	/**
-	 * @var Message[] $compiler_messages pre-init messages
-	 * TODO(1): Make private (\t2\core\Page::$compiler_messages)
-	 */
-	public static $compiler_messages = array();
+	private static $messages = array();
 
 	/**
 	 * @var Stylesheet[] $stylesheets
@@ -65,13 +58,6 @@ class Page {
 	 * @var string|null $focus_field_id
 	 */
 	private $focus_field_id = null;
-
-	/**
-	 * @param string|null $focus_field_id
-	 */
-	public function set_focusFieldId($focus_field_id) {
-		$this->focus_field_id = $focus_field_id;
-	}
 
 	private $inline_js = "";
 
@@ -97,6 +83,13 @@ class Page {
 		if (!$this->use_database) {
 			Config::init_http_root(true);
 		}
+	}
+
+	/**
+	 * @param string|null $focus_field_id
+	 */
+	public function set_focusFieldId($focus_field_id) {
+		$this->focus_field_id = $focus_field_id;
 	}
 
 	public function reset($pageId, $title) {
@@ -185,47 +178,79 @@ class Page {
 		$this->html_nodes[] = $node;
 	}
 
-	public function add_p($content, $params = array()) {
-		$this->add(Html::P($content, null, $params));
+	public static function add_message(Message $message) {
+		self::$messages[] = $message;
+	}
+
+	/**
+	 * @return Message[]
+	 */
+	public static function get_messages() {
+		return self::$messages;
 	}
 
 	/**
 	 * @param Message $message
 	 * @return Page $this
+	 * @deprecated
 	 */
 	private function add_message_(Message $message) {
-		$this->messages[] = $message;
+		self::$messages[] = $message;
 		return $this;
 	}
 
+	/**
+	 * @deprecated
+	 */
 	public function add_message_error($message) {
 		$this->add_message_(new Message(Message::TYPE_ERROR, $message));
 	}
 
+	/**
+	 * @deprecated
+	 */
 	public function add_message_info($message) {
 		$this->add_message_(new Message(Message::TYPE_INFO, $message));
 	}
 
+	/**
+	 * @deprecated
+	 */
 	public function add_message_confirm($message) {
 		$this->add_message_(new Message(Message::TYPE_CONFIRM, $message));
 	}
 
+	/**
+	 * @deprecated
+	 */
 	public function add_message_ok($message) {
 		$this->add_message_confirm($message);
 	}
 
+	/**
+	 * @param string $message
+	 */
 	public static function add_message_error_($message) {
-		self::get_singleton()->add_message_error_($message);
+		self::add_message(new Message(Message::TYPE_ERROR, $message));
 	}
 
+	/**
+	 * @param string $message
+	 */
 	public static function add_message_info_($message) {
-		self::get_singleton()->add_message_info($message);
+		self::add_message(new Message(Message::TYPE_INFO, $message));
 	}
 
+	/**
+	 * @param string $message
+	 */
 	public static function add_message_confirm_($message) {
-		self::get_singleton()->add_message_confirm($message);
+		self::add_message(new Message(Message::TYPE_CONFIRM, $message));
 	}
 
+	/**
+	 * @param string $message
+	 */
 	public static function add_message_ok_($message) {
 		self::add_message_confirm_($message);
 	}
@@ -343,11 +368,6 @@ class Page {
 		return isset($this->stylesheets[$id]);
 	}
 
-	public static function get_demoskins_stylesheet_print($style) {
-		$skin_dir = Config_core::skin_dir();
-		return new Stylesheet($skin_dir . "/print.css", Stylesheet::MEDIA_PRINT);
-	}
-
 	public static function get_stylesheet($css, $media = "all") {
 		$skindir = Config_core::skin_dir();
 		return new Stylesheet("$skindir/$css", $media);
@@ -355,15 +375,10 @@ class Page {
 
 	private function get_css_html() {
 		$stylesheets = array();
-		$style = Config::get_value_core("SKIN");
-		if (in_array($style, array("bare"))) {
-			$stylesheets["CSS_ID_ALL"] = new Stylesheet(Config::get_value_core('HTTP_ROOT') . "/skins/$style/all.css");
-			#$stylesheets["CSS_ID_DEV"] = new Stylesheet(Config::get_value_core('HTTP_ROOT') . "/skins/$style/dev.css");
-			$stylesheets["CSS_ID_PRINT"] = self::get_demoskins_stylesheet_print($style);
-		} else {
-			$stylesheets["CSS_ID_ALL"] = new Stylesheet("$style/all.css");
-			$stylesheets["CSS_ID_PRINT"] = self::get_demoskins_stylesheet_print($style);
-		}
+		$skin_dir = Config_core::skin_dir();
+		$stylesheets["CSS_ID_ALL"] = new Stylesheet($skin_dir . "/all.css");
+		#$stylesheets["CSS_ID_DEV"] = new Stylesheet(Config::get_value_core('HTTP_ROOT') . "/skins/$style/dev_forms.css");
+		$stylesheets["CSS_ID_PRINT"] = new Stylesheet($skin_dir . "/print.css", Stylesheet::MEDIA_PRINT);
 		foreach ($this->stylesheets as $key => $stylesheet) {
 			$stylesheets[$key] = $stylesheet;
 		}
@@ -379,11 +394,7 @@ class Page {
 
 	private function get_message_html() {
 		$html = "";
-		/**
-		 * @var Message[] $all_messages
-		 */
-		$all_messages = array_merge(self::$compiler_messages, $this->messages);
-		foreach ($all_messages as $message) {
+		foreach (self::$messages as $message) {
 			$css_class = $message->get_type_cssClass();
 			$html .= "\n\t<div class='message $css_class'>" . $message->get_message() . "</div>";
 		}
@@ -433,30 +444,11 @@ class Page {
 
 		if (is_array($messages)) {
 			foreach ($messages as $message) {
-				Page::$compiler_messages[] = $message;
-			}
-		}
-
-		//Can be removed if all messages are moved to static array:
-		if ($page = Page::get_singleton(false)) {
-			foreach ($page->messages as $message) {
-				Page::$compiler_messages[] = $message;
+				self::add_message($message);
 			}
 		}
 
 		$page = new Page($id, $title);
-//		$page = Page::get_singleton(false);
-//		if ($page === false) {
-//
-//			$page = new Page($id, $title);
-//
-//			if ($body !== null) {
-//				$page->add($body);
-//			}
-//
-//		}else{
-//			$page->reset($id, $title);
-//		}
 
 		$page->send_and_quit();
 
@@ -466,7 +458,7 @@ class Page {
 
 	public function get_messages_plain() {
 		$text = "";
-		foreach (self::$compiler_messages as $msg) {
+		foreach (self::$messages as $msg) {
 			$char = '?';
 			$type = $msg->getType();
 			if ($type == Message::TYPE_ERROR) {

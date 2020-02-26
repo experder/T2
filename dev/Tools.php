@@ -30,7 +30,7 @@ class Tools {
 				Request::value('module_id'),
 				Request::value('path')
 			);
-			Page::$compiler_messages[] = $msg;
+			Page::add_message($msg);
 			if ($msg->getType() == Message::TYPE_CONFIRM) {
 				$page->send_and_quit();
 			}

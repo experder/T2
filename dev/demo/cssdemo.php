@@ -20,10 +20,12 @@ use t2\core\form\Formfield_textarea;
 use t2\core\Html;
 use t2\core\Page;
 use t2\core\service\Config;
+use t2\core\service\Config_core;
 use t2\core\service\Js;
 use t2\core\service\Markdown;
 use t2\core\service\Request;
 use t2\core\service\Strings;
+use t2\core\Stylesheet;
 use t2\core\table\Cell;
 use t2\core\table\Table;
 use t2\dev\Debug;
@@ -48,10 +50,8 @@ $page->add(Html::H1("CSS demo"));
 
 if ($print_view) {
 	$page->add(Html::A("screen.css", $_SERVER['SCRIPT_NAME']));
-	$style = Config::get_value_core("SKIN");
-	$stylesheet = Page::get_demoskins_stylesheet_print($style);
-	$stylesheet->setMedia('all');
-	$page->add_stylesheet("CSS_ID_PRINT", $stylesheet);
+	$skin_dir = Config_core::skin_dir();
+	$page->add_stylesheet("CSS_ID_PRINT", new Stylesheet($skin_dir . "/print.css", 'all'));
 
 	//A4: b=21cm minus 2x15mm padding = 18cm
 	$page->internal_css .= "@media screen {

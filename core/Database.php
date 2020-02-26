@@ -283,30 +283,15 @@ class Database {
 	 * @return false|int
 	 */
 	public static function insert_assoc_($table, $data_set, $backtrace_depth = 0) {
-		return self::get_singleton()->insert_assoc($table, $data_set, $backtrace_depth + 1);
+		return self::get_singleton()->insert_assoc2($table, $data_set, $backtrace_depth + 1);
 	}
 
 	/**
 	 * @param string $tabelle
 	 * @param array  $data_set
 	 * @param int    $backtrace_depth
-	 * @return false|int Inserted ID or false
-	 *
-	 * @deprecated TODO
+	 * @return false|int
 	 */
-	public function insert_assoc($tabelle, $data_set, $backtrace_depth = 0) {
-		$keys_sql = array();
-		$values_sql = array();
-		foreach ($data_set as $key => $value) {
-			$keys_sql[] = "`$key`";
-			$values_sql[] = ($value === null ? "NULL" : ("'" . Strings::escape_sql($value) . "'"));
-		}
-		$keys = implode(", ", $keys_sql);
-		$values = implode(", ", $values_sql);
-		$query2 = "INSERT INTO $tabelle ($keys) VALUES ($values);";
-		return self::insert($query2, null, $backtrace_depth + 1);
-	}
-
 	public static function insert_assoc2($tabelle, $data_set, $backtrace_depth = 0) {
 		$keys_array = array_keys($data_set);
 		$keys_prefixed = Arrays::prefix_values(':', $keys_array);
@@ -317,7 +302,7 @@ class Database {
 		}
 		$keys = implode(",", $keys_array);
 		$values = implode(",", $keys_prefixed);
-		$database->insert("INSERT INTO $tabelle ($keys) VALUES ($values);", $substitutions);
+		return $database->insert("INSERT INTO $tabelle ($keys) VALUES ($values);", $substitutions, $backtrace_depth+1);
 	}
 
 	/**
@@ -388,7 +373,7 @@ class Database {
 		} else {
 			//Data didn't exist: INSERT
 			$data_alltogehter = array_merge($data_where, $data_set);
-			$id = $this->insert_assoc($tabelle, $data_alltogehter);
+			$id = $this->insert_assoc2($tabelle, $data_alltogehter);
 			return $id ? -$id : false;
 		}
 	}

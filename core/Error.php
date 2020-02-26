@@ -132,13 +132,13 @@ class Error {
 
 			if (Config::$DEVMODE) {
 
-				Page::$compiler_messages[] = $msg;
+				Page::add_message($msg);
 
 			}
 
 		} else {
 
-			Page::$compiler_messages[] = $msg;
+			Page::add_message($msg);
 
 			Page::abort("ERROR", null, "PAGEID_CORE_ERRORABORT");
 			exit;
@@ -150,7 +150,7 @@ class Error {
 		$backtrace_depth = 0) {
 		echo "(AN ERROR OCCURED IN ERROR HANDLING)";
 		#echo "<br>".$this->get_msg_body_($backtrace_depth+1);
-		foreach (Page::$compiler_messages as $msg) {
+		foreach (Page::get_messages() as $msg) {
 			echo "<hr>" . $msg->get_message();
 		}
 		exit;

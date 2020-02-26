@@ -128,9 +128,9 @@ class Admin {
 			}
 		}
 		if ($updated) {
-			Page::$compiler_messages[] = new Message(Message::TYPE_CONFIRM, "Updated: " . implode(", ", $updated));
+			Page::add_message_confirm_("Updated: " . implode(", ", $updated));
 		} else {
-			Page::$compiler_messages[] = new Message(Message::TYPE_INFO, "(Nothing updated)");
+			Page::add_message_info_("(Nothing updated)");
 		}
 	}
 

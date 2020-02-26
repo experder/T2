@@ -175,7 +175,7 @@ class Config {
 			new Error("SET_HTTP_ROOT", "Could not set HTTP_ROOT.");
 		}
 		Config::set_value('HTTP_ROOT', $value);
-		Page::$compiler_messages[] = new Message(Message::TYPE_CONFIRM, "HTTP_ROOT set to: \"$value\"");
+		Page::add_message_confirm_("HTTP_ROOT set to: \"$value\"");
 		return $value;
 	}
 
@@ -280,7 +280,7 @@ class Config {
 			if ($error->isType(Error::TYPE_TABLE_NOT_FOUND)) {
 				$report = Install_wizard::init_db_config();
 				$msg = new Message(Message::TYPE_CONFIRM, "DB \"" . Database::get_singleton()->get_dbname() . "\" initialized. " . $report);
-				Page::$compiler_messages[] = $msg;
+				Page::add_message($msg);
 			} else {
 				Database::destroy();//Make Page Standalone (TODO(1)-check out!)
 				$error->report();

@@ -37,7 +37,7 @@ class Login {//TODO(F):Logout
 			new Error("SESSION_INITIALIZATION_ERROR", "Couldn't initialize session.");
 		}
 
-		Page::$compiler_messages[] = new Message(Message::TYPE_CONFIRM, "Login successful. Welcome!");
+		Page::add_message_confirm_("Login successful. Welcome!");
 		return $user;
 	}
 
@@ -54,11 +54,11 @@ class Login {//TODO(F):Logout
 				)
 			);
 			if (!$session_data) {
-				Page::$compiler_messages[] = new Message(Message::TYPE_INFO, "Session not found.");
+				Page::add_message_info_("Session not found.");
 			} else {
 				$expires = $session_data["expires"];
 				if ($expires < time()) {
-					Page::$compiler_messages[] = new Message(Message::TYPE_INFO, "Your session has expired.");
+					Page::add_message_info_("Your session has expired.");
 					Database::get_singleton()->update("DELETE FROM `$core_sessions` WHERE session_id=:session_id LIMIT 1;", array(
 						":session_id" => $session_id,
 					));
