@@ -11,6 +11,7 @@ namespace t2\dev\demo;
 require_once '../../Start.php';
 
 use t2\core\Html;
+use t2\core\Page;
 use t2\core\service\Pdf;
 use t2\core\service\Templates;
 use t2\core\Stylesheet;
@@ -19,6 +20,7 @@ use t2\Start;
 
 $page = Start::init_("PAGEID_DEV_PDFDEMO");
 Start::getNavigation()->set_invisible();
+Page::setHeader(null);
 
 $table = new Table(array(
 	array(

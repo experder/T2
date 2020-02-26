@@ -1,6 +1,8 @@
 .noprint,
 a.abutton,
-form div.buttons {
+form div.buttons,
+nav
+{
 	display: none;
 }
 

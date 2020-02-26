@@ -38,7 +38,7 @@ class Navigation {
 	private $parent = null;
 
 	private $highlight = false;
-	private $visible = true;
+	protected $visible = true;
 	private $external = false;
 
 	/**

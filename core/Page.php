@@ -238,9 +238,7 @@ class Page {
 	 * Builds and sends the HTML page.
 	 */
 	public function send_and_quit() {
-		#new Error_("!","TYPE", "DEBUG-INFO");
-//TODO(1): Der Typ muss PAGE heissen (AJAX kann auch HTML sein)
-		Start::check_type(Start::TYPE_HTML);
+		Start::check_type(Start::TYPE_PAGE);
 
 		$title = $this->get_title();
 		$css_html = $this->get_css_html();
@@ -346,7 +344,8 @@ class Page {
 	}
 
 	public static function get_demoskins_stylesheet_print($style) {
-		return new Stylesheet(Config::get_value_core('HTTP_ROOT') . "/skins/$style/print.css", Stylesheet::MEDIA_PRINT);
+		$skin_dir = Config_core::skin_dir();
+		return new Stylesheet($skin_dir . "/print.css", Stylesheet::MEDIA_PRINT);
 	}
 
 	public static function get_stylesheet($css, $media = "all") {
@@ -363,6 +362,7 @@ class Page {
 			$stylesheets["CSS_ID_PRINT"] = self::get_demoskins_stylesheet_print($style);
 		} else {
 			$stylesheets["CSS_ID_ALL"] = new Stylesheet("$style/all.css");
+			$stylesheets["CSS_ID_PRINT"] = self::get_demoskins_stylesheet_print($style);
 		}
 		foreach ($this->stylesheets as $key => $stylesheet) {
 			$stylesheets[$key] = $stylesheet;
