@@ -14,21 +14,20 @@
  */if(true)exit;/*
  * TPLDOCEND*/
 
-//TODO(1): Wizard to create this file if it doesn't exist
-
 //Server-specific configuration
-//TODO(1):Server-specific configuration
+//Server: (YOUR_SERVER_HERE)
 
 //Set to TRUE in your development environment, FALSE (default) for production:
-#\t2\core\service\Config::$DEVMODE = true;    TODO(2): Prompt for devmode in installer
+#\t2\core\service\Config::$DEVMODE = true;
 #\t2\core\Html::setDevBeautify();
 #ini_set('display_errors', 'On');
 
 //Where to find your project:
+/** @deprecated TODO */
 define('PROJECT_ROOT', ":project_root");
 
 //TODO(1): T2 is a SUBmodule, so the first root is the parent project's root
-define('HDDROOT_PROJECT', ':parent_root');
+define('HDDROOT_PROJECT', ':project_root');
 //TODO(1): The directory pointing to T2 is PROJECT SPECIFIC relative to this root. See HDDPATH_T2 in config.php
 
 

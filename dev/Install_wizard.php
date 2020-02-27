@@ -51,13 +51,14 @@ class Install_wizard {//TODO(F): Install wizard: Prompt all field in one form
 	public static function prompt_dbParams() {
 		if (Request::cmd("submit_db_credentials")) {
 			$feedback = self::init_config();
-			Page::add_message($feedback);
+			foreach ($feedback as $message){
+				Page::add_message($message);
+			}
 			return;
 		}
 
 		$form = new Form("submit_db_credentials");
 		$form->add_field(new Formfield_header(Html::H1("Database connection")));
-		#$form->add_field(new Formfield_header("Please enter sql connection parameters"));
 		$form->add_field(new Formfield_text("server_addr", "Host", "localhost"));
 		$form->add_field(new Formfield_text("tethysdb", "DB name", "tethys"));
 		$form->add_field(new Formfield_text("username", "Admin account", "root"));
@@ -65,11 +66,9 @@ class Install_wizard {//TODO(F): Install wizard: Prompt all field in one form
 
 		$form->add_field(new Formfield_header(Html::H1("Project settings")));
 		$form->add_field(new Formfield_text("project_root", "Project root directory", dirname(dirname(__DIR__))));
-		//TODO(1): Should ALWAYS be the redirect option. User should store the config in his repo. (except the password) (see config layer concept)
-		$form->add_field(new Formfield_radio("config_redirect", array(
-			new Formfield_radio_option("project", "Store config in project root"),
-			new Formfield_radio_option("t2", "Store config in submodule t2"),
-		), "", "project"));
+
+		$form->add_field(new Formfield_text("t2_subdir", null, "tethys"));
+		$form->add_field(new Formfield_text("this_server_name", null, ""));
 
 		$html = $form;
 
@@ -106,35 +105,54 @@ class Install_wizard {//TODO(F): Install wizard: Prompt all field in one form
 	}
 
 	private static function init_config() {
-		$target_file = ROOT_DIR . '/config.php';
-		$store_locally = Request::value('config_redirect') == 't2';
 		$project_root = Request::value("project_root", false);
 		if ($project_root === false) {
 			new Error("NO_ROOT", "No project root set/found.");
 		}
 		//Windows:
 		$project_root = str_replace('\\', '/', $project_root);
-		$message = "";
-		if (!$store_locally) {
-			Templates::create_file($target_file, ROOT_DIR . '/dev/templates/config_redirect.php', array(
-				":project_root" => $project_root,
-			));
-			$message .= "<br>Redirection has been created: \"$target_file\".";
-			$target_file = $project_root . '/config.php';
+
+		$messages = array();
+		//Three files to create:
+
+		//1.) Redirection to project root:
+		$source_file = ROOT_DIR . '/dev/templates/config_redirect.php';
+		$target_file = ROOT_DIR . '/config.php';
+		Templates::create_file($target_file, $source_file, array(
+			":project_root" => $project_root,
+		));
+		$messages[]= new Message(Message::TYPE_CONFIRM,"Redirection has been created: \"$target_file\".");
+
+		//2.) Project-specific configuration in project's repo:
+		$source_file = ROOT_DIR . '/dev/templates/config.php';
+		$target_file = $project_root . '/config.php';
+		$error = Templates::create_file($target_file, $source_file, array(
+			":t2_subdir" => Request::value("t2_subdir", "(please specify)"),
+		), false, false);
+		if ($error == Templates::ERROR_FILE_EXISTS) {
+			$messages[] = new Message(Message::TYPE_CONFIRM,"Using existing config file \"$target_file\".");
+		} else {
+			$messages[] = new Message(Message::TYPE_CONFIRM,"Config file \"$target_file\" has been created.");
 		}
-		$error = Templates::create_file($target_file, ROOT_DIR . '/dev/templates/config.php', array(
+
+		//3.) Server-specific configuration:
+		$source_file = ROOT_DIR . '/dev/templates/config_server_exclude.php';
+		$target_file = $project_root . '/config_server_exclude.php';
+		$error = Templates::create_file($target_file, $source_file, array(
 			":server_addr" => Request::value("server_addr", "(please specify)"),
 			":tethysdb" => Request::value("tethysdb", "(please specify)"),
 			":username" => Request::value("username", "(please specify)"),
 			":dbpass" => Request::value("dbpass", "(please specify)"),
 			":project_root" => $project_root,
+			"(YOUR_SERVER_HERE)" => Request::value("this_server_name")?:"(YOUR_SERVER_HERE)",
 		), false, false);
 		if ($error == Templates::ERROR_FILE_EXISTS) {
-			$message = "Using existing config file \"$target_file\"." . $message;
+			$messages[] = new Message(Message::TYPE_CONFIRM,"Using existing server-config file \"$target_file\".");
 		} else {
-			$message = "Config file \"$target_file\" has been created." . $message;
+			$messages[] = new Message(Message::TYPE_CONFIRM,"Server-config \"$target_file\" has been created.");
 		}
-		return new Message(Message::TYPE_CONFIRM, $message);
+
+		return $messages;
 	}
 
 	public static function api_ini_navi($mod_id, $path) {

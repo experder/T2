@@ -11,18 +11,24 @@
  * which is called from \t2\Start::init_config (maybe via redirection)
  * @see \t2\dev\Install_wizard::init_config
  * @see \t2\Start::init_config
+ */
+if (true) exit;/*
  * TPLDOCEND*/
 
-//TODO(1): call config_server_exclude
+if(!file_exists('config_server_exclude.php')){
+	//TODO:Start Wizard
+}
+require_once 'config_server_exclude.php';
 
-define('HDDPATH_T2', ':t2_subdir');//    Default: '/tethys'
+//Subpath of the T2 toolbox within your project:
+define('HDDPATH_T2', ':t2_subdir');
 
 //Set your own navigation:
-#require_once '/var/www/myproject/MyNavigation.php';
+#require_once HDDROOT_PROJECT.'/MyNavigation.php';
 #\t2\Start::setNavigation(new MyNavigation());
 
 //Set your own header and footer:
-#require_once '/var/www/myproject/MyHeader.php';
+#require_once HDDROOT_PROJECT.'/MyHeader.php';
 #\t2\core\Page::setHeader(new MyHeader());
 
 //TODO(1): project title, skin, modules, login_html, session expires
