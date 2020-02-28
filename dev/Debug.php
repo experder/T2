@@ -20,6 +20,7 @@ class Debug {
 
 	private static $core_queries = array(
 		"load_values ( :ROOT_DIR/core/service/Config.php::DEV_LVLINE )",
+		"load_values_api ( :ROOT_DIR/core/service/Config.php::DEV_LINE_API )",
 		"check_session ( :ROOT_DIR/core/service/Login.php:53 )",
 		"update_session ( :ROOT_DIR/core/service/Login.php:84 )",
 	);
@@ -31,6 +32,7 @@ class Debug {
 		":ROOT_DIR/Start.php",
 		":ROOT_DIR/core/service/Autoloader.php",
 		":ROOT_DIR/config.php",
+		":HDDROOT_PROJECT/config_server_exclude.php",
 		":ROOT_DIR/core/Database.php",
 		":ROOT_DIR/core/Database_Service.php",
 		":ROOT_DIR/core/service/Config.php",
@@ -38,6 +40,7 @@ class Debug {
 		":ROOT_DIR/core/service/User.php",
 		":ROOT_DIR/core/service/Login.php",
 		":ROOT_DIR/core/Page.php",
+		":ROOT_DIR/core/service/Config_core.php",
 		":ROOT_DIR/core/Stylesheet.php",
 		":ROOT_DIR/api/Navigation.php",
 		":ROOT_DIR/core/mod/Core_navigation.php",
@@ -106,8 +109,11 @@ class Debug {
 		if (self::$core_queries_compiled === null) {
 			self::$core_queries_compiled = array();
 			foreach (self::$core_queries as $query) {
-				$query = str_replace(':ROOT_DIR', ROOT_DIR, $query);
-				$query = str_replace(':DEV_LVLINE', Config::$dev_lv_line, $query);
+				$query = Strings::replace_byArray($query, array(
+					':ROOT_DIR'=>ROOT_DIR,
+					':DEV_LVLINE'=>Config::$dev_lv_line,
+					':DEV_LINE_API'=>Config::$dev_line_api,
+				));
 				self::$core_queries_compiled[] = $query;
 			}
 		}
@@ -122,7 +128,9 @@ class Debug {
 		if (self::$core_includes_compiled === null) {
 			self::$core_includes_compiled = array();
 			foreach (self::$core_includes as $d) {
-				self::$core_includes_compiled[] = str_replace(':ROOT_DIR', ROOT_DIR, $d);
+				$d = str_replace(':ROOT_DIR', ROOT_DIR, $d);
+				$d = str_replace(':HDDROOT_PROJECT', HDDROOT_PROJECT, $d);
+				self::$core_includes_compiled[] = $d;
 			}
 
 			//The script itself:

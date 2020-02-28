@@ -23,6 +23,8 @@ class Config {
 
 	private static $cfg_modules = null;
 
+	public static $dev_lv_line = 0;
+
 	const PLATFORM_WINDOWS = 'windows';
 	const PLATFORM_LINUX = 'linux';
 
@@ -244,8 +246,29 @@ class Config {
 		return $r;
 	}
 
+	public static $dev_line_api = __LINE__;
+	public static function load_values_api() {
+		$modules = Config::get_modules_ids();
 
-	public static $dev_lv_line = 0;
+		$substitutions = array();
+		$ids_keys = array();
+		$i = 1;
+		foreach ($modules as $id) {
+			$key = ':key' . ($i++);
+			$ids_keys[] = $key;
+			$substitutions[$key] = $id;
+		}
+		$ids_sql = implode(',', $ids_keys);
+
+		/*$dev_line_api*/$result = Database_Service::select("SELECT module,`content`,idstring FROM mycore_config WHERE `idstring` IN ('API_DIR') AND module IN ($ids_sql) AND userid<=>NULL;", $substitutions);
+#Debug::out($result);
+		foreach ($result as $row){
+			$module = $row['module'];
+			$key = $row['idstring'];
+			$value = $row['content'];
+			self::store_val($module, '', $key, $value);
+		}
+	}
 
 	/**
 	 * @param string[]    $ids
@@ -253,9 +276,6 @@ class Config {
 	 * @param int|null    $user
 	 */
 	public static function load_values($ids, $module = null, $user = null) {
-		#$ids_sql = Strings::build_sql_collection($ids);
-		#$ids_sql = Strings::build_collection($ids);
-
 		$substitutions = array();
 		$ids_keys = array();
 		$i = 1;
@@ -338,5 +358,6 @@ class Config {
 		return $module_ids;
 	}
 
-
 }
+
+Config::$dev_line_api+=14;

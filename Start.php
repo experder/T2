@@ -140,7 +140,10 @@ class Start {
 			"HTTP_ROOT",
 			"SESSION_EXPIRES",
 			"MODULES",
+			"MODULE_ROOT",
+			"MODULE_PATH",
 		));
+		Config::load_values_api();
 	}
 
 	private static function init_userrights() {
