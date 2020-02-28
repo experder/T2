@@ -16,7 +16,7 @@ if (true) exit;/*
  * TPLDOCEND*/
 
 if(!file_exists('config_server_exclude.php')){
-	//TODO:Start Wizard
+	//TODO(1):Start Wizard
 }
 require_once 'config_server_exclude.php';
 
@@ -30,7 +30,5 @@ define('HDDPATH_T2', ':t2_subdir');
 //Set your own header and footer:
 #require_once HDDROOT_PROJECT.'/MyHeader.php';
 #\t2\core\Page::setHeader(new MyHeader());
-
-//TODO(1): project title, skin, modules, login_html, session expires
 
 //TODO(1): module_root, module_path, default_api

@@ -13,8 +13,6 @@ use t2\core\Error;
 use t2\core\form\Form;
 use t2\core\form\Formfield_header;
 use t2\core\form\Formfield_password;
-use t2\core\form\Formfield_radio;
-use t2\core\form\Formfield_radio_option;
 use t2\core\form\Formfield_text;
 use t2\core\Html;
 use t2\core\Message;
@@ -25,7 +23,8 @@ use t2\core\service\Files;
 use t2\core\service\Request;
 use t2\core\service\Templates;
 
-class Install_wizard {//TODO(F): Install wizard: Prompt all field in one form
+class Install_wizard {
+	//TODO(F): Install wizard: Prompt all field in one form
 
 	public static function prompt_http_root() {
 		Config::$prompting_http_root = true;

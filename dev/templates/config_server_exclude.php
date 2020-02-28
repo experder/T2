@@ -27,6 +27,7 @@
 define('PROJECT_ROOT', ":project_root");
 
 //TODO(1): T2 is a SUBmodule, so the first root is the parent project's root
+//TODO(1): dev_tools: t2 is not a submodule of a module!
 define('HDDROOT_PROJECT', ':project_root');
 //TODO(1): The directory pointing to T2 is PROJECT SPECIFIC relative to this root. See HDDPATH_T2 in config.php
 

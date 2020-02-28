@@ -134,14 +134,14 @@ class Start {
 		 * @see Admin::get_config_form()
 		 */
 		Config::load_values(array(
-			"EXTENSION",
-			"PROJECT_TITLE",
-			"SKIN",
-			"HTTP_ROOT",
-			"SESSION_EXPIRES",
 			"MODULES",
+			"SESSION_EXPIRES",
+			"HTTP_ROOT",
+			"EXTENSION",
 			"MODULE_ROOT",
 			"MODULE_PATH",
+			"PROJECT_TITLE",
+			"SKIN",
 		));
 		Config::load_values_api();
 	}

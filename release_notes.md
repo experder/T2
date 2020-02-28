@@ -2,6 +2,30 @@
 
 [[Coming features](dev/notes.md#current-todos)]
 
+### v0.3
+**Release date:** 2020-02-28  
+**DB version:** 4  
+**Release notes:**  
+A lot of open tasks.
+FIXED:
+missing class header, config wizard
+REORG:
+json data
+Includes: load all available
+moved: includes to service, class Js, core.js, ajax demo to demo module
+ENHANCED:
+update script (spinner for ajax buttons), pdfdemo, table (set_headers), Ajaxing, Accept no navigation (warning), print.css, load_values_api
+Classes: Js, Files, Pdf, Error, Warning
+NEW:
+waitSpinner, core_prefix, navi_default, header and footer, cleanup_relative_path, Create_blank_navigation, module specific api config override, config admin gui, config values admin, configuration layer (redirect, server-specific, project-specific, database-specific), dev zone (new module, notes (todos))
+Includes: tcpdf632, highlight_js
+service class: PDF
+classes: Table, Navigation, DBTable, Config_core
+js services: scroll_to_bottom, ajax_post_to_id
+demo: ajax examples
+dev: insert linebreaks to html source, default api dir, ini_set('display_errors')  
+**Extinctions:** Error_ (replaced by Error), root index (might become front-controller)
+
 ### v0.2
 **Release date:** 2020-01-29  
 **DB version:** 4  
