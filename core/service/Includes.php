@@ -197,9 +197,8 @@ class Includes {
 				document.getElementById(\"id_hiddenformredirect\").submit();
 			})");
 			$form = new Form("doload_$id", "", false, "post", array('id' => 'id_hiddenformredirect'));
-			Page::abort("Downloading...", array(
-				new Message(Message::TYPE_INFO, "Downloading \"$download\"..." . $form),
-			));
+			Page::add_message_info_("Downloading \"$download\"..." . $form);
+			$page->send_and_quit();
 		}
 
 		$filename = basename($download);

@@ -138,4 +138,8 @@ class Strings {
 		return "?" . implode("&", $pairs);
 	}
 
+	public static function leading_zeroes($number, $digits=2) {
+		return str_pad($number, $digits, '0', STR_PAD_LEFT);
+	}
+
 }

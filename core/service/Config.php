@@ -260,8 +260,10 @@ class Config {
 		}
 		$ids_sql = implode(',', $ids_keys);
 
-		/*$dev_line_api*/$result = Database_Service::select("SELECT module,`content`,idstring FROM mycore_config WHERE `idstring` IN ('API_DIR') AND module IN ($ids_sql) AND userid<=>NULL;", $substitutions);
-#Debug::out($result);
+		$core_config = DB_CORE_PREFIX . '_config';
+		/*$dev_line_api*/$result = Database_Service::select(
+			"SELECT module,`content`,idstring FROM $core_config WHERE `idstring` IN ('API_DIR') AND module IN ($ids_sql) AND userid<=>NULL;"
+				, $substitutions);
 		foreach ($result as $row){
 			$module = $row['module'];
 			$key = $row['idstring'];
@@ -360,4 +362,4 @@ class Config {
 
 }
 
-Config::$dev_line_api+=14;
+Config::$dev_line_api+=17;

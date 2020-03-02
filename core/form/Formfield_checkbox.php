@@ -22,14 +22,14 @@ class Formfield_checkbox extends Formfield {
 		return "<div" . $this->getParams_outer() . ">"
 			. "<label>$label</label>"
 			. "<div class='formfield_inner' " . $this->get_title() . " ><label class='radiolabel'><div>"
-			. "<input type='checkbox' " . ($this->value ? " checked" : "") . $this->getParams_inner() . "/>"
+			. $this->inner_html()
 			. '' . $this->get_label() . '</div></label>'
 			. "</div>"
 			. "</div>";
 	}
 
 	public function inner_html() {
-		return "???";//(never used)
+		return "<input type='checkbox' " . ($this->value ? " checked" : "") . $this->getParams_inner() . "/>";
 	}
 
 }

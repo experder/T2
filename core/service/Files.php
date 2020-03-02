@@ -20,7 +20,11 @@ class Files {
 	 * @param bool   $halt_on_error
 	 * @return bool|int the number of bytes written, or <b>FALSE</b> on error.
 	 */
-	public static function save($filename, $content, $append = false, $halt_on_error = true) {
+	public static function save($filename, $content, $append = false, $halt_on_error = true, $create_dir=true) {
+		$dirname = dirname($filename);
+		if (!is_dir($dirname) && $create_dir) {
+			mkdir($dirname, 0755, true);
+		}
 		$file = @fopen($filename, $append ? "a" : "w");
 		$success = false;
 		if ($file !== false) {

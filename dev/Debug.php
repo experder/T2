@@ -129,7 +129,9 @@ class Debug {
 			self::$core_includes_compiled = array();
 			foreach (self::$core_includes as $d) {
 				$d = str_replace(':ROOT_DIR', ROOT_DIR, $d);
-				$d = str_replace(':HDDROOT_PROJECT', HDDROOT_PROJECT, $d);
+				if(defined('HDDROOT_PROJECT')){
+					$d = str_replace(':HDDROOT_PROJECT', HDDROOT_PROJECT, $d);
+				}
 				self::$core_includes_compiled[] = $d;
 			}
 
