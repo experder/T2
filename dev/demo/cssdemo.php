@@ -34,7 +34,7 @@ use t2\Start;
 $page = Start::init_("PAGEID_DEV_CSSDEMO");
 
 if (!Config::$DEVMODE) {
-	$page->add_message_error("Not available.");
+	Page::add_message_error_("Not available.");
 	$page->send_and_quit();
 }
 
@@ -62,6 +62,37 @@ if ($print_view) {
 } else {
 	$page->add(Html::A_button("print.css", "?print"));
 }
+
+/*
+======================== Tables ===========================
+ */
+$page->add(Html::H2("Tables", "tables") . "\n");
+$table_data = array(
+	array(
+		"Col.1" => "Foo",
+		"Col.2" => "Bar",
+		"Col.3" => "Barbar",
+	),
+	array(
+		"Col.1" => new Cell("fooFoo!"),
+		"Col.2" => null,
+		"Col.3" => "fooBarbar",
+	),
+	array(
+		"row3",
+		"barBar",
+		"barFoo",
+	),
+);
+$table = new Table($table_data);
+$page->add($table);
+$table2 = new Table($table_data);
+$table2->set_headers(array(
+	"Col.1" => true,
+	"Col.3" => "Three",
+	"Col.2" => "Two",
+));
+$page->add($table2);
 
 /*
 ======================== Text ===========================
@@ -110,41 +141,12 @@ $page->add(Html::A_external('External, button', 'http://tethys-framework.de', ar
 $page->add(Html::A_button('Button, external', 'http://tethys-framework.de', array(), array("target" => "_blank")) . "\n");
 
 /*
-======================== Tables ===========================
- */
-$page->add(Html::H2("Tables", "tables") . "\n");
-$table = new Table(array(
-	array(
-		"Col.1" => "Foo",
-		"Col.2" => "Bar",
-		"Col.3" => "Barbar",
-	),
-	array(
-		"Col.1" => new Cell("fooFoo!"),
-		"Col.2" => null,
-		"Col.3" => "fooBarbar",
-		"Col.4" => "Nanu?",
-	),
-	array(
-		"",
-		"barBar",
-	),
-));
-$page->add($table->__toString());
-$table->set_headers(array(
-	"Col.1" => true,
-	"Col.3" => "Three",
-	"Col.2" => "Two",
-));
-$page->add($table);
-
-/*
 ======================== Messages ===========================
  */
 
-$page->add_message_info('<b>NOTE!</b> The following error is not real!');
+Page::add_message_info_('<b>NOTE!</b> The following error is not real!');
 
-$page->add_message_error(
+Page::add_message_error_(
 	'An error occured: ERROR_TABLE_NOT_FOUND/' . time() . '<pre class="dev dev_error_info">
 [42S02] Table \'' . Database::get_singleton()->get_dbname() . '.SPACE\' doesn\'t exist
 ----------------------------------------
@@ -152,9 +154,9 @@ SELECT * FROM SPACE
 ----------------------------------------
 ' . __FILE__ . ':' . __LINE__ . '</pre>'
 );
-#\t2\core\Database::select_("SELECT * FROM SPACE");
+#\t2\core\Database_Service::select("SELECT * FROM SPACE");
 
-$page->add_message_confirm(
+Page::add_message_confirm_(
 	Html::H1('div.messages div.message h1')
 	. Html::PRE(
 		'$page->add_message_(new Message(Message::TYPE_CONFIRM, \'...\');'
@@ -166,10 +168,6 @@ $page->add_message_confirm(
 ======================== Forms ===========================
  */
 $page->add(Html::H2("Forms", "forms"));
-
-if (Request::cmd("demo")) {
-	Debug::out(print_r($_REQUEST, 1), "POST");
-}
 
 $page->add($form = new Form("demo"));
 $form->add_field(new Formfield_text("text", "text / this is a very long title with many chars in a lot of rows"));

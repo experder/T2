@@ -35,9 +35,20 @@ class Config {
 			}
 			return $value;
 		}
-		//TODO(2):Detect platform!
-		#new Error_("Can't detect platform!");
-		$value = self::PLATFORM_WINDOWS;
+
+		$value = false;
+
+		#Debug::out(PHP_OS.','.PHP_OS_FAMILY."(Verfügbar ab PHP 7.2.0)");
+		if(PHP_OS==="WINNT"){
+			$value = self::PLATFORM_WINDOWS;
+		}
+		if(PHP_OS==="Linux"){
+			$value = self::PLATFORM_LINUX;
+		}
+
+		if($value===false){
+			new Error("INTERNAL_ERROR_PLATFORMDETECTION","Can't detect platform!");
+		}
 		Config::store_val(null, null, 'PLATFORM', $value);
 		return $value;
 	}
@@ -76,7 +87,9 @@ class Config {
 	 * @deprecated
 	 */
 	public static function cfg_http_project() {
-		return self::get_value_core('HTTP_ROOT') . '/' . Files::relative_path(ROOT_DIR, PROJECT_ROOT);//TODO(F):Feature: Wizard: Prompt HTTP_PROJECT
+		$path = self::get_value_core('HTTP_ROOT') . '/' . Files::relative_path(ROOT_DIR, PROJECT_ROOT);//TODO(F):Feature: Wizard: Prompt HTTP_PROJECT
+		$path = Files::cleanup_relative_path($path);
+		return $path;
 		#return self::get_value_core('HTTP_PROJECT');
 	}
 

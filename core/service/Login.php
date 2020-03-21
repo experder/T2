@@ -130,7 +130,7 @@ class Login {//TODO(F):Logout
 		if (Request::cmd('t2_dologin')) {
 			$user = self::check_credentials(Request::value('username'), Request::value('password'));
 			if ($user === false) {
-				$page->add_message_error("Wrong credentials!");
+				Page::add_message_error_("Wrong credentials!");
 				$val_from_request = false;
 			} else {
 				return $user;

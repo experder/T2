@@ -25,6 +25,8 @@ class Page {
 
 	private static $recusion_protection_abort = true;
 
+	private static $global_id_counter = 1;
+
 	/**
 	 * @var string $id Unique string used to address page in navigation and CSS.
 	 */
@@ -66,6 +68,8 @@ class Page {
 	 */
 	private static $header = null;
 
+	private static $debug_singleton_should_exist = false;
+
 	/**
 	 * @param string $id
 	 * @param string $title
@@ -75,6 +79,14 @@ class Page {
 		if (Database::get_singleton(false) === false) {
 			Config::init_http_root(true);
 		}
+		if(self::$debug_singleton_should_exist && Config::$DEVMODE){
+			self::add_message_warn("Page should not be instantiated multiple times!<hr>".Debug::backtrace(1,"<br>"));
+		}
+		self::$debug_singleton_should_exist = true;
+	}
+
+	public static function get_next_global_id() {
+		return self::$global_id_counter++;
 	}
 
 	/**
@@ -121,7 +133,7 @@ class Page {
 			new Error("DOUBLE_INIT", "Page is already initialized!", null, 1);
 		}
 
-		$title = "$id";//TODO(1):Get title from navigation
+		$title = Start::getNavigation()->getTitle($id);
 
 		self::$singleton = new Page($id, $title);
 
@@ -160,7 +172,7 @@ class Page {
 			if (is_bool($node)) {
 				$hint = "Booleans need to be converted to strings.\n\$page->add(\$ok?'Yes':'No');";
 			}
-			new Error_("Invalid node!", "ERROR_INVALID_NODE", $hint, 1);
+			new Error("ERROR_INVALID_NODE", "Invalid node!", $hint, 1);
 		}
 
 		$this->html_nodes[] = $node;
@@ -175,44 +187,6 @@ class Page {
 	 */
 	public static function get_messages() {
 		return self::$messages;
-	}
-
-	/**
-	 * @param Message $message
-	 * @return Page $this
-	 * @deprecated
-	 */
-	private function add_message_(Message $message) {
-		self::$messages[] = $message;
-		return $this;
-	}
-
-	/**
-	 * @deprecated
-	 */
-	public function add_message_error($message) {
-		$this->add_message_(new Message(Message::TYPE_ERROR, $message));
-	}
-
-	/**
-	 * @deprecated
-	 */
-	public function add_message_info($message) {
-		$this->add_message_(new Message(Message::TYPE_INFO, $message));
-	}
-
-	/**
-	 * @deprecated
-	 */
-	public function add_message_confirm($message) {
-		$this->add_message_(new Message(Message::TYPE_CONFIRM, $message));
-	}
-
-	/**
-	 * @deprecated
-	 */
-	public function add_message_ok($message) {
-		$this->add_message_confirm($message);
 	}
 
 	/**
@@ -239,8 +213,15 @@ class Page {
 	/**
 	 * @param string $message
 	 */
-	public static function add_message_ok_($message) {
+	public static function add_message_ok($message) {
 		self::add_message_confirm_($message);
+	}
+
+	/**
+	 * @param string $message
+	 */
+	public static function add_message_warn($message) {
+		self::add_message_error_($message);
 	}
 
 	public function add_inline_js($js) {
@@ -303,16 +284,8 @@ class Page {
 		return $waitSpinner;
 	}
 
-	/**
-	 * @deprecated TODO Stattdessen: Includes::js_jquery341($page);
-	 */
-	public function add_js_jquery341() {
-		Includes::js_jquery341($this);
-		#$this->add_javascript("JS_ID_JQUERY", "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js");
-	}
-
 	public function add_js_core() {
-		$this->add_js_jquery341();
+		Includes::js_jquery341($this);
 		$this->add_javascript("JS_ID_T2CORE", Config::get_value_core('HTTP_ROOT') . "/core/core.js");
 	}
 

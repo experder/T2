@@ -197,6 +197,17 @@ class Html {
 		return new Html("button", $value, $params);
 	}
 
+	public static function hide_data_html($title, $data, $id=null, $title_class="abutton", $data_class="") {
+		Page::get_singleton()->add_js_core();
+
+		if($id===null){
+			$id = "detail".Page::get_next_global_id();
+		}
+		$title_span = new Html("span", $title, array("onclick" => "t2_toggle_detail_zoom('$id',this);", "class" => "zoom-in"));
+		$detail = new Html("pre", $data, array("style" => "display:none;", "class" => $data_class, "id" => $id));
+		return new Html("div", $title_span, array("class" => $title_class)) . $detail;
+	}
+
 	public static function PRE($content, $classes = array(), $params = array()) {
 		$params["class"] = implode(" ", $classes);
 		return new Html("pre", $content, $params);

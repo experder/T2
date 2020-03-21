@@ -10,7 +10,8 @@ namespace t2\core\mod;
 
 require_once '../../Start.php';
 
-use t2\core\Database;
+use t2\core\Database_Service;
+use t2\core\Page;
 use t2\core\table\Table;
 use t2\Start;
 
@@ -26,10 +27,11 @@ $user = new D_User(array(
 
 $user->q_insert_all();
 
-$data = Database::select_("SELECT * FROM mycore_user;");
+$core_user = DB_CORE_PREFIX . '_user';
+$data = Database_Service::select("SELECT * FROM $core_user;");
 $table = new Table($data);
 $page->add($table);
 
-$page->add_message_ok("Datensatz hinzugefügt!");
+Page::add_message_ok("Datensatz hinzugefügt!");
 
 $page->send_and_quit();

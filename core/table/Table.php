@@ -9,6 +9,8 @@
 namespace t2\core\table;
 
 use t2\core\Html;
+use t2\core\Page;
+use t2\core\service\Includes;
 
 class Table {
 
@@ -20,8 +22,20 @@ class Table {
 	private $rows = array();
 	private $headers = null;
 
-	public function __construct($data = array()) {
+	public $class = null;
+
+	private $id;
+
+	public function __construct($data = array(), $id=null, $datatables=true) {
 		$this->add_rows($data);
+		if($id===null){
+			$id = "table".Page::get_next_global_id();
+		}
+		$this->id=$id;
+		if($datatables){
+			Includes::js_datatables11020();
+			$this->class = "datatable";
+		}
 	}
 
 	/**
@@ -60,9 +74,18 @@ class Table {
 	}
 
 	public function __toString() {
+		return $this->toHTML();
+	}
+	public function toHTML() {
 
 		//TABLE
-		$html_table = new Html('table', null);
+		$params = array(
+			"id" => $this->id,
+		);
+		if($this->class){
+			$params['class']=$this->class;
+		}
+		$html_table = new Html('table', null, $params);
 		$html_table->addChild(new Html('thead', null, null, array(
 			$thead = new Html('tr', null)
 		)));

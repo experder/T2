@@ -71,7 +71,7 @@ class Debug {
 	public static function out($val = null, $header = null) {
 
 		if ($val !== null) {
-			$val = print_r($val, 1);
+			$val = htmlentities(print_r($val, 1));
 			$val .= "<hr>";
 		}
 		$val .= self::backtrace(1);
@@ -103,6 +103,17 @@ class Debug {
 		$runtime = round(Debug::get_runtime(), 3);
 		$confirm_class = ($runtime >= self::TOO_LONG_TIME ? "confirm_bad" : "confirm_good");
 		return new Html("div", "<b>" . $runtime . "</b> Seconds", array("class" => "dev_stats_runtime abutton $confirm_class"));
+	}
+
+	private static function stats_postdata() {
+		if(!$_POST){
+			return "";
+		}
+
+		$title = "POST";
+		$data = htmlentities(print_r($_POST, 1));
+
+		return "\n\t" . Html::hide_data_html($title, $data, null, "dev_stats_outputs abutton", "dev_stats_detail");
 	}
 
 	public static function get_core_queries() {
@@ -297,6 +308,7 @@ class Debug {
 			. "\n\t" . self::stats_mem($page)
 			. "\n\t" . self::stats_inc($page)
 			#."\n\t".(new Html("div", 'UID:'.(User::id($page->isStandalone())?:'-/-'), array("class"=>"dev_stats_uid abutton")))
+			. self::stats_postdata()
 			. self::stats_outputs($page)
 			. "\n"
 			, array("class" => "dev_stats noprint"));

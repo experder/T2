@@ -31,7 +31,9 @@ $table = new Table(array(
 		"Col1" => "FooFoo",
 		"Col2" => "FooBar",
 	),
-));
+)
+	,null,false
+);
 
 $pdf = new Pdf(Templates::load('pdfdemo_tpl1.html', array(
 	"(:TABLE)" => $table,

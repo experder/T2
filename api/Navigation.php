@@ -137,4 +137,19 @@ class Navigation {
 		return $html;
 	}
 
+	public function getTitle($id) {
+		if($this->id===$id){
+			return $this->title;
+		}
+		if($children=$this->getChildren()){
+			foreach ($children as $navi){
+				$title = $navi->getTitle($id);
+				if($title!==false){
+					return $title;
+				}
+			}
+		}
+		return false;
+	}
+
 }

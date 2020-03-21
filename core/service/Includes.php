@@ -28,8 +28,9 @@ class Includes {
 		 * List of all includes
 		 */
 
-		Includes::js_highlight9181($page);
+		Includes::js_highlight9181($page, false);
 		Includes::js_jquery341($page);
+		Includes::js_datatables11020($page, false);
 
 		Includes::php_parsedown174();
 		Includes::php_tcpdf632();
@@ -83,6 +84,50 @@ class Includes {
 	}
 
 	/**
+	 * https://datatables.net/
+	 * https://datatables.net/download
+	 *
+	 * https://www.datatables.net/download/builder?dt/dt-1.10.20/fh-3.1.6
+	 * With extension FixedHeader (3.1.6) included.
+	 *
+	 * @param Page $page
+	 */
+	public static function js_datatables11020(Page $page = null, $start = true) {
+		self::js_jquery341($page);
+		self::css_datatables11020($page);
+		$add = self::do_add_js($page, "JS_ID_DATATABLES",
+			'datatables.min.js',
+			'https://cdn.datatables.net/v/dt/dt-1.10.20/fh-3.1.6/datatables.min.js'
+			, 'datatables11020'
+		);
+		if ($add && $start) {
+			self::js_datatables11020_START($page);
+		}
+	}
+
+	private static function css_datatables11020(Page $page = null) {
+		self::do_add_js($page, "CSS_ID_DATATABLES",
+			'datatables.min.css',
+			'https://cdn.datatables.net/v/dt/dt-1.10.20/fh-3.1.6/datatables.min.css'
+			, 'datatables11020'
+			, true
+		);
+	}
+
+	public static function js_datatables11020_START(Page $page = null, $offset = 0) {
+		if ($page === null) {
+			$page = Page::get_singleton();
+		}
+		$page->add_inline_js("\$(document).ready( function () { \$('table.datatable').DataTable( {
+			\"paging\": false,
+			\"order\": [],
+			fixedHeader: {
+				headerOffset: $offset,
+			},
+		} ); } );");
+	}
+
+	/**
 	 * https://highlightjs.org/
 	 * https://highlightjs.org/download/
 	 *
@@ -93,9 +138,6 @@ class Includes {
 	 * @param bool      $start
 	 */
 	public static function js_highlight9181(Page $page = null, $start = true) {
-		if ($page === null) {
-			$page = Page::get_singleton();
-		}
 		self::css_highlight9181($page);
 		$add = self::do_add_js($page, "JS_ID_HIGHLIGHT",
 			'highlight.min.js',
@@ -125,7 +167,7 @@ class Includes {
 
 	private static $working = false;
 
-	protected static function do_add_js($page, $id, $file0, $download, $subdir = null, $css = false) {
+	protected static function do_add_js($page, $id, $file0, $download, $subdir = null, $css = false, $zip=false) {
 		if ($page === null) {
 			$page = Page::get_singleton();
 		}
@@ -152,7 +194,7 @@ class Includes {
 			return true;
 		}
 		self::$working = true;
-		self::do_download($id, $download, $page, $subdir);
+		self::do_download($id, $download, $page, $subdir, $zip);
 		if (file_exists($file)) {
 			Page::add_message_confirm_("Installed include \"$file0\".");
 			$page->add_javascript($id, Config::cfg_http_project() . "/includes/" . $file0, $css);
@@ -185,7 +227,7 @@ class Includes {
 		return false;
 	}
 
-	protected static function do_download($id, $download, $page = null, $subdir = null) {
+	protected static function do_download($id, $download, $page = null, $subdir = null, $zip=false) {
 
 		//Show message while downloading:
 		if (!Request::cmd("doload_$id") && !Start::is_type(Start::TYPE_AJAX)) {
@@ -226,7 +268,7 @@ class Includes {
 		}
 
 		//Unzip:
-		if (strtolower($extension) == 'zip') {
+		if (strtolower($extension) == 'zip' || $zip) {
 			$zip = new \ZipArchive();
 			$res = $zip->open($target);
 			if ($res === true) {
