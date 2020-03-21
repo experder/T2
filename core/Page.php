@@ -271,8 +271,7 @@ class Page {
 	}
 
 	private function waitSpinner() {
-		$skin_dir = Config_core::skin_dir();
-		$waitSpinner = "<div id=\"uploadSpinner\" style='display:none;'><div class=\"spinnerContent\"><img src=\"$skin_dir/img/spinner.gif\"><div>Bitte warten...</div></div></div>";
+		$waitSpinner = "<div id=\"uploadSpinner\" style='display:none;'><div class=\"spinnerContent\"><div>Bitte warten...</div></div></div>";
 		return $waitSpinner;
 	}
 
