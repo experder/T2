@@ -153,26 +153,18 @@ class Page {
 	}
 
 	/**
-	 * @param mixed $node must be string or have function __toString()
+	 * @param mixed $node must be of a type described in \t2\core\Node::check_type
+	 * @see \t2\core\Node::check_type
 	 */
 	public function add($node) {
+
+		Node::check_type($node);
+
 		if (is_array($node)) {
 			foreach ($node as $n) {
 				$this->add($n);
 			}
 			return;
-		}
-
-		if (!is_string($node)
-			&& !method_exists($node, '__toString')
-			&& !is_numeric($node)
-			&& !is_null($node)
-		) {
-			$hint = "";
-			if (is_bool($node)) {
-				$hint = "Booleans need to be converted to strings.\n\$page->add(\$ok?'Yes':'No');";
-			}
-			new Error("ERROR_INVALID_NODE", "Invalid node!", $hint, 1);
 		}
 
 		$this->html_nodes[] = $node;

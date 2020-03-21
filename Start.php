@@ -77,7 +77,7 @@ class Start {
 		if (self::$dev_start_time === null) {
 			self::$dev_start_time = microtime(true);
 		} else {
-			new Error_("Init called twice!", 0, null, 1);
+			new Error("INIT_CALLED_TWICE", "Init called twice!", null, 1);
 		}
 		if (!defined("ROOT_DIR")) {
 			$dir = __DIR__;

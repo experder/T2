@@ -20,11 +20,8 @@ Repository
 ### dev_tools
 
 #### Register dev_tools as a submodule:
-`git submodule add https://github.com/experder/dev_tools.git modules/dev_tools`  
+`git submodule add https://github.com/experder/dev_tools.git modules/dev_tools` modules/  
 `git commit -m "Add dev_tools as a submodule"`
-
-#### Clone dev_tools with T2:
-`git clone --recurse-submodules https://github.com/experder/dev_tools.git .`
 
 Apache
 ------
@@ -56,6 +53,6 @@ Permissions
     cp dev/templates/update.sh ../update.sh
 * Check line endings of `update.sh`! (Must be Linux: `\n`)
 
+#### Set rights for project's root directory:
 
-    # Set rights for project's root directory:
     sudo chmod 777 '/var/www/myproject' -R
