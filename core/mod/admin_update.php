@@ -87,7 +87,7 @@ $page->add_inline_js(
 
 
 if (Config::$DEVMODE) {
-	$div->addChild(Html::BUTTON("Clear", "document.getElementById(\"ID_RESULTS\").innerHTML='';", array("id" => "dev_btn_clear")));
+	$div->addChild(Html::BUTTON("Clear", "document.getElementById(\"ID_RESULTS\").innerHTML='';", array("id" => "dev_btn_clear", "class"=>"dev")));
 }
 
 $page->send_and_quit();
