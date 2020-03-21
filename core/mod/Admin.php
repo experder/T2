@@ -189,6 +189,7 @@ class Admin {
 		$form->add_field(new Formfield_text('MODULE_ROOT', null, Config::get_value('MODULE_ROOT')));
 		$form->add_field(new Formfield_text('MODULE_PATH', null, Config::get_value('MODULE_PATH')));
 		$form->add_field(new Formfield_text('DEFAULT_API_DIR', null, Config::get_value('DEFAULT_API_DIR')));
+		$form->add_field(new Formfield_text('fixedheaderoffset', null, Config::get_value('fixedheaderoffset')));
 
 		return $form;
 	}

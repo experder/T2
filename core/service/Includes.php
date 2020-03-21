@@ -101,7 +101,7 @@ class Includes {
 			, 'datatables11020'
 		);
 		if ($add && $start) {
-			self::js_datatables11020_START($page);
+			self::js_datatables11020_START($page, Config::get_value_core('fixedheaderoffset'));
 		}
 	}
 

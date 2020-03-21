@@ -210,7 +210,12 @@ class Config {
 		if ($value === null) {
 			$hint = "???(TODO)190";//TODO(3): Determine Default_values for given module
 			if ($module === 'core') {
-				$hint = "Add here: core\\mod\\Core_values";
+				$class = '\\t2\\core\\mod\\Core_values';
+				try {
+					$reflection_class = new \ReflectionClass($class);
+					$class = $reflection_class->getFileName();
+				}catch(\ReflectionException $e){}
+				$hint = "Add here: ".$class;
 			}
 			new Error("NO_DEFAULT_VALUE", "No default value provided for: $module|$id", $hint, $backtrace_depth + 1);
 		}
@@ -375,4 +380,4 @@ class Config {
 
 }
 
-Config::$dev_line_api+=17;
+Config::$dev_line_api+=16;

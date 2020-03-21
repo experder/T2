@@ -42,6 +42,7 @@ class Core_values extends Default_values {
 		"MODULE_PATH" => ":HTTP_ROOT/../modules",
 		"DEFAULT_API_DIR" => "tethys",
 		"LOGIN_HTML" => "<h1>Login</h1>",
+		"fixedheaderoffset" => "0",//px
 	);
 
 }

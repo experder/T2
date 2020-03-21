@@ -109,7 +109,7 @@ abstract class Formfield {
 		if ($name && $this->name) {
 			$params["name"] = $this->name;
 		}
-		if ($value && $this->value) {
+		if ($value && $this->value!==null) {
 			$params["value"] = $this->value;
 		}
 		if ($this->id) {
