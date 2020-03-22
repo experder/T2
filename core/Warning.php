@@ -9,7 +9,6 @@
 namespace t2\core;
 
 class Warning extends Error {
-	//TODO(1): Look for errors that should be warnings
 
 	protected $warning = true;
 

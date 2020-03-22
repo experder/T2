@@ -8,7 +8,7 @@
 
 namespace t2\core\form;
 
-use t2\core\Error_;
+use t2\core\Error;
 
 class Formfield_radio extends Formfield {
 
@@ -30,7 +30,7 @@ class Formfield_radio extends Formfield {
 			$this->options = $options;
 		}
 		if ($this->options === false) {
-			new Error_("!");
+			new Error("!");
 		}
 	}
 

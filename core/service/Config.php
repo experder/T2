@@ -12,6 +12,7 @@ use t2\api\Default_values;
 use t2\core\Database;
 use t2\core\Database_Service;
 use t2\core\Error;
+use t2\core\Html;
 use t2\core\Message;
 use t2\core\Page;
 use t2\core\Warning;
@@ -99,7 +100,10 @@ class Config {
 			$modules_json = self::get_value('MODULES', null, null);
 			self::$cfg_modules = json_decode($modules_json, true);
 			if (self::$cfg_modules === null) {
-				new Error("MODULE_CFG_INVALID_JSON", "Module configuration is invalid JSON.");
+				Error::or_Warning("MODULE_CFG_INVALID_JSON", "Module configuration is invalid JSON."
+					, "Review/Fix it here: ".Html::href_internal_root("core/mod/admin_config"));
+				$modules_json = self::get_default_value('core', 'MODULES');
+				self::$cfg_modules = json_decode($modules_json, true);
 			}
 		}
 		return self::$cfg_modules;

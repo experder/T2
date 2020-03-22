@@ -11,7 +11,6 @@ namespace t2;
 use t2\api\Navigation;
 use t2\core\Database;
 use t2\core\Error;
-use t2\core\Error_;
 use t2\core\mod\Core_navigation;
 use t2\core\Page;
 use t2\core\service\Config;
@@ -53,7 +52,12 @@ class Start {
 		$nav = self::getNavigation(false);
 		if (!$nav) {
 			//Blank navigation:
-			$nav = new Navigation(null, null, null);
+			$children = array();
+			if(Config::$DEVMODE){
+				$children[] = Core_navigation::navi_user();//TODO(2):Navigation:devCSS
+				$children[] = Core_navigation::navi_admin();
+			}
+			$nav = new Navigation(null, null, null, $children);
 		}
 		return $nav->toHtml($id);
 	}

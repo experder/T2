@@ -158,10 +158,11 @@ class Install_wizard {
 		if (Config::$DEVMODE) {
 			if (isset($_REQUEST['initialize_module_navi'])) {
 				$msg = Tools::create_new_module($mod_id, $mod_id, $path, array("My_Navigation.php"));
-				Page::add_message($msg);
 			} else {
-				Page::add_message_error_(Html::DIV("No navigation set for module '$mod_id'! [<a href='?initialize_module_navi'>Create blank navigation</a>]", "dev"));
+				$msg = new Message(Message::TYPE_ERROR, "No navigation set for module '$mod_id'! [<a href='?initialize_module_navi'>Create blank navigation</a>]");
 			}
+			$msg->setDevCSS();
+			Page::add_message($msg);
 		}
 	}
 

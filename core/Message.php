@@ -18,6 +18,8 @@ class Message {
 
 	private $message;
 
+	private $dev_css = false;
+
 	/**
 	 * @param int    $type [Message::TYPE_ERROR|Message::TYPE_INFO|Message::TYPE_INFO]
 	 * @param string $message
@@ -27,8 +29,18 @@ class Message {
 		$this->message = $message;
 	}
 
+	public function setDevCSS() {
+		$this->dev_css = true;
+	}
+
 	public function get_message() {
 		return $this->message;
+	}
+
+	public function toHTML(){
+		return "<div class='message ".$this->get_type_cssClass()
+			.($this->dev_css?" dev":"")
+			."'>" . $this->message . "</div>";
 	}
 
 	/**

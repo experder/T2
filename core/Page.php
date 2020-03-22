@@ -347,8 +347,7 @@ class Page {
 	private function get_message_html() {
 		$html = "";
 		foreach (self::$messages as $message) {
-			$css_class = $message->get_type_cssClass();
-			$html .= "\n\t<div class='message $css_class'>" . $message->get_message() . "</div>";
+			$html .= "\n\t".$message->toHTML();
 		}
 		if ($html) {
 			$html .= "\n";

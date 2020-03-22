@@ -207,4 +207,11 @@ class Error {
 		exit;
 	}
 
+	public static function or_Warning($ERROR_TYPE, $message = null, $debug_info = null, $backtrace_depth = 0, $report = true){
+		if (Config::$DEVMODE){
+			return new Warning($ERROR_TYPE, $message, $debug_info, $backtrace_depth, $report);
+		}
+		return new Error($ERROR_TYPE, $message, $debug_info, $backtrace_depth, $report);
+	}
+
 }
