@@ -307,7 +307,7 @@ class Debug {
 			. "\n\t" . self::stats_runtime()
 			. "\n\t" . self::stats_mem($page)
 			. "\n\t" . self::stats_inc($page)
-			#."\n\t".(new Html("div", 'UID:'.(User::id($page->isStandalone())?:'-/-'), array("class"=>"dev_stats_uid abutton")))
+			#."\n\t".(new Html("div", 'UID:'.(User::id_(false)?:'-/-'), array("class"=>"dev_stats_uid abutton")))
 			. self::stats_postdata()
 			. self::stats_outputs($page)
 			. "\n"
