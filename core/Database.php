@@ -16,6 +16,8 @@ use t2\dev\Install_wizard;
 
 class Database {
 
+	use Singleton;
+
 	/**
 	 * Returns id value of the inserted set of data.
 	 * Used by the function insert.
@@ -195,8 +197,9 @@ class Database {
 	 * @param bool   $halt_on_error
 	 * @param int    $backtrace_depth
 	 * @return array|int|false|null
+	 * TODO(2): Better throw an exception
 	 */
-	private function iquery($query, $substitutions, $return_type, $backtrace_depth = 0, $halt_on_error = true) {
+	private function _query($query, $substitutions, $return_type, $backtrace_depth = 0, $halt_on_error = true) {
 		$this->error = false;
 		/** @var \PDOStatement $statement */
 		$statement = $this->pdo->prepare($query);
@@ -220,6 +223,13 @@ class Database {
 				return null;/*No return type specified*/
 				break;
 		}
+	}
+
+	/**
+	 * @deprecated
+	 */
+	private function iquery($query, $substitutions, $return_type, $backtrace_depth = 0, $halt_on_error = true) {
+		return $this->_query($query, $substitutions, $return_type, $backtrace_depth+1, $halt_on_error);
 	}
 
 	private function error_handling(\PDOStatement $statement, $query, $halt_on_error, $backtrace_depth = 0) {
@@ -397,6 +407,13 @@ class Database {
 			}
 		}
 		return $compiled_query;
+	}
+
+	/**
+	 * @return Database
+	 */
+	public static function getInstance() {
+		return parent::getInstance();
 	}
 
 }
