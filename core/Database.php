@@ -16,7 +16,7 @@ use t2\dev\Install_wizard;
 
 class Database {
 
-	use Singleton;
+	//use Singleton;
 
 	/**
 	 * Returns id value of the inserted set of data.
@@ -144,7 +144,7 @@ class Database {
 	 * @return array|false Result of the SELECT query in form of an associative array
 	 */
 	public function select($query, $substitutions = array(), $backtrace_depth = 0, $halt_on_error = true) {
-		return $this->iquery($query, $substitutions, self::RETURN_ASSOC, $backtrace_depth + 1, $halt_on_error);
+		return $this->_query($query, $substitutions, self::RETURN_ASSOC, $backtrace_depth + 1, $halt_on_error);
 	}
 
 	/**
@@ -154,7 +154,7 @@ class Database {
 	 * @return int|false
 	 */
 	public function insert($query, $substitutions = null, $backtrace_depth = 0) {
-		return self::iquery($query, $substitutions, self::RETURN_LASTINSERTID, $backtrace_depth + 1);
+		return $this->_query($query, $substitutions, self::RETURN_LASTINSERTID, $backtrace_depth + 1);
 	}
 
 	/**
@@ -175,7 +175,7 @@ class Database {
 	 * @return array|false|int
 	 */
 	public function select_single($query, $substitutions = null, $backtrace_depth = 0, $ignore_following = true) {
-		$result = self::iquery($query, $substitutions, self::RETURN_ASSOC, $backtrace_depth + 1);
+		$result = $this->_query($query, $substitutions, self::RETURN_ASSOC, $backtrace_depth + 1);
 		if (!$result) {
 			return false;
 		}
@@ -223,13 +223,6 @@ class Database {
 				return null;/*No return type specified*/
 				break;
 		}
-	}
-
-	/**
-	 * @deprecated
-	 */
-	private function iquery($query, $substitutions, $return_type, $backtrace_depth = 0, $halt_on_error = true) {
-		return $this->_query($query, $substitutions, $return_type, $backtrace_depth+1, $halt_on_error);
 	}
 
 	private function error_handling(\PDOStatement $statement, $query, $halt_on_error, $backtrace_depth = 0) {
@@ -322,7 +315,7 @@ class Database {
 	 * @return int|false Number of updated rows or FALSE on error
 	 */
 	public function update($query, $substitutions = array(), $stacktrace_depth = 0) {
-		return $this->iquery($query, $substitutions, self::RETURN_ROWCOUNT, $stacktrace_depth + 1);
+		return $this->_query($query, $substitutions, self::RETURN_ROWCOUNT, $stacktrace_depth + 1);
 	}
 
 	/**
@@ -332,7 +325,7 @@ class Database {
 	 * @return int|false
 	 */
 	public function delete($query, $substitutions = array(), $stacktrace_depth = 0) {
-		return $this->iquery($query, $substitutions, self::RETURN_ROWCOUNT, $stacktrace_depth + 1);
+		return $this->_query($query, $substitutions, self::RETURN_ROWCOUNT, $stacktrace_depth + 1);
 	}
 
 	/**
@@ -407,13 +400,6 @@ class Database {
 			}
 		}
 		return $compiled_query;
-	}
-
-	/**
-	 * @return Database
-	 */
-	public static function getInstance() {
-		return parent::getInstance();
 	}
 
 }

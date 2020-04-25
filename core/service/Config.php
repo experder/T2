@@ -10,7 +10,7 @@ namespace t2\core\service;
 
 use t2\api\Default_values;
 use t2\core\Database;
-use t2\core\Database_Service;
+use t2\core\DB;
 use t2\core\Error;
 use t2\core\Html;
 use t2\core\Message;
@@ -283,7 +283,7 @@ class Config {
 		$ids_sql = implode(',', $ids_keys);
 
 		$core_config = DB_CORE_PREFIX . '_config';
-		/*$dev_line_api*/$result = Database_Service::select(
+		/*$dev_line_api*/$result = DB::select(
 			"SELECT module,`content`,idstring FROM $core_config WHERE `idstring` IN ('API_DIR') AND module IN ($ids_sql) AND userid<=>NULL;"
 				, $substitutions);
 		foreach ($result as $row){
@@ -315,7 +315,7 @@ class Config {
 
 		$core_config = DB_CORE_PREFIX . '_config';
 		self::$dev_lv_line = __LINE__ + 3;
-		$data = Database_Service::select(
+		$data = DB::select(
 			"SELECT idstring,`content` FROM $core_config WHERE `idstring` in ($ids_sql) AND module<=>:module AND userid <=> :userid;",
 			$substitutions, 0, false
 		);
