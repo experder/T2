@@ -8,7 +8,7 @@
 
 namespace t2\core\mod;
 
-require_once '../../Start.php';
+require_once __DIR__.'/../../Start.php';
 
 use t2\core\DB;
 use t2\core\Page;

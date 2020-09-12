@@ -6,14 +6,16 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
-namespace t2\core;
+namespace t2\core\service;
 
-use t2\api\Ajax;
+require_once("../../Start.php");
+
+use t2\core\form\Form;
 use t2\Start;
 
-require_once __DIR__.'/../Start.php';
+$page = Start::init_("PAGEID_LOGOUT");
 
-Start::init_ajax();
+$form = new Form("t2_dologout", "", "Logout");
+$page->add($form);
 
-$response = Ajax::ajax_call_from_request();
-$response->compile_and_send();
+$page->send_and_quit();

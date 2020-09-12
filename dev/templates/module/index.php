@@ -14,7 +14,7 @@ namespace t2\modules\core_template;//(:moduleIdLc)
 if (true) exit;
 /**TPLDOCEND*/
 
-require_once '../../../Start.php';//(:relativePath)
+require_once __DIR__.'/../../../Start.php';//(:relativePath)
 use t2\Start;
 
 $page = Start::init_("PAGEID_(:MODULE_ID_UC)_INDEX");

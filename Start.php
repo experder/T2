@@ -171,7 +171,7 @@ class Start {
 		Start::init_database();
 		Start::init_userrights();
 		Start::init_navigation();
-		$page = Page::init2($PAGEID_);
+		$page = Page::getSingleton($PAGEID_);
 		return $page;
 	}
 

@@ -8,7 +8,7 @@
 
 namespace t2\modules\core_demo;
 
-require_once '../../Start.php';
+require_once __DIR__.'/../../Start.php';
 require_once 'Ajaxdemo_controller.php';
 
 use t2\core\Html;

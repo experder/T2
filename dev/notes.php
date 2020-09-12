@@ -8,7 +8,7 @@
 
 namespace t2\dev;
 
-require_once '../Start.php';
+require_once __DIR__.'/../Start.php';
 
 use t2\core\service\Markdown;
 use t2\Start;

@@ -198,7 +198,10 @@ class Html {
 	}
 
 	public static function hide_data_html($title, $data, $id=null, $title_class="abutton", $data_class="") {
-		Page::get_singleton()->add_js_core();
+		$page = Page::get_singleton(false);
+		if($page){
+			$page->add_js_core();
+		}
 
 		if($id===null){
 			$id = "detail".Page::get_next_global_id();

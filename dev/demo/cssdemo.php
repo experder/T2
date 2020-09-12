@@ -8,27 +8,22 @@
 
 namespace t2\modules\core_demo;
 
-require_once '../../Start.php';
+require_once __DIR__.'/../../Start.php';
+
+require_once ROOT_DIR . '/dev/demo/Loremipsum.php';
+//TODO: Require weg!
+//TODO: Page should not be instantiated multiple times!
+//TODO: Warum findet der Autoloader das nicht?
 
 use t2\core\Database;
-use t2\core\form\Form;
-use t2\core\form\Formfield_checkbox;
-use t2\core\form\Formfield_password;
-use t2\core\form\Formfield_radio;
-use t2\core\form\Formfield_text;
-use t2\core\form\Formfield_textarea;
 use t2\core\Html;
 use t2\core\Page;
 use t2\core\service\Config;
 use t2\core\service\Config_core;
-use t2\core\service\Js;
 use t2\core\service\Markdown;
-use t2\core\service\Request;
-use t2\core\service\Strings;
 use t2\core\Stylesheet;
 use t2\core\table\Cell;
 use t2\core\table\Table;
-use t2\dev\Debug;
 use t2\Start;
 
 $page = Start::init_("PAGEID_DEV_CSSDEMO");
@@ -99,20 +94,20 @@ $page->add($table2);
  */
 
 $page->add(Html::H2("Text", "text"));
-$page->add(schlauer_spruch());
+$page->add(Loremipsum::schlauer_spruch());
 $page->add(Html::PRE("pre {\n\twhite-space: pre-wrap;\n}"));
 
 $page->add(Html::H3("Lists"));
 $page->add($ul = Html::UL(array(
-	schlauer_spruch(),
-	schlauer_spruch(),
+	Loremipsum::schlauer_spruch(),
+	Loremipsum::schlauer_spruch(),
 )));
 
 $page->add(Html::H3("Console"));
 $page->add(Html::H4("TEXTAREA"));
-$page->add(Html::TEXTAREA_console(schlauer_spruch()));
+$page->add(Html::TEXTAREA_console(Loremipsum::schlauer_spruch()));
 $page->add(Html::H4("PRE"));
-$page->add(Html::PRE_console(schlauer_spruch()));
+$page->add(Html::PRE_console(Loremipsum::schlauer_spruch()));
 
 $page->add(Html::H2("Markdown", "markdown"));
 $page->add($s = Markdown::string_to_string("
@@ -164,53 +159,5 @@ Page::add_message_confirm_(
 	. "<a href=\"https://raw.githubusercontent.com/experder/T2/master/core/Message.php\" target='_blank'>Link</a>"
 );
 
-/*
-======================== Forms ===========================
- */
-$page->add(Html::H2("Forms", "forms"));
-
-$page->add($form = new Form("demo"));
-$form->add_field(new Formfield_text("text", "text / this is a very long title with many chars in a lot of rows"));
-$form->add_field(new Formfield_password("password"));
-$form->add_field(new Formfield_textarea("textarea", null, schlauer_spruch()));
-$form->add_field(new Formfield_checkbox("checkbox", null, null, "Label"));
-//TODO(1): submit unchecked checkboxes!
-//TODO(1): submit unchecked radios!
-$form->add_field(new Formfield_radio("radio", array(
-	"val1" => "title1",
-	"val2" => "title2",
-)));
-
-$form->add_button(Html::BUTTON("BUTTON", "alert('" . Strings::escape_value_html2(schlauer_spruch()) . "');"));
-
-$form->add_button(Html::BUTTON("Spin", "t2_spinner_start();" . Js::run_later("t2_spinner_stop();", 3)));
 
 $page->send_and_quit();
-//==================================================================================================
-function schlauer_spruch() {
-	$sprueche = array(
-
-		"Es muss Dienstag gewesen sein. Er hatte die kornblumenblaue Krawatte um.",
-		"Dir Federn in den Arsch zu stecken macht dich noch lang‘ nicht zum Huhn.",
-		"Du bist nicht dein Job. Du bist nicht das Geld auf deinem Konto. Nicht das Auto, das du fährst! Nicht der Inhalt deiner Brieftasche! Und nicht deine blöde Cargo-Hose.",
-		"Alles was du besitzt, besitzt irgendwann dich.",
-		"Die Leute, die ich auf jedem Flug kennen lerne sind portionierte Freunde. Zwischen Start und Landung verbringen wir unsere gemeinsame Zeit und das war’s.",
-		"Ich sage: sei nie vollständig, ich sage: hör auf perfekt zu sein, ich sage: entwickeln wir uns, lass die Dinge einfach laufen!",
-		"Zuerst musst du wissen, nicht fürchten, sondern wissen, dass du einmal sterben wirst.",
-		"Zeit, für das, an was du glaubst, aufzustehen.",
-		//Quelle: https://mymonk.de/10-lektionen-aus-dem-fight-club-und-die-regeln-des-mymonk-tempels/
-
-		"Mein Name ist Guybrush Threepwood und ich will Pirat werden!",
-		"Also du willst Pirat werden, wie? Siehst aber eher wie ein Buchhalter aus.",
-		"Unser Grog ist ein Geheimrezept, das einige der folgenden Zutaten enthält: Kerosin, Propylen-Glykol, künstliche Süßstoffe, Schwefelsäure, Rum, Aceton, Rote Farbe, Scumm, Schmierfett, Batteriesäure und/oder Pepperonis. Wie man sich denken kann, ist es eine der ätzendsten Substanzen der Menschheit. Dieses Zeug frißt sich sogar durch diese Krüge, und der Koch verliert ein Vermögen. HAR! HAR! HAR! HAR! HAR! HAR!",
-		"Hey, jedem fällt es schwer, seinen Atem frisch zu halten, wenn es außer Ratten nichts zu essen gibt.",
-		"Ich hab den Schatz von Mêlée Island gefunden, aber alles, was mir blieb, ist dieses T-Shirt.",
-		"Barkeeper: \"Ehrlich, ich mag keine Geschichten, die Leute vom Trinken abhalten sollen.\"",
-		//Quelle: http://www.monkeyislandinside.de/sprueche.php
-
-	);
-	$spruch = $sprueche[rand(0, count($sprueche) - 1)];
-	#$spruch="\"ä\"<hr>'ö'\\n\n".$spruch;
-	#$spruch=htmlentities($spruch);
-	return $spruch;
-}

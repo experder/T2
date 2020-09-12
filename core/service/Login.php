@@ -17,7 +17,7 @@ use t2\core\Message;
 use t2\core\Page;
 use t2\core\Warning;
 
-class Login {//TODO(F):Logout
+class Login {
 
 	private static $session_cookie_name = 'T2_session';
 	private static $user_fields = 'id,ref_id,username,display_name';
@@ -65,6 +65,13 @@ class Login {//TODO(F):Logout
 				} else {
 					self::update_session($session_id, $expires);
 					unset($session_data['expires']);
+
+					if (Request::cmd('t2_dologout')) {
+						self::set_cookie('-');
+						Page::add_message_confirm_("Good bye!");
+						return false;
+					}
+
 					return $session_data;
 				}
 			}
@@ -124,7 +131,6 @@ class Login {//TODO(F):Logout
 
 	public static function prompt_credentials() {
 
-		$page = new Page("PAGEID_CORE_LOGIN", "Login");
 		$val_from_request = true;
 
 		if (Request::cmd('t2_dologin')) {
@@ -139,6 +145,7 @@ class Login {//TODO(F):Logout
 
 		$LOGIN_HTML = Config::get_value_core('LOGIN_HTML');
 
+		$page = Page::getSingleton("PAGEID_CORE_LOGIN");
 		$page->add($LOGIN_HTML);
 		$page->add($form = new Form("t2_dologin", "", "Login"));
 		$form->add_field(new Formfield_text("username", "Username", null, $val_from_request, array("id" => "id_t2_login_prompt_username")));

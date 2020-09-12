@@ -10,6 +10,8 @@ namespace t2\core\form;
 
 //TODO(1): Submission of a form on a page called with "?key=val" results in an $_REQUEST array that contains key=val instead of submitted value
 use t2\core\Html;
+use t2\core\Page;
+use t2\core\service\Strings;
 
 class Form {
 	//TODO(1): Formfield_file !!
@@ -61,6 +63,21 @@ class Form {
 //			new Error_("Please pass formfields only.");
 //		}
 		$this->fields[] = $formfield;
+	}
+
+	public function addClientAccordion($content, $title=""){
+		$id = Page::get_next_global_id("acc");
+		$this->add_field($header = new Formfield_header2(Html::BUTTON("&nbsp;+&nbsp;", "expand_$id();"), $title));
+		$header->setOuterId($id);
+		$content = Strings::escapeJsQuotation($content);
+		$content = str_replace("{{c}}", "'+(count_$id)+'", $content);
+		Page::getSingleton()->add_inline_js("
+			function expand_$id(){
+				$('#$id').before('$content');
+				count_$id++;
+			}
+			count_$id = 1;
+		");
 	}
 
 	public function __toString() {

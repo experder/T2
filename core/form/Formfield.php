@@ -77,6 +77,10 @@ abstract class Formfield {
 			. "</div>";
 	}
 
+	public function setOuterId($id){
+		$this->outer_id = $id;
+	}
+
 	protected function get_title() {
 		$tooltip = $this->tooltip;
 

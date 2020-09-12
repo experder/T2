@@ -39,16 +39,13 @@ class Strings {
 		));
 	}
 
-	/**
-	 * @deprecated
-	 */
-	public static function escape_value_inline_js($value) {
+	public static function escapeJsQuotation($value) {
 		return self::replace_byArray($value, array(
 			"\\" => "\\\\",
 			"\"" => "\\\"",
-			"'" => "\\''",
-			"\r\n" => " ",
-			"\n" => " ",
+			"'" => "\\'",
+			"\r\n" => "\\n",
+			"\n" => "\\n",
 		));
 	}
 

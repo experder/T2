@@ -74,7 +74,7 @@ class Page {
 	 * @param string $id
 	 * @param string $title
 	 */
-	public function __construct($id, $title) {
+	private function __construct($id, $title) {
 		$this->reset($id, $title);
 		if (Database::get_singleton(false) === false) {
 			Config::init_http_root(true);
@@ -85,8 +85,8 @@ class Page {
 		self::$debug_singleton_should_exist = true;
 	}
 
-	public static function get_next_global_id() {
-		return self::$global_id_counter++;
+	public static function get_next_global_id($prefix="") {
+		return $prefix.(self::$global_id_counter++);
 	}
 
 	/**
@@ -111,6 +111,8 @@ class Page {
 	/**
 	 * @param bool $halt_on_error
 	 * @return Page|false
+	 *
+	 * @deprecated TODO
 	 */
 	public static function get_singleton($halt_on_error = true) {
 		if (self::$singleton === null) {
@@ -119,6 +121,17 @@ class Page {
 			} else {
 				return false;
 			}
+		}
+		return self::$singleton;
+	}
+
+	public static function getSingleton($id = null) {
+		if (self::$singleton === null) {
+			if($id===null){
+				new Error("NO_ID_GIVEN", "", "Please provide page ID");
+			}
+			$title = Start::getNavigation()->getTitle($id);
+			self::$singleton = new Page($id, $title);
 		}
 		return self::$singleton;
 	}
@@ -358,6 +371,11 @@ class Page {
 
 	private function get_title() {
 		$project = Config::get_value_core("PROJECT_TITLE");
+
+		if(!$this->title && $this->id=="PAGEID_CORE_LOGIN"){
+			return $project;
+		}
+
 		$title = $this->title . " - $project";
 		return $title;
 	}

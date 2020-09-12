@@ -58,7 +58,7 @@ class Core_navigation {
 		$user_info = User::info();
 		$navigation = new Navigation('NAVI_USER', $user_info['display_name'] ?: "User", "", array(
 			new Navigation('PAGEID_CORE_USER_CFG', "Config", Html::href_internal_root("core/mod/user_config")),
-			new Navigation('CORE_USER_LOGOUT', "", Html::href_internal_root("index")),
+			new Navigation('PAGEID_LOGOUT', "Abmeldung", Html::href_internal_root("core/service/logout")),
 		));
 		if (!$user_info) {
 			#$navigation->set_invisible();
