@@ -86,7 +86,7 @@ class Error {
 			$msg[] = $this->debug_info;
 		}
 		if ($backtrace) {
-			$msg[] = Debug::backtrace($backtrace_depth + 1);
+			$msg[] = Debug::backtrace2();
 		}
 		$msg = implode(self::HR, $msg);
 		if ($htmlentities) {

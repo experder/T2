@@ -18,6 +18,9 @@ use t2\Start;
 
 class Debug {
 
+	const linebreak_plain = "\n";
+	const linebreak_html = "<br>";
+
 	private static $core_queries = array(
 		"load_values ( :ROOT_DIR/core/service/Config.php::DEV_LVLINE )",
 		"load_values_api ( :ROOT_DIR/core/service/Config.php::DEV_LINE_API )",
@@ -316,14 +319,34 @@ class Debug {
 	}
 
 	/**
-	 * TODO(F): backtrace: Trenner nach der ersten Zeile/highlight passed depth
 	 * TODO(F): backtrace: Funktion mit anzeigen
-	 * @param int    $depth
 	 * @param string $linebreak
-	 * @param bool   $multiline
 	 * @return string
 	 */
+	public static function backtrace2($linebreak = Debug::linebreak_plain) {
+		$caller = array();
+		$backtrace = debug_backtrace();
+		if ($backtrace && is_array($backtrace)) {
+			foreach ($backtrace as $row) {
+				$caller[] =
+					(isset($row["file"]) ? $row["file"] : "?")
+					. ":"
+					. (isset($row["line"]) ? $row["line"] : "?");
+			}
+		}
+		if (!$caller) {
+			$caller[] = "unknown_caller";
+		}
+		return implode($linebreak, $caller);
+	}
+
+	/**
+	 * @deprecated Use backtrace2 instead.
+	 */
 	public static function backtrace($depth = 0, $linebreak = "\n", $multiline = true) {
+		if(isset($_GET['fullstack'])){
+			$depth=-1;
+		}
 		$caller = array();
 		$backtrace = debug_backtrace();
 		if ($backtrace && is_array($backtrace)) {

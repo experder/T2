@@ -9,6 +9,7 @@
 namespace t2\core;
 
 use t2\api\Header;
+use t2\api\Navigation;
 use t2\core\service\Config;
 use t2\core\service\Config_core;
 use t2\core\service\Includes;
@@ -130,7 +131,12 @@ class Page {
 			if($id===null){
 				new Error("NO_ID_GIVEN", "", "Please provide page ID");
 			}
-			$title = Start::getNavigation()->getTitle($id);
+			$title = Start::getNavigation(false);
+			if($title instanceof Navigation){
+				$title = $title->getTitle($id);
+			}else{
+				$title = "!??????!";//TODO: Default/Login Title
+			}
 			self::$singleton = new Page($id, $title);
 		}
 		return self::$singleton;
