@@ -116,7 +116,9 @@ class Start {
 			new Error("ERROR_CONFIG_CORRUPT/2", "Local config file seems to be corrupt. Please check.", "Config file: " . $config_file);
 		}
 
-		define('DB_CORE_PREFIX', Database::get_singleton()->core_prefix);
+		if(!defined('DB_CORE_PREFIX')){
+			define('DB_CORE_PREFIX', Database::get_singleton()->core_prefix);
+		}
 
 		//TODO(F):  Feature: Install wizard: Configure PROJECT_ROOT
 		if (!defined("PROJECT_ROOT")) {

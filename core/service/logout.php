@@ -8,7 +8,7 @@
 
 namespace t2\core\service;
 
-require_once("../../Start.php");
+require_once(__DIR__."/../../Start.php");
 
 use t2\core\form\Form;
 use t2\Start;

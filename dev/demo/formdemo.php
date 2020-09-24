@@ -8,7 +8,7 @@
 
 namespace t2\modules\core_demo;
 
-require_once '../../Start.php';
+require_once __DIR__.'/../../Start.php';
 require_once ROOT_DIR . '/dev/demo/Loremipsum.php';
 
 use t2\core\form\Fieldset;
@@ -16,6 +16,7 @@ use t2\core\form\Form;
 use t2\core\form\Formfield_checkbox;
 use t2\core\form\Formfield_password;
 use t2\core\form\Formfield_radio;
+use t2\core\form\Formfield_select;
 use t2\core\form\Formfield_text;
 use t2\core\form\Formfield_textarea;
 use t2\core\Html;
@@ -36,6 +37,7 @@ $form->addClientAccordion(new Formfield_text("more_b[]", "Noch mehr #{{c}}")."\n
 $form->add_field($fieldset=new Fieldset("Fieldset"));
 $fieldset->addField(new Formfield_password("password"));
 $fieldset->addField(new Formfield_textarea("textarea", null, Loremipsum::schlauer_spruch()));
+$form->add_field(new Formfield_select("select", "select", array("a"=>"Aaa","b"=>"Bbb"), 'b' ));
 $form->add_field(new Formfield_checkbox("checkbox", null, null, "Label"));
 //TODO(1): submit unchecked checkboxes!
 //TODO(1): submit unchecked radios!
