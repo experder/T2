@@ -147,6 +147,19 @@ class Database {
 		return $this->_query($query, $substitutions, self::RETURN_ASSOC, $backtrace_depth + 1, $halt_on_error);
 	}
 
+	public function select_indexed($index_key, $query, $substitutions = array()) {
+		$data = $this->_query($query, $substitutions, self::RETURN_ASSOC);
+		if(!$data){
+			return false;
+		}
+		$keyvals = array();
+		foreach ($data as $row){
+			$id = $row[$index_key];
+			$keyvals[$id] = $row;
+		}
+		return $keyvals;
+	}
+
 	/**
 	 * @param string     $query
 	 * @param null|array $substitutions

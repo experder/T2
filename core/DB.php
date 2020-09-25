@@ -15,4 +15,12 @@ class DB {
 		return Database::get_singleton()->select($query, $substitutions, $backtrace_depth + 1, $halt_on_error);
 	}
 
+	public static function select_indexed($index_key, $query, $substitutions = array()) {
+		return Database::get_singleton()->select_indexed($index_key, $query, $substitutions);
+	}
+
+	public static function select_single($query, $substitutions = null, $ignore_following = true) {
+		return Database::get_singleton()->select_single($query, $substitutions, 0, $ignore_following);
+	}
+
 }

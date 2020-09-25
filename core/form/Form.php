@@ -65,7 +65,7 @@ class Form {
 		$this->fields[] = $formfield;
 	}
 
-	public function addClientAccordion($content, $title=""){
+	public function addClientAccordion($content, $title="", $counter_start=1){
 		$id = Page::get_next_global_id("acc");
 		$this->add_field($header = new Formfield_header2(Html::BUTTON("&nbsp;+&nbsp;", "expand_$id();"), $title));
 		$header->setOuterId($id);
@@ -76,7 +76,7 @@ class Form {
 				$('#$id').before('$content');
 				count_$id++;
 			}
-			count_$id = 1;
+			count_$id = $counter_start;
 		");
 	}
 
