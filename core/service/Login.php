@@ -9,11 +9,11 @@
 namespace t2\core\service;
 
 use t2\core\Database;
+use t2\core\DB;
 use t2\core\Error;
 use t2\core\form\Form;
 use t2\core\form\Formfield_password;
-use t2\core\form\Formfield_text;
-use t2\core\Message;
+use t2\core\form\Formfield_select;
 use t2\core\Page;
 use t2\core\Warning;
 
@@ -148,7 +148,15 @@ class Login {
 		$page = Page::getSingleton("PAGEID_CORE_LOGIN");
 		$page->add($LOGIN_HTML);
 		$page->add($form = new Form("t2_dologin", "", "Login"));
-		$form->add_field(new Formfield_text("username", "Username", null, $val_from_request, array("id" => "id_t2_login_prompt_username")));
+
+		#$form->add_field(new Formfield_text("username", "Username", null, $val_from_request, array("id" => "id_t2_login_prompt_username")));
+		$users = DB::select("SELECT display_name,username FROM dev_user;");
+		$user_list = array();
+		foreach ($users as $user){
+			$user_list[$user["username"]] = $user["display_name"];
+		}
+		$form->add_field(new Formfield_select("username", "Username", $user_list));
+
 		$page->set_focusFieldId('id_t2_login_prompt_username');
 		$form->add_field(new Formfield_password("password", "Password", null, $val_from_request));
 
