@@ -126,12 +126,15 @@ class Database {
 	}
 
 	/**
-	 * @deprecated TODO: Use Database_Service instead.
+	 * @deprecated TODO: Use DB::select instead.
 	 */
 	public static function select_($query, $substitutions = array(), $halt_on_error = true) {
 		return self::get_singleton()->select($query, $substitutions, 1, $halt_on_error);
 	}
 
+	/**
+	 * @deprecated TODO: Use DB::delete instead.
+	 */
 	public static function delete_($query, $substitutions = array()) {
 		return self::get_singleton()->delete($query, $substitutions, 1);
 	}
@@ -171,10 +174,7 @@ class Database {
 	}
 
 	/**
-	 * @param string     $query
-	 * @param array|null $substitutions
-	 * @param int        $backtrace_depth
-	 * @return array|false
+	 * @deprecated TODO: Use DB::select_single instead.
 	 */
 	public static function select_single_($query, $substitutions = null, $backtrace_depth = 0) {
 		return self::get_singleton()->select_single($query, $substitutions, $backtrace_depth + 1);
@@ -293,20 +293,14 @@ class Database {
 	}
 
 	/**
-	 * @param string $table
-	 * @param array  $data_set
-	 * @param int    $backtrace_depth
-	 * @return false|int
+	 * @deprecated TODO: Use DB::insert_assoc instead.
 	 */
 	public static function insert_assoc_($table, $data_set, $backtrace_depth = 0) {
 		return self::get_singleton()->insert_assoc2($table, $data_set, $backtrace_depth + 1);
 	}
 
 	/**
-	 * @param string $tabelle
-	 * @param array  $data_set
-	 * @param int    $backtrace_depth
-	 * @return false|int
+	 * @deprecated TODO: Use DB::insert_assoc instead.
 	 */
 	public static function insert_assoc2($tabelle, $data_set, $backtrace_depth = 0) {
 		$keys_array = array_keys($data_set);
@@ -319,6 +313,18 @@ class Database {
 		$keys = implode(",", $keys_array);
 		$values = implode(",", $keys_prefixed);
 		return $database->insert("INSERT INTO $tabelle ($keys) VALUES ($values);", $substitutions, $backtrace_depth+1);
+	}
+
+	public function insert_assoc3($tabelle, $data_set) {
+		$keys_array = array_keys($data_set);
+		$keys_prefixed = Arrays::prefix_values(':', $keys_array);
+		$substitutions = array();
+		foreach ($data_set as $key => $value) {
+			$substitutions[':' . $key] = $value;
+		}
+		$keys = implode(",", $keys_array);
+		$values = implode(",", $keys_prefixed);
+		return $this->insert("INSERT INTO $tabelle ($keys) VALUES ($values);", $substitutions);
 	}
 
 	/**

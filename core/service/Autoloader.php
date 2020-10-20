@@ -13,24 +13,38 @@ use t2\core\Error;
 class Autoloader {
 	//TODO(1):Autoloader: Look into modules folder
 
+	private static $registered = false;
 	private static $recursion_protection = true;
+	private static $abort_on_error;
 
-	public static function register() {
+	/**
+	 * Additional to existing project with other autoloader:
+	 * define('ROOT_DIR', __DIR__.'/t2');
+	 * \t2\service\Autoloader::register(false);
+	 *
+	 * @param bool $abort_on_error
+	 */
+	public static function register($abort_on_error = true) {
+		if(Autoloader::$registered)return;
+		Autoloader::$abort_on_error = $abort_on_error;
 		spl_autoload_register(function ($class_name) {
 
 			$ok = preg_match("/^t2\\\\(.*)/", $class_name, $matches);
 			if (!$ok) {
+				if(!Autoloader::$abort_on_error)return;
 				Autoloader::not_found($class_name . " (doesn't match ^t2\\)", null, 2);
 			}
 			$name = $matches[1];
 			$file = ROOT_DIR . '/' . str_replace('\\', '/', $name) . '.php';
 			if (!file_exists($file)) {
+				if(!Autoloader::$abort_on_error)return;
 				Autoloader::not_found($class_name, $file, 2);
 			} else {
 				/** @noinspection PhpIncludeInspection */
 				require_once $file;
 			}
 		});
+		Autoloader::$registered = true;
 	}
 
 	private static function not_found($class, $file = null, $depth = 0) {

@@ -151,7 +151,7 @@ class Login {
 
 		#$form->add_field(new Formfield_text("username", "Username", null, $val_from_request, array("id" => "id_t2_login_prompt_username")));
 		$users = DB::select("SELECT display_name,username FROM dev_user;");
-		$user_list = array();
+		$user_list = array("-1"=>"(Please choose)");
 		foreach ($users as $user){
 			$user_list[$user["username"]] = $user["display_name"];
 		}

@@ -9,7 +9,6 @@
 namespace t2\core;
 
 class DB {
-	//TODO(2):Move more functions here
 
 	public static function select($query, $substitutions = array(), $backtrace_depth = 0, $halt_on_error = true) {
 		return Database::get_singleton()->select($query, $substitutions, $backtrace_depth + 1, $halt_on_error);
@@ -21,6 +20,14 @@ class DB {
 
 	public static function select_single($query, $substitutions = null, $ignore_following = true) {
 		return Database::get_singleton()->select_single($query, $substitutions, 0, $ignore_following);
+	}
+
+	public static function insert_assoc($tabelle, $data_set) {
+		return Database::get_singleton()->insert_assoc3($tabelle, $data_set);
+	}
+
+	public static function delete($query, $substitutions = array()) {
+		return Database::get_singleton()->delete($query, $substitutions);
 	}
 
 }

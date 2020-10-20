@@ -69,6 +69,13 @@ class Start {
 		self::$navigation = $navigation;
 	}
 
+	/**
+	 * @param int $type
+	 */
+	public static function setType($type) {
+		self::$type = $type;
+	}
+
 	public static function get_type() {
 		return self::$type;
 	}
@@ -97,7 +104,7 @@ class Start {
 		return self::$dev_start_time;
 	}
 
-	private static function init_config() {
+	public static function init_config() {
 		$config_file = ROOT_DIR . '/config.php';
 		if (!file_exists($config_file)) {
 			if (Start::is_type(Start::TYPE_AJAX)) {
@@ -134,7 +141,7 @@ class Start {
 		}
 	}
 
-	private static function init_database() {
+	public static function init_database() {
 		/**
 		 * @see Core_values::$default_values
 		 * @see Admin::get_config_form()
@@ -168,7 +175,7 @@ class Start {
 	 * @return Page
 	 */
 	public static function init_($PAGEID_) {
-		self::$type = self::TYPE_HTML;
+		self::$type = self::TYPE_PAGE;
 		Start::init_config();
 		Start::init_database();
 		Start::init_userrights();
