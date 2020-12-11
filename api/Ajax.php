@@ -12,6 +12,7 @@ use t2\core\Ajax_response;
 use t2\core\Error;
 use t2\core\service\Request;
 
+
 abstract class Ajax {
 
 	/**
