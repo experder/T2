@@ -322,7 +322,7 @@ class Database {
 		foreach ($data_set as $key => $value) {
 			$substitutions[':' . $key] = $value;
 		}
-		$keys = implode(",", $keys_array);
+		$keys = "`".implode("`,`", $keys_array)."`";
 		$values = implode(",", $keys_prefixed);
 		return $this->insert("INSERT INTO $tabelle ($keys) VALUES ($values);", $substitutions);
 	}
